@@ -9,16 +9,17 @@
     </head>
     <body>
         <div class="app">
-            <h1>Bike Fun</h1>
-            <form method="POST" action="some url">
-                <input class="navButton" type="submit" value="Input">
-                    </form>
-            <form method="POST" action="some url">
-                <input class="navButton" type="submit" value="Submit">
-                    </form>
-            <form method="POST" action="some url">
-                <input class="navButton" type="submit" value="Reset">
-            </form>
+            <div id="employeeListPage" data-role="page" >
+                
+                <div data-role="header" data-position="fixed">
+                    <h1>Employee Directory</h1>
+                </div>
+                
+                <div data-role="content">
+                    <ul id="employeeList" data-role="listview" data-filter="true"></ul>
+                </div>		
+                
+            </div>
         </div>
         <script type="text/javascript" src="cordova-2.4.0.js"></script>
         <script type="text/javascript" src="js/index.js"></script>
