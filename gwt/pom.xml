@@ -166,6 +166,11 @@
 			<classifier>sources</classifier>
 			<scope>provided</scope>
 		</dependency>
+        <dependency>
+            <groupId>com.github.rwl</groupId>
+            <artifactId>gwt-maps</artifactId>
+            <version>3.8.0-pre1</version>
+        </dependency>
 		
 		<dependency>
 			<groupId>com.googlecode.mgwt</groupId>

@@ -24,6 +24,8 @@ import com.googlecode.gwtphonegap.showcase.client.file.FileDisplay;
 import com.googlecode.gwtphonegap.showcase.client.file.FileDisplayGwtImpl;
 import com.googlecode.gwtphonegap.showcase.client.geolocation.GeolocationDisplay;
 import com.googlecode.gwtphonegap.showcase.client.geolocation.GeolocationDisplayGwtImpl;
+import com.googlecode.gwtphonegap.showcase.client.gmap.GMapView;
+import com.googlecode.gwtphonegap.showcase.client.gmap.GMapViewImpl;
 import com.googlecode.gwtphonegap.showcase.client.inappbrowser.InAppBrowserDisplay;
 import com.googlecode.gwtphonegap.showcase.client.inappbrowser.InAppBrowserDisplayGwtImpl;
 import com.googlecode.gwtphonegap.showcase.client.media.MediaDisplay;
@@ -52,6 +54,7 @@ public class ClientFactoryGwtImpl implements ClientFactory {
     private InAppBrowserDisplay childBrowserDisplay;
     private AboutDisplay aboutDisplay;
     private FileDisplay fileDisplay;
+    private GMapView gMapView;
 
     public ClientFactoryGwtImpl(PhoneGap phoneGap) {
         eventBus = new SimpleEventBus();
@@ -185,5 +188,13 @@ public class ClientFactoryGwtImpl implements ClientFactory {
             fileDisplay = new FileDisplayGwtImpl();
         }
         return fileDisplay;
+    }
+
+    @Override
+    public GMapView getGMapView() {
+        if (gMapView == null) {
+            gMapView = new GMapViewImpl();
+        }
+        return gMapView;
     }
 }

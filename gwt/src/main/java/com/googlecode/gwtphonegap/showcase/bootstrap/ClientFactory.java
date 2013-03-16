@@ -13,6 +13,7 @@ import com.googlecode.gwtphonegap.showcase.client.device.DeviceDisplay;
 import com.googlecode.gwtphonegap.showcase.client.event.EventDisplay;
 import com.googlecode.gwtphonegap.showcase.client.file.FileDisplay;
 import com.googlecode.gwtphonegap.showcase.client.geolocation.GeolocationDisplay;
+import com.googlecode.gwtphonegap.showcase.client.gmap.GMapView;
 import com.googlecode.gwtphonegap.showcase.client.inappbrowser.InAppBrowserDisplay;
 import com.googlecode.gwtphonegap.showcase.client.media.MediaDisplay;
 import com.googlecode.gwtphonegap.showcase.client.notification.NotificationDisplay;
@@ -52,4 +53,6 @@ public interface ClientFactory {
     public AboutDisplay getAboutDisplay();
 
     public FileDisplay getFileDisplay();
+
+    public GMapView getGMapView();
 }

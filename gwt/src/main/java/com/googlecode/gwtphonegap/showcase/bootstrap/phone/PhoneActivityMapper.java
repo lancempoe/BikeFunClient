@@ -19,6 +19,8 @@ import com.google.gwt.activity.shared.Activity;
 import com.google.gwt.activity.shared.ActivityMapper;
 import com.google.gwt.place.shared.Place;
 import com.googlecode.gwtphonegap.showcase.bootstrap.ClientFactory;
+import com.googlecode.gwtphonegap.showcase.client.gmap.GMapActivity;
+import com.googlecode.gwtphonegap.showcase.client.gmap.GMapPlace;
 import com.googlecode.gwtphonegap.showcase.client.overview.OverviewActivity;
 import com.googlecode.gwtphonegap.showcase.client.overview.OverviewPlace;
 import com.googlecode.gwtphonegap.showcase.client.about.AboutActivity;
@@ -94,6 +96,10 @@ class PhoneActivityMapper implements ActivityMapper {
 
         if (place instanceof GeolocationPlace) {
             return new GeolocationActivity(clientFactory);
+        }
+
+        if(place instanceof GMapPlace) {
+            return new GMapActivity(clientFactory);
         }
 
         if (place instanceof MediaPlace) {

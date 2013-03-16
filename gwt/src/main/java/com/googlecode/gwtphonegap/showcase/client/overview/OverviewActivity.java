@@ -3,6 +3,7 @@ package com.googlecode.gwtphonegap.showcase.client.overview;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.web.bindery.event.shared.EventBus;
 import com.googlecode.gwtphonegap.showcase.bootstrap.ClientFactory;
+import com.googlecode.gwtphonegap.showcase.client.gmap.GMapPlace;
 import com.googlecode.gwtphonegap.showcase.client.overview.OverviewDisplay.Presenter;
 import com.googlecode.gwtphonegap.showcase.client.about.AboutPlace;
 import com.googlecode.gwtphonegap.showcase.client.accelerometer.AccelerometerPlace;
@@ -57,6 +58,7 @@ public class OverviewActivity extends MGWTAbstractActivity implements Presenter 
         list.add(new PGModule("Event"));
         list.add(new PGModule("File"));
         list.add(new PGModule("Geolocation"));
+        list.add(new PGModule("GMap"));
         list.add(new PGModule("Media"));
         list.add(new PGModule("Notification"));
 
@@ -101,13 +103,17 @@ public class OverviewActivity extends MGWTAbstractActivity implements Presenter 
                 clientFactory.getPlaceController().goTo(new GeolocationPlace());
                 break;
             case 9:
+                clientFactory.getPlaceController().goTo(new GMapPlace(clientFactory.getPhoneGap().getDevice().getUuid()));
+                break;
+
+            case 10:
                 clientFactory.getPlaceController().goTo(new MediaPlace());
                 break;
-            case 10:
+            case 11:
                 clientFactory.getPlaceController().goTo(new NotificationPlace());
                 break;
 
-            case 11:
+            case 12:
                 clientFactory.getPlaceController().goTo(new InAppBrowserPlace());
                 break;
         }
