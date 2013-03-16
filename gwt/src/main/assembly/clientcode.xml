@@ -1,0 +1,19 @@
+<assembly>
+  <id>clientcode</id>
+  <includeBaseDirectory>false</includeBaseDirectory>
+  <formats>
+    <format>zip</format>
+  </formats>
+  <fileSets>
+  	<fileSet>
+  		<directory>target/${project.artifactId}-${project.version}</directory>
+  		<includes>
+ 			<include>**/*.js</include>
+ 			<include>**/*.html</include>
+ 			<include>**/*.mp3</include>
+ 			<include>**/*.wav</include>
+ 		</includes>
+  		<outputDirectory></outputDirectory>
+  	</fileSet>
+  </fileSets>
+</assembly>

@@ -1,0 +1,36 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:mgwt="urn:import:com.googlecode.mgwt.ui.client.widget">
+	
+	<mgwt:LayoutPanel>
+		<mgwt:HeaderPanel>
+			<mgwt:left><mgwt:HeaderButton ui:field="backButton" backButton="true" text="Modules"></mgwt:HeaderButton></mgwt:left>
+			<mgwt:center><g:HTML>About</g:HTML></mgwt:center>
+		</mgwt:HeaderPanel>
+		
+		<mgwt:ScrollPanel scrollingEnabledX="false">
+			<mgwt:RoundPanel>
+			
+				<g:HTMLPanel>
+				This is the demo application of the GWT Phonegap open source project.
+				<br />
+				<br />
+				
+				GWT PhoneGap is a GWT wrapper for the Phonegap javascript API. It lets you write mobile applications in GWT.
+				<br/> 
+				<br/>
+				See <a ui:field="mgwt" href='http://www.m-gwt.com'>m-gwt.com</a> <br />
+				<br />
+				<br />
+				
+				written by <a href='http://www.daniel-kurka.de'>Daniel Kurka</a>
+				
+				<br/>
+				 Twitter: <a href='http://www.twitter.com/dankurka'>@dankurka</a>
+				</g:HTMLPanel>
+			</mgwt:RoundPanel>
+		</mgwt:ScrollPanel>
+		
+	</mgwt:LayoutPanel>
+	
+</ui:UiBinder> 

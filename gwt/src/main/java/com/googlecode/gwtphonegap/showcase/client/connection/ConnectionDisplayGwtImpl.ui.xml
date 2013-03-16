@@ -1,0 +1,26 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:mgwt="urn:import:com.googlecode.mgwt.ui.client.widget">
+	
+	<mgwt:LayoutPanel>
+		<mgwt:HeaderPanel>
+			<mgwt:left><mgwt:HeaderButton ui:field="backButton" backButton="true" text="Modules"></mgwt:HeaderButton></mgwt:left>
+			<mgwt:center><g:HTML>Connection</g:HTML></mgwt:center>
+		</mgwt:HeaderPanel>
+		
+		<mgwt:ScrollPanel scrollingEnabledX="false">
+			<g:FlowPanel>
+				<mgwt:WidgetList round="true">
+					<g:HorizontalPanel>
+						<g:HTML>Connection: &nbsp;</g:HTML>
+						<g:HTML ui:field="connection"></g:HTML>
+					</g:HorizontalPanel>
+				</mgwt:WidgetList>
+				
+				<mgwt:Button ui:field="startButton" text="Connection"></mgwt:Button>
+			</g:FlowPanel>
+		</mgwt:ScrollPanel>
+		
+	</mgwt:LayoutPanel>
+	
+</ui:UiBinder> 
