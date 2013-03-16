@@ -13,23 +13,19 @@
  */
 package com.googlecode.gwtphonegap.showcase.client.accelerometer;
 
-import java.util.ArrayList;
-
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.web.bindery.event.shared.EventBus;
 import com.googlecode.gwtphonegap.client.PhoneGap;
-import com.googlecode.gwtphonegap.client.accelerometer.Acceleration;
-import com.googlecode.gwtphonegap.client.accelerometer.AccelerationCallback;
-import com.googlecode.gwtphonegap.client.accelerometer.AccelerationOptions;
-import com.googlecode.gwtphonegap.client.accelerometer.AccelermeterMock;
-import com.googlecode.gwtphonegap.client.accelerometer.AccelerometerWatcher;
+import com.googlecode.gwtphonegap.client.accelerometer.*;
 import com.googlecode.gwtphonegap.client.accelerometer.browser.AccelerationBrowserImpl;
 import com.googlecode.gwtphonegap.showcase.client.ClientFactory;
 import com.googlecode.gwtphonegap.showcase.client.NavBaseActivity;
 import com.googlecode.gwtphonegap.showcase.client.accelerometer.AccelerometerDisplay.Presenter;
+
+import java.util.ArrayList;
 
 public class AccelerometerActivity extends NavBaseActivity implements Presenter {
 

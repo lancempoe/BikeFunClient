@@ -1,9 +1,9 @@
 package com.googlecode.gwtphonegap.showcase.client.contact;
 
-import java.util.List;
-
 import com.google.gwt.user.client.ui.IsWidget;
 import com.googlecode.gwtphonegap.showcase.client.model.DemoContact;
+
+import java.util.List;
 
 public interface ContactDisplay extends IsWidget {
     public void setPresenter(Presenter presenter);

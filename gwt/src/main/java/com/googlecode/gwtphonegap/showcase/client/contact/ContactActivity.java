@@ -1,7 +1,5 @@
 package com.googlecode.gwtphonegap.showcase.client.contact;
 
-import java.util.LinkedList;
-
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.web.bindery.event.shared.EventBus;
@@ -15,6 +13,8 @@ import com.googlecode.gwtphonegap.collection.shared.LightArray;
 import com.googlecode.gwtphonegap.showcase.client.ClientFactory;
 import com.googlecode.gwtphonegap.showcase.client.NavBaseActivity;
 import com.googlecode.gwtphonegap.showcase.client.model.DemoContact;
+
+import java.util.LinkedList;
 
 public class ContactActivity extends NavBaseActivity implements ContactDisplay.Presenter {
 

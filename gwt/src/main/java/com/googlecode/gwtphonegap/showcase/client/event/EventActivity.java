@@ -1,28 +1,15 @@
 package com.googlecode.gwtphonegap.showcase.client.event;
 
-import java.util.Date;
-import java.util.LinkedList;
-
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.web.bindery.event.shared.EventBus;
 import com.googlecode.gwtphonegap.client.PhoneGap;
-import com.googlecode.gwtphonegap.client.event.BackButtonPressedEvent;
-import com.googlecode.gwtphonegap.client.event.BackButtonPressedHandler;
-import com.googlecode.gwtphonegap.client.event.MenuButtonPressedEvent;
-import com.googlecode.gwtphonegap.client.event.MenuButtonPressedHandler;
-import com.googlecode.gwtphonegap.client.event.OffLineEvent;
-import com.googlecode.gwtphonegap.client.event.OffLineHandler;
-import com.googlecode.gwtphonegap.client.event.OnlineEvent;
-import com.googlecode.gwtphonegap.client.event.OnlineHandler;
-import com.googlecode.gwtphonegap.client.event.PauseEvent;
-import com.googlecode.gwtphonegap.client.event.PauseHandler;
-import com.googlecode.gwtphonegap.client.event.ResumeEvent;
-import com.googlecode.gwtphonegap.client.event.ResumeHandler;
-import com.googlecode.gwtphonegap.client.event.SearchButtonPressedEvent;
-import com.googlecode.gwtphonegap.client.event.SearchButtonPressedHandler;
+import com.googlecode.gwtphonegap.client.event.*;
 import com.googlecode.gwtphonegap.showcase.client.ClientFactory;
 import com.googlecode.gwtphonegap.showcase.client.NavBaseActivity;
 import com.googlecode.gwtphonegap.showcase.client.model.EventDemo;
+
+import java.util.Date;
+import java.util.LinkedList;
 
 public class EventActivity extends NavBaseActivity implements EventDisplay.Presenter {
 

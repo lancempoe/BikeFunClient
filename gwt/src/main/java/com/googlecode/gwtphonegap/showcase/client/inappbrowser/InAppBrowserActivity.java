@@ -2,7 +2,6 @@ package com.googlecode.gwtphonegap.showcase.client.inappbrowser;
 
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.web.bindery.event.shared.EventBus;
-
 import com.googlecode.gwtphonegap.client.PhoneGap;
 import com.googlecode.gwtphonegap.client.inappbrowser.InAppBrowser;
 import com.googlecode.gwtphonegap.showcase.client.ClientFactory;

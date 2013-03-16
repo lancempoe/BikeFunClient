@@ -1,18 +1,11 @@
 package com.googlecode.gwtphonegap.showcase.client.file;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.HTML;
-import com.google.gwt.user.client.ui.HasHTML;
-import com.google.gwt.user.client.ui.HasText;
-import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.user.client.ui.*;
 import com.googlecode.gwtphonegap.showcase.client.BasicCell;
 import com.googlecode.gwtphonegap.showcase.client.model.FileDemo;
 import com.googlecode.mgwt.dom.client.event.tap.TapEvent;
@@ -27,6 +20,9 @@ import com.googlecode.mgwt.ui.client.widget.HeaderButton;
 import com.googlecode.mgwt.ui.client.widget.MTextArea;
 import com.googlecode.mgwt.ui.client.widget.base.ButtonBase;
 import com.googlecode.mgwt.ui.client.widget.celllist.CellSelectedEvent;
+
+import java.util.ArrayList;
+import java.util.LinkedList;
 
 public class FileDisplayGwtImpl extends Composite implements FileDisplay {
 

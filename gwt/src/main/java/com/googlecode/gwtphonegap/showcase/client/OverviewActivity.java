@@ -2,7 +2,6 @@ package com.googlecode.gwtphonegap.showcase.client;
 
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.web.bindery.event.shared.EventBus;
-
 import com.googlecode.gwtphonegap.showcase.client.OverviewDisplay.Presenter;
 import com.googlecode.gwtphonegap.showcase.client.about.AboutPlace;
 import com.googlecode.gwtphonegap.showcase.client.accelerometer.AccelerometerPlace;

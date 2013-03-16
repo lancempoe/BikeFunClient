@@ -1,7 +1,5 @@
 package com.googlecode.gwtphonegap.showcase.client.contact;
 
-import java.util.List;
-
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
@@ -20,6 +18,8 @@ import com.googlecode.mgwt.ui.client.widget.CellList;
 import com.googlecode.mgwt.ui.client.widget.HeaderButton;
 import com.googlecode.mgwt.ui.client.widget.MSearchBox;
 import com.googlecode.mgwt.ui.client.widget.ScrollPanel;
+
+import java.util.List;
 
 public class ContactDisplayGwtImpl extends Composite implements ContactDisplay {
 

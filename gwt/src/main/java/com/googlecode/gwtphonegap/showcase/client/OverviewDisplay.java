@@ -1,9 +1,9 @@
 package com.googlecode.gwtphonegap.showcase.client;
 
-import java.util.List;
-
 import com.google.gwt.user.client.ui.IsWidget;
 import com.googlecode.gwtphonegap.showcase.client.model.PGModule;
+
+import java.util.List;
 
 public interface OverviewDisplay extends IsWidget {
 

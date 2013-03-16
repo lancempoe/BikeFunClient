@@ -1,11 +1,11 @@
 package com.googlecode.gwtphonegap.showcase.client.file;
 
-import java.util.LinkedList;
-
 import com.google.gwt.user.client.ui.HasHTML;
 import com.google.gwt.user.client.ui.HasText;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.googlecode.gwtphonegap.showcase.client.model.FileDemo;
+
+import java.util.LinkedList;
 
 public interface FileDisplay extends IsWidget {
     public void render(LinkedList<FileDemo> list);

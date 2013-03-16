@@ -1,27 +1,16 @@
 package com.googlecode.gwtphonegap.showcase.client.file;
 
-import java.util.LinkedList;
-
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.web.bindery.event.shared.EventBus;
 import com.googlecode.gwtphonegap.client.PhoneGap;
-import com.googlecode.gwtphonegap.client.file.DirectoryEntry;
-import com.googlecode.gwtphonegap.client.file.DirectoryReader;
-import com.googlecode.gwtphonegap.client.file.EntryBase;
-import com.googlecode.gwtphonegap.client.file.FileCallback;
-import com.googlecode.gwtphonegap.client.file.FileEntry;
-import com.googlecode.gwtphonegap.client.file.FileError;
-import com.googlecode.gwtphonegap.client.file.FileReader;
-import com.googlecode.gwtphonegap.client.file.FileSystem;
-import com.googlecode.gwtphonegap.client.file.FileWriter;
-import com.googlecode.gwtphonegap.client.file.Flags;
-import com.googlecode.gwtphonegap.client.file.ReaderCallback;
-import com.googlecode.gwtphonegap.client.file.WriterCallback;
+import com.googlecode.gwtphonegap.client.file.*;
 import com.googlecode.gwtphonegap.collection.shared.LightArray;
 import com.googlecode.gwtphonegap.showcase.client.ClientFactory;
 import com.googlecode.gwtphonegap.showcase.client.NavBaseActivity;
 import com.googlecode.gwtphonegap.showcase.client.model.FileDemo;
+
+import java.util.LinkedList;
 
 public class FileActivity extends NavBaseActivity implements FileDisplay.Presenter {
 

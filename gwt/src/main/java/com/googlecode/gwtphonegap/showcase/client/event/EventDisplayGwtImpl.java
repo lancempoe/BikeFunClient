@@ -1,7 +1,5 @@
 package com.googlecode.gwtphonegap.showcase.client.event;
 
-import java.util.LinkedList;
-
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -16,6 +14,8 @@ import com.googlecode.mgwt.ui.client.MGWTStyle;
 import com.googlecode.mgwt.ui.client.widget.CellList;
 import com.googlecode.mgwt.ui.client.widget.HeaderButton;
 import com.googlecode.mgwt.ui.client.widget.ScrollPanel;
+
+import java.util.LinkedList;
 
 public class EventDisplayGwtImpl extends Composite implements EventDisplay {
 
