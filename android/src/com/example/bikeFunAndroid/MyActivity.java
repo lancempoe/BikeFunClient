@@ -2,6 +2,7 @@ package com.example.bikeFunAndroid;
 
 import android.app.Activity;
 import android.os.Bundle;
+import com.example.R;
 
 public class MyActivity extends Activity
 {
