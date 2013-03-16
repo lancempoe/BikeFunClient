@@ -18,94 +18,94 @@ import com.googlecode.gwtphonegap.showcase.client.model.DemoContact;
 
 public class ContactActivity extends NavBaseActivity implements ContactDisplay.Presenter {
 
-  private final PhoneGap phoneGap;
-  private final ContactDisplay display;
+    private final PhoneGap phoneGap;
+    private final ContactDisplay display;
 
-  public ContactActivity(ClientFactory clientFactory) {
-    super(clientFactory);
+    public ContactActivity(ClientFactory clientFactory) {
+        super(clientFactory);
 
-    this.display = clientFactory.getContactDisplay();
-    this.phoneGap = clientFactory.getPhoneGap();
+        this.display = clientFactory.getContactDisplay();
+        this.phoneGap = clientFactory.getPhoneGap();
 
-  }
-
-  // protected void bind() {
-  //
-  // display.getCreateButton().addClickHandler(new ClickHandler() {
-  //
-  // @Override
-  // public void onClick(ClickEvent event) {
-  // String value = display.getCreateValue().getValue();
-  //
-  // if (value == null || "".equals(value)) {
-  // display.getCreateFeedback().setHTML("please enter a name");
-  // }
-  //
-  // Contact contact = phoneGap.getContacts().create();
-  //
-  // contact.getName().setFamilyName(value);
-  //
-  // contact.getPhoneNumbers().push(phoneGap.getContacts().getFactory().createContactField("home",
-  // "012345 678", true));
-  // contact.save();
-  //
-  // display.getCreateFeedback().setHTML("saved");
-  //
-  // }
-  // });
-  // }
-
-  @Override
-  public void onSearchTermEntered(String term) {
-
-    if (term == null)
-      return;
-    if ("".equals(term)) {
-      return;
     }
 
-    LightArray<String> fields = CollectionFactory.<String> constructArray();
+    // protected void bind() {
+    //
+    // display.getCreateButton().addClickHandler(new ClickHandler() {
+    //
+    // @Override
+    // public void onClick(ClickEvent event) {
+    // String value = display.getCreateValue().getValue();
+    //
+    // if (value == null || "".equals(value)) {
+    // display.getCreateFeedback().setHTML("please enter a name");
+    // }
+    //
+    // Contact contact = phoneGap.getContacts().create();
+    //
+    // contact.getName().setFamilyName(value);
+    //
+    // contact.getPhoneNumbers().push(phoneGap.getContacts().getFactory().createContactField("home",
+    // "012345 678", true));
+    // contact.save();
+    //
+    // display.getCreateFeedback().setHTML("saved");
+    //
+    // }
+    // });
+    // }
 
-    fields.push("displayName");
-    fields.push("name");
+    @Override
+    public void onSearchTermEntered(String term) {
 
-    ContactFindOptions findOptions = new ContactFindOptions(term, true);
-
-    phoneGap.getContacts().find(fields, new ContactFindCallback() {
-
-      @Override
-      public void onSuccess(LightArray<Contact> contacts) {
-
-        LinkedList<DemoContact> list = new LinkedList<DemoContact>();
-
-        for (int i = 0; i < contacts.length(); i++) {
-          DemoContact contact = new DemoContact(contacts.get(i).getName().getFormatted());
-          list.add(contact);
+        if (term == null)
+            return;
+        if ("".equals(term)) {
+            return;
         }
 
-        if (contacts.length() == 0) {
-          list.add(new DemoContact("nothing found...."));
-        }
+        LightArray<String> fields = CollectionFactory.<String>constructArray();
 
-        display.display(list);
-      }
+        fields.push("displayName");
+        fields.push("name");
 
-      @Override
-      public void onFailure(ContactError error) {
-        // TODO improve error display
-        Window.alert("error while searching for contacts");
+        ContactFindOptions findOptions = new ContactFindOptions(term, true);
 
-      }
-    }, findOptions);
+        phoneGap.getContacts().find(fields, new ContactFindCallback() {
 
-  }
+            @Override
+            public void onSuccess(LightArray<Contact> contacts) {
 
-  @Override
-  public void start(AcceptsOneWidget panel, EventBus eventBus) {
+                LinkedList<DemoContact> list = new LinkedList<DemoContact>();
 
-    display.setPresenter(this);
+                for (int i = 0; i < contacts.length(); i++) {
+                    DemoContact contact = new DemoContact(contacts.get(i).getName().getFormatted());
+                    list.add(contact);
+                }
 
-    panel.setWidget(display);
+                if (contacts.length() == 0) {
+                    list.add(new DemoContact("nothing found...."));
+                }
 
-  }
+                display.display(list);
+            }
+
+            @Override
+            public void onFailure(ContactError error) {
+                // TODO improve error display
+                Window.alert("error while searching for contacts");
+
+            }
+        }, findOptions);
+
+    }
+
+    @Override
+    public void start(AcceptsOneWidget panel, EventBus eventBus) {
+
+        display.setPresenter(this);
+
+        panel.setWidget(display);
+
+    }
 }

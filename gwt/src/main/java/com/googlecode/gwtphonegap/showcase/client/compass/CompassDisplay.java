@@ -6,24 +6,24 @@ import com.google.gwt.user.client.ui.IsWidget;
 
 public interface CompassDisplay extends IsWidget {
 
-	public void setPresenter(Presenter presenter);
+    public void setPresenter(Presenter presenter);
 
-	public HasHTML getMagneticHeading();
+    public HasHTML getMagneticHeading();
 
-	public HasHTML getTrueHeading();
+    public HasHTML getTrueHeading();
 
-	public HasHTML getHeadingAccuracy();
+    public HasHTML getHeadingAccuracy();
 
-	public HasHTML getTimeStamp();
+    public HasHTML getTimeStamp();
 
-	public HasText getStartStopButton();
+    public HasText getStartStopButton();
 
-	public interface Presenter {
+    public interface Presenter {
 
-		public void onBackButtonPressed();
+        public void onBackButtonPressed();
 
-		public void onStartStopButtonPressed();
+        public void onStartStopButtonPressed();
 
-	}
+    }
 
 }

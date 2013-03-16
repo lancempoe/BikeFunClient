@@ -3,20 +3,20 @@ package com.googlecode.gwtphonegap.showcase.client.notification;
 import com.google.gwt.user.client.ui.IsWidget;
 
 public interface NotificationDisplay extends IsWidget {
-	public void setPresenter(Presenter presenter);
+    public void setPresenter(Presenter presenter);
 
-	public interface Presenter {
+    public interface Presenter {
 
-		public void onBackButtonPressed();
+        public void onBackButtonPressed();
 
-		public void onAlertButtonPressed();
+        public void onAlertButtonPressed();
 
-		public void onConfirmButtonPressed();
+        public void onConfirmButtonPressed();
 
-		public void onBeepButtonPressed();
+        public void onBeepButtonPressed();
 
-		public void onVibrateButtonPressed();
+        public void onVibrateButtonPressed();
 
-	}
+    }
 
 }

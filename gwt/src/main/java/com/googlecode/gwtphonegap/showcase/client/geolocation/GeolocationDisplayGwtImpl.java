@@ -17,116 +17,116 @@ import com.googlecode.mgwt.ui.client.widget.HeaderButton;
 
 public class GeolocationDisplayGwtImpl extends Composite implements GeolocationDisplay {
 
-	private static GeolocationDisplayGwtImplUiBinder uiBinder = GWT.create(GeolocationDisplayGwtImplUiBinder.class);
+    private static GeolocationDisplayGwtImplUiBinder uiBinder = GWT.create(GeolocationDisplayGwtImplUiBinder.class);
 
-	interface GeolocationDisplayGwtImplUiBinder extends UiBinder<Widget, GeolocationDisplayGwtImpl> {
-	}
+    interface GeolocationDisplayGwtImplUiBinder extends UiBinder<Widget, GeolocationDisplayGwtImpl> {
+    }
 
-	@UiField
-	HTML latitude;
+    @UiField
+    HTML latitude;
 
-	@UiField
-	HTML longitude;
+    @UiField
+    HTML longitude;
 
-	@UiField
-	HTML altitude;
+    @UiField
+    HTML altitude;
 
-	@UiField
-	HTML accuracy;
+    @UiField
+    HTML accuracy;
 
-	@UiField
-	HTML aa;
+    @UiField
+    HTML aa;
 
-	@UiField
-	HTML heading;
+    @UiField
+    HTML heading;
 
-	@UiField
-	HTML speed;
+    @UiField
+    HTML speed;
 
-	@UiField
-	HTML timestamp;
+    @UiField
+    HTML timestamp;
 
-	@UiField
-	Button startButton;
+    @UiField
+    Button startButton;
 
-	@UiField
-	HeaderButton backButton;
+    @UiField
+    HeaderButton backButton;
 
-	private Presenter presenter;
+    private Presenter presenter;
 
-	public GeolocationDisplayGwtImpl() {
-		initWidget(uiBinder.createAndBindUi(this));
+    public GeolocationDisplayGwtImpl() {
+        initWidget(uiBinder.createAndBindUi(this));
 
-		if (MGWT.getOsDetection().isTablet()) {
-			backButton.setBackButton(false);
-			backButton.setText("Modules");
-			backButton.addStyleName(MGWTStyle.getTheme().getMGWTClientBundle().getUtilCss().portraitonly());
-		}
-	}
+        if (MGWT.getOsDetection().isTablet()) {
+            backButton.setBackButton(false);
+            backButton.setText("Modules");
+            backButton.addStyleName(MGWTStyle.getTheme().getMGWTClientBundle().getUtilCss().portraitonly());
+        }
+    }
 
-	@Override
-	public void setPresenter(Presenter presenter) {
-		this.presenter = presenter;
+    @Override
+    public void setPresenter(Presenter presenter) {
+        this.presenter = presenter;
 
-	}
+    }
 
-	@Override
-	public HasHTML getLatidute() {
-		return latitude;
-	}
+    @Override
+    public HasHTML getLatidute() {
+        return latitude;
+    }
 
-	@Override
-	public HasHTML getLongitude() {
-		return longitude;
-	}
+    @Override
+    public HasHTML getLongitude() {
+        return longitude;
+    }
 
-	@Override
-	public HasHTML getAltitude() {
-		return altitude;
-	}
+    @Override
+    public HasHTML getAltitude() {
+        return altitude;
+    }
 
-	@Override
-	public HasHTML getAccuracy() {
-		return accuracy;
-	}
+    @Override
+    public HasHTML getAccuracy() {
+        return accuracy;
+    }
 
-	@Override
-	public HasHTML getAltitudeAccuracy() {
-		return aa;
-	}
+    @Override
+    public HasHTML getAltitudeAccuracy() {
+        return aa;
+    }
 
-	@Override
-	public HasHTML getHeading() {
-		return heading;
-	}
+    @Override
+    public HasHTML getHeading() {
+        return heading;
+    }
 
-	@Override
-	public HasHTML getTimeStamp() {
-		return timestamp;
-	}
+    @Override
+    public HasHTML getTimeStamp() {
+        return timestamp;
+    }
 
-	@Override
-	public HasHTML getSpeed() {
-		return speed;
-	}
+    @Override
+    public HasHTML getSpeed() {
+        return speed;
+    }
 
-	@Override
-	public HasText getStartStopButton() {
-		return startButton;
-	}
+    @Override
+    public HasText getStartStopButton() {
+        return startButton;
+    }
 
-	@UiHandler("startButton")
-	protected void onStartButtonPressed(TapEvent event) {
-		if (presenter != null) {
-			presenter.onStartStopButtonPressed();
-		}
-	}
+    @UiHandler("startButton")
+    protected void onStartButtonPressed(TapEvent event) {
+        if (presenter != null) {
+            presenter.onStartStopButtonPressed();
+        }
+    }
 
-	@UiHandler("backButton")
-	protected void oBackButtonPressed(TapEvent event) {
-		if (presenter != null) {
-			presenter.onBackButtonPressed();
-		}
-	}
+    @UiHandler("backButton")
+    protected void oBackButtonPressed(TapEvent event) {
+        if (presenter != null) {
+            presenter.onBackButtonPressed();
+        }
+    }
 
 }

@@ -19,62 +19,62 @@ import com.googlecode.mgwt.ui.client.widget.ScrollPanel;
 
 public class EventDisplayGwtImpl extends Composite implements EventDisplay {
 
-	private static EventDisplayGwtImplUiBinder uiBinder = GWT.create(EventDisplayGwtImplUiBinder.class);
+    private static EventDisplayGwtImplUiBinder uiBinder = GWT.create(EventDisplayGwtImplUiBinder.class);
 
-	interface EventDisplayGwtImplUiBinder extends UiBinder<Widget, EventDisplayGwtImpl> {
-	}
+    interface EventDisplayGwtImplUiBinder extends UiBinder<Widget, EventDisplayGwtImpl> {
+    }
 
-	@UiField
-	HeaderButton backButton;
+    @UiField
+    HeaderButton backButton;
 
-	@UiField
-	ScrollPanel scrollPanel;
+    @UiField
+    ScrollPanel scrollPanel;
 
-	@UiField(provided = true)
-	CellList<EventDemo> cellList;
+    @UiField(provided = true)
+    CellList<EventDemo> cellList;
 
-	private Presenter presenter;
+    private Presenter presenter;
 
-	public EventDisplayGwtImpl() {
+    public EventDisplayGwtImpl() {
 
-		BasicCell<EventDemo> cell = new BasicCell<EventDemo>() {
+        BasicCell<EventDemo> cell = new BasicCell<EventDemo>() {
 
-			@Override
-			public String getDisplayString(EventDemo model) {
-				return model.getText();
-			}
+            @Override
+            public String getDisplayString(EventDemo model) {
+                return model.getText();
+            }
 
-		};
+        };
 
-		cellList = new CellList<EventDemo>(cell);
+        cellList = new CellList<EventDemo>(cell);
 
-		initWidget(uiBinder.createAndBindUi(this));
+        initWidget(uiBinder.createAndBindUi(this));
 
-		if (MGWT.getOsDetection().isTablet()) {
-			backButton.setBackButton(false);
-			backButton.setText("Modules");
-			backButton.addStyleName(MGWTStyle.getTheme().getMGWTClientBundle().getUtilCss().portraitonly());
-		}
-	}
+        if (MGWT.getOsDetection().isTablet()) {
+            backButton.setBackButton(false);
+            backButton.setText("Modules");
+            backButton.addStyleName(MGWTStyle.getTheme().getMGWTClientBundle().getUtilCss().portraitonly());
+        }
+    }
 
-	@UiHandler("backButton")
-	protected void oBackButtonPressed(TapEvent event) {
-		if (presenter != null) {
-			presenter.onBackButtonPressed();
-		}
-	}
+    @UiHandler("backButton")
+    protected void oBackButtonPressed(TapEvent event) {
+        if (presenter != null) {
+            presenter.onBackButtonPressed();
+        }
+    }
 
-	@Override
-	public void render(LinkedList<EventDemo> list) {
-		cellList.render(list);
-		scrollPanel.refresh();
+    @Override
+    public void render(LinkedList<EventDemo> list) {
+        cellList.render(list);
+        scrollPanel.refresh();
 
-	}
+    }
 
-	@Override
-	public void setPresenter(Presenter presenter) {
-		this.presenter = presenter;
+    @Override
+    public void setPresenter(Presenter presenter) {
+        this.presenter = presenter;
 
-	}
+    }
 
 }

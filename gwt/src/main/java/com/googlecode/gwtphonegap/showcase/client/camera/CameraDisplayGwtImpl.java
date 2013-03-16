@@ -19,71 +19,71 @@ import com.googlecode.mgwt.ui.client.widget.base.ButtonBase;
 
 public class CameraDisplayGwtImpl extends Composite implements CameraDisplay {
 
-	private static CameraDisplayGwtImplUiBinder uiBinder = GWT.create(CameraDisplayGwtImplUiBinder.class);
-	private Presenter presenter;
+    private static CameraDisplayGwtImplUiBinder uiBinder = GWT.create(CameraDisplayGwtImplUiBinder.class);
+    private Presenter presenter;
 
-	interface CameraDisplayGwtImplUiBinder extends UiBinder<Widget, CameraDisplayGwtImpl> {
-	}
+    interface CameraDisplayGwtImplUiBinder extends UiBinder<Widget, CameraDisplayGwtImpl> {
+    }
 
-	@UiField
-	ButtonBase cameraButton;
+    @UiField
+    ButtonBase cameraButton;
 
-	@UiField
-	ScrollPanel scrollPanel;
+    @UiField
+    ScrollPanel scrollPanel;
 
-	@UiField
-	HeaderButton backButton;
+    @UiField
+    HeaderButton backButton;
 
-	@UiField
-	Image image;
-	private HandlerRegistration addLoadHandler;
+    @UiField
+    Image image;
+    private HandlerRegistration addLoadHandler;
 
-	public CameraDisplayGwtImpl() {
+    public CameraDisplayGwtImpl() {
 
-		initWidget(uiBinder.createAndBindUi(this));
-		if (MGWT.getOsDetection().isTablet()) {
-			backButton.setBackButton(false);
-			backButton.setText("Modules");
-			backButton.addStyleName(MGWTStyle.getTheme().getMGWTClientBundle().getUtilCss().portraitonly());
-		}
-	}
+        initWidget(uiBinder.createAndBindUi(this));
+        if (MGWT.getOsDetection().isTablet()) {
+            backButton.setBackButton(false);
+            backButton.setText("Modules");
+            backButton.addStyleName(MGWTStyle.getTheme().getMGWTClientBundle().getUtilCss().portraitonly());
+        }
+    }
 
-	@Override
-	public void setPresenter(Presenter presenter) {
-		this.presenter = presenter;
+    @Override
+    public void setPresenter(Presenter presenter) {
+        this.presenter = presenter;
 
-	}
+    }
 
-	@Override
-	public void displayFoto(String data) {
+    @Override
+    public void displayFoto(String data) {
 
-		addLoadHandler = image.addLoadHandler(new LoadHandler() {
+        addLoadHandler = image.addLoadHandler(new LoadHandler() {
 
-			@Override
-			public void onLoad(LoadEvent event) {
+            @Override
+            public void onLoad(LoadEvent event) {
 
-				addLoadHandler.removeHandler();
-				scrollPanel.refresh();
+                addLoadHandler.removeHandler();
+                scrollPanel.refresh();
 
-			}
-		});
+            }
+        });
 
-		image.setUrl(data);
+        image.setUrl(data);
 
-	}
+    }
 
-	@UiHandler("cameraButton")
-	protected void onCameraButtonPressed(TapEvent event) {
-		if (presenter != null) {
-			presenter.onCameraButtonPressed();
-		}
-	}
+    @UiHandler("cameraButton")
+    protected void onCameraButtonPressed(TapEvent event) {
+        if (presenter != null) {
+            presenter.onCameraButtonPressed();
+        }
+    }
 
-	@UiHandler("backButton")
-	protected void onBackButtonPressed(TapEvent event) {
-		if (presenter != null) {
-			presenter.onBackButtonPressed();
-		}
-	}
+    @UiHandler("backButton")
+    protected void onBackButtonPressed(TapEvent event) {
+        if (presenter != null) {
+            presenter.onBackButtonPressed();
+        }
+    }
 
 }

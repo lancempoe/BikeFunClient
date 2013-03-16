@@ -24,47 +24,47 @@ import com.googlecode.gwtphonegap.showcase.client.NavBaseActivity;
 
 public class CameraActivity extends NavBaseActivity implements CameraDisplay.Presenter {
 
-  private final PhoneGap phoneGap;
-  private final ClientFactory clientFactory;
+    private final PhoneGap phoneGap;
+    private final ClientFactory clientFactory;
 
-  public CameraActivity(ClientFactory clientFactory) {
-    super(clientFactory);
+    public CameraActivity(ClientFactory clientFactory) {
+        super(clientFactory);
 
-    this.clientFactory = clientFactory;
-    this.phoneGap = clientFactory.getPhoneGap();
+        this.clientFactory = clientFactory;
+        this.phoneGap = clientFactory.getPhoneGap();
 
-  }
+    }
 
-  @Override
-  public void start(AcceptsOneWidget panel, EventBus eventBus) {
-    CameraDisplay display = clientFactory.getCameraDisplay();
+    @Override
+    public void start(AcceptsOneWidget panel, EventBus eventBus) {
+        CameraDisplay display = clientFactory.getCameraDisplay();
 
-    display.setPresenter(this);
+        display.setPresenter(this);
 
-    panel.setWidget(display);
-  }
+        panel.setWidget(display);
+    }
 
-  @Override
-  public void onCameraButtonPressed() {
-    PictureOptions options = new PictureOptions(25);
-    options.setDestinationType(PictureOptions.DESTINATION_TYPE_DATA_URL);
-    options.setSourceType(PictureOptions.PICTURE_SOURCE_TYPE_CAMERA);
+    @Override
+    public void onCameraButtonPressed() {
+        PictureOptions options = new PictureOptions(25);
+        options.setDestinationType(PictureOptions.DESTINATION_TYPE_DATA_URL);
+        options.setSourceType(PictureOptions.PICTURE_SOURCE_TYPE_CAMERA);
 
-    phoneGap.getCamera().getPicture(options, new PictureCallback() {
+        phoneGap.getCamera().getPicture(options, new PictureCallback() {
 
-      @Override
-      public void onSuccess(String data) {
-        clientFactory.getCameraDisplay().displayFoto("data:image/jpeg;base64," + data);
-      }
+            @Override
+            public void onSuccess(String data) {
+                clientFactory.getCameraDisplay().displayFoto("data:image/jpeg;base64," + data);
+            }
 
-      @Override
-      public void onFailure(String message) {
-        // TODO better error display
-        Window.alert("failure");
+            @Override
+            public void onFailure(String message) {
+                // TODO better error display
+                Window.alert("failure");
 
-      }
-    });
+            }
+        });
 
-  }
+    }
 
 }

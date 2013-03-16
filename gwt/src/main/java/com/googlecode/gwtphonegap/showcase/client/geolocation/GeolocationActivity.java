@@ -28,118 +28,118 @@ import com.googlecode.gwtphonegap.showcase.client.geolocation.GeolocationDisplay
 
 public class GeolocationActivity extends NavBaseActivity implements Presenter {
 
-  private final PhoneGap phoneGap;
-  private final GeolocationDisplay display;
+    private final PhoneGap phoneGap;
+    private final GeolocationDisplay display;
 
-  private GeolocationWatcher watcher;
+    private GeolocationWatcher watcher;
 
-  public GeolocationActivity(ClientFactory clientFactory) {
-    super(clientFactory);
+    public GeolocationActivity(ClientFactory clientFactory) {
+        super(clientFactory);
 
-    this.display = clientFactory.getGeolocationDisplay();
-    this.phoneGap = clientFactory.getPhoneGap();
-
-  }
-
-  @Override
-  public void start(AcceptsOneWidget panel, EventBus eventBus) {
-
-    display.setPresenter(this);
-
-    display.getStartStopButton().setText("Start");
-
-    display.getAccuracy().setText("");
-    display.getAltitude().setText("");
-    display.getAltitudeAccuracy().setText("");
-    display.getHeading().setText("");
-    display.getLatidute().setText("");
-    display.getLongitude().setText("");
-    display.getTimeStamp().setText("");
-
-    panel.setWidget(display);
-
-  }
-
-  @Override
-  public void onStop() {
-    display.setPresenter(null);
-
-    if (watcher != null) {
-
-      phoneGap.getGeolocation().clearWatch(watcher);
-      watcher = null;
-    }
-  }
-
-  @Override
-  public void onStartStopButtonPressed() {
-
-    if (watcher == null) {
-      GeolocationOptions options = new GeolocationOptions();
-      options.setFrequency(1000);
-      watcher = phoneGap.getGeolocation().watchPosition(options, new GeoLocationCallbackImpl());
-      display.getStartStopButton().setText("Stop");
-
-    } else {
-      phoneGap.getGeolocation().clearWatch(watcher);
-      watcher = null;
-      display.getStartStopButton().setText("Start");
-
-      display.getAccuracy().setText("");
-      display.getAltitude().setText("");
-      display.getAltitudeAccuracy().setText("");
-      display.getHeading().setText("");
-      display.getLatidute().setText("");
-      display.getLongitude().setText("");
-      display.getTimeStamp().setText("");
-      display.getSpeed().setText("");
-
-    }
-
-  }
-
-  private class GeoLocationCallbackImpl implements GeolocationCallback {
-
-    @Override
-    public void onSuccess(Position position) {
-
-      display.getAccuracy().setText("" + position.getCoordinates().getAccuracy());
-      display.getAltitude().setText("" + position.getCoordinates().getAltitude());
-      display.getAltitudeAccuracy().setText("" + position.getCoordinates().getAltitudeAccuracy());
-      display.getHeading().setText("" + position.getCoordinates().getHeading());
-      display.getLatidute().setText("" + position.getCoordinates().getLatitude());
-      display.getLongitude().setText("" + position.getCoordinates().getLongitude());
-      display.getSpeed().setText("" + position.getCoordinates().getSpeed());
-      display.getTimeStamp().setText("" + position.getTimeStamp());
+        this.display = clientFactory.getGeolocationDisplay();
+        this.phoneGap = clientFactory.getPhoneGap();
 
     }
 
     @Override
-    public void onFailure(PositionError error) {
-      switch (error.getCode()) {
-        case PositionError.PERMISSION_DENIED:
-          Window.alert("no permission - stoping watcher");
+    public void start(AcceptsOneWidget panel, EventBus eventBus) {
 
-          break;
-        case PositionError.POSITION_UNAVAILABLE:
-          Window.alert("unavaible");
-          break;
-        case PositionError.TIMEOUT:
-          Window.alert("timeout");
-          break;
-        default:
-          break;
-      }
+        display.setPresenter(this);
 
-      if (watcher != null) {
-        phoneGap.getGeolocation().clearWatch(watcher);
-        watcher = null;
         display.getStartStopButton().setText("Start");
 
-      }
+        display.getAccuracy().setText("");
+        display.getAltitude().setText("");
+        display.getAltitudeAccuracy().setText("");
+        display.getHeading().setText("");
+        display.getLatidute().setText("");
+        display.getLongitude().setText("");
+        display.getTimeStamp().setText("");
+
+        panel.setWidget(display);
 
     }
 
-  }
+    @Override
+    public void onStop() {
+        display.setPresenter(null);
+
+        if (watcher != null) {
+
+            phoneGap.getGeolocation().clearWatch(watcher);
+            watcher = null;
+        }
+    }
+
+    @Override
+    public void onStartStopButtonPressed() {
+
+        if (watcher == null) {
+            GeolocationOptions options = new GeolocationOptions();
+            options.setFrequency(1000);
+            watcher = phoneGap.getGeolocation().watchPosition(options, new GeoLocationCallbackImpl());
+            display.getStartStopButton().setText("Stop");
+
+        } else {
+            phoneGap.getGeolocation().clearWatch(watcher);
+            watcher = null;
+            display.getStartStopButton().setText("Start");
+
+            display.getAccuracy().setText("");
+            display.getAltitude().setText("");
+            display.getAltitudeAccuracy().setText("");
+            display.getHeading().setText("");
+            display.getLatidute().setText("");
+            display.getLongitude().setText("");
+            display.getTimeStamp().setText("");
+            display.getSpeed().setText("");
+
+        }
+
+    }
+
+    private class GeoLocationCallbackImpl implements GeolocationCallback {
+
+        @Override
+        public void onSuccess(Position position) {
+
+            display.getAccuracy().setText("" + position.getCoordinates().getAccuracy());
+            display.getAltitude().setText("" + position.getCoordinates().getAltitude());
+            display.getAltitudeAccuracy().setText("" + position.getCoordinates().getAltitudeAccuracy());
+            display.getHeading().setText("" + position.getCoordinates().getHeading());
+            display.getLatidute().setText("" + position.getCoordinates().getLatitude());
+            display.getLongitude().setText("" + position.getCoordinates().getLongitude());
+            display.getSpeed().setText("" + position.getCoordinates().getSpeed());
+            display.getTimeStamp().setText("" + position.getTimeStamp());
+
+        }
+
+        @Override
+        public void onFailure(PositionError error) {
+            switch (error.getCode()) {
+                case PositionError.PERMISSION_DENIED:
+                    Window.alert("no permission - stoping watcher");
+
+                    break;
+                case PositionError.POSITION_UNAVAILABLE:
+                    Window.alert("unavaible");
+                    break;
+                case PositionError.TIMEOUT:
+                    Window.alert("timeout");
+                    break;
+                default:
+                    break;
+            }
+
+            if (watcher != null) {
+                phoneGap.getGeolocation().clearWatch(watcher);
+                watcher = null;
+                display.getStartStopButton().setText("Start");
+
+            }
+
+        }
+
+    }
 
 }

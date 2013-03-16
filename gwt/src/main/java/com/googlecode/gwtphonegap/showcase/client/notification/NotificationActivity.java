@@ -22,58 +22,58 @@ import com.googlecode.gwtphonegap.showcase.client.ClientFactory;
 import com.googlecode.gwtphonegap.showcase.client.NavBaseActivity;
 
 public class NotificationActivity extends NavBaseActivity implements NotificationDisplay.Presenter {
-  private final NotificationDisplay display;
-  private final PhoneGap phoneGap;
+    private final NotificationDisplay display;
+    private final PhoneGap phoneGap;
 
-  public NotificationActivity(ClientFactory clientFactory) {
-    super(clientFactory);
+    public NotificationActivity(ClientFactory clientFactory) {
+        super(clientFactory);
 
-    this.display = clientFactory.getNotificationDisplay();
-    this.phoneGap = clientFactory.getPhoneGap();
+        this.display = clientFactory.getNotificationDisplay();
+        this.phoneGap = clientFactory.getPhoneGap();
 
-  }
+    }
 
-  @Override
-  public void start(AcceptsOneWidget panel, EventBus eventBus) {
-    display.setPresenter(this);
+    @Override
+    public void start(AcceptsOneWidget panel, EventBus eventBus) {
+        display.setPresenter(this);
 
-    panel.setWidget(display);
+        panel.setWidget(display);
 
-  }
+    }
 
-  @Override
-  public void onAlertButtonPressed() {
-    phoneGap.getNotification().alert("daniel says hi", new AlertCallback() {
+    @Override
+    public void onAlertButtonPressed() {
+        phoneGap.getNotification().alert("daniel says hi", new AlertCallback() {
 
-      @Override
-      public void onOkButtonClicked() {
+            @Override
+            public void onOkButtonClicked() {
 
-      }
-    }, "gwt-phonegap", "buttonText");
+            }
+        }, "gwt-phonegap", "buttonText");
 
-  }
+    }
 
-  @Override
-  public void onConfirmButtonPressed() {
-    phoneGap.getNotification().confirm("question?", new ConfirmCallback() {
+    @Override
+    public void onConfirmButtonPressed() {
+        phoneGap.getNotification().confirm("question?", new ConfirmCallback() {
 
-      @Override
-      public void onConfirm(int button) {
+            @Override
+            public void onConfirm(int button) {
 
-      }
-    }, "gwt-phonegap");
+            }
+        }, "gwt-phonegap");
 
-  }
+    }
 
-  @Override
-  public void onBeepButtonPressed() {
-    phoneGap.getNotification().beep(2);
+    @Override
+    public void onBeepButtonPressed() {
+        phoneGap.getNotification().beep(2);
 
-  }
+    }
 
-  @Override
-  public void onVibrateButtonPressed() {
-    phoneGap.getNotification().vibrate(2500);
+    @Override
+    public void onVibrateButtonPressed() {
+        phoneGap.getNotification().vibrate(2500);
 
-  }
+    }
 }

@@ -13,37 +13,37 @@ import com.googlecode.mgwt.ui.client.widget.HeaderButton;
 
 public class AboutDisplayGwtImpl extends Composite implements AboutDisplay {
 
-	private static AboutDisplayGwtImplUiBinder uiBinder = GWT.create(AboutDisplayGwtImplUiBinder.class);
-	private Presenter presenter;
+    private static AboutDisplayGwtImplUiBinder uiBinder = GWT.create(AboutDisplayGwtImplUiBinder.class);
+    private Presenter presenter;
 
-	interface AboutDisplayGwtImplUiBinder extends UiBinder<Widget, AboutDisplayGwtImpl> {
-	}
+    interface AboutDisplayGwtImplUiBinder extends UiBinder<Widget, AboutDisplayGwtImpl> {
+    }
 
-	@UiField
-	HeaderButton backButton;
+    @UiField
+    HeaderButton backButton;
 
-	public AboutDisplayGwtImpl() {
+    public AboutDisplayGwtImpl() {
 
-		initWidget(uiBinder.createAndBindUi(this));
+        initWidget(uiBinder.createAndBindUi(this));
 
-		if (MGWT.getOsDetection().isTablet()) {
-			backButton.setBackButton(false);
-			backButton.setText("Modules");
-			backButton.addStyleName(MGWTStyle.getTheme().getMGWTClientBundle().getUtilCss().portraitonly());
-		}
-	}
+        if (MGWT.getOsDetection().isTablet()) {
+            backButton.setBackButton(false);
+            backButton.setText("Modules");
+            backButton.addStyleName(MGWTStyle.getTheme().getMGWTClientBundle().getUtilCss().portraitonly());
+        }
+    }
 
-	@Override
-	public void setPresenter(Presenter presenter) {
-		this.presenter = presenter;
+    @Override
+    public void setPresenter(Presenter presenter) {
+        this.presenter = presenter;
 
-	}
+    }
 
-	@UiHandler("backButton")
-	protected void oBackButtonPressed(TapEvent event) {
-		if (presenter != null) {
-			presenter.onBackButtonPressed();
-		}
-	}
+    @UiHandler("backButton")
+    protected void oBackButtonPressed(TapEvent event) {
+        if (presenter != null) {
+            presenter.onBackButtonPressed();
+        }
+    }
 
 }

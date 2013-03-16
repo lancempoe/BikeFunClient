@@ -47,74 +47,73 @@ import com.googlecode.gwtphonegap.showcase.client.notification.NotificationPlace
 
 /**
  * @author Daniel Kurka
- * 
  */
 public class PhoneActivityMapper implements ActivityMapper {
 
-	private final ClientFactory clientFactory;
+    private final ClientFactory clientFactory;
 
-	public PhoneActivityMapper(ClientFactory clientFactory) {
-		this.clientFactory = clientFactory;
-	}
+    public PhoneActivityMapper(ClientFactory clientFactory) {
+        this.clientFactory = clientFactory;
+    }
 
-	@Override
-	public Activity getActivity(Place place) {
-		if (place instanceof OverviewPlace) {
-			return new OverviewActivity(clientFactory);
-		}
-		if (place instanceof AccelerometerPlace) {
-			return new AccelerometerActivity(clientFactory);
-		}
+    @Override
+    public Activity getActivity(Place place) {
+        if (place instanceof OverviewPlace) {
+            return new OverviewActivity(clientFactory);
+        }
+        if (place instanceof AccelerometerPlace) {
+            return new AccelerometerActivity(clientFactory);
+        }
 
-		if (place instanceof CameraPlace) {
-			return new CameraActivity(clientFactory);
-		}
+        if (place instanceof CameraPlace) {
+            return new CameraActivity(clientFactory);
+        }
 
-		if (place instanceof CompassPlace) {
-			return new CompassActivity(clientFactory);
-		}
+        if (place instanceof CompassPlace) {
+            return new CompassActivity(clientFactory);
+        }
 
-		if (place instanceof ConnectionPlace) {
-			return new ConnectionActivity(clientFactory);
-		}
+        if (place instanceof ConnectionPlace) {
+            return new ConnectionActivity(clientFactory);
+        }
 
-		if (place instanceof ContactPlace) {
-			return new ContactActivity(clientFactory);
-		}
+        if (place instanceof ContactPlace) {
+            return new ContactActivity(clientFactory);
+        }
 
-		if (place instanceof DevicePlace) {
-			return new DeviceActivity(clientFactory);
-		}
+        if (place instanceof DevicePlace) {
+            return new DeviceActivity(clientFactory);
+        }
 
-		if (place instanceof EventPlace) {
-			return new EventActivity(clientFactory);
-		}
+        if (place instanceof EventPlace) {
+            return new EventActivity(clientFactory);
+        }
 
-		if (place instanceof GeolocationPlace) {
-			return new GeolocationActivity(clientFactory);
-		}
+        if (place instanceof GeolocationPlace) {
+            return new GeolocationActivity(clientFactory);
+        }
 
-		if (place instanceof MediaPlace) {
-			return new MediaActivity(clientFactory);
-		}
+        if (place instanceof MediaPlace) {
+            return new MediaActivity(clientFactory);
+        }
 
-		if (place instanceof NotificationPlace) {
-			return new NotificationActivity(clientFactory);
-		}
+        if (place instanceof NotificationPlace) {
+            return new NotificationActivity(clientFactory);
+        }
 
-		if (place instanceof InAppBrowserPlace) {
-			return new InAppBrowserActivity(clientFactory);
-		}
+        if (place instanceof InAppBrowserPlace) {
+            return new InAppBrowserActivity(clientFactory);
+        }
 
-		if (place instanceof AboutPlace) {
-			return new AboutActivity(clientFactory);
-		}
+        if (place instanceof AboutPlace) {
+            return new AboutActivity(clientFactory);
+        }
 
-		if (place instanceof FilePlace) {
-			return new FileActivity(clientFactory);
-		}
+        if (place instanceof FilePlace) {
+            return new FileActivity(clientFactory);
+        }
 
-		return null;
+        return null;
 
-	}
+    }
 }

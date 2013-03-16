@@ -4,12 +4,12 @@ import com.google.gwt.user.client.ui.IsWidget;
 
 public interface AboutDisplay extends IsWidget {
 
-	public void setPresenter(Presenter presenter);
+    public void setPresenter(Presenter presenter);
 
-	public interface Presenter {
+    public interface Presenter {
 
-		public void onBackButtonPressed();
+        public void onBackButtonPressed();
 
-	}
+    }
 
 }

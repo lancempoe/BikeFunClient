@@ -17,83 +17,83 @@ import com.googlecode.mgwt.ui.client.widget.HeaderButton;
 
 public class AccelerometerDisplayGwtImpl extends Composite implements AccelerometerDisplay {
 
-	private static AccelerometerDisplayGwtImplUiBinder uiBinder = GWT.create(AccelerometerDisplayGwtImplUiBinder.class);
-	private Presenter presenter;
+    private static AccelerometerDisplayGwtImplUiBinder uiBinder = GWT.create(AccelerometerDisplayGwtImplUiBinder.class);
+    private Presenter presenter;
 
-	interface AccelerometerDisplayGwtImplUiBinder extends UiBinder<Widget, AccelerometerDisplayGwtImpl> {
-	}
+    interface AccelerometerDisplayGwtImplUiBinder extends UiBinder<Widget, AccelerometerDisplayGwtImpl> {
+    }
 
-	@UiField
-	HTML xValue;
+    @UiField
+    HTML xValue;
 
-	@UiField
-	HTML yValue;
+    @UiField
+    HTML yValue;
 
-	@UiField
-	HTML zValue;
+    @UiField
+    HTML zValue;
 
-	@UiField
-	HTML timestamp;
+    @UiField
+    HTML timestamp;
 
-	@UiField
-	Button startButton;
+    @UiField
+    Button startButton;
 
-	@UiField
-	HeaderButton backButton;
+    @UiField
+    HeaderButton backButton;
 
-	public AccelerometerDisplayGwtImpl() {
+    public AccelerometerDisplayGwtImpl() {
 
-		initWidget(uiBinder.createAndBindUi(this));
+        initWidget(uiBinder.createAndBindUi(this));
 
-		if (MGWT.getOsDetection().isTablet()) {
-			backButton.setBackButton(false);
-			backButton.setText("Modules");
-			backButton.addStyleName(MGWTStyle.getTheme().getMGWTClientBundle().getUtilCss().portraitonly());
-		}
-	}
+        if (MGWT.getOsDetection().isTablet()) {
+            backButton.setBackButton(false);
+            backButton.setText("Modules");
+            backButton.addStyleName(MGWTStyle.getTheme().getMGWTClientBundle().getUtilCss().portraitonly());
+        }
+    }
 
-	@Override
-	public void setPresenter(Presenter presenter) {
-		this.presenter = presenter;
-	}
+    @Override
+    public void setPresenter(Presenter presenter) {
+        this.presenter = presenter;
+    }
 
-	@Override
-	public HasHTML getXValue() {
-		return xValue;
-	}
+    @Override
+    public HasHTML getXValue() {
+        return xValue;
+    }
 
-	@Override
-	public HasHTML getYValue() {
-		return yValue;
-	}
+    @Override
+    public HasHTML getYValue() {
+        return yValue;
+    }
 
-	@Override
-	public HasHTML getZValue() {
-		return zValue;
-	}
+    @Override
+    public HasHTML getZValue() {
+        return zValue;
+    }
 
-	@Override
-	public HasHTML getTimeStamp() {
-		return timestamp;
-	}
+    @Override
+    public HasHTML getTimeStamp() {
+        return timestamp;
+    }
 
-	@Override
-	public HasText getStartStopButton() {
-		return startButton;
-	}
+    @Override
+    public HasText getStartStopButton() {
+        return startButton;
+    }
 
-	@UiHandler("startButton")
-	protected void onStartButtonPressed(TapEvent event) {
-		if (presenter != null) {
-			presenter.onStartStopButtonPressed();
-		}
-	}
+    @UiHandler("startButton")
+    protected void onStartButtonPressed(TapEvent event) {
+        if (presenter != null) {
+            presenter.onStartStopButtonPressed();
+        }
+    }
 
-	@UiHandler("backButton")
-	protected void oBackButtonPressed(TapEvent event) {
-		if (presenter != null) {
-			presenter.onBackButtonPressed();
-		}
-	}
+    @UiHandler("backButton")
+    protected void oBackButtonPressed(TapEvent event) {
+        if (presenter != null) {
+            presenter.onBackButtonPressed();
+        }
+    }
 
 }

@@ -14,117 +14,117 @@ import com.googlecode.gwtphonegap.showcase.client.NavBaseActivity;
 import com.googlecode.mgwt.ui.client.MGWT;
 
 public class MediaActivity extends NavBaseActivity implements MediaDisplay.Presenter {
-  private final MediaDisplay display;
-  private final PhoneGap phoneGap;
+    private final MediaDisplay display;
+    private final PhoneGap phoneGap;
 
-  public MediaActivity(ClientFactory clientFactory) {
-    super(clientFactory);
+    public MediaActivity(ClientFactory clientFactory) {
+        super(clientFactory);
 
-    this.display = clientFactory.getMediaDisplay();
-    this.phoneGap = clientFactory.getPhoneGap();
+        this.display = clientFactory.getMediaDisplay();
+        this.phoneGap = clientFactory.getPhoneGap();
 
-  }
-
-  private Media media;
-  private Timer timer;
-
-  @Override
-  public void start(AcceptsOneWidget panel, EventBus eventBus) {
-
-    display.setPresenter(this);
-
-    display.showPlayButton(true);
-    display.showPauseButton(false);
-
-    panel.setWidget(display);
-
-    String url = "";
-    if (MGWT.getOsDetection().isIOs()) {
-      url = "sound.mp3";
-    } else {
-      if (MGWT.getOsDetection().isAndroid()) {
-        url = "http://audio.ibeat.org/content/p1rj1s/p1rj1s_-_rockGuitar.mp3";
-      } else {
-        if (MGWT.getOsDetection().isDesktop()) {
-
-        } else {
-          // what are your running on
-          Window.alert("currently media only on android and ios");
-        }
-      }
     }
 
-    media = phoneGap.getMedia().create(url, new MediaCallback() {
+    private Media media;
+    private Timer timer;
 
-      @Override
-      public void onSuccess() {
+    @Override
+    public void start(AcceptsOneWidget panel, EventBus eventBus) {
 
-      }
+        display.setPresenter(this);
 
-      @Override
-      public void onStatusChange() {
+        display.showPlayButton(true);
+        display.showPauseButton(false);
 
-      }
+        panel.setWidget(display);
 
-      @Override
-      public void onError(MediaError error) {
-        Window.alert("error: " + error.getErrorCode() + " " + error.getErrorMessage());
-      }
-    });
-
-    timer = new Timer() {
-
-      @Override
-      public void run() {
-        media.getCurrentPosition(new MediaPositionCallback() {
-
-          @Override
-          public void onSuccess(long position) {
-            if (position == -1) {
-              display.getPosition().setHTML("");
+        String url = "";
+        if (MGWT.getOsDetection().isIOs()) {
+            url = "sound.mp3";
+        } else {
+            if (MGWT.getOsDetection().isAndroid()) {
+                url = "http://audio.ibeat.org/content/p1rj1s/p1rj1s_-_rockGuitar.mp3";
             } else {
-              display.getPosition().setHTML(position + " / " + media.getDuration());
+                if (MGWT.getOsDetection().isDesktop()) {
+
+                } else {
+                    // what are your running on
+                    Window.alert("currently media only on android and ios");
+                }
+            }
+        }
+
+        media = phoneGap.getMedia().create(url, new MediaCallback() {
+
+            @Override
+            public void onSuccess() {
+
             }
 
-          }
+            @Override
+            public void onStatusChange() {
 
-          @Override
-          public void onFailure(MediaError error) {
+            }
 
-          }
+            @Override
+            public void onError(MediaError error) {
+                Window.alert("error: " + error.getErrorCode() + " " + error.getErrorMessage());
+            }
         });
 
-      }
+        timer = new Timer() {
 
-    };
+            @Override
+            public void run() {
+                media.getCurrentPosition(new MediaPositionCallback() {
 
-    timer.scheduleRepeating(200);
+                    @Override
+                    public void onSuccess(long position) {
+                        if (position == -1) {
+                            display.getPosition().setHTML("");
+                        } else {
+                            display.getPosition().setHTML(position + " / " + media.getDuration());
+                        }
 
-  }
+                    }
 
-  @Override
-  public void onStop() {
-    super.onStop();
-    media.release();
-    timer.cancel();
-  }
+                    @Override
+                    public void onFailure(MediaError error) {
 
-  @Override
-  public void onPlayButtonPressed() {
+                    }
+                });
 
-    display.showPlayButton(false);
-    display.showPauseButton(true);
+            }
 
-    media.play();
-  }
+        };
 
-  @Override
-  public void onPauseButtonPressed() {
+        timer.scheduleRepeating(200);
 
-    display.showPlayButton(true);
-    display.showPauseButton(false);
+    }
 
-    media.pause();
+    @Override
+    public void onStop() {
+        super.onStop();
+        media.release();
+        timer.cancel();
+    }
 
-  }
+    @Override
+    public void onPlayButtonPressed() {
+
+        display.showPlayButton(false);
+        display.showPauseButton(true);
+
+        media.play();
+    }
+
+    @Override
+    public void onPauseButtonPressed() {
+
+        display.showPlayButton(true);
+        display.showPauseButton(false);
+
+        media.pause();
+
+    }
 }

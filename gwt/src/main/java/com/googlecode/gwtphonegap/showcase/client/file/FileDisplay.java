@@ -8,31 +8,31 @@ import com.google.gwt.user.client.ui.IsWidget;
 import com.googlecode.gwtphonegap.showcase.client.model.FileDemo;
 
 public interface FileDisplay extends IsWidget {
-	public void render(LinkedList<FileDemo> list);
+    public void render(LinkedList<FileDemo> list);
 
-	public void setPresenter(Presenter presenter);
+    public void setPresenter(Presenter presenter);
 
-	public interface Presenter {
+    public interface Presenter {
 
-		public void onBackButtonPressed();
+        public void onBackButtonPressed();
 
-		public void createFile(String fileName);
+        public void createFile(String fileName);
 
-		public void onActionButtonPressed();
+        public void onActionButtonPressed();
 
-		public void overWriteFile();
+        public void overWriteFile();
 
-		public void onEntrySelected(int index);
+        public void onEntrySelected(int index);
 
-	}
+    }
 
-	public HasHTML getStatus();
+    public HasHTML getStatus();
 
-	public void showSelectMenu();
+    public void showSelectMenu();
 
-	public boolean confirm(String string);
+    public boolean confirm(String string);
 
-	public HasText getFileContent();
+    public HasText getFileContent();
 
-	public void setSelected(int index);
+    public void setSelected(int index);
 }

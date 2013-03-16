@@ -15,77 +15,77 @@ import com.googlecode.mgwt.ui.client.widget.HeaderButton;
 
 public class DeviceDisplayGwtImpl extends Composite implements DeviceDisplay {
 
-	private static DeviceDisplayGwtImplUiBinder uiBinder = GWT.create(DeviceDisplayGwtImplUiBinder.class);
+    private static DeviceDisplayGwtImplUiBinder uiBinder = GWT.create(DeviceDisplayGwtImplUiBinder.class);
 
-	interface DeviceDisplayGwtImplUiBinder extends UiBinder<Widget, DeviceDisplayGwtImpl> {
-	}
+    interface DeviceDisplayGwtImplUiBinder extends UiBinder<Widget, DeviceDisplayGwtImpl> {
+    }
 
-	@UiField
-	HTML name;
+    @UiField
+    HTML name;
 
-	@UiField
-	HTML platform;
+    @UiField
+    HTML platform;
 
-	@UiField
-	HTML version;
+    @UiField
+    HTML version;
 
-	@UiField
-	HTML pversion;
+    @UiField
+    HTML pversion;
 
-	@UiField
-	HTML uuid;
+    @UiField
+    HTML uuid;
 
-	@UiField
-	HeaderButton backButton;
+    @UiField
+    HeaderButton backButton;
 
-	private Presenter presenter;
+    private Presenter presenter;
 
-	public DeviceDisplayGwtImpl() {
-		initWidget(uiBinder.createAndBindUi(this));
+    public DeviceDisplayGwtImpl() {
+        initWidget(uiBinder.createAndBindUi(this));
 
-		if (MGWT.getOsDetection().isTablet()) {
-			backButton.setBackButton(false);
-			backButton.setText("Modules");
-			backButton.addStyleName(MGWTStyle.getTheme().getMGWTClientBundle().getUtilCss().portraitonly());
-		}
-	}
+        if (MGWT.getOsDetection().isTablet()) {
+            backButton.setBackButton(false);
+            backButton.setText("Modules");
+            backButton.addStyleName(MGWTStyle.getTheme().getMGWTClientBundle().getUtilCss().portraitonly());
+        }
+    }
 
-	@Override
-	public HasHTML getUUID() {
-		return uuid;
-	}
+    @Override
+    public HasHTML getUUID() {
+        return uuid;
+    }
 
-	@Override
-	public HasHTML getPlatform() {
-		return platform;
-	}
+    @Override
+    public HasHTML getPlatform() {
+        return platform;
+    }
 
-	@Override
-	public HasHTML getPhoneGapVersion() {
-		return pversion;
-	}
+    @Override
+    public HasHTML getPhoneGapVersion() {
+        return pversion;
+    }
 
-	@Override
-	public HasHTML getName() {
-		return name;
-	}
+    @Override
+    public HasHTML getName() {
+        return name;
+    }
 
-	@Override
-	public HasHTML getVersion() {
-		return version;
-	}
+    @Override
+    public HasHTML getVersion() {
+        return version;
+    }
 
-	@Override
-	public void setPresenter(Presenter presenter) {
-		this.presenter = presenter;
+    @Override
+    public void setPresenter(Presenter presenter) {
+        this.presenter = presenter;
 
-	}
+    }
 
-	@UiHandler("backButton")
-	protected void oBackButtonPressed(TapEvent event) {
-		if (presenter != null) {
-			presenter.onBackButtonPressed();
-		}
-	}
+    @UiHandler("backButton")
+    protected void oBackButtonPressed(TapEvent event) {
+        if (presenter != null) {
+            presenter.onBackButtonPressed();
+        }
+    }
 
 }

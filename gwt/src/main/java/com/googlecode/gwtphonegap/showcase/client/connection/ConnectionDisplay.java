@@ -5,16 +5,16 @@ import com.google.gwt.user.client.ui.IsWidget;
 
 public interface ConnectionDisplay extends IsWidget {
 
-	public void setPresenter(Presenter presenter);
+    public void setPresenter(Presenter presenter);
 
-	public HasHTML getConnection();
+    public HasHTML getConnection();
 
-	public interface Presenter {
+    public interface Presenter {
 
-		public void onBackButtonPressed();
+        public void onBackButtonPressed();
 
-		public void onStartStopButtonPressed();
+        public void onStartStopButtonPressed();
 
-	}
+    }
 
 }

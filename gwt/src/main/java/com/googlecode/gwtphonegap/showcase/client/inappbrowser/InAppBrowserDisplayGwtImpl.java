@@ -15,49 +15,49 @@ import com.googlecode.mgwt.ui.client.widget.base.ButtonBase;
 
 public class InAppBrowserDisplayGwtImpl extends Composite implements InAppBrowserDisplay {
 
-  private static InAppBrowserDisplayGwtImplUiBinder uiBinder = GWT
-      .create(InAppBrowserDisplayGwtImplUiBinder.class);
+    private static InAppBrowserDisplayGwtImplUiBinder uiBinder = GWT
+            .create(InAppBrowserDisplayGwtImplUiBinder.class);
 
-  interface InAppBrowserDisplayGwtImplUiBinder extends UiBinder<Widget, InAppBrowserDisplayGwtImpl> {
-  }
-
-  @UiField
-  HeaderButton backButton;
-
-  @UiField
-  ButtonBase browserButton;
-
-  private Presenter presenter;
-
-  public InAppBrowserDisplayGwtImpl() {
-    initWidget(uiBinder.createAndBindUi(this));
-
-    if (MGWT.getOsDetection().isTablet()) {
-      backButton.setBackButton(false);
-      backButton.setText("Modules");
-      backButton.addStyleName(MGWTStyle.getTheme().getMGWTClientBundle().getUtilCss()
-          .portraitonly());
+    interface InAppBrowserDisplayGwtImplUiBinder extends UiBinder<Widget, InAppBrowserDisplayGwtImpl> {
     }
-  }
 
-  @Override
-  public void setPresenter(Presenter presenter) {
-    this.presenter = presenter;
+    @UiField
+    HeaderButton backButton;
 
-  }
+    @UiField
+    ButtonBase browserButton;
 
-  @UiHandler("backButton")
-  protected void onBackButtonPressed(TapEvent event) {
-    if (presenter != null) {
-      presenter.onBackButtonPressed();
+    private Presenter presenter;
+
+    public InAppBrowserDisplayGwtImpl() {
+        initWidget(uiBinder.createAndBindUi(this));
+
+        if (MGWT.getOsDetection().isTablet()) {
+            backButton.setBackButton(false);
+            backButton.setText("Modules");
+            backButton.addStyleName(MGWTStyle.getTheme().getMGWTClientBundle().getUtilCss()
+                    .portraitonly());
+        }
     }
-  }
 
-  @UiHandler("browserButton")
-  protected void onBrowserButton(TapEvent event) {
-    if (presenter != null) {
-      presenter.onOpenButtonPressed();
+    @Override
+    public void setPresenter(Presenter presenter) {
+        this.presenter = presenter;
+
     }
-  }
+
+    @UiHandler("backButton")
+    protected void onBackButtonPressed(TapEvent event) {
+        if (presenter != null) {
+            presenter.onBackButtonPressed();
+        }
+    }
+
+    @UiHandler("browserButton")
+    protected void onBrowserButton(TapEvent event) {
+        if (presenter != null) {
+            presenter.onOpenButtonPressed();
+        }
+    }
 
 }

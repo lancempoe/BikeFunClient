@@ -7,20 +7,20 @@ import com.googlecode.mgwt.ui.client.event.ShowMasterEvent;
 
 public abstract class NavBaseActivity extends MGWTAbstractActivity {
 
-	private com.google.web.bindery.event.shared.EventBus eventBus;
-	private PlaceController placeController;
+    private com.google.web.bindery.event.shared.EventBus eventBus;
+    private PlaceController placeController;
 
-	public NavBaseActivity(ClientFactory clientFactory) {
-		this.eventBus = clientFactory.getEventBus();
-		this.placeController = clientFactory.getPlaceController();
-	}
+    public NavBaseActivity(ClientFactory clientFactory) {
+        this.eventBus = clientFactory.getEventBus();
+        this.placeController = clientFactory.getPlaceController();
+    }
 
-	public void onBackButtonPressed() {
-		if (MGWT.getOsDetection().isTablet()) {
-			eventBus.fireEvent(new ShowMasterEvent("nav"));
-		} else {
-			placeController.goTo(new OverviewPlace());
-		}
-	}
+    public void onBackButtonPressed() {
+        if (MGWT.getOsDetection().isTablet()) {
+            eventBus.fireEvent(new ShowMasterEvent("nav"));
+        } else {
+            placeController.goTo(new OverviewPlace());
+        }
+    }
 
 }

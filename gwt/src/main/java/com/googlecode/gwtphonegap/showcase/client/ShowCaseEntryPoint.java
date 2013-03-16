@@ -47,77 +47,78 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class ShowCaseEntryPoint implements EntryPoint {
-  private Logger log = Logger.getLogger(getClass().getName());
+    private Logger log = Logger.getLogger(getClass().getName());
 
-  @Override
-  public void onModuleLoad() {
+    @Override
+    public void onModuleLoad() {
 
-    GWT.setUncaughtExceptionHandler(new GWT.UncaughtExceptionHandler() {
+        GWT.setUncaughtExceptionHandler(new GWT.UncaughtExceptionHandler() {
 
-      @Override
-      public void onUncaughtException(Throwable e) {
-        Window.alert("uncaught: " + e.getLocalizedMessage());
-        Window.alert(e.getMessage());
-        log.log(Level.SEVERE, "uncaught exception", e);
-      }
-    });
+            @Override
+            public void onUncaughtException(Throwable e) {
+                Window.alert("uncaught: " + e.getLocalizedMessage());
+                Window.alert(e.getMessage());
+                log.log(Level.SEVERE, "uncaught exception", e);
+            }
+        });
 
-    final PhoneGap phoneGap = GWT.create(PhoneGap.class);
+        final PhoneGap phoneGap = GWT.create(PhoneGap.class);
 
-    phoneGap.addHandler(new PhoneGapAvailableHandler() {
+        phoneGap.addHandler(new PhoneGapAvailableHandler() {
 
-      @Override
-      public void onPhoneGapAvailable(PhoneGapAvailableEvent event) {
-        startShowCase(phoneGap);
+            @Override
+            public void onPhoneGapAvailable(PhoneGapAvailableEvent event) {
+                bootStrapApplicationUI(phoneGap);
 
-      }
-    });
+            }
+        });
 
-    phoneGap.addHandler(new PhoneGapTimeoutHandler() {
+        phoneGap.addHandler(new PhoneGapTimeoutHandler() {
 
-      @Override
-      public void onPhoneGapTimeout(PhoneGapTimeoutEvent event) {
-        Window.alert("can not load phonegap");
+            @Override
+            public void onPhoneGapTimeout(PhoneGapTimeoutEvent event) {
+                Window.alert("can not load phonegap");
 
-      }
-    });
+            }
+        });
 
-    phoneGap.initializePhoneGap();
+        phoneGap.initializePhoneGap();
 
-  }
+    }
 
-  private void startShowCase(PhoneGap phoneGap) {
-    final ClientFactoryGwtImpl clientFactory = new ClientFactoryGwtImpl();
-    clientFactory.setPhoneGap(phoneGap);
+    private void bootStrapApplicationUI(PhoneGap phoneGap) {
+        final ClientFactoryGwtImpl clientFactory = new ClientFactoryGwtImpl(phoneGap);
+        buildDisplay(clientFactory);
 
-    buildDisplay(clientFactory);
-
-  }
-
-    private void buildDisplay(ClientFactory clientFactory) {
-
-        ViewPort viewPort = buildMgwtViewPort();
-        MGWTSettings settings = buildMgwtSettings(viewPort);
+        MGWTSettings settings = buildMgwtSettings();
         MGWT.applySettings(settings);
 
-        // Start PlaceHistoryHandler with our PlaceHistoryMapper
+        PlaceHistoryHandler historyHandler = createHistoryMapper(clientFactory);
+        historyHandler.handleCurrentHistory();
+    }
+
+    private PlaceHistoryHandler createHistoryMapper(final ClientFactoryGwtImpl clientFactory) {
         AppPlaceHistoryMapper historyMapper = GWT.create(AppPlaceHistoryMapper.class);
         final PlaceHistoryHandler historyHandler = new PlaceHistoryHandler(historyMapper);
 
         historyHandler.register(clientFactory.getPlaceController(),
-                                clientFactory.getEventBus(),
-                                new OverviewPlace());
+                clientFactory.getEventBus(),
+                new OverviewPlace());
 
-        buildRootUI(clientFactory);
+        return historyHandler;
 
-        historyHandler.handleCurrentHistory();
     }
 
-    private void buildRootUI(ClientFactory clientFactory) {
+    private void buildDisplay(ClientFactory clientFactory) {
         List<IsWidget> elementsToAdd = getUserInterfaceRootWidgets(clientFactory);
-        for(IsWidget widget: elementsToAdd) {
+        for (IsWidget widget : elementsToAdd) {
             RootPanel.get().add(widget);
         }
+    }
+
+    private MGWTSettings buildMgwtSettings() {
+        ViewPort viewPort = buildMgwtViewPort();
+        return buildMgwtSettings(viewPort);
     }
 
     private List<IsWidget> getUserInterfaceRootWidgets(ClientFactory clientFactory) {

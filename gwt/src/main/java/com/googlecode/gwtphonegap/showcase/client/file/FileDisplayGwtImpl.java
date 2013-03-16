@@ -30,139 +30,139 @@ import com.googlecode.mgwt.ui.client.widget.celllist.CellSelectedEvent;
 
 public class FileDisplayGwtImpl extends Composite implements FileDisplay {
 
-	private static FileDisplayGwtImplUiBinder uiBinder = GWT.create(FileDisplayGwtImplUiBinder.class);
+    private static FileDisplayGwtImplUiBinder uiBinder = GWT.create(FileDisplayGwtImplUiBinder.class);
 
-	interface FileDisplayGwtImplUiBinder extends UiBinder<Widget, FileDisplayGwtImpl> {
-	}
+    interface FileDisplayGwtImplUiBinder extends UiBinder<Widget, FileDisplayGwtImpl> {
+    }
 
-	@UiField(provided = true)
-	CellList<FileDemo> cellList;
-	private Presenter presenter;
+    @UiField(provided = true)
+    CellList<FileDemo> cellList;
+    private Presenter presenter;
 
-	@UiField
-	HeaderButton backButton;
+    @UiField
+    HeaderButton backButton;
 
-	@UiField
-	ButtonBase plusButton;
+    @UiField
+    ButtonBase plusButton;
 
-	@UiField
-	ButtonBase actionButton;
+    @UiField
+    ButtonBase actionButton;
 
-	@UiField
-	HTML status;
+    @UiField
+    HTML status;
 
-	@UiField
-	MTextArea content;
+    @UiField
+    MTextArea content;
 
-	public FileDisplayGwtImpl() {
+    public FileDisplayGwtImpl() {
 
-		BasicCell<FileDemo> cell = new BasicCell<FileDemo>() {
+        BasicCell<FileDemo> cell = new BasicCell<FileDemo>() {
 
-			@Override
-			public String getDisplayString(FileDemo model) {
-				return model.getName();
-			}
+            @Override
+            public String getDisplayString(FileDemo model) {
+                return model.getName();
+            }
 
-			@Override
-			public boolean canBeSelected(FileDemo model) {
-				return true;
-			}
-		};
+            @Override
+            public boolean canBeSelected(FileDemo model) {
+                return true;
+            }
+        };
 
-		cellList = new CellList<FileDemo>(cell);
+        cellList = new CellList<FileDemo>(cell);
 
-		initWidget(uiBinder.createAndBindUi(this));
+        initWidget(uiBinder.createAndBindUi(this));
 
-		if (MGWT.getOsDetection().isTablet()) {
-			backButton.setBackButton(false);
-			backButton.setText("Modules");
-			backButton.addStyleName(MGWTStyle.getTheme().getMGWTClientBundle().getUtilCss().portraitonly());
-		}
+        if (MGWT.getOsDetection().isTablet()) {
+            backButton.setBackButton(false);
+            backButton.setText("Modules");
+            backButton.addStyleName(MGWTStyle.getTheme().getMGWTClientBundle().getUtilCss().portraitonly());
+        }
 
-	}
+    }
 
-	@Override
-	public void render(LinkedList<FileDemo> list) {
-		cellList.render(list);
+    @Override
+    public void render(LinkedList<FileDemo> list) {
+        cellList.render(list);
 
-	}
+    }
 
-	@Override
-	public void setPresenter(Presenter presenter) {
-		this.presenter = presenter;
+    @Override
+    public void setPresenter(Presenter presenter) {
+        this.presenter = presenter;
 
-	}
+    }
 
-	@Override
-	public HasHTML getStatus() {
-		return status;
-	}
+    @Override
+    public HasHTML getStatus() {
+        return status;
+    }
 
-	@UiHandler("backButton")
-	protected void oBackButtonPressed(TapEvent event) {
-		if (presenter != null) {
-			presenter.onBackButtonPressed();
-		}
-	}
+    @UiHandler("backButton")
+    protected void oBackButtonPressed(TapEvent event) {
+        if (presenter != null) {
+            presenter.onBackButtonPressed();
+        }
+    }
 
-	@UiHandler("plusButton")
-	protected void onPlusButtonTapped(TapEvent event) {
-		if (presenter != null) {
-			String fileName = Window.prompt("filename", "");
+    @UiHandler("plusButton")
+    protected void onPlusButtonTapped(TapEvent event) {
+        if (presenter != null) {
+            String fileName = Window.prompt("filename", "");
 
-			presenter.createFile(fileName);
-		}
-	}
+            presenter.createFile(fileName);
+        }
+    }
 
-	@UiHandler("actionButton")
-	protected void onActionButtonPressed(TapEvent event) {
-		if (presenter != null) {
-			presenter.onActionButtonPressed();
-		}
-	}
+    @UiHandler("actionButton")
+    protected void onActionButtonPressed(TapEvent event) {
+        if (presenter != null) {
+            presenter.onActionButtonPressed();
+        }
+    }
 
-	@UiHandler("cellList")
-	protected void onCellSelected(CellSelectedEvent event) {
-		if (presenter != null) {
-			presenter.onEntrySelected(event.getIndex());
-		}
-	}
+    @UiHandler("cellList")
+    protected void onCellSelected(CellSelectedEvent event) {
+        if (presenter != null) {
+            presenter.onEntrySelected(event.getIndex());
+        }
+    }
 
-	@Override
-	public void showSelectMenu() {
-		ArrayList<OptionsDialogEntry> list = new ArrayList<OptionsDialogEntry>();
+    @Override
+    public void showSelectMenu() {
+        ArrayList<OptionsDialogEntry> list = new ArrayList<OptionsDialogEntry>();
 
-		list.add(new OptionsDialogEntry("Overwrite", ButtonType.IMPORTANT));
-		list.add(new OptionsDialogEntry("Cancel", ButtonType.NORMAL));
+        list.add(new OptionsDialogEntry("Overwrite", ButtonType.IMPORTANT));
+        list.add(new OptionsDialogEntry("Cancel", ButtonType.NORMAL));
 
-		Dialogs.options(list, new OptionCallback() {
+        Dialogs.options(list, new OptionCallback() {
 
-			@Override
-			public void onOptionSelected(int index) {
-				if (presenter != null) {
-					if (index == 0) {
-						presenter.overWriteFile();
-					}
-				}
+            @Override
+            public void onOptionSelected(int index) {
+                if (presenter != null) {
+                    if (index == 0) {
+                        presenter.overWriteFile();
+                    }
+                }
 
-			}
-		});
+            }
+        });
 
-	}
+    }
 
-	@Override
-	public boolean confirm(String string) {
-		return Window.confirm(string);
-	}
+    @Override
+    public boolean confirm(String string) {
+        return Window.confirm(string);
+    }
 
-	@Override
-	public HasText getFileContent() {
-		return content;
-	}
+    @Override
+    public HasText getFileContent() {
+        return content;
+    }
 
-	@Override
-	public void setSelected(int index) {
-		cellList.setSelectedIndex(index, true);
+    @Override
+    public void setSelected(int index) {
+        cellList.setSelectedIndex(index, true);
 
-	}
+    }
 }

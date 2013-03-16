@@ -18,37 +18,37 @@ import com.googlecode.gwtphonegap.showcase.client.media.MediaDisplay;
 import com.googlecode.gwtphonegap.showcase.client.notification.NotificationDisplay;
 
 public interface ClientFactory {
-	public PhoneGap getPhoneGap();
+    public PhoneGap getPhoneGap();
 
-	public PlaceController getPlaceController();
+    public PlaceController getPlaceController();
 
-	public EventBus getEventBus();
+    public EventBus getEventBus();
 
-	public OverviewDisplay getOverviewDisplay();
+    public OverviewDisplay getOverviewDisplay();
 
-	public AccelerometerDisplay getAccelerometerDisplay();
+    public AccelerometerDisplay getAccelerometerDisplay();
 
-	public CameraDisplay getCameraDisplay();
+    public CameraDisplay getCameraDisplay();
 
-	public CompassDisplay getCompassDisplay();
+    public CompassDisplay getCompassDisplay();
 
-	public ConnectionDisplay getConnectionDisplay();
+    public ConnectionDisplay getConnectionDisplay();
 
-	public ContactDisplay getContactDisplay();
+    public ContactDisplay getContactDisplay();
 
-	public DeviceDisplay getDeviceDisplay();
+    public DeviceDisplay getDeviceDisplay();
 
-	public EventDisplay getEventDisplay();
+    public EventDisplay getEventDisplay();
 
-	public GeolocationDisplay getGeolocationDisplay();
+    public GeolocationDisplay getGeolocationDisplay();
 
-	public MediaDisplay getMediaDisplay();
+    public MediaDisplay getMediaDisplay();
 
-	public NotificationDisplay getNotificationDisplay();
+    public NotificationDisplay getNotificationDisplay();
 
-	public InAppBrowserDisplay getChildBrowserDisplay();
+    public InAppBrowserDisplay getChildBrowserDisplay();
 
-	public AboutDisplay getAboutDisplay();
+    public AboutDisplay getAboutDisplay();
 
-	public FileDisplay getFileDisplay();
+    public FileDisplay getFileDisplay();
 }

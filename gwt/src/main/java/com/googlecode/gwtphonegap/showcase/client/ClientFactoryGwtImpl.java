@@ -33,158 +33,155 @@ import com.googlecode.gwtphonegap.showcase.client.notification.NotificationDispl
 
 public class ClientFactoryGwtImpl implements ClientFactory {
 
-	private PhoneGap phoneGap;
-	private SimpleEventBus eventBus;
-	private PlaceController placeController;
-	private OverviewDisplay overviewDisplay;
-	private AccelerometerDisplay accelerometerDisplay;
-	private CameraDisplay cameraDisplay;
-	private CompassDisplayGwtImpl compassDisplay;
-	private ConnectionDisplayGwtImpl connectionDisplay;
-	private ContactDisplay contactDisplay;
-	private DeviceDisplay deviceDisplay;
-	private EventDisplay eventDisplay;
-	private GeolocationDisplay geolocationDisplay;
-	private MediaDisplay mediaDisplay;
-	private NotificationDisplay notificationDisplay;
-	private InAppBrowserDisplay childBrowserDisplay;
-	private AboutDisplay aboutDisplay;
-	private FileDisplay fileDisplay;
+    private final PhoneGap phoneGap;
+    private SimpleEventBus eventBus;
+    private PlaceController placeController;
+    private OverviewDisplay overviewDisplay;
+    private AccelerometerDisplay accelerometerDisplay;
+    private CameraDisplay cameraDisplay;
+    private CompassDisplayGwtImpl compassDisplay;
+    private ConnectionDisplayGwtImpl connectionDisplay;
+    private ContactDisplay contactDisplay;
+    private DeviceDisplay deviceDisplay;
+    private EventDisplay eventDisplay;
+    private GeolocationDisplay geolocationDisplay;
+    private MediaDisplay mediaDisplay;
+    private NotificationDisplay notificationDisplay;
+    private InAppBrowserDisplay childBrowserDisplay;
+    private AboutDisplay aboutDisplay;
+    private FileDisplay fileDisplay;
 
-	public ClientFactoryGwtImpl() {
-		eventBus = new SimpleEventBus();
+    public ClientFactoryGwtImpl(PhoneGap phoneGap) {
+        eventBus = new SimpleEventBus();
 
-		placeController = new PlaceController(eventBus);
-	}
+        placeController = new PlaceController(eventBus);
+        this.phoneGap = phoneGap;
+    }
 
-	public void setPhoneGap(PhoneGap phoneGap) {
-		this.phoneGap = phoneGap;
-	}
+    @Override
+    public PhoneGap getPhoneGap() {
+        return phoneGap;
+    }
 
-	@Override
-	public PhoneGap getPhoneGap() {
-		return phoneGap;
-	}
+    @Override
+    public PlaceController getPlaceController() {
+        return placeController;
+    }
 
-	@Override
-	public PlaceController getPlaceController() {
-		return placeController;
-	}
+    @Override
+    public EventBus getEventBus() {
+        return eventBus;
+    }
 
-	@Override
-	public EventBus getEventBus() {
-		return eventBus;
-	}
+    @Override
+    public OverviewDisplay getOverviewDisplay() {
+        if (overviewDisplay == null) {
+            overviewDisplay = new OverviewDisplayGwtImpl();
+        }
+        return overviewDisplay;
+    }
 
-	@Override
-	public OverviewDisplay getOverviewDisplay() {
-		if (overviewDisplay == null) {
-			overviewDisplay = new OverviewDisplayGwtImpl();
-		}
-		return overviewDisplay;
-	}
+    @Override
+    public AccelerometerDisplay getAccelerometerDisplay() {
+        if (accelerometerDisplay == null) {
+            accelerometerDisplay = new AccelerometerDisplayGwtImpl();
+        }
+        return accelerometerDisplay;
+    }
 
-	@Override
-	public AccelerometerDisplay getAccelerometerDisplay() {
-		if (accelerometerDisplay == null) {
-			accelerometerDisplay = new AccelerometerDisplayGwtImpl();
-		}
-		return accelerometerDisplay;
-	}
+    @Override
+    public CameraDisplay getCameraDisplay() {
+        if (cameraDisplay == null) {
+            cameraDisplay = new CameraDisplayGwtImpl();
+        }
+        return cameraDisplay;
+    }
 
-	@Override
-	public CameraDisplay getCameraDisplay() {
-		if (cameraDisplay == null) {
-			cameraDisplay = new CameraDisplayGwtImpl();
-		}
-		return cameraDisplay;
-	}
+    @Override
+    public CompassDisplay getCompassDisplay() {
+        if (compassDisplay == null) {
+            compassDisplay = new CompassDisplayGwtImpl();
+        }
+        return compassDisplay;
+    }
 
-	@Override
-	public CompassDisplay getCompassDisplay() {
-		if (compassDisplay == null) {
-			compassDisplay = new CompassDisplayGwtImpl();
-		}
-		return compassDisplay;
-	}
+    @Override
+    public ConnectionDisplay getConnectionDisplay() {
+        if (connectionDisplay == null) {
+            connectionDisplay = new ConnectionDisplayGwtImpl();
+        }
+        return connectionDisplay;
+    }
 
-	@Override
-	public ConnectionDisplay getConnectionDisplay() {
-		if (connectionDisplay == null) {
-			connectionDisplay = new ConnectionDisplayGwtImpl();
-		}
-		return connectionDisplay;
-	}
+    @Override
+    public ContactDisplay getContactDisplay() {
+        if (contactDisplay == null) {
+            contactDisplay = new ContactDisplayGwtImpl();
+        }
+        return contactDisplay;
+    }
 
-	@Override
-	public ContactDisplay getContactDisplay() {
-		if (contactDisplay == null) {
-			contactDisplay = new ContactDisplayGwtImpl();
-		}
-		return contactDisplay;
-	}
+    @Override
+    public DeviceDisplay getDeviceDisplay() {
+        if (deviceDisplay == null) {
+            deviceDisplay = new DeviceDisplayGwtImpl();
+        }
+        return deviceDisplay;
+    }
 
-	@Override
-	public DeviceDisplay getDeviceDisplay() {
-		if (deviceDisplay == null) {
-			deviceDisplay = new DeviceDisplayGwtImpl();
-		}
-		return deviceDisplay;
-	}
+    @Override
+    public EventDisplay getEventDisplay() {
+        if (eventDisplay == null) {
+            eventDisplay = new EventDisplayGwtImpl();
+        }
+        return eventDisplay;
+    }
 
-	@Override
-	public EventDisplay getEventDisplay() {
-		if (eventDisplay == null) {
-			eventDisplay = new EventDisplayGwtImpl();
-		}
-		return eventDisplay;
-	}
+    @Override
+    public GeolocationDisplay getGeolocationDisplay() {
+        if (geolocationDisplay == null) {
+            geolocationDisplay = new GeolocationDisplayGwtImpl();
+        }
+        return geolocationDisplay;
+    }
 
-	@Override
-	public GeolocationDisplay getGeolocationDisplay() {
-		if (geolocationDisplay == null) {
-			geolocationDisplay = new GeolocationDisplayGwtImpl();
-		}
-		return geolocationDisplay;
-	}
+    @Override
+    public MediaDisplay getMediaDisplay() {
+        if (mediaDisplay == null) {
+            mediaDisplay = new MediaDisplayGwtImpl();
+        }
+        return mediaDisplay;
+    }
 
-	@Override
-	public MediaDisplay getMediaDisplay() {
-		if (mediaDisplay == null) {
-			mediaDisplay = new MediaDisplayGwtImpl();
-		}
-		return mediaDisplay;
-	}
+    @Override
+    public NotificationDisplay getNotificationDisplay() {
+        if (notificationDisplay == null) {
+            notificationDisplay = new NotificationDisplayGwtImpl();
+        }
+        return notificationDisplay;
+    }
 
-	@Override
-	public NotificationDisplay getNotificationDisplay() {
-		if (notificationDisplay == null) {
-			notificationDisplay = new NotificationDisplayGwtImpl();
-		}
-		return notificationDisplay;
-	}
+    @Override
+    public InAppBrowserDisplay getChildBrowserDisplay() {
+        if (childBrowserDisplay == null) {
+            childBrowserDisplay = new InAppBrowserDisplayGwtImpl();
+        }
+        return childBrowserDisplay;
+    }
 
-	@Override
-	public InAppBrowserDisplay getChildBrowserDisplay() {
-		if (childBrowserDisplay == null) {
-			childBrowserDisplay = new InAppBrowserDisplayGwtImpl();
-		}
-		return childBrowserDisplay;
-	}
+    @Override
+    public AboutDisplay getAboutDisplay() {
+        if (aboutDisplay == null) {
+            aboutDisplay = new AboutDisplayGwtImpl();
+        }
+        return aboutDisplay;
+    }
 
-	@Override
-	public AboutDisplay getAboutDisplay() {
-		if (aboutDisplay == null) {
-			aboutDisplay = new AboutDisplayGwtImpl();
-		}
-		return aboutDisplay;
-	}
-
-	@Override
-	public FileDisplay getFileDisplay() {
-		if (fileDisplay == null) {
-			fileDisplay = new FileDisplayGwtImpl();
-		}
-		return fileDisplay;
-	}
+    @Override
+    public FileDisplay getFileDisplay() {
+        if (fileDisplay == null) {
+            fileDisplay = new FileDisplayGwtImpl();
+        }
+        return fileDisplay;
+    }
 }

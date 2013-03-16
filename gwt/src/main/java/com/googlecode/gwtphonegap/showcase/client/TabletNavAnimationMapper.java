@@ -6,13 +6,13 @@ import com.googlecode.mgwt.mvp.client.AnimationMapper;
 
 public class TabletNavAnimationMapper implements AnimationMapper {
 
-	@Override
-	public Animation getAnimation(Place oldPlace, Place newPlace) {
-		if (oldPlace == null) {
-			return Animation.FADE;
-		}
+    @Override
+    public Animation getAnimation(Place oldPlace, Place newPlace) {
+        if (oldPlace == null) {
+            return Animation.FADE;
+        }
 
-		return Animation.SLIDE;
-	}
+        return Animation.SLIDE;
+    }
 
 }

@@ -21,25 +21,24 @@ import com.googlecode.gwtphonegap.showcase.client.about.AboutDisplay.Presenter;
 
 /**
  * @author Daniel Kurka
- * 
  */
 public class AboutActivity extends NavBaseActivity implements Presenter {
 
-  private final ClientFactory clientFactory;
+    private final ClientFactory clientFactory;
 
-  public AboutActivity(ClientFactory clientFactory) {
-    super(clientFactory);
-    this.clientFactory = clientFactory;
+    public AboutActivity(ClientFactory clientFactory) {
+        super(clientFactory);
+        this.clientFactory = clientFactory;
 
-  }
+    }
 
-  @Override
-  public void start(AcceptsOneWidget panel, EventBus eventBus) {
-    AboutDisplay display = clientFactory.getAboutDisplay();
+    @Override
+    public void start(AcceptsOneWidget panel, EventBus eventBus) {
+        AboutDisplay display = clientFactory.getAboutDisplay();
 
-    display.setPresenter(this);
-    panel.setWidget(display);
+        display.setPresenter(this);
+        panel.setWidget(display);
 
-  }
+    }
 
 }

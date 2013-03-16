@@ -21,30 +21,30 @@ import com.googlecode.gwtphonegap.showcase.client.NavBaseActivity;
 
 public class DeviceActivity extends NavBaseActivity implements DeviceDisplay.Presenter {
 
-  private final DeviceDisplay display;
-  private final PhoneGap phoneGap;
+    private final DeviceDisplay display;
+    private final PhoneGap phoneGap;
 
-  public DeviceActivity(ClientFactory clientFactory) {
-    super(clientFactory);
+    public DeviceActivity(ClientFactory clientFactory) {
+        super(clientFactory);
 
-    this.display = clientFactory.getDeviceDisplay();
-    this.phoneGap = clientFactory.getPhoneGap();
+        this.display = clientFactory.getDeviceDisplay();
+        this.phoneGap = clientFactory.getPhoneGap();
 
-  }
+    }
 
-  @Override
-  public void start(AcceptsOneWidget panel, EventBus eventBus) {
+    @Override
+    public void start(AcceptsOneWidget panel, EventBus eventBus) {
 
-    display.setPresenter(this);
+        display.setPresenter(this);
 
-    display.getVersion().setHTML(phoneGap.getDevice().getVersion());
-    display.getName().setHTML(phoneGap.getDevice().getName());
-    display.getPhoneGapVersion().setHTML(phoneGap.getDevice().getPhoneGapVersion());
-    display.getPlatform().setHTML(phoneGap.getDevice().getPlatform());
-    display.getUUID().setHTML(phoneGap.getDevice().getUuid());
+        display.getVersion().setHTML(phoneGap.getDevice().getVersion());
+        display.getName().setHTML(phoneGap.getDevice().getName());
+        display.getPhoneGapVersion().setHTML(phoneGap.getDevice().getPhoneGapVersion());
+        display.getPlatform().setHTML(phoneGap.getDevice().getPlatform());
+        display.getUUID().setHTML(phoneGap.getDevice().getUuid());
 
-    panel.setWidget(display);
+        panel.setWidget(display);
 
-  }
+    }
 
 }

@@ -14,77 +14,77 @@ import com.googlecode.mgwt.ui.client.widget.HeaderButton;
 
 public class NotificationDisplayGwtImpl extends Composite implements NotificationDisplay {
 
-	private static NotificationDisplayGwtImplUiBinder uiBinder = GWT.create(NotificationDisplayGwtImplUiBinder.class);
+    private static NotificationDisplayGwtImplUiBinder uiBinder = GWT.create(NotificationDisplayGwtImplUiBinder.class);
 
-	interface NotificationDisplayGwtImplUiBinder extends UiBinder<Widget, NotificationDisplayGwtImpl> {
-	}
+    interface NotificationDisplayGwtImplUiBinder extends UiBinder<Widget, NotificationDisplayGwtImpl> {
+    }
 
-	@UiField
-	Button alert;
+    @UiField
+    Button alert;
 
-	@UiField
-	Button confirm;
+    @UiField
+    Button confirm;
 
-	@UiField
-	Button vibrate;
+    @UiField
+    Button vibrate;
 
-	@UiField
-	Button beep;
+    @UiField
+    Button beep;
 
-	@UiField
-	HeaderButton backButton;
+    @UiField
+    HeaderButton backButton;
 
-	private Presenter presenter;
+    private Presenter presenter;
 
-	public NotificationDisplayGwtImpl() {
-		initWidget(uiBinder.createAndBindUi(this));
+    public NotificationDisplayGwtImpl() {
+        initWidget(uiBinder.createAndBindUi(this));
 
-		if (MGWT.getOsDetection().isTablet()) {
-			backButton.setBackButton(false);
-			backButton.setText("Modules");
-			backButton.addStyleName(MGWTStyle.getTheme().getMGWTClientBundle().getUtilCss().portraitonly());
-		}
-	}
+        if (MGWT.getOsDetection().isTablet()) {
+            backButton.setBackButton(false);
+            backButton.setText("Modules");
+            backButton.addStyleName(MGWTStyle.getTheme().getMGWTClientBundle().getUtilCss().portraitonly());
+        }
+    }
 
-	@Override
-	public void setPresenter(Presenter presenter) {
-		this.presenter = presenter;
+    @Override
+    public void setPresenter(Presenter presenter) {
+        this.presenter = presenter;
 
-	}
+    }
 
-	@UiHandler("backButton")
-	protected void onBackButtonPressed(TapEvent event) {
-		if (presenter != null) {
-			presenter.onBackButtonPressed();
-		}
-	}
+    @UiHandler("backButton")
+    protected void onBackButtonPressed(TapEvent event) {
+        if (presenter != null) {
+            presenter.onBackButtonPressed();
+        }
+    }
 
-	@UiHandler("alert")
-	protected void onAlertButtonPressed(TapEvent event) {
-		if (presenter != null) {
-			presenter.onAlertButtonPressed();
-		}
-	}
+    @UiHandler("alert")
+    protected void onAlertButtonPressed(TapEvent event) {
+        if (presenter != null) {
+            presenter.onAlertButtonPressed();
+        }
+    }
 
-	@UiHandler("confirm")
-	protected void onConfirmButtonPressed(TapEvent event) {
-		if (presenter != null) {
-			presenter.onConfirmButtonPressed();
-		}
-	}
+    @UiHandler("confirm")
+    protected void onConfirmButtonPressed(TapEvent event) {
+        if (presenter != null) {
+            presenter.onConfirmButtonPressed();
+        }
+    }
 
-	@UiHandler("beep")
-	protected void onBeepButtonPressed(TapEvent event) {
-		if (presenter != null) {
-			presenter.onBeepButtonPressed();
-		}
-	}
+    @UiHandler("beep")
+    protected void onBeepButtonPressed(TapEvent event) {
+        if (presenter != null) {
+            presenter.onBeepButtonPressed();
+        }
+    }
 
-	@UiHandler("vibrate")
-	protected void onVibrateButtonPressed(TapEvent event) {
-		if (presenter != null) {
-			presenter.onVibrateButtonPressed();
-		}
-	}
+    @UiHandler("vibrate")
+    protected void onVibrateButtonPressed(TapEvent event) {
+        if (presenter != null) {
+            presenter.onVibrateButtonPressed();
+        }
+    }
 
 }

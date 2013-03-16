@@ -33,10 +33,9 @@ import com.googlecode.gwtphonegap.showcase.client.notification.NotificationPlace
 
 /**
  * @author Daniel Kurka
- * 
  */
-@WithTokenizers({ OverviewPlace.Tokenizer.class, AccelerometerPlace.Tokenizer.class, CameraPlace.Tokenizer.class, CompassPlace.Tokenizer.class, ConnectionPlace.Tokenizer.class,
-		ContactPlace.Tokenizer.class, DevicePlace.Tokenizer.class, EventPlace.Tokenizer.class, GeolocationPlace.Tokenizer.class, MediaPlace.Tokenizer.class, NotificationPlace.Tokenizer.class,
-		InAppBrowserPlace.Tokenizer.class, AboutPlace.Tokenizer.class, FilePlace.Tokenizer.class })
+@WithTokenizers({OverviewPlace.Tokenizer.class, AccelerometerPlace.Tokenizer.class, CameraPlace.Tokenizer.class, CompassPlace.Tokenizer.class, ConnectionPlace.Tokenizer.class,
+        ContactPlace.Tokenizer.class, DevicePlace.Tokenizer.class, EventPlace.Tokenizer.class, GeolocationPlace.Tokenizer.class, MediaPlace.Tokenizer.class, NotificationPlace.Tokenizer.class,
+        InAppBrowserPlace.Tokenizer.class, AboutPlace.Tokenizer.class, FilePlace.Tokenizer.class})
 public interface AppPlaceHistoryMapper extends PlaceHistoryMapper {
 }

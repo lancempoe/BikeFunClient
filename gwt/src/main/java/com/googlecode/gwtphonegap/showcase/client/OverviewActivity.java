@@ -25,99 +25,99 @@ import java.util.List;
 
 public class OverviewActivity extends MGWTAbstractActivity implements Presenter {
 
-  private final ClientFactory clientFactory;
-  private List<PGModule> currentList;
+    private final ClientFactory clientFactory;
+    private List<PGModule> currentList;
 
-  public OverviewActivity(ClientFactory clientFactory) {
-    this.clientFactory = clientFactory;
-  }
-
-  @Override
-  public void start(AcceptsOneWidget panel, EventBus eventBus) {
-    OverviewDisplay display = clientFactory.getOverviewDisplay();
-
-    currentList = getModuleList();
-
-    display.display(currentList);
-
-    display.setPresenter(this);
-
-    panel.setWidget(display);
-  }
-
-  private List<PGModule> getModuleList() {
-    ArrayList<PGModule> list = new ArrayList<PGModule>();
-
-    list.add(new PGModule("Accelerometer"));
-    list.add(new PGModule("Camera"));
-    list.add(new PGModule("Compass"));
-    list.add(new PGModule("Connection"));
-    list.add(new PGModule("Contacts"));
-    list.add(new PGModule("Device"));
-    list.add(new PGModule("Event"));
-    list.add(new PGModule("File"));
-    list.add(new PGModule("Geolocation"));
-    list.add(new PGModule("Media"));
-    list.add(new PGModule("Notification"));
-
-    list.add(new PGModule("InAppBrowser"));
-    return list;
-  }
-
-  @Override
-  public void onCellSelected(int index) {
-    switch (index) {
-      case 0:
-        clientFactory.getPlaceController().goTo(new AccelerometerPlace());
-        break;
-
-      case 1:
-        clientFactory.getPlaceController().goTo(new CameraPlace());
-        break;
-
-      case 2:
-        clientFactory.getPlaceController().goTo(new CompassPlace());
-        break;
-
-      case 3:
-        clientFactory.getPlaceController().goTo(new ConnectionPlace());
-        break;
-
-      case 4:
-        clientFactory.getPlaceController().goTo(new ContactPlace());
-        break;
-
-      case 5:
-        clientFactory.getPlaceController().goTo(new DevicePlace());
-        break;
-
-      case 6:
-        clientFactory.getPlaceController().goTo(new EventPlace());
-        break;
-      case 7:
-        clientFactory.getPlaceController().goTo(new FilePlace());
-        break;
-      case 8:
-        clientFactory.getPlaceController().goTo(new GeolocationPlace());
-        break;
-      case 9:
-        clientFactory.getPlaceController().goTo(new MediaPlace());
-        break;
-      case 10:
-        clientFactory.getPlaceController().goTo(new NotificationPlace());
-        break;
-
-      case 11:
-        clientFactory.getPlaceController().goTo(new InAppBrowserPlace());
-        break;
+    public OverviewActivity(ClientFactory clientFactory) {
+        this.clientFactory = clientFactory;
     }
 
-  }
+    @Override
+    public void start(AcceptsOneWidget panel, EventBus eventBus) {
+        OverviewDisplay display = clientFactory.getOverviewDisplay();
 
-  @Override
-  public void onAboutButton() {
-    clientFactory.getPlaceController().goTo(new AboutPlace());
+        currentList = getModuleList();
 
-  }
+        display.display(currentList);
+
+        display.setPresenter(this);
+
+        panel.setWidget(display);
+    }
+
+    private List<PGModule> getModuleList() {
+        ArrayList<PGModule> list = new ArrayList<PGModule>();
+
+        list.add(new PGModule("Accelerometer"));
+        list.add(new PGModule("Camera"));
+        list.add(new PGModule("Compass"));
+        list.add(new PGModule("Connection"));
+        list.add(new PGModule("Contacts"));
+        list.add(new PGModule("Device"));
+        list.add(new PGModule("Event"));
+        list.add(new PGModule("File"));
+        list.add(new PGModule("Geolocation"));
+        list.add(new PGModule("Media"));
+        list.add(new PGModule("Notification"));
+
+        list.add(new PGModule("InAppBrowser"));
+        return list;
+    }
+
+    @Override
+    public void onCellSelected(int index) {
+        switch (index) {
+            case 0:
+                clientFactory.getPlaceController().goTo(new AccelerometerPlace());
+                break;
+
+            case 1:
+                clientFactory.getPlaceController().goTo(new CameraPlace());
+                break;
+
+            case 2:
+                clientFactory.getPlaceController().goTo(new CompassPlace());
+                break;
+
+            case 3:
+                clientFactory.getPlaceController().goTo(new ConnectionPlace());
+                break;
+
+            case 4:
+                clientFactory.getPlaceController().goTo(new ContactPlace());
+                break;
+
+            case 5:
+                clientFactory.getPlaceController().goTo(new DevicePlace());
+                break;
+
+            case 6:
+                clientFactory.getPlaceController().goTo(new EventPlace());
+                break;
+            case 7:
+                clientFactory.getPlaceController().goTo(new FilePlace());
+                break;
+            case 8:
+                clientFactory.getPlaceController().goTo(new GeolocationPlace());
+                break;
+            case 9:
+                clientFactory.getPlaceController().goTo(new MediaPlace());
+                break;
+            case 10:
+                clientFactory.getPlaceController().goTo(new NotificationPlace());
+                break;
+
+            case 11:
+                clientFactory.getPlaceController().goTo(new InAppBrowserPlace());
+                break;
+        }
+
+    }
+
+    @Override
+    public void onAboutButton() {
+        clientFactory.getPlaceController().goTo(new AboutPlace());
+
+    }
 
 }

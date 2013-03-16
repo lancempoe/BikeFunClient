@@ -6,32 +6,32 @@ import com.google.gwt.user.client.ui.IsWidget;
 
 public interface GeolocationDisplay extends IsWidget {
 
-	public void setPresenter(Presenter presenter);
+    public void setPresenter(Presenter presenter);
 
-	public HasHTML getLatidute();
+    public HasHTML getLatidute();
 
-	public HasHTML getLongitude();
+    public HasHTML getLongitude();
 
-	public HasHTML getAltitude();
+    public HasHTML getAltitude();
 
-	public HasHTML getAccuracy();
+    public HasHTML getAccuracy();
 
-	public HasHTML getAltitudeAccuracy();
+    public HasHTML getAltitudeAccuracy();
 
-	public HasHTML getHeading();
+    public HasHTML getHeading();
 
-	public HasHTML getTimeStamp();
+    public HasHTML getTimeStamp();
 
-	public HasHTML getSpeed();
+    public HasHTML getSpeed();
 
-	public HasText getStartStopButton();
+    public HasText getStartStopButton();
 
-	public interface Presenter {
+    public interface Presenter {
 
-		public void onBackButtonPressed();
+        public void onBackButtonPressed();
 
-		public void onStartStopButtonPressed();
+        public void onStartStopButtonPressed();
 
-	}
+    }
 
 }

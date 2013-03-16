@@ -15,84 +15,84 @@ import com.googlecode.gwtphonegap.showcase.client.compass.CompassDisplay.Present
 
 public class CompassActivity extends NavBaseActivity implements Presenter {
 
-  private final CompassDisplay display;
-  private final PhoneGap phoneGap;
+    private final CompassDisplay display;
+    private final PhoneGap phoneGap;
 
-  private CompassWatcher watcher;
+    private CompassWatcher watcher;
 
-  public CompassActivity(ClientFactory clientFactory) {
-    super(clientFactory);
+    public CompassActivity(ClientFactory clientFactory) {
+        super(clientFactory);
 
-    this.display = clientFactory.getCompassDisplay();
-    this.phoneGap = clientFactory.getPhoneGap();
+        this.display = clientFactory.getCompassDisplay();
+        this.phoneGap = clientFactory.getPhoneGap();
 
-  }
-
-  @Override
-  public void start(AcceptsOneWidget panel, EventBus eventBus) {
-
-    display.setPresenter(this);
-
-    display.getStartStopButton().setText("Start");
-    display.getHeadingAccuracy().setText("");
-    display.getMagneticHeading().setText("");
-    display.getTimeStamp().setText("");
-    display.getTrueHeading().setText("");
-
-    panel.setWidget(display);
-
-  }
-
-  @Override
-  public void onStop() {
-    display.setPresenter(null);
-
-    if (watcher != null) {
-
-      phoneGap.getCompass().clearWatcher(watcher);
-      watcher = null;
-    }
-  }
-
-  @Override
-  public void onStartStopButtonPressed() {
-    if (watcher != null) {
-
-      display.getStartStopButton().setText("Start");
-      display.getHeadingAccuracy().setText("");
-      display.getMagneticHeading().setText("");
-      display.getTimeStamp().setText("");
-      display.getTrueHeading().setText("");
-
-      if (watcher != null) {
-
-        phoneGap.getCompass().clearWatcher(watcher);
-        watcher = null;
-      }
-
-    } else {
-      display.getStartStopButton().setText("Stop");
-
-      watcher = phoneGap.getCompass().watchHeading(new CompassOptions(), new CompassCallback() {
-
-        @Override
-        public void onSuccess(CompassHeading heading) {
-          display.getHeadingAccuracy().setText("" + heading.getHeadingAccuracy());
-          display.getMagneticHeading().setText("" + heading.getMagneticHeading());
-          display.getTimeStamp().setText("" + heading.getTimeStamp());
-          display.getTrueHeading().setText("" + heading.getTrueHeading());
-
-        }
-
-        @Override
-        public void onError(CompassError error) {
-          // TODO better error display
-          Window.alert("error with compass");
-
-        }
-      });
     }
 
-  }
+    @Override
+    public void start(AcceptsOneWidget panel, EventBus eventBus) {
+
+        display.setPresenter(this);
+
+        display.getStartStopButton().setText("Start");
+        display.getHeadingAccuracy().setText("");
+        display.getMagneticHeading().setText("");
+        display.getTimeStamp().setText("");
+        display.getTrueHeading().setText("");
+
+        panel.setWidget(display);
+
+    }
+
+    @Override
+    public void onStop() {
+        display.setPresenter(null);
+
+        if (watcher != null) {
+
+            phoneGap.getCompass().clearWatcher(watcher);
+            watcher = null;
+        }
+    }
+
+    @Override
+    public void onStartStopButtonPressed() {
+        if (watcher != null) {
+
+            display.getStartStopButton().setText("Start");
+            display.getHeadingAccuracy().setText("");
+            display.getMagneticHeading().setText("");
+            display.getTimeStamp().setText("");
+            display.getTrueHeading().setText("");
+
+            if (watcher != null) {
+
+                phoneGap.getCompass().clearWatcher(watcher);
+                watcher = null;
+            }
+
+        } else {
+            display.getStartStopButton().setText("Stop");
+
+            watcher = phoneGap.getCompass().watchHeading(new CompassOptions(), new CompassCallback() {
+
+                @Override
+                public void onSuccess(CompassHeading heading) {
+                    display.getHeadingAccuracy().setText("" + heading.getHeadingAccuracy());
+                    display.getMagneticHeading().setText("" + heading.getMagneticHeading());
+                    display.getTimeStamp().setText("" + heading.getTimeStamp());
+                    display.getTrueHeading().setText("" + heading.getTrueHeading());
+
+                }
+
+                @Override
+                public void onError(CompassError error) {
+                    // TODO better error display
+                    Window.alert("error with compass");
+
+                }
+            });
+        }
+
+    }
 
 }

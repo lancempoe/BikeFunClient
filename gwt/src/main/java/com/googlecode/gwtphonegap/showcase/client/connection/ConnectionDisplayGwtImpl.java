@@ -16,56 +16,56 @@ import com.googlecode.mgwt.ui.client.widget.HeaderButton;
 
 public class ConnectionDisplayGwtImpl extends Composite implements ConnectionDisplay {
 
-	private static ConnectionDisplayGwtImplUiBinder uiBinder = GWT.create(ConnectionDisplayGwtImplUiBinder.class);
+    private static ConnectionDisplayGwtImplUiBinder uiBinder = GWT.create(ConnectionDisplayGwtImplUiBinder.class);
 
-	interface ConnectionDisplayGwtImplUiBinder extends UiBinder<Widget, ConnectionDisplayGwtImpl> {
-	}
+    interface ConnectionDisplayGwtImplUiBinder extends UiBinder<Widget, ConnectionDisplayGwtImpl> {
+    }
 
-	@UiField
-	HTML connection;
+    @UiField
+    HTML connection;
 
-	@UiField
-	Button startButton;
+    @UiField
+    Button startButton;
 
-	@UiField
-	HeaderButton backButton;
+    @UiField
+    HeaderButton backButton;
 
-	private Presenter presenter;
+    private Presenter presenter;
 
-	public ConnectionDisplayGwtImpl() {
+    public ConnectionDisplayGwtImpl() {
 
-		initWidget(uiBinder.createAndBindUi(this));
+        initWidget(uiBinder.createAndBindUi(this));
 
-		if (MGWT.getOsDetection().isTablet()) {
-			backButton.setBackButton(false);
-			backButton.setText("Modules");
-			backButton.addStyleName(MGWTStyle.getTheme().getMGWTClientBundle().getUtilCss().portraitonly());
-		}
-	}
+        if (MGWT.getOsDetection().isTablet()) {
+            backButton.setBackButton(false);
+            backButton.setText("Modules");
+            backButton.addStyleName(MGWTStyle.getTheme().getMGWTClientBundle().getUtilCss().portraitonly());
+        }
+    }
 
-	@Override
-	public void setPresenter(Presenter presenter) {
-		this.presenter = presenter;
+    @Override
+    public void setPresenter(Presenter presenter) {
+        this.presenter = presenter;
 
-	}
+    }
 
-	@UiHandler("startButton")
-	protected void onStartButtonPressed(TapEvent event) {
-		if (presenter != null) {
-			presenter.onStartStopButtonPressed();
-		}
-	}
+    @UiHandler("startButton")
+    protected void onStartButtonPressed(TapEvent event) {
+        if (presenter != null) {
+            presenter.onStartStopButtonPressed();
+        }
+    }
 
-	@UiHandler("backButton")
-	protected void oBackButtonPressed(TapEvent event) {
-		if (presenter != null) {
-			presenter.onBackButtonPressed();
-		}
-	}
+    @UiHandler("backButton")
+    protected void oBackButtonPressed(TapEvent event) {
+        if (presenter != null) {
+            presenter.onBackButtonPressed();
+        }
+    }
 
-	@Override
-	public HasHTML getConnection() {
-		return connection;
-	}
+    @Override
+    public HasHTML getConnection() {
+        return connection;
+    }
 
 }

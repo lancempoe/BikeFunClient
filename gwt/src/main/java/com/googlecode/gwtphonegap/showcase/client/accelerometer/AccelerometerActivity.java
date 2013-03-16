@@ -33,107 +33,107 @@ import com.googlecode.gwtphonegap.showcase.client.accelerometer.AccelerometerDis
 
 public class AccelerometerActivity extends NavBaseActivity implements Presenter {
 
-  private final PhoneGap phoneGap;
+    private final PhoneGap phoneGap;
 
-  private AccelerometerWatcher watcher = null;
+    private AccelerometerWatcher watcher = null;
 
-  private AccelerometerDisplay display;
+    private AccelerometerDisplay display;
 
-  public AccelerometerActivity(ClientFactory clientFactory) {
-    super(clientFactory);
+    public AccelerometerActivity(ClientFactory clientFactory) {
+        super(clientFactory);
 
-    this.phoneGap = clientFactory.getPhoneGap();
-    display = clientFactory.getAccelerometerDisplay();
+        this.phoneGap = clientFactory.getPhoneGap();
+        display = clientFactory.getAccelerometerDisplay();
 
-  }
+    }
 
-  public interface Display {
-    public Widget asWidget();
+    public interface Display {
+        public Widget asWidget();
 
-    public HasClickHandlers getStartStopButton();
+        public HasClickHandlers getStartStopButton();
 
-    public void setXValue(String string);
+        public void setXValue(String string);
 
-    public void setYValue(String string);
+        public void setYValue(String string);
 
-    public void setZValue(String string);
+        public void setZValue(String string);
 
-    public void setTimeValue(String value);
-  }
+        public void setTimeValue(String value);
+    }
 
-  private class AccelerometerCallbackImpl implements AccelerationCallback {
+    private class AccelerometerCallbackImpl implements AccelerationCallback {
 
-    public AccelerometerCallbackImpl() {
+        public AccelerometerCallbackImpl() {
+
+        }
+
+        @Override
+        public void onSuccess(Acceleration acceleration) {
+            display.getXValue().setText("" + acceleration.getX());
+            display.getYValue().setText("" + acceleration.getY());
+            display.getZValue().setText("" + acceleration.getZ());
+            display.getTimeStamp().setText("" + acceleration.getTimeStamp());
+
+        }
+
+        @Override
+        public void onFailure() {
+            // TODO display error in app
+            Window.alert("failure while reading accel");
+
+        }
 
     }
 
     @Override
-    public void onSuccess(Acceleration acceleration) {
-      display.getXValue().setText("" + acceleration.getX());
-      display.getYValue().setText("" + acceleration.getY());
-      display.getZValue().setText("" + acceleration.getZ());
-      display.getTimeStamp().setText("" + acceleration.getTimeStamp());
+    public void start(AcceptsOneWidget panel, EventBus eventBus) {
+
+        display.setPresenter(this);
+
+        display.getStartStopButton().setText("Start");
+
+        if (!phoneGap.isPhoneGapDevice()) {
+            AccelermeterMock mock = ((AccelermeterMock) phoneGap.getAccelerometer());
+
+            ArrayList<Acceleration> list = new ArrayList<Acceleration>();
+            list.add(new AccelerationBrowserImpl(1, 1, 1));
+            list.add(new AccelerationBrowserImpl(1, 0, 0));
+            list.add(new AccelerationBrowserImpl(0, 1, 0));
+            list.add(new AccelerationBrowserImpl(0, 0, 1));
+            mock.setMockValues(list);
+        }
+
+        panel.setWidget(display);
 
     }
 
     @Override
-    public void onFailure() {
-      // TODO display error in app
-      Window.alert("failure while reading accel");
+    public void onStop() {
+        super.onStop();
+        display.setPresenter(null);
 
+        if (watcher != null) {
+            phoneGap.getAccelerometer().clearWatch(watcher);
+            watcher = null;
+        }
     }
 
-  }
+    @Override
+    public void onStartStopButtonPressed() {
+        if (watcher == null) {
+            final AccelerationOptions options = new AccelerationOptions();
+            options.setFrequency(50);
+            watcher = phoneGap.getAccelerometer().watchAcceleration(options, new AccelerometerCallbackImpl());
+            display.getStartStopButton().setText("Stop");
+        } else {
+            phoneGap.getAccelerometer().clearWatch(watcher);
+            watcher = null;
+            display.getStartStopButton().setText("Start");
+            display.getXValue().setText("");
+            display.getYValue().setText("");
+            display.getZValue().setText("");
+            display.getTimeStamp().setText("");
+        }
 
-  @Override
-  public void start(AcceptsOneWidget panel, EventBus eventBus) {
-
-    display.setPresenter(this);
-
-    display.getStartStopButton().setText("Start");
-
-    if (!phoneGap.isPhoneGapDevice()) {
-      AccelermeterMock mock = ((AccelermeterMock) phoneGap.getAccelerometer());
-
-      ArrayList<Acceleration> list = new ArrayList<Acceleration>();
-      list.add(new AccelerationBrowserImpl(1, 1, 1));
-      list.add(new AccelerationBrowserImpl(1, 0, 0));
-      list.add(new AccelerationBrowserImpl(0, 1, 0));
-      list.add(new AccelerationBrowserImpl(0, 0, 1));
-      mock.setMockValues(list);
     }
-
-    panel.setWidget(display);
-
-  }
-
-  @Override
-  public void onStop() {
-    super.onStop();
-    display.setPresenter(null);
-
-    if (watcher != null) {
-      phoneGap.getAccelerometer().clearWatch(watcher);
-      watcher = null;
-    }
-  }
-
-  @Override
-  public void onStartStopButtonPressed() {
-    if (watcher == null) {
-      final AccelerationOptions options = new AccelerationOptions();
-      options.setFrequency(50);
-      watcher = phoneGap.getAccelerometer().watchAcceleration(options, new AccelerometerCallbackImpl());
-      display.getStartStopButton().setText("Stop");
-    } else {
-      phoneGap.getAccelerometer().clearWatch(watcher);
-      watcher = null;
-      display.getStartStopButton().setText("Start");
-      display.getXValue().setText("");
-      display.getYValue().setText("");
-      display.getZValue().setText("");
-      display.getTimeStamp().setText("");
-    }
-
-  }
 }

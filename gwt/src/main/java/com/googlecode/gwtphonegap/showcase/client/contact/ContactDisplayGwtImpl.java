@@ -23,84 +23,84 @@ import com.googlecode.mgwt.ui.client.widget.ScrollPanel;
 
 public class ContactDisplayGwtImpl extends Composite implements ContactDisplay {
 
-	private static ContactDisplayGwtImplUiBinder uiBinder = GWT.create(ContactDisplayGwtImplUiBinder.class);
+    private static ContactDisplayGwtImplUiBinder uiBinder = GWT.create(ContactDisplayGwtImplUiBinder.class);
 
-	interface ContactDisplayGwtImplUiBinder extends UiBinder<Widget, ContactDisplayGwtImpl> {
-	}
+    interface ContactDisplayGwtImplUiBinder extends UiBinder<Widget, ContactDisplayGwtImpl> {
+    }
 
-	@UiField
-	MSearchBox searchBox;
-	private Presenter presenter;
+    @UiField
+    MSearchBox searchBox;
+    private Presenter presenter;
 
-	@UiField
-	HeaderButton backButton;
+    @UiField
+    HeaderButton backButton;
 
-	@UiField
-	ScrollPanel scrollPanel;
+    @UiField
+    ScrollPanel scrollPanel;
 
-	@UiField(provided = true)
-	CellList<DemoContact> cellList;
+    @UiField(provided = true)
+    CellList<DemoContact> cellList;
 
-	public ContactDisplayGwtImpl() {
+    public ContactDisplayGwtImpl() {
 
-		BasicCell<DemoContact> cell = new BasicCell<DemoContact>() {
+        BasicCell<DemoContact> cell = new BasicCell<DemoContact>() {
 
-			@Override
-			public String getDisplayString(DemoContact model) {
-				return model.getName();
-			}
+            @Override
+            public String getDisplayString(DemoContact model) {
+                return model.getName();
+            }
 
-			@Override
-			public boolean canBeSelected(DemoContact model) {
-				return false;
-			}
-		};
+            @Override
+            public boolean canBeSelected(DemoContact model) {
+                return false;
+            }
+        };
 
-		cellList = new CellList<DemoContact>(cell);
+        cellList = new CellList<DemoContact>(cell);
 
-		initWidget(uiBinder.createAndBindUi(this));
+        initWidget(uiBinder.createAndBindUi(this));
 
-		if (MGWT.getOsDetection().isTablet()) {
-			backButton.setBackButton(false);
-			backButton.setText("Modules");
-			backButton.addStyleName(MGWTStyle.getTheme().getMGWTClientBundle().getUtilCss().portraitonly());
-		}
-	}
+        if (MGWT.getOsDetection().isTablet()) {
+            backButton.setBackButton(false);
+            backButton.setText("Modules");
+            backButton.addStyleName(MGWTStyle.getTheme().getMGWTClientBundle().getUtilCss().portraitonly());
+        }
+    }
 
-	@Override
-	public void setPresenter(Presenter presenter) {
-		this.presenter = presenter;
+    @Override
+    public void setPresenter(Presenter presenter) {
+        this.presenter = presenter;
 
-	}
+    }
 
-	@Override
-	public void display(List<DemoContact> contacts) {
-		cellList.render(contacts);
-		scrollPanel.refresh();
+    @Override
+    public void display(List<DemoContact> contacts) {
+        cellList.render(contacts);
+        scrollPanel.refresh();
 
-	}
+    }
 
-	@UiHandler("searchBox")
-	protected void onSearchBoxTyped(KeyUpEvent event) {
+    @UiHandler("searchBox")
+    protected void onSearchBoxTyped(KeyUpEvent event) {
 
-		if (presenter != null) {
-			Scheduler.get().scheduleDeferred(new ScheduledCommand() {
+        if (presenter != null) {
+            Scheduler.get().scheduleDeferred(new ScheduledCommand() {
 
-				@Override
-				public void execute() {
-					presenter.onSearchTermEntered(searchBox.getValue());
+                @Override
+                public void execute() {
+                    presenter.onSearchTermEntered(searchBox.getValue());
 
-				}
-			});
+                }
+            });
 
-		}
-	}
+        }
+    }
 
-	@UiHandler("backButton")
-	protected void oBackButtonPressed(TapEvent event) {
-		if (presenter != null) {
-			presenter.onBackButtonPressed();
-		}
-	}
+    @UiHandler("backButton")
+    protected void oBackButtonPressed(TapEvent event) {
+        if (presenter != null) {
+            presenter.onBackButtonPressed();
+        }
+    }
 
 }

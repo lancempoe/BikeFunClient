@@ -16,77 +16,77 @@ import com.googlecode.mgwt.ui.client.widget.base.ButtonBase;
 
 public class MediaDisplayGwtImpl extends Composite implements MediaDisplay {
 
-	private static MediaDisplayGwtImplUiBinder uiBinder = GWT.create(MediaDisplayGwtImplUiBinder.class);
+    private static MediaDisplayGwtImplUiBinder uiBinder = GWT.create(MediaDisplayGwtImplUiBinder.class);
 
-	interface MediaDisplayGwtImplUiBinder extends UiBinder<Widget, MediaDisplayGwtImpl> {
-	}
+    interface MediaDisplayGwtImplUiBinder extends UiBinder<Widget, MediaDisplayGwtImpl> {
+    }
 
-	@UiField
-	HTML position;
+    @UiField
+    HTML position;
 
-	@UiField
-	ButtonBase play;
+    @UiField
+    ButtonBase play;
 
-	@UiField
-	ButtonBase pause;
+    @UiField
+    ButtonBase pause;
 
-	@UiField
-	HeaderButton backButton;
+    @UiField
+    HeaderButton backButton;
 
-	private Presenter presenter;
+    private Presenter presenter;
 
-	public MediaDisplayGwtImpl() {
-		initWidget(uiBinder.createAndBindUi(this));
+    public MediaDisplayGwtImpl() {
+        initWidget(uiBinder.createAndBindUi(this));
 
-		if (MGWT.getOsDetection().isTablet()) {
-			backButton.setBackButton(false);
-			backButton.setText("Modules");
-			backButton.addStyleName(MGWTStyle.getTheme().getMGWTClientBundle().getUtilCss().portraitonly());
-		}
-	}
+        if (MGWT.getOsDetection().isTablet()) {
+            backButton.setBackButton(false);
+            backButton.setText("Modules");
+            backButton.addStyleName(MGWTStyle.getTheme().getMGWTClientBundle().getUtilCss().portraitonly());
+        }
+    }
 
-	@Override
-	public void setPresenter(Presenter presenter) {
-		this.presenter = presenter;
+    @Override
+    public void setPresenter(Presenter presenter) {
+        this.presenter = presenter;
 
-	}
+    }
 
-	@Override
-	public HasHTML getPosition() {
-		return position;
-	}
+    @Override
+    public HasHTML getPosition() {
+        return position;
+    }
 
-	@Override
-	public void showPlayButton(boolean show) {
-		play.setVisible(show);
+    @Override
+    public void showPlayButton(boolean show) {
+        play.setVisible(show);
 
-	}
+    }
 
-	@Override
-	public void showPauseButton(boolean show) {
-		pause.setVisible(show);
+    @Override
+    public void showPauseButton(boolean show) {
+        pause.setVisible(show);
 
-	}
+    }
 
-	@UiHandler("backButton")
-	protected void oBackButtonPressed(TapEvent event) {
-		if (presenter != null) {
-			presenter.onBackButtonPressed();
-		}
-	}
+    @UiHandler("backButton")
+    protected void oBackButtonPressed(TapEvent event) {
+        if (presenter != null) {
+            presenter.onBackButtonPressed();
+        }
+    }
 
-	@UiHandler("pause")
-	protected void onPauseButton(TapEvent event) {
-		if (presenter != null) {
-			presenter.onPauseButtonPressed();
-		}
-	}
+    @UiHandler("pause")
+    protected void onPauseButton(TapEvent event) {
+        if (presenter != null) {
+            presenter.onPauseButtonPressed();
+        }
+    }
 
-	@UiHandler("play")
-	protected void onPlayButton(TapEvent event) {
-		if (presenter != null) {
-			presenter.onPlayButtonPressed();
-		}
-	}
+    @UiHandler("play")
+    protected void onPlayButton(TapEvent event) {
+        if (presenter != null) {
+            presenter.onPlayButtonPressed();
+        }
+    }
 
 }

@@ -17,85 +17,85 @@ import com.googlecode.mgwt.ui.client.widget.HeaderButton;
 
 public class CompassDisplayGwtImpl extends Composite implements CompassDisplay {
 
-	private static CompassDisplayGwtImplUiBinder uiBinder = GWT.create(CompassDisplayGwtImplUiBinder.class);
+    private static CompassDisplayGwtImplUiBinder uiBinder = GWT.create(CompassDisplayGwtImplUiBinder.class);
 
-	interface CompassDisplayGwtImplUiBinder extends UiBinder<Widget, CompassDisplayGwtImpl> {
-	}
+    interface CompassDisplayGwtImplUiBinder extends UiBinder<Widget, CompassDisplayGwtImpl> {
+    }
 
-	@UiField
-	HTML mh;
+    @UiField
+    HTML mh;
 
-	@UiField
-	HTML th;
+    @UiField
+    HTML th;
 
-	@UiField
-	HTML ha;
+    @UiField
+    HTML ha;
 
-	@UiField
-	HTML timestamp;
+    @UiField
+    HTML timestamp;
 
-	@UiField
-	Button startButton;
+    @UiField
+    Button startButton;
 
-	@UiField
-	HeaderButton backButton;
+    @UiField
+    HeaderButton backButton;
 
-	private Presenter presenter;
+    private Presenter presenter;
 
-	public CompassDisplayGwtImpl() {
+    public CompassDisplayGwtImpl() {
 
-		initWidget(uiBinder.createAndBindUi(this));
+        initWidget(uiBinder.createAndBindUi(this));
 
-		if (MGWT.getOsDetection().isTablet()) {
-			backButton.setBackButton(false);
-			backButton.setText("Modules");
-			backButton.addStyleName(MGWTStyle.getTheme().getMGWTClientBundle().getUtilCss().portraitonly());
-		}
-	}
+        if (MGWT.getOsDetection().isTablet()) {
+            backButton.setBackButton(false);
+            backButton.setText("Modules");
+            backButton.addStyleName(MGWTStyle.getTheme().getMGWTClientBundle().getUtilCss().portraitonly());
+        }
+    }
 
-	@Override
-	public void setPresenter(Presenter presenter) {
-		this.presenter = presenter;
+    @Override
+    public void setPresenter(Presenter presenter) {
+        this.presenter = presenter;
 
-	}
+    }
 
-	@Override
-	public HasHTML getMagneticHeading() {
-		return mh;
-	}
+    @Override
+    public HasHTML getMagneticHeading() {
+        return mh;
+    }
 
-	@Override
-	public HasHTML getTrueHeading() {
-		return th;
-	}
+    @Override
+    public HasHTML getTrueHeading() {
+        return th;
+    }
 
-	@Override
-	public HasHTML getHeadingAccuracy() {
-		return ha;
-	}
+    @Override
+    public HasHTML getHeadingAccuracy() {
+        return ha;
+    }
 
-	@Override
-	public HasHTML getTimeStamp() {
-		return timestamp;
-	}
+    @Override
+    public HasHTML getTimeStamp() {
+        return timestamp;
+    }
 
-	@Override
-	public HasText getStartStopButton() {
-		return startButton;
-	}
+    @Override
+    public HasText getStartStopButton() {
+        return startButton;
+    }
 
-	@UiHandler("startButton")
-	protected void onStartButtonPressed(TapEvent event) {
-		if (presenter != null) {
-			presenter.onStartStopButtonPressed();
-		}
-	}
+    @UiHandler("startButton")
+    protected void onStartButtonPressed(TapEvent event) {
+        if (presenter != null) {
+            presenter.onStartStopButtonPressed();
+        }
+    }
 
-	@UiHandler("backButton")
-	protected void oBackButtonPressed(TapEvent event) {
-		if (presenter != null) {
-			presenter.onBackButtonPressed();
-		}
-	}
+    @UiHandler("backButton")
+    protected void oBackButtonPressed(TapEvent event) {
+        if (presenter != null) {
+            presenter.onBackButtonPressed();
+        }
+    }
 
 }
