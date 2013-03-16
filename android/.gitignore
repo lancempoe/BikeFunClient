@@ -1,2 +1,6 @@
 /.idea/
 /out/
+/local.properties
+/*.iml
+/bin/
+/gen/
