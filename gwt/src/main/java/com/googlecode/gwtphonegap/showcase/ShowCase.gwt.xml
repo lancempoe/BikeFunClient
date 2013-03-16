@@ -24,4 +24,5 @@
     <!-- 	<set-configuration-property name="compiler.emulatedStack.recordFileNames" value="true"/> -->
     <entry-point class="com.googlecode.gwtphonegap.showcase.client.ShowCaseEntryPoint"/>
     <source path="client"/>
+    <source path="bootstrap"/>
 </module>
