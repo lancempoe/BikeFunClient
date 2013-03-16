@@ -1,8 +1,26 @@
-package com.googlecode.gwtphonegap.showcase.client;
+/*
+ * Copyright 2010 Daniel Kurka
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
+ */
+package com.googlecode.gwtphonegap.showcase.bootstrap.phone;
 
 import com.google.gwt.activity.shared.Activity;
 import com.google.gwt.activity.shared.ActivityMapper;
 import com.google.gwt.place.shared.Place;
+import com.googlecode.gwtphonegap.showcase.bootstrap.ClientFactory;
+import com.googlecode.gwtphonegap.showcase.client.overview.OverviewActivity;
+import com.googlecode.gwtphonegap.showcase.client.overview.OverviewPlace;
 import com.googlecode.gwtphonegap.showcase.client.about.AboutActivity;
 import com.googlecode.gwtphonegap.showcase.client.about.AboutPlace;
 import com.googlecode.gwtphonegap.showcase.client.accelerometer.AccelerometerActivity;
@@ -30,121 +48,75 @@ import com.googlecode.gwtphonegap.showcase.client.media.MediaPlace;
 import com.googlecode.gwtphonegap.showcase.client.notification.NotificationActivity;
 import com.googlecode.gwtphonegap.showcase.client.notification.NotificationPlace;
 
-public class TabletMainActivityMapper implements ActivityMapper {
+/**
+ * @author Daniel Kurka
+ */
+class PhoneActivityMapper implements ActivityMapper {
 
     private final ClientFactory clientFactory;
 
-    private Place lastPlace;
-    private Activity lastActivity;
-
-    public TabletMainActivityMapper(ClientFactory clientFactory) {
+    public PhoneActivityMapper(ClientFactory clientFactory) {
         this.clientFactory = clientFactory;
-
     }
 
     @Override
     public Activity getActivity(Place place) {
-        Activity activity = getActivity(lastPlace, place);
-        lastPlace = place;
-        lastActivity = activity;
-        return activity;
-
-    }
-
-    private Activity getActivity(Place lastPlace, Place newPlace) {
-
-        if (newPlace instanceof AccelerometerPlace) {
-            if (lastPlace instanceof AccelerometerPlace) {
-                return lastActivity;
-            }
+        if (place instanceof OverviewPlace) {
+            return new OverviewActivity(clientFactory);
+        }
+        if (place instanceof AccelerometerPlace) {
             return new AccelerometerActivity(clientFactory);
         }
 
-        if (newPlace instanceof CameraPlace) {
-            if (lastPlace instanceof CameraPlace) {
-                return lastActivity;
-            }
+        if (place instanceof CameraPlace) {
             return new CameraActivity(clientFactory);
         }
 
-        if (newPlace instanceof CompassPlace) {
-            if (lastPlace instanceof CompassPlace) {
-                return lastActivity;
-            }
+        if (place instanceof CompassPlace) {
             return new CompassActivity(clientFactory);
         }
 
-        if (newPlace instanceof ConnectionPlace) {
-            if (lastPlace instanceof ConnectionPlace) {
-                return lastActivity;
-            }
+        if (place instanceof ConnectionPlace) {
             return new ConnectionActivity(clientFactory);
         }
 
-        if (newPlace instanceof ContactPlace) {
-            if (lastPlace instanceof ContactPlace) {
-                return lastActivity;
-            }
+        if (place instanceof ContactPlace) {
             return new ContactActivity(clientFactory);
         }
 
-        if (newPlace instanceof DevicePlace) {
-            if (lastPlace instanceof DevicePlace) {
-                return lastActivity;
-            }
+        if (place instanceof DevicePlace) {
             return new DeviceActivity(clientFactory);
         }
 
-        if (newPlace instanceof EventPlace) {
-            if (lastPlace instanceof EventPlace) {
-                return lastActivity;
-            }
+        if (place instanceof EventPlace) {
             return new EventActivity(clientFactory);
         }
 
-        if (newPlace instanceof GeolocationPlace) {
-            if (lastPlace instanceof GeolocationPlace) {
-                return lastActivity;
-            }
+        if (place instanceof GeolocationPlace) {
             return new GeolocationActivity(clientFactory);
         }
 
-        if (newPlace instanceof MediaPlace) {
-            if (lastPlace instanceof MediaPlace) {
-                return lastActivity;
-            }
+        if (place instanceof MediaPlace) {
             return new MediaActivity(clientFactory);
         }
 
-        if (newPlace instanceof NotificationPlace) {
-            if (lastPlace instanceof NotificationPlace) {
-                return lastActivity;
-            }
+        if (place instanceof NotificationPlace) {
             return new NotificationActivity(clientFactory);
         }
 
-        if (newPlace instanceof InAppBrowserPlace) {
-            if (lastPlace instanceof InAppBrowserPlace) {
-                return lastActivity;
-            }
+        if (place instanceof InAppBrowserPlace) {
             return new InAppBrowserActivity(clientFactory);
         }
 
-        if (newPlace instanceof AboutPlace || newPlace instanceof OverviewPlace) {
-            if (lastPlace instanceof AboutPlace || lastPlace instanceof OverviewPlace) {
-                return lastActivity;
-            }
+        if (place instanceof AboutPlace) {
             return new AboutActivity(clientFactory);
         }
 
-        if (newPlace instanceof FilePlace) {
-            if (lastPlace instanceof FilePlace) {
-                return lastActivity;
-            }
+        if (place instanceof FilePlace) {
             return new FileActivity(clientFactory);
         }
 
         return null;
-    }
 
+    }
 }

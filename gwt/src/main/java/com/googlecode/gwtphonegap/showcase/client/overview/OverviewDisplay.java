@@ -1,4 +1,4 @@
-package com.googlecode.gwtphonegap.showcase.client;
+package com.googlecode.gwtphonegap.showcase.client.overview;
 
 import com.google.gwt.user.client.ui.IsWidget;
 import com.googlecode.gwtphonegap.showcase.client.model.PGModule;

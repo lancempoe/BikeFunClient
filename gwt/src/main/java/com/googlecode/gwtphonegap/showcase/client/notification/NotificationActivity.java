@@ -18,7 +18,7 @@ import com.google.web.bindery.event.shared.EventBus;
 import com.googlecode.gwtphonegap.client.PhoneGap;
 import com.googlecode.gwtphonegap.client.notification.AlertCallback;
 import com.googlecode.gwtphonegap.client.notification.ConfirmCallback;
-import com.googlecode.gwtphonegap.showcase.client.ClientFactory;
+import com.googlecode.gwtphonegap.showcase.bootstrap.ClientFactory;
 import com.googlecode.gwtphonegap.showcase.client.NavBaseActivity;
 
 public class NotificationActivity extends NavBaseActivity implements NotificationDisplay.Presenter {

@@ -1,4 +1,4 @@
-package com.googlecode.gwtphonegap.showcase.client;
+package com.googlecode.gwtphonegap.showcase.bootstrap;
 
 import com.google.gwt.place.shared.PlaceController;
 import com.google.web.bindery.event.shared.EventBus;
@@ -16,6 +16,7 @@ import com.googlecode.gwtphonegap.showcase.client.geolocation.GeolocationDisplay
 import com.googlecode.gwtphonegap.showcase.client.inappbrowser.InAppBrowserDisplay;
 import com.googlecode.gwtphonegap.showcase.client.media.MediaDisplay;
 import com.googlecode.gwtphonegap.showcase.client.notification.NotificationDisplay;
+import com.googlecode.gwtphonegap.showcase.client.overview.OverviewDisplay;
 
 public interface ClientFactory {
     public PhoneGap getPhoneGap();

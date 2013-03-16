@@ -1,10 +1,8 @@
-package com.googlecode.gwtphonegap.showcase.bootstrap;
+package com.googlecode.gwtphonegap.showcase.bootstrap.phone;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.ui.IsWidget;
-import com.googlecode.gwtphonegap.showcase.client.ClientFactory;
-import com.googlecode.gwtphonegap.showcase.client.PhoneActivityMapper;
-import com.googlecode.gwtphonegap.showcase.client.PhoneAnimationMapper;
+import com.googlecode.gwtphonegap.showcase.bootstrap.ClientFactory;
 import com.googlecode.mgwt.mvp.client.AnimatableDisplay;
 import com.googlecode.mgwt.mvp.client.AnimatingActivityManager;
 
@@ -18,7 +16,7 @@ import java.util.List;
  * Time: 1:00 PM
  * To change this template use File | Settings | File Templates.
  */
-class PhoneFactory {
+public class PhoneFactory {
     public static List<IsWidget> createPhoneDisplay(ClientFactory clientFactory) {
         AnimatableDisplay display = GWT.create(AnimatableDisplay.class);
 

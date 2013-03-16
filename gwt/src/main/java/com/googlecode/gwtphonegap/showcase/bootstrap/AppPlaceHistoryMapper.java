@@ -13,7 +13,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package com.googlecode.gwtphonegap.showcase.client;
+package com.googlecode.gwtphonegap.showcase.bootstrap;
 
 import com.google.gwt.place.shared.PlaceHistoryMapper;
 import com.google.gwt.place.shared.WithTokenizers;
@@ -30,6 +30,7 @@ import com.googlecode.gwtphonegap.showcase.client.geolocation.GeolocationPlace;
 import com.googlecode.gwtphonegap.showcase.client.inappbrowser.InAppBrowserPlace;
 import com.googlecode.gwtphonegap.showcase.client.media.MediaPlace;
 import com.googlecode.gwtphonegap.showcase.client.notification.NotificationPlace;
+import com.googlecode.gwtphonegap.showcase.client.overview.OverviewPlace;
 
 /**
  * @author Daniel Kurka

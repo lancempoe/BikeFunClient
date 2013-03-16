@@ -3,7 +3,7 @@ package com.googlecode.gwtphonegap.showcase.client.connection;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.web.bindery.event.shared.EventBus;
 import com.googlecode.gwtphonegap.client.PhoneGap;
-import com.googlecode.gwtphonegap.showcase.client.ClientFactory;
+import com.googlecode.gwtphonegap.showcase.bootstrap.ClientFactory;
 import com.googlecode.gwtphonegap.showcase.client.NavBaseActivity;
 
 public class ConnectionActivity extends NavBaseActivity implements ConnectionDisplay.Presenter {

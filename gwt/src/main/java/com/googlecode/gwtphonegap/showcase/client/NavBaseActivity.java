@@ -1,6 +1,8 @@
 package com.googlecode.gwtphonegap.showcase.client;
 
 import com.google.gwt.place.shared.PlaceController;
+import com.googlecode.gwtphonegap.showcase.bootstrap.ClientFactory;
+import com.googlecode.gwtphonegap.showcase.client.overview.OverviewPlace;
 import com.googlecode.mgwt.mvp.client.MGWTAbstractActivity;
 import com.googlecode.mgwt.ui.client.MGWT;
 import com.googlecode.mgwt.ui.client.event.ShowMasterEvent;

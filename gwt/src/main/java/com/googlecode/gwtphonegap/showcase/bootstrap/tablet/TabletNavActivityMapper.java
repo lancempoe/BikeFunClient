@@ -1,10 +1,12 @@
-package com.googlecode.gwtphonegap.showcase.client;
+package com.googlecode.gwtphonegap.showcase.bootstrap.tablet;
 
 import com.google.gwt.activity.shared.Activity;
 import com.google.gwt.activity.shared.ActivityMapper;
 import com.google.gwt.place.shared.Place;
+import com.googlecode.gwtphonegap.showcase.bootstrap.ClientFactory;
+import com.googlecode.gwtphonegap.showcase.client.overview.OverviewActivity;
 
-public class TabletNavActivityMapper implements ActivityMapper {
+class TabletNavActivityMapper implements ActivityMapper {
 
     private final ClientFactory clientFactory;
     private OverviewActivity overviewActivity;

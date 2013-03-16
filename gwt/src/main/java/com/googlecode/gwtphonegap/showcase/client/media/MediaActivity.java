@@ -9,7 +9,7 @@ import com.googlecode.gwtphonegap.client.media.Media;
 import com.googlecode.gwtphonegap.client.media.MediaCallback;
 import com.googlecode.gwtphonegap.client.media.MediaError;
 import com.googlecode.gwtphonegap.client.media.MediaPositionCallback;
-import com.googlecode.gwtphonegap.showcase.client.ClientFactory;
+import com.googlecode.gwtphonegap.showcase.bootstrap.ClientFactory;
 import com.googlecode.gwtphonegap.showcase.client.NavBaseActivity;
 import com.googlecode.mgwt.ui.client.MGWT;
 

@@ -1,4 +1,4 @@
-package com.googlecode.gwtphonegap.showcase.client;
+package com.googlecode.gwtphonegap.showcase.bootstrap;
 
 import com.google.gwt.place.shared.PlaceController;
 import com.google.web.bindery.event.shared.EventBus;
@@ -30,6 +30,8 @@ import com.googlecode.gwtphonegap.showcase.client.media.MediaDisplay;
 import com.googlecode.gwtphonegap.showcase.client.media.MediaDisplayGwtImpl;
 import com.googlecode.gwtphonegap.showcase.client.notification.NotificationDisplay;
 import com.googlecode.gwtphonegap.showcase.client.notification.NotificationDisplayGwtImpl;
+import com.googlecode.gwtphonegap.showcase.client.overview.OverviewDisplay;
+import com.googlecode.gwtphonegap.showcase.client.overview.OverviewDisplayGwtImpl;
 
 public class ClientFactoryGwtImpl implements ClientFactory {
 

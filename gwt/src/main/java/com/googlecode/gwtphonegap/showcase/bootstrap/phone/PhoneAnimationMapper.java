@@ -13,9 +13,10 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package com.googlecode.gwtphonegap.showcase.client;
+package com.googlecode.gwtphonegap.showcase.bootstrap.phone;
 
 import com.google.gwt.place.shared.Place;
+import com.googlecode.gwtphonegap.showcase.client.overview.OverviewPlace;
 import com.googlecode.gwtphonegap.showcase.client.about.AboutPlace;
 import com.googlecode.gwtphonegap.showcase.client.accelerometer.AccelerometerPlace;
 import com.googlecode.gwtphonegap.showcase.client.camera.CameraPlace;
@@ -35,7 +36,7 @@ import com.googlecode.mgwt.mvp.client.AnimationMapper;
 /**
  * @author Daniel Kurka
  */
-public class PhoneAnimationMapper implements AnimationMapper {
+class PhoneAnimationMapper implements AnimationMapper {
 
     @Override
     public Animation getAnimation(Place oldPlace, Place newPlace) {

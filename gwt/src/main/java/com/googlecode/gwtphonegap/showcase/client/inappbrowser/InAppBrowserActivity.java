@@ -4,7 +4,7 @@ import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.web.bindery.event.shared.EventBus;
 import com.googlecode.gwtphonegap.client.PhoneGap;
 import com.googlecode.gwtphonegap.client.inappbrowser.InAppBrowser;
-import com.googlecode.gwtphonegap.showcase.client.ClientFactory;
+import com.googlecode.gwtphonegap.showcase.bootstrap.ClientFactory;
 import com.googlecode.gwtphonegap.showcase.client.NavBaseActivity;
 
 public class InAppBrowserActivity extends NavBaseActivity implements InAppBrowserDisplay.Presenter {

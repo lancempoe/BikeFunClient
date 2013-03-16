@@ -6,7 +6,7 @@ import com.google.web.bindery.event.shared.EventBus;
 import com.googlecode.gwtphonegap.client.PhoneGap;
 import com.googlecode.gwtphonegap.client.file.*;
 import com.googlecode.gwtphonegap.collection.shared.LightArray;
-import com.googlecode.gwtphonegap.showcase.client.ClientFactory;
+import com.googlecode.gwtphonegap.showcase.bootstrap.ClientFactory;
 import com.googlecode.gwtphonegap.showcase.client.NavBaseActivity;
 import com.googlecode.gwtphonegap.showcase.client.model.FileDemo;
 
