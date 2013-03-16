@@ -16,7 +16,7 @@
 
     <add-linker name="xsiframe"/>
 
-    <!-- <set-property name="mgwt.os" value="iphone" />   -->
+    <set-property name="mgwt.os" value="iphone, android" />
 
     <!-- 	<inherits name="com.google.gwt.core.Core" /> -->
     <!-- 	<set-property name="compiler.emulatedStack" value="true"/> -->
