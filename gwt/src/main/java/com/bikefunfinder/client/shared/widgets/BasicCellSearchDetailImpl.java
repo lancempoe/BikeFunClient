@@ -1,6 +1,6 @@
 package com.bikefunfinder.client.shared.widgets;
 
-import com.googlecode.gwtphonegap.showcase.client.model.SearchResult;
+import com.bikefunfinder.client.shared.model.BikeRide;
 
 /**
  * Created with IntelliJ IDEA.
@@ -9,16 +9,16 @@ import com.googlecode.gwtphonegap.showcase.client.model.SearchResult;
  * Time: 2:59 PM
  * To change this template use File | Settings | File Templates.
  */
-public class BasicCellSearchDetailImpl extends BasicCell<SearchResult> {
+public class BasicCellSearchDetailImpl extends BasicCell<BikeRide> {
 
     @Override
-    public String getDisplayString(SearchResult model) {
-        String html = "<h1>" + model.getName() + "</h1><h2>" + model.getTime() + "</h2><h2>" + model.getLocation() + "</h2>";
+    public String getDisplayString(BikeRide model) {
+        String html = "<h1>" + model.bikeRideName + "</h1><h2>" + model.rideStartTime + "</h2><h2>" + model.details + "</h2>";
         return html;
     }
 
     @Override
-    public boolean canBeSelected(SearchResult model) {
+    public boolean canBeSelected(BikeRide model) {
         return true;
     }
 }
