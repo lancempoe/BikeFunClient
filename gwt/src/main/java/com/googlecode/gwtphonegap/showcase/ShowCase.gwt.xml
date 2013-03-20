@@ -24,6 +24,6 @@
     <!-- 	<set-property name="compiler.emulatedStack" value="true"/> -->
     <!-- 	<set-configuration-property name="compiler.emulatedStack.recordLineNumbers" value="true"/> -->
     <!-- 	<set-configuration-property name="compiler.emulatedStack.recordFileNames" value="true"/> -->
-    <entry-point class="com.googlecode.gwtphonegap.showcase.client.ShowCaseEntryPoint"/>
+    <entry-point class="com.bikefunfinder.client.BFFEntrypoint"/>
     <source path="client"/>
 </module>

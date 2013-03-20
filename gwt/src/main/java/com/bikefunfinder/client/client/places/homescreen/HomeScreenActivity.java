@@ -2,6 +2,9 @@ package com.bikefunfinder.client.client.places.homescreen;
 
 import com.bikefunfinder.client.bootstrap.ClientFactory;
 import com.bikefunfinder.client.shared.model.BikeRide;
+import com.bikefunfinder.client.shared.model.Root;
+import com.bikefunfinder.client.shared.request.SearchByTimeOfDayRequest;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.web.bindery.event.shared.EventBus;
 import com.googlecode.gwtphonegap.showcase.client.about.AboutPlace;
@@ -24,7 +27,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class HomeScreenActivity extends MGWTAbstractActivity implements HomeScreenDisplay.Presenter {
-
     private final ClientFactory clientFactory;
     private List<BikeRide> currentList;
 
@@ -34,11 +36,23 @@ public class HomeScreenActivity extends MGWTAbstractActivity implements HomeScre
 
     @Override
     public void start(AcceptsOneWidget panel, EventBus eventBus) {
-        HomeScreenDisplay display = clientFactory.getHomeScreenDisplay();
+        final HomeScreenDisplay display = clientFactory.getHomeScreenDisplay();
 
-        currentList = getModuleList();
 
-        display.display(currentList);
+        SearchByTimeOfDayRequest.Callback callback = new SearchByTimeOfDayRequest.Callback() {
+            @Override
+            public void onError() {
+                Window.alert("oh noes, server fail");
+            }
+
+            @Override
+            public void onResponseReceived(Root root) {
+                currentList = getModuleList();
+                display.display(currentList);
+            }
+        };
+        SearchByTimeOfDayRequest.Builder request = new SearchByTimeOfDayRequest.Builder(callback);
+        SearchByTimeOfDayRequest request2 = request.latitude(80.00).longitude(80.0).send();
 
         display.setPresenter(this);
 
@@ -46,8 +60,10 @@ public class HomeScreenActivity extends MGWTAbstractActivity implements HomeScre
     }
 
     private List<BikeRide> getModuleList() {
+
+
         ArrayList<BikeRide> list = new ArrayList<BikeRide>();
-        list.add(new BikeRide());
+
         return list;
     }
 

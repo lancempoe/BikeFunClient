@@ -4,10 +4,24 @@ package com.bikefunfinder.client.shared.model;
  * @created 3/19/13 7:54 PM
  */
 
+import com.google.gwt.core.client.JavaScriptObject;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public class BikeRide {
+public class BikeRide extends JavaScriptObject {
+
+    protected BikeRide() {
+    }
+
+    public final native List<User> getId() /*-{
+		return this.id;
+    }-*/;
+
+    public static native BikeRide overlay(String jsonEventDetail) /*-{
+		return eval("(" + jsonEventDetail + ")");
+    }-*/;
+
     public String id;
     public String bikeRideName;
     public String details;

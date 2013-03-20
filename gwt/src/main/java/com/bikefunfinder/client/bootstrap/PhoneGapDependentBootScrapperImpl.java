@@ -1,5 +1,6 @@
 package com.bikefunfinder.client.bootstrap;
 
+import com.bikefunfinder.client.client.places.homescreen.HomeScreenPlace;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.place.shared.PlaceHistoryHandler;
 import com.google.gwt.user.client.Window;
@@ -47,7 +48,7 @@ public class PhoneGapDependentBootScrapperImpl extends PhoneGapDependentBootScra
 
         historyHandler.register(clientFactory.getPlaceController(),
                 clientFactory.getEventBus(),
-                new OverviewPlace());
+                new HomeScreenPlace());
 
         return historyHandler;
 
