@@ -1,10 +1,10 @@
-package com.googlecode.gwtphonegap.showcase.bootstrap.tablet;
+package com.bikefunfinder.client.bootstrap.tablet;
 
 import com.google.gwt.activity.shared.ActivityMapper;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.SimplePanel;
-import com.googlecode.gwtphonegap.showcase.bootstrap.ClientFactory;
+import com.bikefunfinder.client.bootstrap.ClientFactory;
 import com.googlecode.mgwt.mvp.client.AnimatableDisplay;
 import com.googlecode.mgwt.mvp.client.AnimatingActivityManager;
 import com.googlecode.mgwt.mvp.client.AnimationMapper;

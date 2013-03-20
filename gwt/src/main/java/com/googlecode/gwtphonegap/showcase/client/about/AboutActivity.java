@@ -15,7 +15,7 @@ package com.googlecode.gwtphonegap.showcase.client.about;
 
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.web.bindery.event.shared.EventBus;
-import com.googlecode.gwtphonegap.showcase.bootstrap.ClientFactory;
+import com.bikefunfinder.client.bootstrap.ClientFactory;
 import com.googlecode.gwtphonegap.showcase.client.NavBaseActivity;
 import com.googlecode.gwtphonegap.showcase.client.about.AboutDisplay.Presenter;
 

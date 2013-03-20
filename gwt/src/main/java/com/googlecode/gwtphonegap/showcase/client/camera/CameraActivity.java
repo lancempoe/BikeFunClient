@@ -19,7 +19,7 @@ import com.google.web.bindery.event.shared.EventBus;
 import com.googlecode.gwtphonegap.client.PhoneGap;
 import com.googlecode.gwtphonegap.client.camera.PictureCallback;
 import com.googlecode.gwtphonegap.client.camera.PictureOptions;
-import com.googlecode.gwtphonegap.showcase.bootstrap.ClientFactory;
+import com.bikefunfinder.client.bootstrap.ClientFactory;
 import com.googlecode.gwtphonegap.showcase.client.NavBaseActivity;
 
 public class CameraActivity extends NavBaseActivity implements CameraDisplay.Presenter {

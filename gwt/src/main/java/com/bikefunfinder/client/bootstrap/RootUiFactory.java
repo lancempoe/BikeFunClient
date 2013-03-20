@@ -1,9 +1,9 @@
-package com.googlecode.gwtphonegap.showcase.bootstrap;
+package com.bikefunfinder.client.bootstrap;
 
 import com.google.gwt.dom.client.StyleInjector;
 import com.google.gwt.user.client.ui.IsWidget;
-import com.googlecode.gwtphonegap.showcase.bootstrap.phone.PhoneFactory;
-import com.googlecode.gwtphonegap.showcase.bootstrap.tablet.TabletFactory;
+import com.bikefunfinder.client.bootstrap.phone.PhoneFactory;
+import com.bikefunfinder.client.bootstrap.tablet.TabletFactory;
 import com.googlecode.gwtphonegap.showcase.client.css.AppBundle;
 import com.googlecode.mgwt.ui.client.MGWT;
 

@@ -16,7 +16,7 @@ package com.googlecode.gwtphonegap.showcase.client.device;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.web.bindery.event.shared.EventBus;
 import com.googlecode.gwtphonegap.client.PhoneGap;
-import com.googlecode.gwtphonegap.showcase.bootstrap.ClientFactory;
+import com.bikefunfinder.client.bootstrap.ClientFactory;
 import com.googlecode.gwtphonegap.showcase.client.NavBaseActivity;
 
 public class DeviceActivity extends NavBaseActivity implements DeviceDisplay.Presenter {

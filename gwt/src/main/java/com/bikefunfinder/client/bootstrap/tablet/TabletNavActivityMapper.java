@@ -1,9 +1,9 @@
-package com.googlecode.gwtphonegap.showcase.bootstrap.tablet;
+package com.bikefunfinder.client.bootstrap.tablet;
 
 import com.google.gwt.activity.shared.Activity;
 import com.google.gwt.activity.shared.ActivityMapper;
 import com.google.gwt.place.shared.Place;
-import com.googlecode.gwtphonegap.showcase.bootstrap.ClientFactory;
+import com.bikefunfinder.client.bootstrap.ClientFactory;
 import com.googlecode.gwtphonegap.showcase.client.overview.OverviewActivity;
 
 class TabletNavActivityMapper implements ActivityMapper {

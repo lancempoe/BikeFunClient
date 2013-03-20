@@ -1,4 +1,4 @@
-package com.googlecode.gwtphonegap.showcase.bootstrap;
+package com.bikefunfinder.client.bootstrap;
 
 import com.google.gwt.place.shared.PlaceController;
 import com.google.web.bindery.event.shared.EventBus;

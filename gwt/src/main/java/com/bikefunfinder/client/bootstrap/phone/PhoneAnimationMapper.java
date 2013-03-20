@@ -13,7 +13,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package com.googlecode.gwtphonegap.showcase.bootstrap.phone;
+package com.bikefunfinder.client.bootstrap.phone;
 
 import com.google.gwt.place.shared.Place;
 import com.googlecode.gwtphonegap.showcase.client.overview.OverviewPlace;

@@ -1,10 +1,10 @@
-package com.googlecode.gwtphonegap.showcase.bootstrap.tablet;
+package com.bikefunfinder.client.bootstrap.tablet;
 
 import com.google.gwt.place.shared.Place;
 import com.googlecode.mgwt.mvp.client.Animation;
 import com.googlecode.mgwt.mvp.client.AnimationMapper;
 
-class TabletNavAnimationMapper implements AnimationMapper {
+class TabletMainAnimationMapper implements AnimationMapper {
 
     @Override
     public Animation getAnimation(Place oldPlace, Place newPlace) {
