@@ -8,7 +8,7 @@ import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
 import com.googlecode.gwtphonegap.showcase.client.model.PGModule;
-import com.bikefunfinder.client.shared.widgets.BasicCell;
+import com.bikefunfinder.client.shared.widgets.BasicCellSearchDetailImpl;
 import com.googlecode.mgwt.dom.client.event.tap.TapEvent;
 import com.googlecode.mgwt.ui.client.widget.CellList;
 import com.googlecode.mgwt.ui.client.widget.base.ButtonBase;
@@ -32,7 +32,7 @@ public class HomeScreenDisplayGwtImpl extends Composite implements HomeScreenDis
 
     public HomeScreenDisplayGwtImpl() {
 
-        BasicCell<BikeRide> cell = new BasicCell<BikeRide>() {
+        BasicCellSearchDetailImpl<BikeRide> cell = new BasicCellSearchDetailImpl<BikeRide>() {
 
             @Override
             public String getDisplayString(BikeRide model) {
