@@ -12,6 +12,7 @@
 
     <modules>
         <module>gwtphonegap.showcase.gwt</module>
+        <module>com.bikefunfinder.BikeFunFinder</module>
     </modules>
 
     <dependencies>
