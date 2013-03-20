@@ -1,6 +1,7 @@
 package com.bikefunfinder.client.client.places.homescreen;
 
 import com.bikefunfinder.client.shared.model.BikeRide;
+import com.bikefunfinder.client.shared.widgets.BasicCellSearchDetailImpl;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -32,7 +33,7 @@ public class HomeScreenDisplayGwtImpl extends Composite implements HomeScreenDis
 
     public HomeScreenDisplayGwtImpl() {
 
-        BasicCell<BikeRide> cell = new BasicCell<BikeRide>() {
+        BasicCell<BikeRide> cell = new BasicCellSearchDetailImpl() {
 
             @Override
             public String getDisplayString(BikeRide model) {
