@@ -1,4 +1,5 @@
 package com.bikefunfinder.client;
+
 /*
  * @author: tneuwerth
  * @created 3/19/13 6:47 PM
@@ -14,13 +15,6 @@ import com.bikefunfinder.client.bootstrap.PhoneGapDependentBootScrapperImpl;
 import com.bikefunfinder.client.bootstrap.UncaughtExceptionHandlerFactory;
 
 import java.util.logging.Logger;
-
-
-/*
-
-asdfadsfasdf
-
-*/
 
 public class BFFEntrypoint implements EntryPoint {
     private Logger log = Logger.getLogger(getClass().getName());

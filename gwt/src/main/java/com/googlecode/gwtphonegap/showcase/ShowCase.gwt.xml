@@ -12,6 +12,7 @@
     <set-property name="gwt.logging.popupHandler" value="DISABLED"/>
     <inherits name='com.googlecode.gwtphonegap.PhoneGap'/>
     <inherits name="com.google.maps.gwt.GoogleMaps" />
+    <inherits name="com.bikefunfinder.client.BikeFunFinder" />
 
     <set-property name="user.agent" value="safari"/>
 

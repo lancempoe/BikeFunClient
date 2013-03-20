@@ -1,4 +1,4 @@
-package com.googlecode.gwtphonegap.showcase.client.widgets;
+package com.bikefunfinder.client.shared.widgets;
 
 import com.googlecode.gwtphonegap.showcase.client.model.SearchResult;
 

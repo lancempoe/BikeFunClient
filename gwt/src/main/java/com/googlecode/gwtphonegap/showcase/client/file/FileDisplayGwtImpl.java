@@ -6,7 +6,7 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.*;
-import com.googlecode.gwtphonegap.showcase.client.widgets.BasicCell;
+import com.bikefunfinder.client.shared.widgets.BasicCell;
 import com.googlecode.gwtphonegap.showcase.client.model.FileDemo;
 import com.googlecode.mgwt.dom.client.event.tap.TapEvent;
 import com.googlecode.mgwt.ui.client.MGWT;

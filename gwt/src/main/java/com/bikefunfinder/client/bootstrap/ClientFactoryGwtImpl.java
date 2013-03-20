@@ -1,5 +1,7 @@
 package com.bikefunfinder.client.bootstrap;
 
+import com.bikefunfinder.client.client.places.homescreen.HomeScreenDisplay;
+import com.bikefunfinder.client.client.places.homescreen.HomeScreenDisplayGwtImpl;
 import com.google.gwt.place.shared.PlaceController;
 import com.google.web.bindery.event.shared.EventBus;
 import com.google.web.bindery.event.shared.SimpleEventBus;
@@ -41,6 +43,7 @@ public class ClientFactoryGwtImpl implements ClientFactory {
     private SimpleEventBus eventBus;
     private PlaceController placeController;
     private OverviewDisplay overviewDisplay;
+    private HomeScreenDisplay homeScreenDisplay;
     private AccelerometerDisplay accelerometerDisplay;
     private CameraDisplay cameraDisplay;
     private CompassDisplayGwtImpl compassDisplay;
@@ -80,10 +83,18 @@ public class ClientFactoryGwtImpl implements ClientFactory {
 
     @Override
     public OverviewDisplay getOverviewDisplay() {
-        if (overviewDisplay == null) {
+        if(overviewDisplay == null ) {
             overviewDisplay = new OverviewDisplayGwtImpl();
         }
         return overviewDisplay;
+    }
+
+    @Override
+    public HomeScreenDisplay getHomeScreenDisplay() {
+        if (homeScreenDisplay == null) {
+            homeScreenDisplay = new HomeScreenDisplayGwtImpl();
+        }
+        return homeScreenDisplay;
     }
 
     @Override

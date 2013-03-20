@@ -1,5 +1,6 @@
 package com.bikefunfinder.client.bootstrap;
 
+import com.bikefunfinder.client.client.places.homescreen.HomeScreenDisplay;
 import com.google.gwt.place.shared.PlaceController;
 import com.google.web.bindery.event.shared.EventBus;
 import com.googlecode.gwtphonegap.client.PhoneGap;
@@ -26,6 +27,9 @@ public interface ClientFactory {
 
     public EventBus getEventBus();
 
+    public HomeScreenDisplay getHomeScreenDisplay();
+
+    /// old views we're not going to use in BFF just for reference
     public OverviewDisplay getOverviewDisplay();
 
     public AccelerometerDisplay getAccelerometerDisplay();

@@ -1,4 +1,4 @@
-package com.bikefunfinder.client.model;
+package com.bikefunfinder.client.shared.model;
 /*
  * @author: tneuwerth
  * @created 3/19/13 7:55 PM

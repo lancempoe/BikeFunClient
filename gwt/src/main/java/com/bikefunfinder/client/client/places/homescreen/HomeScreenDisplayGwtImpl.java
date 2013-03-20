@@ -1,13 +1,14 @@
-package com.googlecode.gwtphonegap.showcase.client.overview;
+package com.bikefunfinder.client.client.places.homescreen;
 
+import com.bikefunfinder.client.shared.model.BikeRide;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
-import com.bikefunfinder.client.shared.widgets.BasicCell;
 import com.googlecode.gwtphonegap.showcase.client.model.PGModule;
+import com.bikefunfinder.client.shared.widgets.BasicCell;
 import com.googlecode.mgwt.dom.client.event.tap.TapEvent;
 import com.googlecode.mgwt.ui.client.widget.CellList;
 import com.googlecode.mgwt.ui.client.widget.base.ButtonBase;
@@ -15,36 +16,36 @@ import com.googlecode.mgwt.ui.client.widget.celllist.CellSelectedEvent;
 
 import java.util.List;
 
-public class OverviewDisplayGwtImpl extends Composite implements OverviewDisplay {
+public class HomeScreenDisplayGwtImpl extends Composite implements HomeScreenDisplay {
 
     private static OverviewDisplayGwtImplUiBinder uiBinder = GWT.create(OverviewDisplayGwtImplUiBinder.class);
 
-    interface OverviewDisplayGwtImplUiBinder extends UiBinder<Widget, OverviewDisplayGwtImpl> {
+    interface OverviewDisplayGwtImplUiBinder extends UiBinder<Widget, HomeScreenDisplayGwtImpl> {
     }
 
     @UiField(provided = true)
-    CellList<PGModule> cellList;
+    CellList<BikeRide> cellList;
     private Presenter presenter;
 
     @UiField
     ButtonBase aboutButton;
 
-    public OverviewDisplayGwtImpl() {
+    public HomeScreenDisplayGwtImpl() {
 
-        BasicCell<PGModule> cell = new BasicCell<PGModule>() {
+        BasicCell<BikeRide> cell = new BasicCell<BikeRide>() {
 
             @Override
-            public String getDisplayString(PGModule model) {
-                return model.getName();
+            public String getDisplayString(BikeRide model) {
+                return "";
             }
 
             @Override
-            public boolean canBeSelected(PGModule model) {
+            public boolean canBeSelected(BikeRide model) {
                 return true;
             }
         };
 
-        cellList = new CellList<PGModule>(cell);
+        cellList = new CellList<BikeRide>(cell);
 
         cellList.setRound(true);
 
@@ -52,7 +53,7 @@ public class OverviewDisplayGwtImpl extends Composite implements OverviewDisplay
     }
 
     @Override
-    public void display(List<PGModule> list) {
+    public void display(List<BikeRide> list) {
         cellList.render(list);
 
     }
