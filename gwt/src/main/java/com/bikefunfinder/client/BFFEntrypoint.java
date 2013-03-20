@@ -15,6 +15,13 @@ import com.bikefunfinder.client.bootstrap.UncaughtExceptionHandlerFactory;
 
 import java.util.logging.Logger;
 
+
+/*
+
+asdfadsfasdf
+
+*/
+
 public class BFFEntrypoint implements EntryPoint {
     private Logger log = Logger.getLogger(getClass().getName());
 
