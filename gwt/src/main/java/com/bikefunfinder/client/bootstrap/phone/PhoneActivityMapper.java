@@ -15,6 +15,8 @@
  */
 package com.bikefunfinder.client.bootstrap.phone;
 
+import com.bikefunfinder.client.client.places.homescreen.HomeScreenActivity;
+import com.bikefunfinder.client.client.places.homescreen.HomeScreenPlace;
 import com.google.gwt.activity.shared.Activity;
 import com.google.gwt.activity.shared.ActivityMapper;
 import com.google.gwt.place.shared.Place;
@@ -63,6 +65,11 @@ class PhoneActivityMapper implements ActivityMapper {
 
     @Override
     public Activity getActivity(Place place) {
+
+        if(place instanceof HomeScreenPlace) {
+            return new HomeScreenActivity(clientFactory);
+        }
+
         if (place instanceof OverviewPlace) {
             return new OverviewActivity(clientFactory);
         }

@@ -13,7 +13,9 @@ public class BasicCellSearchDetailImpl extends BasicCell<BikeRide> {
 
     @Override
     public String getDisplayString(BikeRide model) {
-        String html = "<h1>" + model.bikeRideName + "</h1><h2>" + model.rideStartTime + "</h2><h2>" + model.details + "</h2>";
+        //String html = "<h1>" + model.bikeRideName + "</h1><h2>" + model.rideStartTime + "</h2><h2>" + model.details + "</h2>";
+        String html = "oh noes1";
+        //todo: unfuck this
         return html;
     }
 

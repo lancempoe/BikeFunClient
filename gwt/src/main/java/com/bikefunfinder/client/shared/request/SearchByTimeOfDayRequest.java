@@ -5,6 +5,7 @@ package com.bikefunfinder.client.shared.request;
  */
 
 import com.bikefunfinder.client.shared.model.Root;
+import com.google.gwt.user.client.Window;
 import com.googlecode.mgwt.ui.client.dialog.Dialogs;
 import com.google.gwt.http.client.Request;
 import com.google.gwt.http.client.RequestBuilder;
@@ -66,7 +67,7 @@ public final class SearchByTimeOfDayRequest {
         }
     }
 
-    private static final String URL = "http://appworks.timneuwerth.com/FunService/rest/display/by_time_of_day";
+    private static final String URL = "http://appworks.timneuwerth.com/FunService/rest/display/by_time_of_day/";
 
     private final SearchByTimeOfDayRequest.Callback callback;
     private final BigDecimal latitude;
@@ -104,7 +105,7 @@ public final class SearchByTimeOfDayRequest {
     private String getUrlWithQuery() {
         final StringBuilder builder = new StringBuilder();
         builder.append(URL);
-        builder.append("?geoloc=");
+        builder.append("geoloc=");
         builder.append(longitude);
         builder.append(",");
         builder.append(latitude);
@@ -139,8 +140,17 @@ public final class SearchByTimeOfDayRequest {
                         }
                     });
                 } else {
-                    final Root eventDetail = Root.overlay(response.getText());
-                    callback.onResponseReceived(eventDetail);
+
+                    Dialogs.alert("Error", response.getText(), new Dialogs.AlertCallback() {
+                        @Override
+                        public void onButtonPressed() {
+                            final Root eventDetail = Root.overlay(response.getText());
+                            callback.onResponseReceived(eventDetail);
+                        }
+                    });
+//
+//                    final Root eventDetail = Root.overlay(response.getText());
+//                    callback.onResponseReceived(eventDetail);
                 }
             }
         };
