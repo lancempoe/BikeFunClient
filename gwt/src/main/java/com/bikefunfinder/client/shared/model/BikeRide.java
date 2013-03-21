@@ -22,6 +22,23 @@ public class BikeRide extends JavaScriptObject {
 		return eval("(" + jsonEventDetail + ")");
     }-*/;
 
+    public native String getBikeRideName() /*-{
+        return this.bikeRideName;
+        }-*/;
+
+
+    public native String getDetails() /*-{
+        return this.details;
+        }-*/;
+
+    public native Location getLocation() /*-{
+        return this.location;
+        }-*/;
+
+    public native Long getStartTime() /*->{
+        return this.rideStartTime;
+        }-*/;
+
 //    public String id;
 //    public String bikeRideName;
 //    public String details;
