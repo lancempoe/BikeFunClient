@@ -6,23 +6,72 @@ package com.bikefunfinder.client.shared.model;
 
 import com.google.gwt.core.client.JavaScriptObject;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class BikeRide extends JavaScriptObject {
 
-    protected BikeRide() {
-    }
+    protected BikeRide() {}
 
-    public final native List<User> getId() /*-{
+    public final native String getId() /*-{
 		return this.id;
     }-*/;
 
-    public static native BikeRide overlay(String jsonEventDetail) /*-{
-		return eval("(" + jsonEventDetail + ")");
+
+    public final native String getBikeRideName() /*-{
+        return this.bikeRideName;
     }-*/;
 
-//    public String id;
+    public final native String getDetails() /*-{
+        return this.details;
+    }-*/;
+
+    public final native String getRideLeaderId() /*-{
+        return this.rideLeaderId;
+    }-*/;
+
+    public final native String getTargetAudience() /*-{
+        return this.targetAudience;
+    }-*/;
+
+    public final native String getRideStartTime() /*-{
+        return this.rideStartTime;
+    }-*/;
+
+    public final native Location getLocation() /*-{
+        return this.location;
+    }-*/;
+
+    public final native String getCityLocationId() /*-{
+        return this.cityLocationId;
+    }-*/;
+
+    public final native String getImagePath() /*-{
+        return this.imagePath;
+    }-*/;
+
+    public final native boolean isTrackingAllowed() /*-{
+        return this.trackingAllowed;
+    }-*/;
+
+    public final native String getRideLeaderName() /*-{
+        return this.rideLeaderName;
+    }-*/;
+
+    public final native String getDistanceFromClient() /*-{
+        return this.distanceFromClient;
+    }-*/;
+
+    public final native boolean isCurrentlyTracking() /*-{
+        return this.currentlyTracking;
+    }-*/;
+
+    public final native String getTotalPeopleTrackingCount() /*-{
+        return this.totalPeopleTrackingCount;
+    }-*/;
+
+    public final String describeAsString() {
+        return "BikeRide(todo:describe the object)";
+    }
+
+    //    public String id;
 //    public String bikeRideName;
 //    public String details;
 //    public String rideLeaderId;

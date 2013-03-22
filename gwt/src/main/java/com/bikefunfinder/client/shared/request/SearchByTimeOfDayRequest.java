@@ -5,6 +5,7 @@ package com.bikefunfinder.client.shared.request;
  */
 
 import com.bikefunfinder.client.shared.model.Root;
+import com.google.gwt.core.client.JsonUtils;
 import com.google.gwt.user.client.Window;
 import com.googlecode.mgwt.ui.client.dialog.Dialogs;
 import com.google.gwt.http.client.Request;
@@ -144,7 +145,14 @@ public final class SearchByTimeOfDayRequest {
                     Dialogs.alert("Error", response.getText(), new Dialogs.AlertCallback() {
                         @Override
                         public void onButtonPressed() {
-                            final Root eventDetail = Root.overlay(response.getText());
+                            //final Root eventDetail = Root.overlay(response.getText());
+
+                            String wrappedJson = "("+response.getText()+")";
+                            //final Root composed = Root.overlay(json);
+                            Window.alert("is safe to eval2? "+JsonUtils.safeToEval(wrappedJson));
+                            Window.alert(wrappedJson);
+
+                            final Root eventDetail = JsonUtils.safeEval(wrappedJson);
                             callback.onResponseReceived(eventDetail);
                         }
                     });

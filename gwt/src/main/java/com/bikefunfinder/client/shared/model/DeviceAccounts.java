@@ -4,9 +4,16 @@ package com.bikefunfinder.client.shared.model;
  * @created 3/19/13 10:21 PM
  */
 
-public class DeviceAccounts {
+import com.google.gwt.core.client.JavaScriptObject;
 
-    public String deviceUUID = "";
-    public String key = "";
+public class DeviceAccounts extends JavaScriptObject {
+    protected DeviceAccounts() {}
 
+    public final native String getDeviceUUID() /*-{
+        return this.deviceUUID;
+    }-*/;
+
+    public final native String getKey() /*-{
+        return this.key;
+    }-*/;
 }

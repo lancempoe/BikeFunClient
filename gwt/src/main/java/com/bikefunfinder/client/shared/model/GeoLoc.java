@@ -4,11 +4,16 @@ package com.bikefunfinder.client.shared.model;
  * @created 3/19/13 7:57 PM
  */
 
-import java.math.BigDecimal;
+import com.google.gwt.core.client.JavaScriptObject;
 
-public class GeoLoc {
+public class GeoLoc extends JavaScriptObject {
+    protected GeoLoc() {}
 
-    public BigDecimal longitude;
-    public BigDecimal latitude;
+    public final native String getLongitude() /*-{
+        return this.longitude;
+    }-*/;
 
+    public final native String getLatitude() /*-{
+        return this.latitude;
+    }-*/;
 }

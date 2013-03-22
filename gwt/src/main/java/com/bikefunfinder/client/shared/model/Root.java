@@ -10,22 +10,8 @@ import java.util.List;
 
 public class Root extends JavaScriptObject {
 
-    protected Root() {
-    }
+    protected Root() {}
 
-    public final native List<User> getUsers() /*-{
-		return this.Users;
-    }-*/;
+    public final native List<BikeRide> getBikeRides() /*-{ return this.BikeRides; }-*/;
 
-    public final native Location getClosestLocation() /*-{
-		return this.ClosestLocation;
-    }-*/;
-
-    public final native List<BikeRide> getBikeRides() /*-{
-		return this.BikeRides;
-    }-*/;
-
-    public static native Root overlay(String jsonEventDetail) /*-{
-		return eval("(" + jsonEventDetail + ")");
-    }-*/;
 }
