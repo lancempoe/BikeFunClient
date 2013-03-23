@@ -2,6 +2,7 @@ package com.bikefunfinder.client.client.places.homescreen;
 
 import com.bikefunfinder.client.bootstrap.ClientFactory;
 import com.bikefunfinder.client.shared.model.BikeRide;
+import com.bikefunfinder.client.shared.model.ClosestLocation;
 import com.bikefunfinder.client.shared.model.GeoLoc;
 import com.bikefunfinder.client.shared.model.Location;
 import com.bikefunfinder.client.shared.model.printer.JSODescriber;
@@ -330,71 +331,25 @@ public class HomeScreenActivity extends MGWTAbstractActivity implements HomeScre
                                 " \"currentlyTracking\": \"false\"," +
                                 " \"totalPeopleTrackingCount\": \"0\"" +
                               "}";
-        BikeRide bikeRide = testObjectParse(bikeRideJson);
-        Window.alert(JSODescriber.describe(bikeRide));
+//        BikeRide bikeRide = testObjectParse(bikeRideJson);
+//        Window.alert(JSODescriber.describe(bikeRide));
 
-//        "      \"id\": \"51494f39e4b0776ff69f738d\"," +
-//                "      \"bikeRideName\": \"2: Two Days in the future\"," +
-//                "      \"rideStartTime\": \"1365486905310\"," +
-//                "      \"location\": {" +
-//                "        \"streetAddress\": \"650 NE Holladay St\"," +
-//                "        \"city\": \"Portland\"," +
-//                "        \"state\": \"OR\"," +
-//                "        \"geoLoc\": {" +
-//                "          \"longitude\": \"-122.65895080566406\"," +
-//                "          \"latitude\": \"45.52901840209961\"" +
-//                "        }," +
-//                "        \"formattedAddress\": \"650 Northeast Holladay Street, Portland, OR 97232, USA\"" +
+        String closestLocationJson = "{" +
+        "    \"id\": \"514943d0e4b0776ff69f714d\"," +
+                "    \"city\": \"Portland\"," +
+                "    \"state\": \"OR\"," +
+                "    \"geoLoc\": {" +
+                "      \"longitude\": \"-122.67620849609375\"," +
+                "      \"latitude\": \"45.52345275878906\"" +
+                "    }," +
+                "    \"formattedAddress\": \"Portland, OR, USA\"" +
+                "  }";
 
-
-
-                //final Root composed = Root.overlay(json);
-
-//        final Root composed = JsonUtils.safeEval(wrappedJson);
-//        Window.alert("composed = " + composed);
+        ClosestLocation closestLocation = testObjectParse(closestLocationJson);
+        Window.alert(JSODescriber.describe(closestLocation));
 
 
-//        JsArray<UserData> uda = JsonUtils.safeEval(wrappedJson);
-//        Window.alert("uda size: "+uda.length());
-//        int size = uda.length();
-//        for(int index=0; index<size; index++) {
-//            UserData userData = uda.get(index);
-//            Window.alert("full :"+userData.getFullData());
-//        }
-
-
-//        Root uda = JsonUtils.safeEval(json);
-//
-//        Window.alert("string name: "+uda.toString());
-//        Root cast = uda.cast();
-//        Window.alert("cast is : "+cast);
-//
-//        Window.alert("cast source is : "+cast.toSource());
-//        Window.alert("cast cast.getBikeRides():"+cast.getBikeRides());
-
-//        for(BikeRide ride: cast.getBikeRides()) {
-//            Window.alert("ride id :"+ride.getId());
-//        }
-
-        /*
-        JSONValue jsonValue = JSONParser.parseStrict(json);
-        JSONObject jsonObject = jsonValue.isObject(); // assert that this is an object
-        if (jsonObject == null) {
-            // uh oh, it wasn't an object after
-            // do error handling here
-            throw new RuntimeException("JSON payload did not describe an object");
-        }
-
-        Window.alert("casting");
-        Root composed = jsonObject.getJavaScriptObject().cast();
-
-        Window.alert("ok making list");
-        Window.alert("tostr "+composed.toString());
-        Window.alert("tosrc "+composed.toSource());
-        Window.alert("brds "+composed.getBikeRides());
-        */
-
-        ArrayList<BikeRide> list = new ArrayList<BikeRide>();
+    ArrayList<BikeRide> list = new ArrayList<BikeRide>();
 //        list.addAll(composed.getBikeRides());
         return list;
     }
