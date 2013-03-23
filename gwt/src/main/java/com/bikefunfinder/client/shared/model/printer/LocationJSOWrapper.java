@@ -6,7 +6,7 @@ package com.bikefunfinder.client.shared.model.printer;
 
 import com.bikefunfinder.client.shared.model.Location;
 
-public class LocationJSOWrapper implements DescribeableAsString<Location> {
+class LocationJSOWrapper implements DescribeableAsString<Location> {
     @Override
     public final String describeAsString(Location jsoObject) {
 

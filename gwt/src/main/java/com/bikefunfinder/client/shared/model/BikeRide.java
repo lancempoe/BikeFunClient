@@ -10,6 +10,7 @@ public class BikeRide extends JavaScriptObject {
 
     protected BikeRide() {}
 
+
     public final native String getId() /*-{
 		return this.id;
     }-*/;
@@ -47,7 +48,7 @@ public class BikeRide extends JavaScriptObject {
         return this.imagePath;
     }-*/;
 
-    public final native boolean isTrackingAllowed() /*-{
+    public final native String isTrackingAllowed() /*-{
         return this.trackingAllowed;
     }-*/;
 
@@ -59,7 +60,7 @@ public class BikeRide extends JavaScriptObject {
         return this.distanceFromClient;
     }-*/;
 
-    public final native boolean isCurrentlyTracking() /*-{
+    public final native String isCurrentlyTracking() /*-{
         return this.currentlyTracking;
     }-*/;
 
@@ -67,9 +68,6 @@ public class BikeRide extends JavaScriptObject {
         return this.totalPeopleTrackingCount;
     }-*/;
 
-    public final String describeAsString() {
-        return "BikeRide(todo:describe the object)";
-    }
 
     //    public String id;
 //    public String bikeRideName;

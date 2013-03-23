@@ -6,7 +6,7 @@ package com.bikefunfinder.client.shared.model.printer;
 
 import com.bikefunfinder.client.shared.model.GeoLoc;
 
-public class GeoLocJSOWrapper implements DescribeableAsString<GeoLoc> {
+class GeoLocJSOWrapper implements DescribeableAsString<GeoLoc> {
     @Override
     public final String describeAsString(GeoLoc jsoObject) {
         return "GeoLoc(lat="+jsoObject.getLatitude() + ", " +

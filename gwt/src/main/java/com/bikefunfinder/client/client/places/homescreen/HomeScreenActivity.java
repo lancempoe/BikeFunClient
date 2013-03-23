@@ -316,8 +316,22 @@ public class HomeScreenActivity extends MGWTAbstractActivity implements HomeScre
                 " \"geoLoc\": " +geoJson+", "+
                 " \"formattedAddress\": \"650 Northeast Holladay Street, Portland, OR 97232, USA\"" +
                 " }";
-        Location location = testObjectParse(locationJson);
-        Window.alert(JSODescriber.describe(location));
+//        Location location = testObjectParse(locationJson);
+//        Window.alert(JSODescriber.describe(location));
+
+        String bikeRideJson = "{" +
+                                " \"id\": \"51494f39e4b0776ff69f738d\"," +
+                                " \"bikeRideName\": \"2: Two Days in the future\"," +
+                                " \"rideStartTime\": \"1365486905310\"," +
+                                " \"location\": "+locationJson+"," +
+                                " \"imagePath\": \"Images\\/BikeRides\\/defaultBikeRide.jpg\"," +
+                                " \"trackingAllowed\": \"true\"," +
+                                " \"distanceFromClient\": \"3717.7103706379244\"," +
+                                " \"currentlyTracking\": \"false\"," +
+                                " \"totalPeopleTrackingCount\": \"0\"" +
+                              "}";
+        BikeRide bikeRide = testObjectParse(bikeRideJson);
+        Window.alert(JSODescriber.describe(bikeRide));
 
 //        "      \"id\": \"51494f39e4b0776ff69f738d\"," +
 //                "      \"bikeRideName\": \"2: Two Days in the future\"," +
