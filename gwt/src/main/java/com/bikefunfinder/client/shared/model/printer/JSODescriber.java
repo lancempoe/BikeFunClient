@@ -11,6 +11,9 @@ public class JSODescriber {
     private static final DescribeableAsString<Location> locationJSOWrapper = new LocationJSOWrapper();
     private static final DescribeableAsString<BikeRide> bikeRideJSOWrapper = new BikeRideJSOWrapper();
     private static final DescribeableAsString<ClosestLocation> closestLocationJSOWrapper = new ClosestLocationJSOWrapper();
+    private static final DescribeableAsString<Root> rootJSOWrapper = new RootJSOWrapper();
+
+
 
     public static final String describe(GeoLoc geoLoc) {
         return geoLocJSOWrapper.describeAsString(geoLoc);
@@ -26,5 +29,9 @@ public class JSODescriber {
 
     public static final String describe(ClosestLocation closestLocation) {
         return closestLocationJSOWrapper.describeAsString(closestLocation);
+    }
+
+    public static final String describe(Root root) {
+        return rootJSOWrapper.describeAsString(root);
     }
 }

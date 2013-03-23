@@ -1,12 +1,10 @@
 package com.bikefunfinder.client.client.places.homescreen;
 
 import com.bikefunfinder.client.bootstrap.ClientFactory;
-import com.bikefunfinder.client.shared.model.BikeRide;
-import com.bikefunfinder.client.shared.model.ClosestLocation;
-import com.bikefunfinder.client.shared.model.GeoLoc;
-import com.bikefunfinder.client.shared.model.Location;
+import com.bikefunfinder.client.shared.model.*;
 import com.bikefunfinder.client.shared.model.printer.JSODescriber;
 import com.google.gwt.core.client.JavaScriptObject;
+import com.google.gwt.core.client.JsArray;
 import com.google.gwt.core.client.JsonUtils;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
@@ -257,41 +255,7 @@ public class HomeScreenActivity extends MGWTAbstractActivity implements HomeScre
        " }";
        */
 
-        /*
-        String json = "{\n" +
-                "  \"BikeRides\": [    {\n" +
-                "      \"id\": \"51494f39e4b0776ff69f738d\",\n" +
-                "      \"bikeRideName\": \"2: Two Days in the future\",\n" +
-                "      \"rideStartTime\": \"1365486905310\",\n" +
-                "      \"location\": {\n" +
-                "        \"streetAddress\": \"650 NE Holladay St\",\n" +
-                "        \"city\": \"Portland\",\n" +
-                "        \"state\": \"OR\",\n" +
-                "        \"geoLoc\": {\n" +
-                "          \"longitude\": \"-122.65895080566406\",\n" +
-                "          \"latitude\": \"45.52901840209961\"\n" +
-                "        },\n" +
-                "        \"formattedAddress\": \"650 Northeast Holladay Street, Portland, OR 97232, USA\"\n" +
-                "      },\n" +
-                "      \"imagePath\": \"Images\\/BikeRides\\/defaultBikeRide.jpg\",\n" +
-                "      \"trackingAllowed\": \"true\",\n" +
-                "      \"distanceFromClient\": \"3717.7103706379244\",\n" +
-                "      \"currentlyTracking\": \"false\",\n" +
-                "      \"totalPeopleTrackingCount\": \"0\"\n" +
-                "    }\n" +
-                "  ],\n" +
-                "  \"ClosestLocation\": {\n" +
-                "    \"id\": \"514943d0e4b0776ff69f714d\",\n" +
-                "    \"city\": \"Portland\",\n" +
-                "    \"state\": \"OR\",\n" +
-                "    \"geoLoc\": {\n" +
-                "      \"longitude\": \"-122.67620849609375\",\n" +
-                "      \"latitude\": \"45.52345275878906\"\n" +
-                "    },\n" +
-                "    \"formattedAddress\": \"Portland, OR, USA\"\n" +
-                "  }\n" +
-                "}";
-        */
+
         //String json = "[{\"kode\":\"002\",\"nama\":\"bambang gentolet\"},{\"kode\":\"012\",\"nama\":\"Algiz\"}]";
         String json = "[{\"kode\":\"002\",\"nama\":\"bambang gentolet\"},{\"kode\":\"012\",\"nama\":\"Algiz\"}]";
 
@@ -344,13 +308,26 @@ public class HomeScreenActivity extends MGWTAbstractActivity implements HomeScre
                 "    }," +
                 "    \"formattedAddress\": \"Portland, OR, USA\"" +
                 "  }";
+//        ClosestLocation closestLocation = testObjectParse(closestLocationJson);
+//        Window.alert(JSODescriber.describe(closestLocation));
 
-        ClosestLocation closestLocation = testObjectParse(closestLocationJson);
-        Window.alert(JSODescriber.describe(closestLocation));
 
+        String rootJson = "{" +
+                "  \"BikeRides\": [ "+ bikeRideJson + "  ]," +
+                "  \"ClosestLocation\": "+closestLocationJson+"," +
+                "  \"formattedAddress\": \"Portland, OR, USA\"" +
+            "}";
 
-    ArrayList<BikeRide> list = new ArrayList<BikeRide>();
-//        list.addAll(composed.getBikeRides());
+        Root root = testObjectParse(rootJson);
+        Window.alert(JSODescriber.describe(root));
+
+        ArrayList<BikeRide> list = new ArrayList<BikeRide>();
+        JsArray<BikeRide> bikeRides = root.getBikeRides();
+        final int numBikeRides = bikeRides.length();
+        for(int index=0; index< numBikeRides; index++) {
+            list.add(bikeRides.get(index));
+        }
+
         return list;
     }
 

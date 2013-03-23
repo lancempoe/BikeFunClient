@@ -5,13 +5,13 @@ package com.bikefunfinder.client.shared.model;
  */
 
 import com.google.gwt.core.client.JavaScriptObject;
-
-import java.util.List;
+import com.google.gwt.core.client.JsArray;
 
 public class Root extends JavaScriptObject {
 
     protected Root() {}
 
-    public final native List<BikeRide> getBikeRides() /*-{ return this.BikeRides; }-*/;
+    public final native JsArray<BikeRide> getBikeRides() /*-{ return this.BikeRides; }-*/;
+    public final native ClosestLocation getClosestLocation() /*-{ return this.ClosestLocation; }-*/;
 
 }
