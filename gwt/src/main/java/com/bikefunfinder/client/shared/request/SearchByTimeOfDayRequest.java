@@ -4,7 +4,9 @@ package com.bikefunfinder.client.shared.request;
  * @created 3/19/13 10:33 PM
  */
 
+import com.bikefunfinder.client.client.places.homescreen.HomeScreenActivity;
 import com.bikefunfinder.client.shared.model.Root;
+import com.bikefunfinder.client.shared.model.printer.JSODescriber;
 import com.google.gwt.core.client.JsonUtils;
 import com.google.gwt.user.client.Window;
 import com.googlecode.mgwt.ui.client.dialog.Dialogs;
@@ -141,24 +143,9 @@ public final class SearchByTimeOfDayRequest {
                         }
                     });
                 } else {
+                    Root root = HomeScreenActivity.testObjectParse(response.getText());
+                    callback.onResponseReceived(root);
 
-                    Dialogs.alert("Error", response.getText(), new Dialogs.AlertCallback() {
-                        @Override
-                        public void onButtonPressed() {
-                            //final Root eventDetail = Root.overlay(response.getText());
-
-                            String wrappedJson = "("+response.getText()+")";
-                            //final Root composed = Root.overlay(json);
-                            Window.alert("is safe to eval2? "+JsonUtils.safeToEval(wrappedJson));
-                            Window.alert(wrappedJson);
-
-                            final Root eventDetail = JsonUtils.safeEval(wrappedJson);
-                            callback.onResponseReceived(eventDetail);
-                        }
-                    });
-//
-//                    final Root eventDetail = Root.overlay(response.getText());
-//                    callback.onResponseReceived(eventDetail);
                 }
             }
         };
