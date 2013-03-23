@@ -37,7 +37,7 @@ public class HomeScreenDisplayGwtImpl extends Composite implements HomeScreenDis
 
             @Override
             public String getDisplayString(BikeRide model) {
-                return "";
+                return model.getBikeRideName();
             }
 
             @Override
