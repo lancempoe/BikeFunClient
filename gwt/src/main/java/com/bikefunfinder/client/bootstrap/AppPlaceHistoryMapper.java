@@ -15,28 +15,15 @@
  */
 package com.bikefunfinder.client.bootstrap;
 
+import com.bikefunfinder.client.client.places.createscreen.CreateScreenPlace;
+import com.bikefunfinder.client.client.places.homescreen.HomeScreenPlace;
+import com.bikefunfinder.client.client.places.loginscreen.LoginScreenPlace;
 import com.google.gwt.place.shared.PlaceHistoryMapper;
 import com.google.gwt.place.shared.WithTokenizers;
-import com.googlecode.gwtphonegap.showcase.client.about.AboutPlace;
-import com.googlecode.gwtphonegap.showcase.client.accelerometer.AccelerometerPlace;
-import com.googlecode.gwtphonegap.showcase.client.camera.CameraPlace;
-import com.googlecode.gwtphonegap.showcase.client.compass.CompassPlace;
-import com.googlecode.gwtphonegap.showcase.client.connection.ConnectionPlace;
-import com.googlecode.gwtphonegap.showcase.client.contact.ContactPlace;
-import com.googlecode.gwtphonegap.showcase.client.device.DevicePlace;
-import com.googlecode.gwtphonegap.showcase.client.event.EventPlace;
-import com.googlecode.gwtphonegap.showcase.client.file.FilePlace;
-import com.googlecode.gwtphonegap.showcase.client.geolocation.GeolocationPlace;
-import com.googlecode.gwtphonegap.showcase.client.inappbrowser.InAppBrowserPlace;
-import com.googlecode.gwtphonegap.showcase.client.media.MediaPlace;
-import com.googlecode.gwtphonegap.showcase.client.notification.NotificationPlace;
-import com.googlecode.gwtphonegap.showcase.client.overview.OverviewPlace;
 
 /**
  * @author Daniel Kurka
  */
-@WithTokenizers({OverviewPlace.Tokenizer.class, AccelerometerPlace.Tokenizer.class, CameraPlace.Tokenizer.class, CompassPlace.Tokenizer.class, ConnectionPlace.Tokenizer.class,
-        ContactPlace.Tokenizer.class, DevicePlace.Tokenizer.class, EventPlace.Tokenizer.class, GeolocationPlace.Tokenizer.class, MediaPlace.Tokenizer.class, NotificationPlace.Tokenizer.class,
-        InAppBrowserPlace.Tokenizer.class, AboutPlace.Tokenizer.class, FilePlace.Tokenizer.class})
+@WithTokenizers({CreateScreenPlace.Tokenizer.class, HomeScreenPlace.Tokenizer.class, LoginScreenPlace.Tokenizer.class })
 public interface AppPlaceHistoryMapper extends PlaceHistoryMapper {
 }
