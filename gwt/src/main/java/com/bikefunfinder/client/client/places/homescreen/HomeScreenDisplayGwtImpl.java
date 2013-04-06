@@ -108,8 +108,8 @@ public class HomeScreenDisplayGwtImpl extends Composite implements HomeScreenDis
     }
 
     @Override
-    public void display(Root root) {
-        //To change body of implemented methods use File | Settings | File Templates.
+    public void display(String cityNameText) {
+        cityName.setText(cityNameText);
     }
 
 //    @UiHandler("cellList")
