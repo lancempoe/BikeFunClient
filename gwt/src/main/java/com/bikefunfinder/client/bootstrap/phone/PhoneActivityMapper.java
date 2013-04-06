@@ -25,36 +25,6 @@ import com.google.gwt.activity.shared.Activity;
 import com.google.gwt.activity.shared.ActivityMapper;
 import com.google.gwt.place.shared.Place;
 import com.bikefunfinder.client.bootstrap.ClientFactory;
-import com.googlecode.gwtphonegap.showcase.client.gmap.GMapActivity;
-import com.googlecode.gwtphonegap.showcase.client.gmap.GMapPlace;
-import com.googlecode.gwtphonegap.showcase.client.overview.OverviewActivity;
-import com.googlecode.gwtphonegap.showcase.client.overview.OverviewPlace;
-import com.googlecode.gwtphonegap.showcase.client.about.AboutActivity;
-import com.googlecode.gwtphonegap.showcase.client.about.AboutPlace;
-import com.googlecode.gwtphonegap.showcase.client.accelerometer.AccelerometerActivity;
-import com.googlecode.gwtphonegap.showcase.client.accelerometer.AccelerometerPlace;
-import com.googlecode.gwtphonegap.showcase.client.camera.CameraActivity;
-import com.googlecode.gwtphonegap.showcase.client.camera.CameraPlace;
-import com.googlecode.gwtphonegap.showcase.client.compass.CompassActivity;
-import com.googlecode.gwtphonegap.showcase.client.compass.CompassPlace;
-import com.googlecode.gwtphonegap.showcase.client.connection.ConnectionActivity;
-import com.googlecode.gwtphonegap.showcase.client.connection.ConnectionPlace;
-import com.googlecode.gwtphonegap.showcase.client.contact.ContactActivity;
-import com.googlecode.gwtphonegap.showcase.client.contact.ContactPlace;
-import com.googlecode.gwtphonegap.showcase.client.device.DeviceActivity;
-import com.googlecode.gwtphonegap.showcase.client.device.DevicePlace;
-import com.googlecode.gwtphonegap.showcase.client.event.EventActivity;
-import com.googlecode.gwtphonegap.showcase.client.event.EventPlace;
-import com.googlecode.gwtphonegap.showcase.client.file.FileActivity;
-import com.googlecode.gwtphonegap.showcase.client.file.FilePlace;
-import com.googlecode.gwtphonegap.showcase.client.geolocation.GeolocationActivity;
-import com.googlecode.gwtphonegap.showcase.client.geolocation.GeolocationPlace;
-import com.googlecode.gwtphonegap.showcase.client.inappbrowser.InAppBrowserActivity;
-import com.googlecode.gwtphonegap.showcase.client.inappbrowser.InAppBrowserPlace;
-import com.googlecode.gwtphonegap.showcase.client.media.MediaActivity;
-import com.googlecode.gwtphonegap.showcase.client.media.MediaPlace;
-import com.googlecode.gwtphonegap.showcase.client.notification.NotificationActivity;
-import com.googlecode.gwtphonegap.showcase.client.notification.NotificationPlace;
 
 class PhoneActivityMapper implements ActivityMapper {
 
@@ -77,65 +47,65 @@ class PhoneActivityMapper implements ActivityMapper {
             return new CreateScreenActivity(clientFactory);
         }
 
-        // to be nuked below
-        if (place instanceof OverviewPlace) {
-            return new OverviewActivity(clientFactory);
-        }
-        if (place instanceof AccelerometerPlace) {
-            return new AccelerometerActivity(clientFactory);
-        }
-
-        if (place instanceof CameraPlace) {
-            return new CameraActivity(clientFactory);
-        }
-
-        if (place instanceof CompassPlace) {
-            return new CompassActivity(clientFactory);
-        }
-
-        if (place instanceof ConnectionPlace) {
-            return new ConnectionActivity(clientFactory);
-        }
-
-        if (place instanceof ContactPlace) {
-            return new ContactActivity(clientFactory);
-        }
-
-        if (place instanceof DevicePlace) {
-            return new DeviceActivity(clientFactory);
-        }
-
-        if (place instanceof EventPlace) {
-            return new EventActivity(clientFactory);
-        }
-
-        if (place instanceof GeolocationPlace) {
-            return new GeolocationActivity(clientFactory);
-        }
-
-        if(place instanceof GMapPlace) {
-            return new GMapActivity(clientFactory);
-        }
-
-        if (place instanceof MediaPlace) {
-            return new MediaActivity(clientFactory);
-        }
-
-        if (place instanceof NotificationPlace) {
-            return new NotificationActivity(clientFactory);
-        }
-
-        if (place instanceof InAppBrowserPlace) {
-            return new InAppBrowserActivity(clientFactory);
-        }
-
-        if (place instanceof AboutPlace) {
-            return new AboutActivity(clientFactory);
-        }
-
-        if (place instanceof FilePlace) {
-            return new FileActivity(clientFactory);
-        }
+//        // to be nuked below
+//        if (place instanceof OverviewPlace) {
+//            return new OverviewActivity(clientFactory);
+//        }
+//        if (place instanceof AccelerometerPlace) {
+//            return new AccelerometerActivity(clientFactory);
+//        }
+//
+//        if (place instanceof CameraPlace) {
+//            return new CameraActivity(clientFactory);
+//        }
+//
+//        if (place instanceof CompassPlace) {
+//            return new CompassActivity(clientFactory);
+//        }
+//
+//        if (place instanceof ConnectionPlace) {
+//            return new ConnectionActivity(clientFactory);
+//        }
+//
+//        if (place instanceof ContactPlace) {
+//            return new ContactActivity(clientFactory);
+//        }
+//
+//        if (place instanceof DevicePlace) {
+//            return new DeviceActivity(clientFactory);
+//        }
+//
+//        if (place instanceof EventPlace) {
+//            return new EventActivity(clientFactory);
+//        }
+//
+//        if (place instanceof GeolocationPlace) {
+//            return new GeolocationActivity(clientFactory);
+//        }
+//
+//        if(place instanceof GMapPlace) {
+//            return new GMapActivity(clientFactory);
+//        }
+//
+//        if (place instanceof MediaPlace) {
+//            return new MediaActivity(clientFactory);
+//        }
+//
+//        if (place instanceof NotificationPlace) {
+//            return new NotificationActivity(clientFactory);
+//        }
+//
+//        if (place instanceof InAppBrowserPlace) {
+//            return new InAppBrowserActivity(clientFactory);
+//        }
+//
+//        if (place instanceof AboutPlace) {
+//            return new AboutActivity(clientFactory);
+//        }
+//
+//        if (place instanceof FilePlace) {
+//            return new FileActivity(clientFactory);
+//        }
 
         return null;
 

@@ -14,7 +14,7 @@ public class ConnectionActivity extends NavBaseActivity implements ConnectionDis
     public ConnectionActivity(ClientFactory clientFactory) {
         super(clientFactory);
 
-        this.display = clientFactory.getConnectionDisplay();
+        this.display =null;// clientFactory.getConnectionDisplay();
         this.phoneGap = clientFactory.getPhoneGap();
 
     }

@@ -26,7 +26,7 @@ public class FileActivity extends NavBaseActivity implements FileDisplay.Present
     public FileActivity(ClientFactory clientFactory) {
         super(clientFactory);
 
-        this.display = clientFactory.getFileDisplay();
+        this.display = null;//clientFactory.getFileDisplay();
         phoneGap = clientFactory.getPhoneGap();
 
         phoneGap.getFile().requestFileSystem(FileSystem.LocalFileSystem_PERSISTENT, 0,

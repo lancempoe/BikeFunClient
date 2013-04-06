@@ -20,7 +20,7 @@ public class MediaActivity extends NavBaseActivity implements MediaDisplay.Prese
     public MediaActivity(ClientFactory clientFactory) {
         super(clientFactory);
 
-        this.display = clientFactory.getMediaDisplay();
+        this.display = null;//clientFactory.getMediaDisplay();
         this.phoneGap = clientFactory.getPhoneGap();
 
     }

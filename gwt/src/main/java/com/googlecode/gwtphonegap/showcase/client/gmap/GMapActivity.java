@@ -34,7 +34,7 @@ public class GMapActivity extends NavBaseActivity implements GMapView.Presenter 
             throw new IllegalStateException();
         }
 
-        final GMapView geoMapView = clientFactory.getGMapView();
+        final GMapView geoMapView = null;//clientFactory.getGMapView();
         geoMapView.setPresenter(this);
         panel.setWidget(geoMapView);
 
@@ -86,7 +86,7 @@ public class GMapActivity extends NavBaseActivity implements GMapView.Presenter 
     }
 
     private void clearView() {
-        final GMapView gMapView = clientFactory.getGMapView();
+        final GMapView gMapView = null;//clientFactory.getGMapView();
 
         gMapView.clearMapInfo();
         gMapView.refresh();
@@ -94,7 +94,7 @@ public class GMapActivity extends NavBaseActivity implements GMapView.Presenter 
 
     private void setView(final int count, final double latitude, final double longitude, final double altitude,
                          final double accuracy, final double altitudeAccuracy, final double heading, final double speed) {
-        final GMapView geoCheckinMapView = clientFactory.getGMapView();
+        final GMapView geoCheckinMapView = null;//
 
         geoCheckinMapView.setMapInfo(latitude, longitude, accuracy);
         geoCheckinMapView.refresh();

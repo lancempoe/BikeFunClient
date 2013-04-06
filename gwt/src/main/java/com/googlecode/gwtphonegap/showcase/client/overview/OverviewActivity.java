@@ -35,7 +35,7 @@ public class OverviewActivity extends MGWTAbstractActivity implements Presenter 
 
     @Override
     public void start(AcceptsOneWidget panel, EventBus eventBus) {
-        OverviewDisplay display = clientFactory.getOverviewDisplay();
+        OverviewDisplay display = null;//clientFactory.getOverviewDisplay();
 
         currentList = getModuleList();
 

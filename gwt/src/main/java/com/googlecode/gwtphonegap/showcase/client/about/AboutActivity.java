@@ -34,7 +34,7 @@ public class AboutActivity extends NavBaseActivity implements Presenter {
 
     @Override
     public void start(AcceptsOneWidget panel, EventBus eventBus) {
-        AboutDisplay display = clientFactory.getAboutDisplay();
+        AboutDisplay display = null;//clientFactory.getAboutDisplay();
 
         display.setPresenter(this);
         panel.setWidget(display);

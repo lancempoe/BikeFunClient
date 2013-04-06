@@ -37,7 +37,7 @@ public class CameraActivity extends NavBaseActivity implements CameraDisplay.Pre
 
     @Override
     public void start(AcceptsOneWidget panel, EventBus eventBus) {
-        CameraDisplay display = clientFactory.getCameraDisplay();
+        CameraDisplay display = null;//clientFactory.getCameraDisplay();
 
         display.setPresenter(this);
 
@@ -54,7 +54,7 @@ public class CameraActivity extends NavBaseActivity implements CameraDisplay.Pre
 
             @Override
             public void onSuccess(String data) {
-                clientFactory.getCameraDisplay().displayFoto("data:image/jpeg;base64," + data);
+                //clientFactory.getCameraDisplay().displayFoto("data:image/jpeg;base64," + data);
             }
 
             @Override

@@ -16,7 +16,7 @@ public class InAppBrowserActivity extends NavBaseActivity implements InAppBrowse
     public InAppBrowserActivity(ClientFactory clientFactory) {
         super(clientFactory);
 
-        this.display = clientFactory.getChildBrowserDisplay();
+        this.display = null;//clientFactory.getChildBrowserDisplay();
         this.phoneGap = clientFactory.getPhoneGap();
 
         inAppBrowser = this.phoneGap.getInAppBrowser();

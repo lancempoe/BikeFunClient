@@ -39,7 +39,7 @@ public class AccelerometerActivity extends NavBaseActivity implements Presenter 
         super(clientFactory);
 
         this.phoneGap = clientFactory.getPhoneGap();
-        display = clientFactory.getAccelerometerDisplay();
+        display =null;// clientFactory.getAccelerometerDisplay();
 
     }
 

@@ -19,7 +19,7 @@ public class EventActivity extends NavBaseActivity implements EventDisplay.Prese
     public EventActivity(ClientFactory clientFactory) {
         super(clientFactory);
 
-        this.display = clientFactory.getEventDisplay();
+        this.display = null;//clientFactory.getEventDisplay();
         this.phoneGap = clientFactory.getPhoneGap();
 
         phoneGap.getEvent().getBackButton().addBackButtonPressedHandler(new BackButtonPressedHandler() {
