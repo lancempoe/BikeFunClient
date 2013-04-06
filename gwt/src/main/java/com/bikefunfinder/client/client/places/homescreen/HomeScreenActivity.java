@@ -58,10 +58,6 @@ public class HomeScreenActivity extends MGWTAbstractActivity implements HomeScre
         SearchByTimeOfDayRequest.Builder request = new SearchByTimeOfDayRequest.Builder(callback);
         request.latitude(80.00).longitude(80.0).send();
 
-
-//        currentList = getModuleList(justForShits());
-//        display.display(currentList);
-
         display.setPresenter(this);
 
         panel.setWidget(display);
