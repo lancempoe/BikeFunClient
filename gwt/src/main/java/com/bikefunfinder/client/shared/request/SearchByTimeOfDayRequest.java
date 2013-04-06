@@ -109,9 +109,9 @@ public final class SearchByTimeOfDayRequest {
         final StringBuilder builder = new StringBuilder();
         builder.append(URL);
         builder.append("geoloc=");
-        builder.append(longitude);
-        builder.append(",");
         builder.append(latitude);
+        builder.append(",");
+        builder.append(longitude);
 
         return builder.toString();
     }
