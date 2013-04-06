@@ -12,6 +12,7 @@ import com.google.gwt.user.client.ui.*;
 
 import com.googlecode.mgwt.dom.client.event.tap.TapEvent;
 import com.googlecode.mgwt.ui.client.MGWTStyle;
+import com.googlecode.mgwt.ui.client.widget.*;
 import com.googlecode.mgwt.ui.client.widget.base.ButtonBase;
 import com.googlecode.mgwt.ui.client.widget.tabbar.TabBarButton;
 
@@ -26,10 +27,11 @@ public class HomeScreenDisplayGwtImpl extends Composite implements HomeScreenDis
 
     private Presenter presenter;
 
-//    @UiField(provided = true)
-//    CellList<BikeRide> cellList;
     @UiField
-    VerticalPanel cellVP;
+    FlowPanel bikeEntries;
+
+    @UiField
+    com.googlecode.mgwt.ui.client.widget.ScrollPanel scroller;
 
     @UiField
     HTML cityName;
@@ -44,10 +46,6 @@ public class HomeScreenDisplayGwtImpl extends Composite implements HomeScreenDis
     ButtonBase loginButton;
 
     public HomeScreenDisplayGwtImpl() {
-//        BasicCell<BikeRide> cell = new BasicCellSearchDetailImpl();
-//        cellList = new CellList<BikeRide>(cell);
-//        cellList.setRound(true);
-
         addButton = new TabBarButton(MGWTStyle.getTheme().getMGWTClientBundle().tabBarMostRecentImage());
         searchButton = new TabBarButton(MGWTStyle.getTheme().getMGWTClientBundle().tabBarSearchImage());
         loginButton = new TabBarButton(MGWTStyle.getTheme().getMGWTClientBundle().tabBarContactsImage());
@@ -63,30 +61,28 @@ public class HomeScreenDisplayGwtImpl extends Composite implements HomeScreenDis
 
     @Override
     public void display(List<BikeRide> list) {
-//        cellList.render(list);
         Date firstDate = null;
         Date lastDay = null;
         for(BikeRide br: list) {
             Date date = br.getRideStartTimeDate();
-            if(firstDate == null)
-            {
+            if(firstDate == null) {
                 firstDate = date;
                 lastDay = firstDate;
-                cellVP.add(new HTML(dayBar(firstDate).toString()));
+                bikeEntries.add(new HTML(dayBar(firstDate).toString()));
             }
-            else if(!isSameDay(date, lastDay))
-            {
+            else if(!isSameDay(date, lastDay)) {
                 lastDay = date;
-                cellVP.add(new HTML(dayBar(date)));
+                bikeEntries.add(new HTML(dayBar(date)));
             }
             String timeString = DateTimeFormat.getFormat(DateTimeFormat.PredefinedFormat.HOUR_MINUTE).format(date);
                     //getShortTimeFormat().format(date);
-            StringBuilder html = new StringBuilder("<hr>")
-                                           .append("<h2>").append(br.getBikeRideName()).append("</h2>")
-                                           .append("<p>").append(timeString).append("</h2>")
-                                           .append("<p>").append(br.getDetails()).append("</h2></div>");
-            cellVP.add(new HTML(html.toString()));
+            StringBuilder html = new StringBuilder()
+                                   .append("<h2>").append(br.getBikeRideName()).append("</h2>")
+                                   .append("<p>").append(timeString).append("</p>")
+                                   .append("<p>").append(br.getDetails()).append("</p>");
+            bikeEntries.add(new HTML(html.toString()));
         }
+        scroller.refresh(); //The scroller needs to know that we've just added stuff
     }
 
     public String dayBar(Date date)

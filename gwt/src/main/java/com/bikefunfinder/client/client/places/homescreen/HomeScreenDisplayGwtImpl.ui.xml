@@ -19,21 +19,22 @@
             </mgwt:right>
         </mgwt:HeaderPanel>
 
-        <mgwt:ScrollPanel scrollingEnabledX="false" width="100%">
-            <g:VerticalPanel  ui:field="cellVP" width="100%"/>
-            <!--<mgwt:CellList ui:field="cellList"></mgwt:CellList>-->
+        <mgwt:ScrollPanel ui:field="scroller" scrollingEnabledX="false">
+            <g:FlowPanel  ui:field="bikeEntries"/>
         </mgwt:ScrollPanel>
 
-        <g:VerticalPanel  width="100%">
-            <g:HorizontalPanel width="100%">
-                <g:cell horizontalAlignment="ALIGN_LEFT">
-                    <mgwt:Button ui:field="hereAndNowButton" text="Here &amp; now"/>
-                </g:cell>
-                <g:cell horizontalAlignment="ALIGN_RIGHT">
-                    <mgwt:Button ui:field="timeAndDayButton" text="Time &amp; day"/>
-                </g:cell>
-            </g:HorizontalPanel>
-        </g:VerticalPanel>
+        <g:FlowPanel>
+            <g:VerticalPanel>
+                <g:HorizontalPanel>
+                    <g:cell horizontalAlignment="ALIGN_LEFT">
+                        <mgwt:Button ui:field="hereAndNowButton" text="Here &amp; now"/>
+                    </g:cell>
+                    <g:cell horizontalAlignment="ALIGN_RIGHT">
+                        <mgwt:Button ui:field="timeAndDayButton" text="Time &amp; day"/>
+                    </g:cell>
+                </g:HorizontalPanel>
+            </g:VerticalPanel>
+        </g:FlowPanel>
 
     </mgwt:LayoutPanel>
 </ui:UiBinder>
