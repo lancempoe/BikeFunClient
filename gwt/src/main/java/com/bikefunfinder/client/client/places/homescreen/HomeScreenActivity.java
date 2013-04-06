@@ -17,6 +17,10 @@ import com.googlecode.mgwt.mvp.client.MGWTAbstractActivity;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author: tneuwerth
+ * @created 4/5/13 3:59 PM
+ */
 public class HomeScreenActivity extends MGWTAbstractActivity implements HomeScreenDisplay.Presenter {
     private final ClientFactory clientFactory;
     private GeolocationWatcher watcher = null;

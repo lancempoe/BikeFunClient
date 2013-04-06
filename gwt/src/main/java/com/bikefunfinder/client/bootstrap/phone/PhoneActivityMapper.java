@@ -17,10 +17,18 @@ package com.bikefunfinder.client.bootstrap.phone;
 
 import com.bikefunfinder.client.client.places.createscreen.CreateScreenActivity;
 import com.bikefunfinder.client.client.places.createscreen.CreateScreenPlace;
+import com.bikefunfinder.client.client.places.editscreen.EditScreenActivity;
+import com.bikefunfinder.client.client.places.editscreen.EditScreenPlace;
+import com.bikefunfinder.client.client.places.eventscreen.EventScreenActivity;
+import com.bikefunfinder.client.client.places.eventscreen.EventScreenPlace;
 import com.bikefunfinder.client.client.places.homescreen.HomeScreenActivity;
 import com.bikefunfinder.client.client.places.homescreen.HomeScreenPlace;
 import com.bikefunfinder.client.client.places.loginscreen.LoginScreenActivity;
 import com.bikefunfinder.client.client.places.loginscreen.LoginScreenPlace;
+import com.bikefunfinder.client.client.places.profilescreen.ProfileScreenActivity;
+import com.bikefunfinder.client.client.places.profilescreen.ProfileScreenPlace;
+import com.bikefunfinder.client.client.places.usereventsscreen.UserEventsScreenActivity;
+import com.bikefunfinder.client.client.places.usereventsscreen.UserEventsScreenPlace;
 import com.google.gwt.activity.shared.Activity;
 import com.google.gwt.activity.shared.ActivityMapper;
 import com.google.gwt.place.shared.Place;
@@ -37,75 +45,28 @@ class PhoneActivityMapper implements ActivityMapper {
     @Override
     public Activity getActivity(Place place) {
 
+        if(place instanceof CreateScreenPlace) {
+            return new CreateScreenActivity(clientFactory);
+        }
+        if(place instanceof EditScreenPlace) {
+            return new EditScreenActivity(clientFactory);
+        }
+        if(place instanceof EventScreenPlace) {
+            return new EventScreenActivity(clientFactory);
+        }
         if(place instanceof HomeScreenPlace) {
             return new HomeScreenActivity(clientFactory);
         }
         if(place instanceof LoginScreenPlace) {
             return new LoginScreenActivity(clientFactory);
         }
-        if(place instanceof CreateScreenPlace) {
-            return new CreateScreenActivity(clientFactory);
+        if(place instanceof ProfileScreenPlace) {
+            return new ProfileScreenActivity(clientFactory);
+        }
+        if(place instanceof UserEventsScreenPlace) {
+            return new UserEventsScreenActivity(clientFactory);
         }
 
-//        // to be nuked below
-//        if (place instanceof OverviewPlace) {
-//            return new OverviewActivity(clientFactory);
-//        }
-//        if (place instanceof AccelerometerPlace) {
-//            return new AccelerometerActivity(clientFactory);
-//        }
-//
-//        if (place instanceof CameraPlace) {
-//            return new CameraActivity(clientFactory);
-//        }
-//
-//        if (place instanceof CompassPlace) {
-//            return new CompassActivity(clientFactory);
-//        }
-//
-//        if (place instanceof ConnectionPlace) {
-//            return new ConnectionActivity(clientFactory);
-//        }
-//
-//        if (place instanceof ContactPlace) {
-//            return new ContactActivity(clientFactory);
-//        }
-//
-//        if (place instanceof DevicePlace) {
-//            return new DeviceActivity(clientFactory);
-//        }
-//
-//        if (place instanceof EventPlace) {
-//            return new EventActivity(clientFactory);
-//        }
-//
-//        if (place instanceof GeolocationPlace) {
-//            return new GeolocationActivity(clientFactory);
-//        }
-//
-//        if(place instanceof GMapPlace) {
-//            return new GMapActivity(clientFactory);
-//        }
-//
-//        if (place instanceof MediaPlace) {
-//            return new MediaActivity(clientFactory);
-//        }
-//
-//        if (place instanceof NotificationPlace) {
-//            return new NotificationActivity(clientFactory);
-//        }
-//
-//        if (place instanceof InAppBrowserPlace) {
-//            return new InAppBrowserActivity(clientFactory);
-//        }
-//
-//        if (place instanceof AboutPlace) {
-//            return new AboutActivity(clientFactory);
-//        }
-//
-//        if (place instanceof FilePlace) {
-//            return new FileActivity(clientFactory);
-//        }
 
         return null;
 

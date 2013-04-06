@@ -19,7 +19,7 @@
 
     <add-linker name="xsiframe"/>
 
-    <set-property name="mgwt.os" value="android, desktop" />
+    <set-property name="mgwt.os" value="iphone" />
 
     <!--<set-configuration-property name="mgwt.css" value="pretty" />-->
 

@@ -1,13 +1,15 @@
 package com.bikefunfinder.client.client.places.createscreen;
 /*
- * @author: tneuwerth
- * @created 4/5/13 4:22 PM
+ * @author: lancepoehler
+ * @created 4/6/13 2:22 AM
  */
 
-import com.bikefunfinder.client.client.places.homescreen.HomeScreenDisplay;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.http.client.Response;
 import com.google.gwt.uibinder.client.UiBinder;
+import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.FormPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 public class CreateScreenDisplayGwtImpl  extends Composite implements CreateScreenDisplay {
@@ -16,15 +18,24 @@ public class CreateScreenDisplayGwtImpl  extends Composite implements CreateScre
     interface OverviewDisplayGwtImplUiBinder extends UiBinder<Widget, CreateScreenDisplayGwtImpl> {
     }
 
-    private Presenter presenter;
-
     @Override
-    public void display() {
+    public void displayFailedToCreateRideMessage() {
         //To change body of implemented methods use File | Settings | File Templates.
     }
+
+    @Override
+    public void displayResponse(Response response) {
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    private Presenter presenter;
 
     @Override
     public void setPresenter(Presenter presenter) {
         this.presenter = presenter;
     }
+
+    @UiField
+    FormPanel form;
+
 }

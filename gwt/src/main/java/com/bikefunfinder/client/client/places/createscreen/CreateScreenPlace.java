@@ -9,7 +9,7 @@ import com.google.gwt.place.shared.PlaceTokenizer;
 
 public class CreateScreenPlace extends Place {
     public static class Tokenizer implements PlaceTokenizer<CreateScreenPlace> {
-        //test commit delete me
+
         @Override
         public CreateScreenPlace getPlace(String token) {
             return new CreateScreenPlace();
