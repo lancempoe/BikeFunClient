@@ -3,7 +3,6 @@
              xmlns:g="urn:import:com.google.gwt.user.client.ui"
              xmlns:mgwt="urn:import:com.googlecode.mgwt.ui.client.widget">
 
-
     <mgwt:LayoutPanel>
         <mgwt:HeaderPanel>
             <mgwt:left>
@@ -19,42 +18,11 @@
                 </g:HorizontalPanel>
             </mgwt:right>
         </mgwt:HeaderPanel>
-        <!--<g:HorizontalPanel width="100%">-->
-            <!--<g:HTMLPanel>-->
-                <!--<strong>Portland</strong>-->
-            <!--</g:HTMLPanel>-->
-            <!--<g:HTMLPanel>-->
-                <!--<strong>+</strong>-->
-            <!--</g:HTMLPanel>-->
-            <!--<g:HTMLPanel>-->
-                <!--<strong>srch</strong>-->
-            <!--</g:HTMLPanel>-->
-            <!--<g:HTMLPanel>-->
-                <!--<strong>rfsh</strong>-->
-            <!--</g:HTMLPanel>-->
-        <!--</g:HorizontalPanel>-->
 
-        <mgwt:ScrollPanel scrollingEnabledX="false">
-            <mgwt:CellList ui:field="cellList"></mgwt:CellList>
+        <mgwt:ScrollPanel scrollingEnabledX="false" >
+            <g:VerticalPanel  ui:field="cellVP" />
+            <!--<mgwt:CellList ui:field="cellList"></mgwt:CellList>-->
         </mgwt:ScrollPanel>
-
-
-        <!--<mgwt:tabbar.TabPanel ui:field="tabPanel">-->
-            <!--<mgwt:tabs>-->
-                <!--<mgwt:tabbar.Tab>-->
-                    <!--<mgwt:button>-->
-                        <!--<mgwt:tabbar.BookmarkTabBarButton ui:field="bookmarkTabButton" />-->
-                    <!--</mgwt:button>-->
-                    <!--<mgwt:widget>-->
-                        <!--<mgwt:ScrollPanel scrollingEnabledX="false">-->
-                            <!--<mgwt:RoundPanel>-->
-                                <!--<g:HTML ui:field="content" />-->
-                            <!--</mgwt:RoundPanel>-->
-                        <!--</mgwt:ScrollPanel>-->
-                    <!--</mgwt:widget>-->
-                <!--</mgwt:tabbar.Tab>-->
-            <!--</mgwt:tabs>-->
-        <!--</mgwt:tabbar.TabPanel>-->
 
         <g:VerticalPanel  width="100%">
             <g:HorizontalPanel width="100%">
@@ -66,25 +34,6 @@
                 </g:cell>
             </g:HorizontalPanel>
         </g:VerticalPanel>
-        <!--<g:FlowPanel  ui:field="fp" />-->
-        <!--<tb:TabPanel ui:field="tabPanel">-->
-         	<!--&lt;!&ndash;<tb:tabs>&ndash;&gt;-->
-         		<!--&lt;!&ndash;<tb:Tab>&ndash;&gt;-->
-                 <!--&lt;!&ndash;&lt;!&ndash;<Button>&ndash;&gt;&ndash;&gt;-->
-                    <!--&lt;!&ndash;&lt;!&ndash;<tb:DownloadsTabBarButton></tb:DownloadsTabBarButton>&ndash;&gt;&ndash;&gt;-->
-                 <!--&lt;!&ndash;&lt;!&ndash;</Button>&ndash;&gt;&ndash;&gt;-->
-         			<!--&lt;!&ndash;&lt;!&ndash;<mgwt:widget>&ndash;&gt;&ndash;&gt;-->
-         				 <!--&lt;!&ndash;&lt;!&ndash;content for that tab&ndash;&gt;&ndash;&gt;-->
-         			<!--&lt;!&ndash;&lt;!&ndash;</mgwt:widget>&ndash;&gt;&ndash;&gt;-->
-         		<!--&lt;!&ndash;</tb:Tab>&ndash;&gt;-->
-         	<!--&lt;!&ndash;</tb:tabs>&ndash;&gt;-->
-        <!--</tb:TabPanel>-->
-        <!--<mgwt:LayoutPanel>-->
 
-                <!--<mgwt:Button text="Here and now"></mgwt:Button>-->
-
-                <!--<mgwt:Button text="Time and day"></mgwt:Button>-->
-
-        <!--</mgwt:LayoutPanel>-->
     </mgwt:LayoutPanel>
 </ui:UiBinder>

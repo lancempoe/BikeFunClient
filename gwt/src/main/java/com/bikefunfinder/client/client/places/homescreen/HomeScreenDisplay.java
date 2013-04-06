@@ -1,6 +1,7 @@
 package com.bikefunfinder.client.client.places.homescreen;
 
 import com.bikefunfinder.client.shared.model.BikeRide;
+import com.bikefunfinder.client.shared.model.Root;
 import com.google.gwt.user.client.ui.IsWidget;
 
 import java.util.List;
@@ -8,6 +9,7 @@ import java.util.List;
 public interface HomeScreenDisplay extends IsWidget {
 
     public void display(List<BikeRide> list);
+    public void display(Root root);
     public void setPresenter(Presenter presenter);
 
     public interface Presenter {

@@ -55,6 +55,8 @@ public class HomeScreenActivity extends MGWTAbstractActivity implements HomeScre
                 display.display(currentList);
             }
         };
+
+        //todo: here I need to get the phoneGaps coordinates;
         SearchByTimeOfDayRequest.Builder request = new SearchByTimeOfDayRequest.Builder(callback);
         request.latitude(80.00).longitude(80.0).send();
 
