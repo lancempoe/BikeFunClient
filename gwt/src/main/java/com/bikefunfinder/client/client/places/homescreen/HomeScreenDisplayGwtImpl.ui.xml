@@ -3,12 +3,17 @@
              xmlns:g="urn:import:com.google.gwt.user.client.ui"
              xmlns:mgwt="urn:import:com.googlecode.mgwt.ui.client.widget">
 
+
+    <ui:style type='com.bikefunfinder.client.client.places.homescreen.HomeScreenDisplayGwtImpl.MyStyle'>
+        .positioningForName { position:absolute; top:35%; }
+    </ui:style>
+
     <mgwt:LayoutPanel>
         <mgwt:HeaderPanel>
             <mgwt:left>
-                <g:VerticalPanel verticalAlignment='ALIGN_MIDDLE' horizontalAlignment='ALIGN_CENTER' width="50%" height="100%">
-                    <g:cell><g:HTML ui:field="cityName">Portland</g:HTML></g:cell>
-                </g:VerticalPanel>
+                <g:FlowPanel width="50%" height="100%">
+                    <g:HTML ui:field="cityName">Portland</g:HTML>
+                </g:FlowPanel>
             </mgwt:left>
             <mgwt:right>
                 <g:HorizontalPanel>

@@ -5,6 +5,7 @@ import com.bikefunfinder.client.shared.model.BikeRide;
 import com.bikefunfinder.client.shared.model.Root;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.i18n.client.DateTimeFormat;
+import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
@@ -19,6 +20,14 @@ import com.googlecode.mgwt.ui.client.widget.tabbar.TabBarButton;
 import java.util.List;
 
 public class HomeScreenDisplayGwtImpl extends Composite implements HomeScreenDisplay {
+
+    interface MyStyle extends CssResource {
+        String positioningForName();
+    }
+	@UiField MyStyle style;
+
+    
+
 
     private static OverviewDisplayGwtImplUiBinder uiBinder = GWT.create(OverviewDisplayGwtImplUiBinder.class);
 
@@ -51,6 +60,7 @@ public class HomeScreenDisplayGwtImpl extends Composite implements HomeScreenDis
         loginButton = new TabBarButton(MGWTStyle.getTheme().getMGWTClientBundle().tabBarContactsImage());
 
         initWidget(uiBinder.createAndBindUi(this));
+        cityName.addStyleName(style.positioningForName());
     }
 
     @Override
@@ -108,14 +118,6 @@ public class HomeScreenDisplayGwtImpl extends Composite implements HomeScreenDis
         cityName.setText(cityNameText);
     }
 
-//    @UiHandler("cellList")
-//    protected void onCellSelected(CellSelectedEvent event) {
-//        if (presenter != null) {
-////            presenter.onCellSelected(event.getIndex());
-//            Window.alert("\\/\\/todo: show client stuff for this"+event.getIndex());
-//        }
-//    }
-
     @UiHandler("hereAndNowButton")
     protected void onHereAndNowButton(TapEvent event) {
         if (presenter != null) {
@@ -129,9 +131,4 @@ public class HomeScreenDisplayGwtImpl extends Composite implements HomeScreenDis
             presenter.onAboutButton();
         }
     }
-
-
-
-
-
 }
