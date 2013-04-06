@@ -10,6 +10,7 @@ import com.googlecode.gwtphonegap.client.PhoneGap;
 import com.googlecode.gwtphonegap.showcase.client.overview.OverviewPlace;
 import com.googlecode.mgwt.ui.client.MGWT;
 import com.googlecode.mgwt.ui.client.MGWTSettings;
+import com.googlecode.mgwt.ui.client.MGWTStyle;
 
 import java.util.List;
 
@@ -37,6 +38,9 @@ public class PhoneGapDependentBootScrapperImpl extends PhoneGapDependentBootScra
 
         MGWTSettings settings = MgwtSettingsFactory.buildMgwtSettings();
         MGWT.applySettings(settings);
+
+        //ensure theme is injected
+        MGWTStyle.getTheme().getMGWTClientBundle().getMainCss().ensureInjected();
 
         PlaceHistoryHandler historyHandler = createHistoryMapper(clientFactory);
         historyHandler.handleCurrentHistory();

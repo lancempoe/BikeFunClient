@@ -7,6 +7,7 @@
     <inherits name="com.googlecode.mgwt.MGWT"/>
 
     <inherits name="com.google.gwt.user.User"/>
+    <inherits name="com.google.gwt.resources.Resources" />
     <inherits name="com.google.gwt.logging.Logging"/>
     <set-property name="gwt.logging.simpleRemoteHandler" value="DISABLED"/>
     <set-property name="gwt.logging.popupHandler" value="DISABLED"/>
@@ -19,6 +20,8 @@
     <add-linker name="xsiframe"/>
 
     <set-property name="mgwt.os" value="iphone, android" />
+
+    <!--<set-configuration-property name="mgwt.css" value="pretty" />-->
 
     <!-- 	<inherits name="com.google.gwt.core.Core" /> -->
     <!-- 	<set-property name="compiler.emulatedStack" value="true"/> -->

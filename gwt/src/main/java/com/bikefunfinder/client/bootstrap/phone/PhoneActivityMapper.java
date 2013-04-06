@@ -15,8 +15,12 @@
  */
 package com.bikefunfinder.client.bootstrap.phone;
 
+import com.bikefunfinder.client.client.places.createscreen.CreateScreenActivity;
+import com.bikefunfinder.client.client.places.createscreen.CreateScreenPlace;
 import com.bikefunfinder.client.client.places.homescreen.HomeScreenActivity;
 import com.bikefunfinder.client.client.places.homescreen.HomeScreenPlace;
+import com.bikefunfinder.client.client.places.loginscreen.LoginScreenActivity;
+import com.bikefunfinder.client.client.places.loginscreen.LoginScreenPlace;
 import com.google.gwt.activity.shared.Activity;
 import com.google.gwt.activity.shared.ActivityMapper;
 import com.google.gwt.place.shared.Place;
@@ -52,9 +56,6 @@ import com.googlecode.gwtphonegap.showcase.client.media.MediaPlace;
 import com.googlecode.gwtphonegap.showcase.client.notification.NotificationActivity;
 import com.googlecode.gwtphonegap.showcase.client.notification.NotificationPlace;
 
-/**
- * @author Daniel Kurka
- */
 class PhoneActivityMapper implements ActivityMapper {
 
     private final ClientFactory clientFactory;
@@ -69,7 +70,14 @@ class PhoneActivityMapper implements ActivityMapper {
         if(place instanceof HomeScreenPlace) {
             return new HomeScreenActivity(clientFactory);
         }
+        if(place instanceof LoginScreenPlace) {
+            return new LoginScreenActivity(clientFactory);
+        }
+        if(place instanceof CreateScreenPlace) {
+            return new CreateScreenActivity(clientFactory);
+        }
 
+        // to be nuked below
         if (place instanceof OverviewPlace) {
             return new OverviewActivity(clientFactory);
         }

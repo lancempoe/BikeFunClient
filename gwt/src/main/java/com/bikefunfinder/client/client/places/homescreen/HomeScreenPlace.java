@@ -15,6 +15,5 @@ public class HomeScreenPlace extends Place {
         public String getToken(HomeScreenPlace place) {
             return null;
         }
-
     }
 }

@@ -6,17 +6,85 @@
 
     <mgwt:LayoutPanel>
         <mgwt:HeaderPanel>
-            <mgwt:center>
-                <g:HTML>Modules</g:HTML>
-            </mgwt:center>
+            <mgwt:left>
+                <g:VerticalPanel verticalAlignment='ALIGN_MIDDLE' horizontalAlignment='ALIGN_CENTER' width="50%" height="100%">
+                    <g:cell><g:HTML ui:field="cityName">Portland</g:HTML></g:cell>
+                </g:VerticalPanel>
+            </mgwt:left>
             <mgwt:right>
-                <mgwt:HeaderButton ui:field="aboutButton" text="About"></mgwt:HeaderButton>
+                <g:HorizontalPanel>
+                    <mgwt:base.ButtonBase ui:field="addButton"/>
+                    <mgwt:base.ButtonBase ui:field="searchButton"/>
+                    <mgwt:base.ButtonBase ui:field="loginButton"/>
+                </g:HorizontalPanel>
             </mgwt:right>
         </mgwt:HeaderPanel>
+        <!--<g:HorizontalPanel width="100%">-->
+            <!--<g:HTMLPanel>-->
+                <!--<strong>Portland</strong>-->
+            <!--</g:HTMLPanel>-->
+            <!--<g:HTMLPanel>-->
+                <!--<strong>+</strong>-->
+            <!--</g:HTMLPanel>-->
+            <!--<g:HTMLPanel>-->
+                <!--<strong>srch</strong>-->
+            <!--</g:HTMLPanel>-->
+            <!--<g:HTMLPanel>-->
+                <!--<strong>rfsh</strong>-->
+            <!--</g:HTMLPanel>-->
+        <!--</g:HorizontalPanel>-->
+
         <mgwt:ScrollPanel scrollingEnabledX="false">
             <mgwt:CellList ui:field="cellList"></mgwt:CellList>
-
         </mgwt:ScrollPanel>
 
+
+        <!--<mgwt:tabbar.TabPanel ui:field="tabPanel">-->
+            <!--<mgwt:tabs>-->
+                <!--<mgwt:tabbar.Tab>-->
+                    <!--<mgwt:button>-->
+                        <!--<mgwt:tabbar.BookmarkTabBarButton ui:field="bookmarkTabButton" />-->
+                    <!--</mgwt:button>-->
+                    <!--<mgwt:widget>-->
+                        <!--<mgwt:ScrollPanel scrollingEnabledX="false">-->
+                            <!--<mgwt:RoundPanel>-->
+                                <!--<g:HTML ui:field="content" />-->
+                            <!--</mgwt:RoundPanel>-->
+                        <!--</mgwt:ScrollPanel>-->
+                    <!--</mgwt:widget>-->
+                <!--</mgwt:tabbar.Tab>-->
+            <!--</mgwt:tabs>-->
+        <!--</mgwt:tabbar.TabPanel>-->
+
+        <g:VerticalPanel  width="100%">
+            <g:HorizontalPanel width="100%">
+                <g:cell horizontalAlignment="ALIGN_LEFT">
+                    <mgwt:Button ui:field="hereAndNowButton" text="Here &amp; now"/>
+                </g:cell>
+                <g:cell horizontalAlignment="ALIGN_RIGHT">
+                    <mgwt:Button ui:field="timeAndDayButton" text="Time &amp; day"/>
+                </g:cell>
+            </g:HorizontalPanel>
+        </g:VerticalPanel>
+        <!--<g:FlowPanel  ui:field="fp" />-->
+        <!--<tb:TabPanel ui:field="tabPanel">-->
+         	<!--&lt;!&ndash;<tb:tabs>&ndash;&gt;-->
+         		<!--&lt;!&ndash;<tb:Tab>&ndash;&gt;-->
+                 <!--&lt;!&ndash;&lt;!&ndash;<Button>&ndash;&gt;&ndash;&gt;-->
+                    <!--&lt;!&ndash;&lt;!&ndash;<tb:DownloadsTabBarButton></tb:DownloadsTabBarButton>&ndash;&gt;&ndash;&gt;-->
+                 <!--&lt;!&ndash;&lt;!&ndash;</Button>&ndash;&gt;&ndash;&gt;-->
+         			<!--&lt;!&ndash;&lt;!&ndash;<mgwt:widget>&ndash;&gt;&ndash;&gt;-->
+         				 <!--&lt;!&ndash;&lt;!&ndash;content for that tab&ndash;&gt;&ndash;&gt;-->
+         			<!--&lt;!&ndash;&lt;!&ndash;</mgwt:widget>&ndash;&gt;&ndash;&gt;-->
+         		<!--&lt;!&ndash;</tb:Tab>&ndash;&gt;-->
+         	<!--&lt;!&ndash;</tb:tabs>&ndash;&gt;-->
+        <!--</tb:TabPanel>-->
+        <!--<mgwt:LayoutPanel>-->
+
+                <!--<mgwt:Button text="Here and now"></mgwt:Button>-->
+
+                <!--<mgwt:Button text="Time and day"></mgwt:Button>-->
+
+        <!--</mgwt:LayoutPanel>-->
     </mgwt:LayoutPanel>
-</ui:UiBinder> 
+</ui:UiBinder>

@@ -25,6 +25,8 @@ import com.googlecode.gwtphonegap.showcase.client.inappbrowser.InAppBrowserPlace
 import com.googlecode.gwtphonegap.showcase.client.media.MediaPlace;
 import com.googlecode.gwtphonegap.showcase.client.notification.NotificationPlace;
 import com.googlecode.mgwt.mvp.client.MGWTAbstractActivity;
+import com.googlecode.mgwt.ui.client.MGWTStyle;
+import com.googlecode.mgwt.ui.client.theme.MGWTThemeBaseThemeStandardImpl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,7 +43,6 @@ public class HomeScreenActivity extends MGWTAbstractActivity implements HomeScre
     public void start(AcceptsOneWidget panel, EventBus eventBus) {
         final HomeScreenDisplay display = clientFactory.getHomeScreenDisplay();
 
-
         SearchByTimeOfDayRequest.Callback callback = new SearchByTimeOfDayRequest.Callback() {
             @Override
             public void onError() {
@@ -55,8 +56,11 @@ public class HomeScreenActivity extends MGWTAbstractActivity implements HomeScre
             }
         };
         SearchByTimeOfDayRequest.Builder request = new SearchByTimeOfDayRequest.Builder(callback);
-        SearchByTimeOfDayRequest request2 = request.latitude(80.00).longitude(80.0).send();
+        request.latitude(80.00).longitude(80.0).send();
 
+
+//        currentList = getModuleList(justForShits());
+//        display.display(currentList);
 
         display.setPresenter(this);
 

@@ -12,6 +12,7 @@
  			<include>**/*.html</include>
  			<include>**/*.mp3</include>
  			<include>**/*.wav</include>
+            <include>**/*.png</include>
  		</includes>
   		<outputDirectory></outputDirectory>
   	</fileSet>
