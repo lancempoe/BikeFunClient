@@ -19,8 +19,8 @@
             </mgwt:right>
         </mgwt:HeaderPanel>
 
-        <mgwt:ScrollPanel scrollingEnabledX="false" >
-            <g:VerticalPanel  ui:field="cellVP" />
+        <mgwt:ScrollPanel scrollingEnabledX="false" width="100%">
+            <g:VerticalPanel  ui:field="cellVP" width="100%"/>
             <!--<mgwt:CellList ui:field="cellList"></mgwt:CellList>-->
         </mgwt:ScrollPanel>
 

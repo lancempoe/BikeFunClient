@@ -5,6 +5,9 @@ package com.bikefunfinder.client.shared.model;
  */
 
 import com.google.gwt.core.client.JavaScriptObject;
+import com.google.gwt.i18n.client.DateTimeFormat;
+import java.util.Date;
+
 
 public class BikeRide extends JavaScriptObject {
 
@@ -36,6 +39,18 @@ public class BikeRide extends JavaScriptObject {
         return this.rideStartTime;
     }-*/;
 
+    public final String getRideStartTimeFormated() {
+        Long unformattedStartTime = Long.parseLong(getRideStartTime());
+        Date date = new Date(unformattedStartTime);
+        DateTimeFormat fmt = DateTimeFormat.getFormat("EEEE, MMMM dd, yyyy");
+        return fmt.format((date));
+    }
+
+    public final Date getRideStartTimeDate() {
+        Long unformattedStartTime = Long.parseLong(getRideStartTime());
+        Date date = new Date(unformattedStartTime);
+        return date;
+    }
     public final native Location getLocation() /*-{
         return this.location;
     }-*/;
