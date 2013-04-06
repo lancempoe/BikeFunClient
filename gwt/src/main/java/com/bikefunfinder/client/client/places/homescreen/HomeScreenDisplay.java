@@ -9,7 +9,7 @@ import java.util.List;
 public interface HomeScreenDisplay extends IsWidget {
 
     public void display(List<BikeRide> list);
-    public void display(Root root);
+    public void display(String cityNameText);
     public void setPresenter(Presenter presenter);
 
     public interface Presenter {

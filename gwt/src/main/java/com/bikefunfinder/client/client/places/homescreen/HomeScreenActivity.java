@@ -10,6 +10,7 @@ import com.google.gwt.core.client.JsonUtils;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.web.bindery.event.shared.EventBus;
+import com.googlecode.gwtphonegap.client.geolocation.*;
 import com.googlecode.gwtphonegap.showcase.client.about.AboutPlace;
 import com.googlecode.gwtphonegap.showcase.client.accelerometer.AccelerometerPlace;
 import com.googlecode.gwtphonegap.showcase.client.camera.CameraPlace;
@@ -33,6 +34,7 @@ import java.util.List;
 
 public class HomeScreenActivity extends MGWTAbstractActivity implements HomeScreenDisplay.Presenter {
     private final ClientFactory clientFactory;
+    private GeolocationWatcher watcher = null;
     private List<BikeRide> currentList;
 
     public HomeScreenActivity(ClientFactory clientFactory) {
@@ -43,22 +45,7 @@ public class HomeScreenActivity extends MGWTAbstractActivity implements HomeScre
     public void start(AcceptsOneWidget panel, EventBus eventBus) {
         final HomeScreenDisplay display = clientFactory.getHomeScreenDisplay();
 
-        SearchByTimeOfDayRequest.Callback callback = new SearchByTimeOfDayRequest.Callback() {
-            @Override
-            public void onError() {
-                Window.alert("oh noes, server fail");
-            }
-
-            @Override
-            public void onResponseReceived(Root root) {
-                currentList = getModuleList(root);
-                display.display(currentList);
-            }
-        };
-
-        //todo: here I need to get the phoneGaps coordinates;
-        SearchByTimeOfDayRequest.Builder request = new SearchByTimeOfDayRequest.Builder(callback);
-        request.latitude(80.00).longitude(80.0).send();
+        getGeoLocationAndIfSuccessfullCallDisplay(display);
 
         display.setPresenter(this);
 
@@ -206,7 +193,53 @@ public class HomeScreenActivity extends MGWTAbstractActivity implements HomeScre
     @Override
     public void onAboutButton() {
         clientFactory.getPlaceController().goTo(new AboutPlace());
-
     }
 
+
+    private void fireRequestForTimeOfDay(final HomeScreenDisplay display, final double latitude, final double longitude) {
+        SearchByTimeOfDayRequest.Callback callback = new SearchByTimeOfDayRequest.Callback() {
+            @Override
+            public void onError() {
+                Window.alert("oh noes, server fail");
+            }
+
+            @Override
+            public void onResponseReceived(Root root) {
+                currentList = getModuleList(root);
+                display.display(currentList);
+                display.display(root.getClosestLocation().getCity());
+            }
+        };
+        SearchByTimeOfDayRequest.Builder request = new SearchByTimeOfDayRequest.Builder(callback);
+        request.latitude(latitude).longitude(longitude).send();
+    }
+
+    private void getGeoLocationAndIfSuccessfullCallDisplay(final HomeScreenDisplay display) {
+        final GeolocationOptions options = new GeolocationOptions();
+        options.setEnableHighAccuracy(true);
+        options.setTimeout(3000);
+        options.setMaximumAge(1000);
+
+        final GeolocationCallback geolocationCallback = new GeolocationCallback() {
+            @Override
+            public void onSuccess(final Position position) {
+
+                final Coordinates coordinates = position.getCoordinates();
+                final double latitude = coordinates.getLatitude();
+                final double longitude = coordinates.getLongitude();
+
+                fireRequestForTimeOfDay(display, latitude, longitude);
+            }
+
+            @Override
+            public void onFailure(final PositionError error) {
+                Window.alert("Failed to get geo log.. using 80,80");
+                fireRequestForTimeOfDay(display, 80, 80);
+            }
+        };
+
+        Geolocation phoneGeoLocation = clientFactory.getPhoneGap().getGeolocation();
+        phoneGeoLocation.getCurrentPosition(geolocationCallback, options);
+
+    }
 }
