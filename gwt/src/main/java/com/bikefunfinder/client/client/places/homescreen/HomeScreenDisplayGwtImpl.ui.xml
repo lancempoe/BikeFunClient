@@ -6,13 +6,17 @@
 
     <ui:style type='com.bikefunfinder.client.client.places.homescreen.HomeScreenDisplayGwtImpl.MyStyle'>
         .positioningForName { position:absolute; top:35%; }
+        .buttonTreatment {text-transform: none;
+                          font-size: 13px !important;
+                          font-weight: normal !important;}
     </ui:style>
 
     <mgwt:LayoutPanel>
         <mgwt:HeaderPanel>
             <mgwt:left>
                 <g:FlowPanel width="50%" height="100%">
-                    <g:HTML ui:field="cityName">Portland</g:HTML>
+                    <g:HTML ui:field="cityName"
+                            styleName="{style.positioningForName}">Portland</g:HTML>
                 </g:FlowPanel>
             </mgwt:left>
             <mgwt:right>
@@ -29,8 +33,8 @@
         </mgwt:ScrollPanel>
 
         <g:FlowPanel>
-            <g:VerticalPanel>
-                <g:HorizontalPanel>
+            <g:VerticalPanel width="100%">
+                <g:HorizontalPanel width="100%">
                     <g:cell horizontalAlignment="ALIGN_LEFT">
                         <mgwt:Button ui:field="hereAndNowButton" text="Here &amp; now"/>
                     </g:cell>

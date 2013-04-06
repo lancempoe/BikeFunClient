@@ -14,6 +14,7 @@ import com.google.gwt.user.client.ui.*;
 import com.googlecode.mgwt.dom.client.event.tap.TapEvent;
 import com.googlecode.mgwt.ui.client.MGWTStyle;
 import com.googlecode.mgwt.ui.client.widget.*;
+import com.googlecode.mgwt.ui.client.widget.Button;
 import com.googlecode.mgwt.ui.client.widget.base.ButtonBase;
 import com.googlecode.mgwt.ui.client.widget.tabbar.TabBarButton;
 
@@ -23,10 +24,9 @@ public class HomeScreenDisplayGwtImpl extends Composite implements HomeScreenDis
 
     interface MyStyle extends CssResource {
         String positioningForName();
+        String buttonTreatment();
     }
 	@UiField MyStyle style;
-
-    
 
 
     private static OverviewDisplayGwtImplUiBinder uiBinder = GWT.create(OverviewDisplayGwtImplUiBinder.class);
@@ -54,13 +54,22 @@ public class HomeScreenDisplayGwtImpl extends Composite implements HomeScreenDis
     @UiField(provided = true)
     ButtonBase loginButton;
 
+    @UiField
+    Button timeAndDayButton;
+    @UiField
+    Button hereAndNowButton;
+
+
     public HomeScreenDisplayGwtImpl() {
         addButton = new TabBarButton(MGWTStyle.getTheme().getMGWTClientBundle().tabBarMostRecentImage());
         searchButton = new TabBarButton(MGWTStyle.getTheme().getMGWTClientBundle().tabBarSearchImage());
         loginButton = new TabBarButton(MGWTStyle.getTheme().getMGWTClientBundle().tabBarContactsImage());
 
         initWidget(uiBinder.createAndBindUi(this));
-        cityName.addStyleName(style.positioningForName());
+        
+        timeAndDayButton.addStyleName(style.buttonTreatment());
+        hereAndNowButton.addStyleName(style.buttonTreatment());
+
     }
 
     @Override
