@@ -16,6 +16,7 @@ public class ClientFactoryGwtImpl implements ClientFactory {
     private SimpleEventBus eventBus;
     private PlaceController placeController;
     private HomeScreenDisplay homeScreenDisplay;
+    private CreateScreenDisplay createScreenDisplay;
 
     public ClientFactoryGwtImpl(PhoneGap phoneGap) {
         eventBus = new SimpleEventBus();
