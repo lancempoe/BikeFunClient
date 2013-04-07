@@ -2,6 +2,7 @@ package com.bikefunfinder.client.bootstrap.tablet;
 
 import com.bikefunfinder.client.client.places.createscreen.CreateScreenPlace;
 import com.bikefunfinder.client.client.places.homescreen.HomeScreenPlace;
+import com.bikefunfinder.client.client.places.profilescreen.ProfileScreenPlace;
 import com.google.gwt.place.shared.Place;
 import com.google.gwt.user.client.Window;
 import com.googlecode.mgwt.mvp.client.Animation;
@@ -18,7 +19,14 @@ class TabletMainAnimationMapper implements AnimationMapper {
         if (oldPlace instanceof HomeScreenPlace && newPlace instanceof CreateScreenPlace) {
             return Animation.SLIDE;
         }
+        if (oldPlace instanceof HomeScreenPlace && newPlace instanceof ProfileScreenPlace) {
+            return Animation.SLIDE;
+        }
         if (oldPlace instanceof CreateScreenPlace && newPlace instanceof HomeScreenPlace) {
+            return Animation.SLIDE_REVERSE;
+        }
+
+        if (oldPlace instanceof ProfileScreenPlace && newPlace instanceof HomeScreenPlace) {
             return Animation.SLIDE_REVERSE;
         }
         return Animation.SLIDE;

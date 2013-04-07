@@ -6,6 +6,10 @@ package com.bikefunfinder.client.client.places.profilescreen;
 
 import com.bikefunfinder.client.bootstrap.ClientFactory;
 import com.bikefunfinder.client.client.places.createscreen.CreateScreenDisplay;
+import com.bikefunfinder.client.client.places.homescreen.HomeScreenPlace;
+import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.AcceptsOneWidget;
+import com.google.web.bindery.event.shared.EventBus;
 import com.googlecode.mgwt.mvp.client.MGWTAbstractActivity;
 
 public class ProfileScreenActivity extends MGWTAbstractActivity implements ProfileScreenDisplay.Presenter {
@@ -13,5 +17,20 @@ public class ProfileScreenActivity extends MGWTAbstractActivity implements Profi
 
     public ProfileScreenActivity(ClientFactory clientFactory) {
         this.clientFactory = clientFactory;
+    }
+
+    @Override
+    public void start(AcceptsOneWidget panel, EventBus eventBus) {
+        final ProfileScreenDisplay display = clientFactory.getProfileScreenDisplay();
+
+        display.setPresenter(this);
+
+        panel.setWidget(display);
+    }
+
+    @Override
+    public void backButtonSelected() {
+        Window.alert("heading back");
+        clientFactory.getPlaceController().goTo(new HomeScreenPlace());
     }
 }

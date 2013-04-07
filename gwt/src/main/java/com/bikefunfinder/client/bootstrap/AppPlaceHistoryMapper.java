@@ -18,6 +18,7 @@ package com.bikefunfinder.client.bootstrap;
 import com.bikefunfinder.client.client.places.createscreen.CreateScreenPlace;
 import com.bikefunfinder.client.client.places.homescreen.HomeScreenPlace;
 import com.bikefunfinder.client.client.places.loginscreen.LoginScreenPlace;
+import com.bikefunfinder.client.client.places.profilescreen.ProfileScreenPlace;
 import com.google.gwt.place.shared.PlaceHistoryMapper;
 import com.google.gwt.place.shared.WithTokenizers;
 
@@ -26,6 +27,7 @@ import com.google.gwt.place.shared.WithTokenizers;
  */
 @WithTokenizers({CreateScreenPlace.Tokenizer.class,
                  HomeScreenPlace.Tokenizer.class,
-                 LoginScreenPlace.Tokenizer.class })
+                 LoginScreenPlace.Tokenizer.class,
+                 ProfileScreenPlace.Tokenizer.class})
 public interface AppPlaceHistoryMapper extends PlaceHistoryMapper {
 }

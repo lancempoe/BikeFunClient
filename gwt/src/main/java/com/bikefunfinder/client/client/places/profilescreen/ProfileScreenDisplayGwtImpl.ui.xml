@@ -3,7 +3,24 @@
              xmlns:g="urn:import:com.google.gwt.user.client.ui"
              xmlns:mgwt="urn:import:com.googlecode.mgwt.ui.client.widget">
 
+    <ui:style>
+        .positioningForName {
+        position:absolute; top:35%;
+        text-transform: none;
+        font-size: 13px !important;
+        font-weight: normal !important;
+        }
+    </ui:style>
+
     <mgwt:LayoutPanel>
+        <mgwt:HeaderPanel>
+            <mgwt:left>
+                <mgwt:HeaderButton ui:field="backButton" backButton="true" text="Back11k" />
+            </mgwt:left>
+            <mgwt:right>
+                <g:HTML styleName="{style.positioningForName}">Profile screen</g:HTML>
+            </mgwt:right>
+        </mgwt:HeaderPanel>
         <g:HTMLPanel>
             <strong>Create ride screen stuff</strong>
         </g:HTMLPanel>

@@ -4,11 +4,13 @@ package com.bikefunfinder.client.client.places.profilescreen;
  * @created 4/5/13 4:22 PM
  */
 
-import com.bikefunfinder.client.client.places.createscreen.CreateScreenDisplay;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
+import com.google.gwt.uibinder.client.UiHandler;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
+import com.googlecode.mgwt.dom.client.event.tap.TapEvent;
 
 public class ProfileScreenDisplayGwtImpl extends Composite implements ProfileScreenDisplay {
     private static OverviewDisplayGwtImplUiBinder uiBinder = GWT.create(OverviewDisplayGwtImplUiBinder.class);
@@ -21,11 +23,24 @@ public class ProfileScreenDisplayGwtImpl extends Composite implements ProfileScr
         //To change body of implemented methods use File | Settings | File Templates.
     }
 
+
+    public ProfileScreenDisplayGwtImpl() {
+        initWidget(uiBinder.createAndBindUi(this));
+    }
+
     private Presenter presenter;
 
 
     @Override
     public void setPresenter(Presenter presenter) {
         this.presenter = presenter;
+    }
+
+    @UiHandler("backButton")
+    protected void onBackButtonPressed(TapEvent event) {
+        Window.alert("bb");
+        if (presenter != null) {
+            presenter.backButtonSelected();
+        }
     }
 }
