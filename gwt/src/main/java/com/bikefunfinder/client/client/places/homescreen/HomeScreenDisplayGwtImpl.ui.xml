@@ -28,6 +28,13 @@
             </mgwt:right>
         </mgwt:HeaderPanel>
 
+        <g:FormPanel ui:field="form">
+            <g:HTMLPanel>
+                <g:Label text="Start Time:" width="49px"/>
+                <g:TextBox ui:field="dateAndTime"/>
+            </g:HTMLPanel>
+        </g:FormPanel>
+
         <mgwt:ScrollPanel ui:field="scroller" scrollingEnabledX="false">
             <g:FlowPanel  ui:field="bikeEntries"/>
         </mgwt:ScrollPanel>

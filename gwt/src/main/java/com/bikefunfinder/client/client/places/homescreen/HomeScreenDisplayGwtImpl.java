@@ -7,10 +7,7 @@ import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
-import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.HTML;
-import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.user.client.ui.*;
 import com.googlecode.mgwt.dom.client.event.tap.TapEvent;
 import com.googlecode.mgwt.ui.client.MGWTStyle;
 import com.googlecode.mgwt.ui.client.widget.Button;
@@ -35,6 +32,8 @@ public class HomeScreenDisplayGwtImpl extends Composite implements HomeScreenDis
 
     private Presenter presenter;
 
+    @UiField
+    TextBox dateAndTime;
     @UiField
     FlowPanel bikeEntries;
 
@@ -68,6 +67,9 @@ public class HomeScreenDisplayGwtImpl extends Composite implements HomeScreenDis
         
         timeAndDayButton.addStyleName(style.buttonTreatment());
         hereAndNowButton.addStyleName(style.buttonTreatment());
+        dateAndTime.getElement().setId("demo");
+        //Here be dragons
+//        initMobiScroll(dateAndTime.getElement().getId());
     }
 
     @Override
@@ -170,4 +172,17 @@ public class HomeScreenDisplayGwtImpl extends Composite implements HomeScreenDis
             presenter.onLoginButton();
         }
     }
+
+
+    public native void initMobiScroll(String idz) /*-{
+        alert("poop");
+        alert( $doc.getElementById(idz));
+            $(idz).mobiscroll().calendar({
+                theme: 'ios',
+                display: 'inline',
+                mode: 'scroller',
+                controls: ['calendar']
+            });
+    }-*/;
+
 }
