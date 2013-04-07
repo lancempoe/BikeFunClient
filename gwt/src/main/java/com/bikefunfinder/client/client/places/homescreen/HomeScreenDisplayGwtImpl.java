@@ -24,7 +24,6 @@ public class HomeScreenDisplayGwtImpl extends Composite implements HomeScreenDis
 
     interface MyStyle extends CssResource {
         String buttonTreatment();
-        String dayBarStyle();
     }
 	@UiField MyStyle style;
 
