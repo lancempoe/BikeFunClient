@@ -57,8 +57,11 @@ public class TabletFactory {
         AnimationMapper tabletMainAnimationMapper = new TabletMainAnimationMapper();
 
         AnimatingActivityManager mainActivityManager =
-                new AnimatingActivityManager(tabletMainActivityMapper, tabletMainAnimationMapper,
-                        clientFactory.getEventBus());
+            new AnimatingActivityManager(
+                    tabletMainActivityMapper,
+                    tabletMainAnimationMapper,
+                    clientFactory.getEventBus()
+        );
 
         mainActivityManager.setDisplay(mainDisplay);
         mainContainer.setWidget(mainDisplay);
