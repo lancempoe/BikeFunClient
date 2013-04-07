@@ -15,7 +15,7 @@
     <mgwt:LayoutPanel>
         <mgwt:HeaderPanel>
             <mgwt:left>
-                <mgwt:HeaderButton ui:field="backButton" backButton="true" text="Back11k" />
+                <mgwt:HeaderButton ui:field="backButton" backButton="true" text="Back" />
             </mgwt:left>
             <mgwt:right>
                 <g:HTML styleName="{style.positioningForName}">Profile screen</g:HTML>
