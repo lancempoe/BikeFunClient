@@ -1,6 +1,10 @@
 package com.bikefunfinder.client.client.places.homescreen;
 
 import com.bikefunfinder.client.bootstrap.ClientFactory;
+import com.bikefunfinder.client.client.places.createscreen.CreateScreenActivity;
+import com.bikefunfinder.client.client.places.createscreen.CreateScreenPlace;
+import com.bikefunfinder.client.client.places.loginscreen.LoginScreenPlace;
+import com.bikefunfinder.client.client.places.profilescreen.ProfileScreenPlace;
 import com.bikefunfinder.client.shared.model.*;
 import com.bikefunfinder.client.shared.model.printer.JSODescriber;
 import com.bikefunfinder.client.shared.request.SearchByTimeOfDayRequest;
@@ -125,8 +129,8 @@ public class HomeScreenActivity extends MGWTAbstractActivity implements HomeScre
         return castingObject;
     }
 
-    @Override
-    public void onCellSelected(int index) {
+//    @Override
+//    public void onCellSelected(int index) {
 //        switch (index) {
 //            case 0:
 //                clientFactory.getPlaceController().goTo(new AccelerometerPlace());
@@ -177,13 +181,33 @@ public class HomeScreenActivity extends MGWTAbstractActivity implements HomeScre
 //                break;
 //        }
 
+//    }
+
+
+    @Override
+    public void onNewButton() {
+        clientFactory.getPlaceController().goTo(new CreateScreenPlace());
     }
 
     @Override
-    public void onAboutButton() {
-//        clientFactory.getPlaceController().goTo(new AboutPlace());
+    public void onSearchButton() {
+        Window.alert("todo: onSearchButton needs impl");
     }
 
+    @Override
+    public void onLoginButton() {
+        clientFactory.getPlaceController().goTo(new ProfileScreenPlace());
+    }
+
+    @Override
+    public void onTimeAndDayButton() {
+        Window.alert("todo: onTimeAndDayButton needs impl");
+    }
+
+    @Override
+    public void onHereAndNowButton() {
+        Window.alert("todo: onHereAndNowButton needs impl");
+    }
 
     private void fireRequestForTimeOfDay(final HomeScreenDisplay display, final double latitude, final double longitude) {
         SearchByTimeOfDayRequest.Callback callback = new SearchByTimeOfDayRequest.Callback() {
@@ -229,6 +253,5 @@ public class HomeScreenActivity extends MGWTAbstractActivity implements HomeScre
 
         Geolocation phoneGeoLocation = clientFactory.getPhoneGap().getGeolocation();
         phoneGeoLocation.getCurrentPosition(geolocationCallback, options);
-
     }
 }

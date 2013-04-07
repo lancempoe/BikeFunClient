@@ -15,6 +15,8 @@
  */
 package com.bikefunfinder.client.bootstrap.phone;
 
+import com.bikefunfinder.client.client.places.createscreen.CreateScreenPlace;
+import com.bikefunfinder.client.client.places.homescreen.HomeScreenPlace;
 import com.google.gwt.place.shared.Place;
 import com.googlecode.mgwt.mvp.client.Animation;
 import com.googlecode.mgwt.mvp.client.AnimationMapper;
@@ -29,6 +31,13 @@ class PhoneAnimationMapper implements AnimationMapper {
 
         if (oldPlace == null) {
             return Animation.FADE;
+        }
+
+        if (oldPlace instanceof HomeScreenPlace && newPlace instanceof CreateScreenPlace) {
+            return Animation.SLIDE;
+        }
+        if (oldPlace instanceof CreateScreenPlace && newPlace instanceof HomeScreenPlace) {
+            return Animation.SLIDE_REVERSE;
         }
 
 //        if (oldPlace instanceof OverviewPlace && newPlace instanceof AccelerometerPlace) {

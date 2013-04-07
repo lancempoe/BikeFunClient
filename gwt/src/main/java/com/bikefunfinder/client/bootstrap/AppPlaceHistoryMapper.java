@@ -24,6 +24,8 @@ import com.google.gwt.place.shared.WithTokenizers;
 /**
  * @author Daniel Kurka
  */
-@WithTokenizers({CreateScreenPlace.Tokenizer.class, HomeScreenPlace.Tokenizer.class, LoginScreenPlace.Tokenizer.class })
+@WithTokenizers({CreateScreenPlace.Tokenizer.class,
+                 HomeScreenPlace.Tokenizer.class,
+                 LoginScreenPlace.Tokenizer.class })
 public interface AppPlaceHistoryMapper extends PlaceHistoryMapper {
 }

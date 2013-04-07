@@ -4,6 +4,8 @@ import com.bikefunfinder.client.client.places.createscreen.CreateScreenDisplay;
 import com.bikefunfinder.client.client.places.createscreen.CreateScreenDisplayGwtImpl;
 import com.bikefunfinder.client.client.places.homescreen.HomeScreenDisplay;
 import com.bikefunfinder.client.client.places.homescreen.HomeScreenDisplayGwtImpl;
+import com.bikefunfinder.client.client.places.profilescreen.ProfileScreenDisplay;
+import com.bikefunfinder.client.client.places.profilescreen.ProfileScreenDisplayGwtImpl;
 import com.google.gwt.place.shared.PlaceController;
 import com.google.web.bindery.event.shared.EventBus;
 import com.google.web.bindery.event.shared.SimpleEventBus;
@@ -17,12 +19,13 @@ public class ClientFactoryGwtImpl implements ClientFactory {
     private PlaceController placeController;
     private HomeScreenDisplay homeScreenDisplay;
     private CreateScreenDisplay createScreenDisplay;
+    private ProfileScreenDisplay profileScreenDisplay;
 
     public ClientFactoryGwtImpl(PhoneGap phoneGap) {
-        eventBus = new SimpleEventBus();
-
-        placeController = new PlaceController(eventBus);
         this.phoneGap = phoneGap;
+
+        eventBus = new SimpleEventBus();
+        placeController = new PlaceController(eventBus);
     }
 
     @Override
@@ -55,5 +58,13 @@ public class ClientFactoryGwtImpl implements ClientFactory {
             homeScreenDisplay = new HomeScreenDisplayGwtImpl();
         }
         return homeScreenDisplay;
+    }
+
+    @Override
+    public ProfileScreenDisplay getProfileScreenDisplay() {
+        if (profileScreenDisplay == null) {
+            profileScreenDisplay = new ProfileScreenDisplayGwtImpl();
+        }
+        return profileScreenDisplay;
     }
 }

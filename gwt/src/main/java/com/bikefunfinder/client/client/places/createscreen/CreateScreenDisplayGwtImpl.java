@@ -11,11 +11,19 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FormPanel;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.user.datepicker.client.DatePicker;
 
 public class CreateScreenDisplayGwtImpl  extends Composite implements CreateScreenDisplay {
     private static OverviewDisplayGwtImplUiBinder uiBinder = GWT.create(OverviewDisplayGwtImplUiBinder.class);
 
     interface OverviewDisplayGwtImplUiBinder extends UiBinder<Widget, CreateScreenDisplayGwtImpl> {
+    }
+
+    @UiField
+    DatePicker startTime;
+
+    public CreateScreenDisplayGwtImpl() {
+        initWidget(uiBinder.createAndBindUi(this));
     }
 
     @Override

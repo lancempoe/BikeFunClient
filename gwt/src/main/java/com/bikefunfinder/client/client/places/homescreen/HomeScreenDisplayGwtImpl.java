@@ -1,29 +1,28 @@
 package com.bikefunfinder.client.client.places.homescreen;
 
-import java.util.Date;
 import com.bikefunfinder.client.shared.model.BikeRide;
-import com.bikefunfinder.client.shared.model.Root;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
-import com.google.gwt.user.client.ui.*;
-
+import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.Widget;
 import com.googlecode.mgwt.dom.client.event.tap.TapEvent;
 import com.googlecode.mgwt.ui.client.MGWTStyle;
-import com.googlecode.mgwt.ui.client.widget.*;
 import com.googlecode.mgwt.ui.client.widget.Button;
 import com.googlecode.mgwt.ui.client.widget.base.ButtonBase;
 import com.googlecode.mgwt.ui.client.widget.tabbar.TabBarButton;
 
+import java.util.Date;
 import java.util.List;
 
 public class HomeScreenDisplayGwtImpl extends Composite implements HomeScreenDisplay {
 
     interface MyStyle extends CssResource {
-        String positioningForName();
         String buttonTreatment();
     }
 	@UiField MyStyle style;
@@ -56,9 +55,9 @@ public class HomeScreenDisplayGwtImpl extends Composite implements HomeScreenDis
 
     @UiField
     Button timeAndDayButton;
+
     @UiField
     Button hereAndNowButton;
-
 
     public HomeScreenDisplayGwtImpl() {
         addButton = new TabBarButton(MGWTStyle.getTheme().getMGWTClientBundle().tabBarMostRecentImage());
@@ -69,13 +68,11 @@ public class HomeScreenDisplayGwtImpl extends Composite implements HomeScreenDis
         
         timeAndDayButton.addStyleName(style.buttonTreatment());
         hereAndNowButton.addStyleName(style.buttonTreatment());
-
     }
 
     @Override
     public void setPresenter(Presenter presenter) {
         this.presenter = presenter;
-
     }
 
     @Override
@@ -130,14 +127,35 @@ public class HomeScreenDisplayGwtImpl extends Composite implements HomeScreenDis
     @UiHandler("hereAndNowButton")
     protected void onHereAndNowButton(TapEvent event) {
         if (presenter != null) {
-            presenter.onAboutButton();
+            presenter.onHereAndNowButton();
         }
     }
 
     @UiHandler("timeAndDayButton")
     protected void onTimeAndDayButton(TapEvent event) {
         if (presenter != null) {
-            presenter.onAboutButton();
+            presenter.onTimeAndDayButton();
+        }
+    }
+
+    @UiHandler("addButton")
+    protected void onAddButtonButton(TapEvent event) {
+        if (presenter != null) {
+            presenter.onNewButton();
+        }
+    }
+
+    @UiHandler("searchButton")
+    protected void onSearchButton(TapEvent event) {
+        if (presenter != null) {
+            presenter.onSearchButton();
+        }
+    }
+
+    @UiHandler("loginButton")
+    protected void onLoginButton(TapEvent event) {
+        if (presenter != null) {
+            presenter.onLoginButton();
         }
     }
 }

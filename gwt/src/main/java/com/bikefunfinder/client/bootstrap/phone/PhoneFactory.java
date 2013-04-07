@@ -25,8 +25,10 @@ public class PhoneFactory {
         PhoneAnimationMapper appAnimationMapper = new PhoneAnimationMapper();
 
         AnimatingActivityManager activityManager =
-                new AnimatingActivityManager(appActivityMapper, appAnimationMapper, clientFactory
-                        .getEventBus());
+            new AnimatingActivityManager(appActivityMapper,
+                                         appAnimationMapper,
+                                         clientFactory
+                    .getEventBus());
 
         activityManager.setDisplay(display);
 
