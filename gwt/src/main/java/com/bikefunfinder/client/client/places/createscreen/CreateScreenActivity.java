@@ -5,6 +5,7 @@ package com.bikefunfinder.client.client.places.createscreen;
  */
 
 import com.bikefunfinder.client.bootstrap.ClientFactory;
+import com.bikefunfinder.client.client.places.homescreen.HomeScreenPlace;
 import com.bikefunfinder.client.shared.model.BikeRide;
 import com.bikefunfinder.client.shared.request.NewEventRequest;
 import com.google.gwt.http.client.Response;
@@ -48,5 +49,10 @@ public class CreateScreenActivity extends MGWTAbstractActivity implements Create
         request.bikeRide(br);
         request.send();
 
+    }
+
+    @Override
+    public void backButtonSelected() {
+        clientFactory.getPlaceController().goTo(new HomeScreenPlace());
     }
 }
