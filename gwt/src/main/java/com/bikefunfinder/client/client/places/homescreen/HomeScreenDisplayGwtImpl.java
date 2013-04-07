@@ -79,9 +79,21 @@ public class HomeScreenDisplayGwtImpl extends Composite implements HomeScreenDis
     public void display(List<BikeRide> list) {
         Date firstDate = null;
         Date lastDay = null;
+        Date dummyDate1 = null;
+        Date dummyDate2 = null;
         for(BikeRide br: list) {
             Date date = br.getRideStartTimeDate();
-            if(firstDate == null) {
+            if(dummyDate1 == null) {
+                dummyDate1 = new Date(1333644540000l);
+                date = dummyDate1;
+            }
+            else if( dummyDate2 == null)
+            {
+                dummyDate2 = new Date(1333730940000l);
+                date = dummyDate2;
+            }
+            if(firstDate == null)
+            {
                 firstDate = date;
                 lastDay = firstDate;
                 bikeEntries.add(new HTML(dayBar(firstDate).toString()));
