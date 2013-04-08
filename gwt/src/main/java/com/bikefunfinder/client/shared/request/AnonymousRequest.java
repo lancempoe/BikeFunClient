@@ -4,8 +4,139 @@ package com.bikefunfinder.client.shared.request;
  * Created with IntelliJ IDEA.
  * User: lancepoehler
  * Date: 4/7/13
- * Time: 1:05 PM
- * To change this template use File | Settings | File Templates.
+ * Time: 12:57 PM
  */
-public class AnonymousRequest {
+
+import com.bikefunfinder.client.client.places.homescreen.HomeScreenActivity;
+import com.bikefunfinder.client.shared.model.AnonymousUser;
+import com.bikefunfinder.client.shared.model.Root;
+import com.bikefunfinder.client.shared.model.User;
+import com.google.gwt.http.client.*;
+import com.googlecode.mgwt.ui.client.dialog.Dialogs;
+
+import java.math.BigDecimal;
+
+public final class AnonymousRequest {
+    public interface Callback {
+        void onError();
+        void onResponseReceived(AnonymousUser anonymousUser);
+    }
+
+    public static final class Builder {
+        private AnonymousRequest.Callback callback;
+        private String key;
+        private String uuid;
+
+        public Builder(final AnonymousRequest.Callback callback) {
+            if (callback == null) {
+                throw new NullPointerException();
+            }
+
+            this.callback = callback;
+        }
+
+        public Builder callback(final AnonymousRequest.Callback callback) {
+            if (callback == null) {
+                throw new NullPointerException();
+            }
+
+            this.callback = callback;
+            return this;
+        }
+
+        public Builder key(final String key) {
+            this.key = key;
+            return this;
+        }
+        public Builder uuid(final String uuid) {
+            this.uuid = uuid;
+            return this;
+        }
+
+        public AnonymousRequest send() {
+            return new AnonymousRequest(this);
+        }
+    }
+
+    private static final String URL = "http://appworks.timneuwerth.com/FunService/rest/users/anonymous/";
+
+    private final AnonymousRequest.Callback callback;
+    private final String key;
+    private final String uuid;
+    private final Request request;
+
+    public void cancel() {
+        request.cancel();
+    }
+
+    public boolean isPending() {
+        return request.isPending();
+    }
+
+    private AnonymousRequest(final Builder builder) {
+        callback = builder.callback;
+        key = builder.key;
+        uuid = builder.uuid;
+        request = send();
+    }
+
+    private Request send() {
+        Request request = null;
+
+        final RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.GET, getUrlWithQuery());
+        try {
+            request = requestBuilder.sendRequest(null, getRequestCallback());
+        } catch (final RequestException e) {
+            e.printStackTrace();
+        }
+
+        return request;
+    }
+
+    private String getUrlWithQuery() {
+        final StringBuilder builder = new StringBuilder();
+        builder.append(URL);
+        builder.append(key);
+        builder.append("/");
+        builder.append(uuid);
+
+        return builder.toString();
+    }
+
+    private RequestCallback getRequestCallback() {
+        final RequestCallback requestCallback = new RequestCallback() {
+            @Override
+            public void onError(final Request request, final Throwable exception) {
+                Dialogs.alert("Error", "Unable to get anonymous user.", new Dialogs.AlertCallback() {
+                    @Override
+                    public void onButtonPressed() {
+                        callback.onError();
+                    }
+                });
+            }
+
+            @Override
+            public void onResponseReceived(final Request request, final Response response) {
+                final int statusCode = response.getStatusCode();
+                if ((statusCode < 200) || (statusCode >= 300)) {
+                    final StringBuilder builder = new StringBuilder();
+                    builder.append("Unable to get anonymous user.");
+                    builder.append(" Status Code: ").append(statusCode);
+                    builder.append("; Status Text: ").append(response.getStatusText());
+                    Dialogs.alert("Error", builder.toString(), new Dialogs.AlertCallback() {
+                        @Override
+                        public void onButtonPressed() {
+                            callback.onError();
+                        }
+                    });
+                } else {
+                    AnonymousUser anonymousUser = HomeScreenActivity.testObjectParse(response.getText());
+                    callback.onResponseReceived(anonymousUser);
+
+                }
+            }
+        };
+
+        return requestCallback;
+    }
 }
