@@ -18,7 +18,7 @@ public interface CreateScreenDisplay extends IsWidget {
      * This are the items that the display can provide
      */
     public void displayFailedToCreateRideMessage();
-    public void displayResponse(Response response);
+    public void displayResponse(BikeRide bikeRide);
 
     /**
      * This is the contract for what the activity can provide

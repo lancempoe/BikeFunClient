@@ -4,14 +4,16 @@ package com.bikefunfinder.client.shared.request;
  * @created 4/15/13 1:33 AM
  */
 
+import com.bikefunfinder.client.client.places.homescreen.HomeScreenActivity;
 import com.bikefunfinder.client.shared.model.BikeRide;
+import com.bikefunfinder.client.shared.model.Root;
 import com.google.gwt.http.client.*;
 import com.googlecode.mgwt.ui.client.dialog.Dialogs;
 
 public final class NewEventRequest {
     public interface Callback {
         void onError();
-        void onResponseReceived(Response response);
+        void onResponseReceived(BikeRide bikeRide);
     }
 
     public static final class Builder {
@@ -113,8 +115,9 @@ public final class NewEventRequest {
                         }
                     });
                 } else {
-                    callback.onResponseReceived(response);
-
+                    BikeRide bikeRide = HomeScreenActivity.testObjectParse(response.getText());
+                    callback.onResponseReceived(bikeRide);
+                    //TODO NEED TO REVIEW SERVICE... NEEDS TO CHANGE SLIGHTLY TO HANDLE SEN
                 }
             }
         };

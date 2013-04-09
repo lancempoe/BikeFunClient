@@ -44,14 +44,6 @@ public final class SearchByParametersRequest {
             return this;
         }
 
-        public Builder latitude(final BigDecimal latitude) {
-            this.latitude = latitude;
-            return this;
-        }
-        public Builder longitude(final BigDecimal longitude) {
-            this.longitude = longitude;
-            return this;
-        }
         public Builder latitude(final double latitude) {
             this.latitude = new BigDecimal(latitude);
             return this;

@@ -41,8 +41,8 @@ public class CreateScreenActivity extends MGWTAbstractActivity implements Create
             }
 
             @Override
-            public void onResponseReceived(Response response) {
-                display.displayResponse(response);
+            public void onResponseReceived(BikeRide bikeRide) {
+                display.displayResponse(bikeRide);
             }
         });
 

@@ -1,11 +1,126 @@
 package com.bikefunfinder.client.shared.request;
-
-/**
- * Created with IntelliJ IDEA.
- * User: lancepoehler
- * Date: 4/7/13
- * Time: 1:03 PM
- * To change this template use File | Settings | File Templates.
+/*
+ * @author: lancepoehler
+ * @created 4/8/13 9:33 PM
  */
-public class NewTrackRequest {
+
+import com.bikefunfinder.client.client.places.homescreen.HomeScreenActivity;
+import com.bikefunfinder.client.shared.model.BikeRide;
+import com.bikefunfinder.client.shared.model.Root;
+import com.bikefunfinder.client.shared.model.Tracking;
+import com.google.gwt.http.client.*;
+import com.googlecode.mgwt.ui.client.dialog.Dialogs;
+
+public final class NewTrackRequest {
+    public interface Callback {
+        void onError();
+        void onResponseReceived();
+    }
+
+    public static final class Builder {
+        private NewTrackRequest.Callback callback;
+        private Tracking tracking;
+
+        public Builder(final NewTrackRequest.Callback callback) {
+            if (callback == null) {
+                throw new NullPointerException();
+            }
+
+            this.callback = callback;
+        }
+
+        public Builder callback(final NewTrackRequest.Callback callback) {
+            if (callback == null) {
+                throw new NullPointerException();
+            }
+
+            this.callback = callback;
+            return this;
+        }
+
+        public Builder bikeRide(final Tracking tracking) {
+            this.tracking = tracking;
+            return this;
+        }
+
+        public NewTrackRequest send() {
+            return new NewTrackRequest(this);
+        }
+    }
+
+    private static final String URL = "http://appworks.timneuwerth.com/FunService/rest/tracking/new ";
+
+    private final NewTrackRequest.Callback callback;
+    private final Tracking tracking;
+    private final Request request;
+
+    public void cancel() {
+        request.cancel();
+    }
+
+    public boolean isPending() {
+        return request.isPending();
+    }
+
+    private NewTrackRequest(final Builder builder) {
+        callback = builder.callback;
+        tracking = builder.tracking;
+        request = send();
+    }
+
+    private Request send() {
+        Request request = null;
+
+        final RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST, getUrlWithQuery());
+        try {
+            request = requestBuilder.sendRequest(tracking.toSource(), getRequestCallback());
+        } catch (final RequestException e) {
+            e.printStackTrace();
+        }
+
+        return request;
+    }
+
+    private String getUrlWithQuery() {
+        final StringBuilder builder = new StringBuilder();
+        builder.append(URL);
+
+        return builder.toString();
+    }
+
+    private RequestCallback getRequestCallback() {
+        final RequestCallback requestCallback = new RequestCallback() {
+            @Override
+            public void onError(final Request request, final Throwable exception) {
+                Dialogs.alert("Error", "Unable to create new tracking on bike ride.",
+                        new Dialogs.AlertCallback() {
+                            @Override
+                            public void onButtonPressed() {
+                                callback.onError();
+                            }
+                        });
+            }
+
+            @Override
+            public void onResponseReceived(final Request request, final Response response) {
+                final int statusCode = response.getStatusCode();
+                if ((statusCode < 200) || (statusCode >= 300)) {
+                    final StringBuilder builder = new StringBuilder();
+                    builder.append("Unable to create new tracking on bike ride.");
+                    builder.append(" Status Code: ").append(statusCode);
+                    builder.append("; Status Text: ").append(response.getStatusText());
+                    Dialogs.alert("Error", builder.toString(), new Dialogs.AlertCallback() {
+                        @Override
+                        public void onButtonPressed() {
+                            callback.onError();
+                        }
+                    });
+                } else {
+                    BikeRide bikeRide = HomeScreenActivity.testObjectParse(response.getText());
+                    callback.onResponseReceived();
+                }
+            }
+        };
+        return requestCallback;
+    }
 }

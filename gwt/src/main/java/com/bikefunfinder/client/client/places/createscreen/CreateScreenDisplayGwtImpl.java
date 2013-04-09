@@ -4,6 +4,7 @@ package com.bikefunfinder.client.client.places.createscreen;
  * @created 4/6/13 2:22 AM
  */
 
+import com.bikefunfinder.client.shared.model.BikeRide;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.http.client.Response;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -34,7 +35,7 @@ public class CreateScreenDisplayGwtImpl  extends Composite implements CreateScre
     }
 
     @Override
-    public void displayResponse(Response response) {
+    public void displayResponse(BikeRide bikeRide) {
         //To change body of implemented methods use File | Settings | File Templates.
     }
 
