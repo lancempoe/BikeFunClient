@@ -23,20 +23,44 @@ public class BikeRide extends JavaScriptObject {
         return this.bikeRideName;
     }-*/;
 
+    public final native void setBikeRideName(String name) /*-{
+        this.bikeRideName = name;
+    }-*/;
+
     public final native String getDetails() /*-{
         return this.details;
+    }-*/;
+
+    public final native void setDetails(String details) /*-{
+        this.details = details;
     }-*/;
 
     public final native String getRideLeaderId() /*-{
         return this.rideLeaderId;
     }-*/;
 
+    public final native void setRideLeaderId(String id) /*-{
+        this.rideLeaderId = id;
+    }-*/;
+
     public final native String getTargetAudience() /*-{
         return this.targetAudience;
     }-*/;
 
+    public final native void setTargetAudience(String targetAudience) /*-{
+        this.targetAudience = targetAudience;
+    }-*/;
+
     public final native String getRideStartTime() /*-{
         return this.rideStartTime;
+    }-*/;
+
+    public final void setRideStartTime(Long time) {
+       setRideStartTime(time.toString());
+    }
+
+    public final native void setRideStartTime(String time) /*-{
+        this.rideStartTime = time;
     }-*/;
 
     public final String getRideStartTimeFormated() {
@@ -51,24 +75,44 @@ public class BikeRide extends JavaScriptObject {
         Date date = new Date(unformattedStartTime);
         return date;
     }
+
     public final native Location getLocation() /*-{
         return this.location;
+    }-*/;
+
+    public final native void setLocation(Location location) /*-{
+        this.location = location;
     }-*/;
 
     public final native String getCityLocationId() /*-{
         return this.cityLocationId;
     }-*/;
 
+    public final native void setCityLocationId(String cityLocationId) /*-{
+        this.cityLocationId = cityLocationId;
+    }-*/;
+
     public final native String getImagePath() /*-{
         return this.imagePath;
     }-*/;
 
-    public final native String isTrackingAllowed() /*-{
+    public final native String setImagePath(String imagePath) /*-{
+        this.imagePath = imagePath;
+    }-*/;
+    public final native boolean isTrackingAllowed() /*-{
         return this.trackingAllowed;
+    }-*/;
+
+    public final native void setTrackingAllowed(boolean isTrackingAllowed) /*-{
+        this.trackingAllowed = isTrackingAllowed;
     }-*/;
 
     public final native String getRideLeaderName() /*-{
         return this.rideLeaderName;
+    }-*/;
+
+    public final native String setRideLeaderName(String rideLeaderName) /*-{
+        this.rideLeaderName = rideLeaderName;
     }-*/;
 
     public final native String getDistanceFromClient() /*-{

@@ -49,6 +49,12 @@ public class CreateScreenDisplayGwtImpl  extends Composite implements CreateScre
     @UiField
     FormPanel form;
 
+    @UiHandler("submitRide")
+    protected void onSubmitRidePressed(TapEvent event) {
+        if(presenter != null) {
+            //presenter.onFormSelected(new BikeRide());
+        }
+    }
     @UiHandler("backButton")
     protected void onBackButtonPressed(TapEvent event) {
         if (presenter != null) {

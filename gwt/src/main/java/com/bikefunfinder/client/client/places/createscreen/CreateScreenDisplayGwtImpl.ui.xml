@@ -26,23 +26,23 @@
         <mgwt:ScrollPanel scrollingEnabledX="false">
             <g:FormPanel ui:field="form">
                 <g:HTMLPanel>
-                    <g:Label text="Bike Ride Name:" width="49px"/>
-                    <g:TextBox ui:field="bikeRideName" width="118px"/>
+                    <g:Label text="Bike Ride Name:" width="100%"/>
+                    <g:TextBox ui:field="bikeRideName" width="100%"/>
                     <g:Label text="Starting Address:" width="49px"/>
-                    <g:TextBox ui:field="locationAddress" width="118px"/>
+                    <g:TextBox ui:field="locationAddress" width="100%"/>
                     <g:Label text="Starting City:" width="49px"/>
-                    <g:TextBox ui:field="locationCity" width="118px" />
+                    <g:TextBox ui:field="locationCity" width="100%" />
                     <g:Label text="Starting State:" width="49px"/>
-                    <g:ListBox ui:field="locationState" visibleItemCount="1" width="118px" />
+                    <g:TextBox ui:field="locationState" width="100%" />
                     <g:Label text="Start Time:" width="49px"/>
                     <dp:DatePicker ui:field="startTime" />
                     <g:Label text="Ride Details:" width="49px"/>
                     <g:TextArea ui:field="RideDetails" height="118px" width="100%"/>
                     <g:Label text="Ride Image:" width="49px"/>
-                    <g:TextBox ui:field="image"/>
+                    <g:TextBox ui:field="image" width="100%"/>
                     <g:Label text="Tracking Allowed:" width="49px"/>
                     <g:CheckBox ui:field="trackingAllowed" />
-                    <g:Button width="142px" text="Aceptar"/>
+                    <mgwt:Button ui:field="submitRide" width="142px" text="Submit Ride"/>
                 </g:HTMLPanel>
             </g:FormPanel>
         </mgwt:ScrollPanel>
