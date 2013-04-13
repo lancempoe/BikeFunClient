@@ -12,8 +12,17 @@ public class GeoLoc extends JavaScriptObject {
     public final native String getLongitude() /*-{
         return this.longitude;
     }-*/;
+    public final native void setLongitude(String longitude) /*-{
+        this.longitude = longitude;
+    }-*/;
 
     public final native String getLatitude() /*-{
         return this.latitude;
     }-*/;
+
+    public final native void setLatitude(String latitude) /*-{
+        this.latitude = latitude;
+    }-*/;
+
+
 }

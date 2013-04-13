@@ -5,6 +5,8 @@ package com.bikefunfinder.client.shared.model.printer;
  */
 
 import com.bikefunfinder.client.shared.model.*;
+import com.google.gwt.core.client.JavaScriptObject;
+import com.google.gwt.json.client.JSONObject;
 
 public class JSODescriber {
     private static final DescribeableAsString<GeoLoc> geoLocJSOWrapper = new GeoLocJSOWrapper();
@@ -34,4 +36,9 @@ public class JSODescriber {
     public static final String describe(Root root) {
         return rootJSOWrapper.describeAsString(root);
     }
+
+    public static final String toJSON(JavaScriptObject jso) {
+        return new JSONObject(jso).toString();
+    }
+
 }

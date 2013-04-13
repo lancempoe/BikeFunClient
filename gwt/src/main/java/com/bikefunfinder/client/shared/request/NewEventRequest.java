@@ -7,8 +7,10 @@ package com.bikefunfinder.client.shared.request;
 import com.bikefunfinder.client.client.places.homescreen.HomeScreenActivity;
 import com.bikefunfinder.client.shared.model.BikeRide;
 import com.bikefunfinder.client.shared.model.Root;
+import com.bikefunfinder.client.shared.model.printer.JSODescriber;
 import com.google.gwt.http.client.*;
 import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.user.client.Window;
 import com.googlecode.mgwt.ui.client.dialog.Dialogs;
 
 public final class NewEventRequest {
@@ -73,7 +75,10 @@ public final class NewEventRequest {
 
         final RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST, getUrlWithQuery());
         try {
-            request = requestBuilder.sendRequest(new JSONObject(bikeRide).toString(), getRequestCallback());
+            final String jsonText = JSODescriber.toJSON(bikeRide);
+            //Window.alert(jsonText); //if yer wanting some debuggerz
+            requestBuilder.setHeader("Content-Type", "application/json");
+            request = requestBuilder.sendRequest(jsonText, getRequestCallback());
         } catch (final RequestException e) {
             e.printStackTrace();
         }

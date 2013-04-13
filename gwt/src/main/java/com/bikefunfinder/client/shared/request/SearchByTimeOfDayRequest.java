@@ -60,8 +60,8 @@ public final class SearchByTimeOfDayRequest {
         }
     }
 
-    //private static final String URL = "http://appworks.timneuwerth.com/FunService/rest/display/by_time_of_day/";
-    private static final String URL = "";
+    private static final String URL = "http://appworks.timneuwerth.com/FunService/rest/display/by_time_of_day/";
+    //private static final String URL = "";
 
     private final SearchByTimeOfDayRequest.Callback callback;
     private final BigDecimal latitude;

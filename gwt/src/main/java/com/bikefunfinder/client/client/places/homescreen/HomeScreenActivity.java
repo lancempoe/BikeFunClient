@@ -43,9 +43,9 @@ public class HomeScreenActivity extends MGWTAbstractActivity implements HomeScre
 
         panel.setWidget(display);
 
-        //getGeoLocationAndIfSuccessfullCallDisplay(display);
-        currentList = getModuleList(justForShits());
-        display.display(currentList);
+        getGeoLocationAndIfSuccessfullCallDisplay(display);
+        //currentList = getModuleList(justForShits());
+        //display.display(currentList);
 
         Root root = testObjectParse(justForShits());
         display.display(root.getClosestLocation().getCity());
@@ -229,8 +229,8 @@ public class HomeScreenActivity extends MGWTAbstractActivity implements HomeScre
                 display.display(root.getClosestLocation().getCity());
             }
         };
-//        SearchByTimeOfDayRequest.Builder request = new SearchByTimeOfDayRequest.Builder(callback);
-//        request.latitude(latitude).longitude(longitude).send();
+        SearchByTimeOfDayRequest.Builder request = new SearchByTimeOfDayRequest.Builder(callback);
+        request.latitude(latitude).longitude(longitude).send();
     }
 
     private void getGeoLocationAndIfSuccessfullCallDisplay(final HomeScreenDisplay display) {

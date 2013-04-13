@@ -5,7 +5,9 @@ package com.bikefunfinder.client.client.places.createscreen;
  */
 
 import com.bikefunfinder.client.shared.model.BikeRide;
+import com.bikefunfinder.client.shared.model.GeoLoc;
 import com.bikefunfinder.client.shared.model.Location;
+import com.bikefunfinder.client.shared.model.printer.JSODescriber;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.dom.client.Element;
@@ -13,6 +15,7 @@ import com.google.gwt.http.client.Response;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.*;
 import static com.google.gwt.query.client.GQuery.$;
 import static gwtquery.plugins.ui.Ui.Ui;
@@ -80,18 +83,25 @@ public class CreateScreenDisplayGwtImpl  extends Composite implements CreateScre
     @UiHandler("submitRide")
     protected void onSubmitRidePressed(TapEvent event) {
         if(presenter != null) {
-            BikeRide br = (BikeRide)JavaScriptObject.createObject().cast();
+            BikeRide br = GWT.create(BikeRide.class);
 
             br.setRideLeaderName("Todo:LeaderName!");
             br.setBikeRideName(bikeRideName.getText());
             br.setDetails(rideDetails.getText());
             br.setRideLeaderId("abc");
-            Location location = (Location)JavaScriptObject.createObject().cast();
+
+            Location location = GWT.create(Location.class);
             location.setCity(locationCity.getText());
             location.setState(locationState.getText());
             location.setStreetAddress(locationAddress.getText());
+
+            GeoLoc geoLoc = GWT.create(GeoLoc.class);
+            geoLoc.setLatitude("0.00");
+            geoLoc.setLongitude("0.00");
+            location.setGeoLoc(geoLoc);
             br.setLocation(location);
-            //br.setRideStartTime(startTime.getValue().getTime());
+
+            br.setRideStartTime(System.currentTimeMillis());
 
             presenter.onFormSelected(br);
         }
