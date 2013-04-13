@@ -6,6 +6,8 @@ import com.bikefunfinder.client.client.places.homescreen.HomeScreenDisplay;
 import com.bikefunfinder.client.client.places.homescreen.HomeScreenDisplayGwtImpl;
 import com.bikefunfinder.client.client.places.profilescreen.ProfileScreenDisplay;
 import com.bikefunfinder.client.client.places.profilescreen.ProfileScreenDisplayGwtImpl;
+import com.bikefunfinder.client.client.places.searchsettings.SearchSettingsDisplayGwtImpl;
+import com.bikefunfinder.client.client.places.searchsettings.SearchSettingsScreenDisplay;
 import com.google.gwt.place.shared.PlaceController;
 import com.google.web.bindery.event.shared.EventBus;
 import com.google.web.bindery.event.shared.SimpleEventBus;
@@ -20,6 +22,7 @@ public class ClientFactoryGwtImpl implements ClientFactory {
     private HomeScreenDisplay homeScreenDisplay;
     private CreateScreenDisplay createScreenDisplay;
     private ProfileScreenDisplay profileScreenDisplay;
+    private SearchSettingsScreenDisplay searchSettingsScreenDisplay;
 
     public ClientFactoryGwtImpl(PhoneGap phoneGap) {
         this.phoneGap = phoneGap;
@@ -66,5 +69,13 @@ public class ClientFactoryGwtImpl implements ClientFactory {
             profileScreenDisplay = new ProfileScreenDisplayGwtImpl();
         }
         return profileScreenDisplay;
+    }
+
+    @Override
+    public SearchSettingsScreenDisplay getSearchSettingsScreenDisplay() {
+        if (searchSettingsScreenDisplay == null) {
+            searchSettingsScreenDisplay = new SearchSettingsDisplayGwtImpl();
+        }
+        return searchSettingsScreenDisplay;
     }
 }

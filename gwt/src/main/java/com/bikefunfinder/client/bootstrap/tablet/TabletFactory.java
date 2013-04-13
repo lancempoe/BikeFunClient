@@ -1,10 +1,12 @@
 package com.bikefunfinder.client.bootstrap.tablet;
 
+import com.bikefunfinder.client.bootstrap.ActivityMapperDelegate;
+import com.bikefunfinder.client.bootstrap.AnimationMapperDelegate;
+import com.bikefunfinder.client.bootstrap.ClientFactory;
 import com.google.gwt.activity.shared.ActivityMapper;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.SimplePanel;
-import com.bikefunfinder.client.bootstrap.ClientFactory;
 import com.googlecode.mgwt.mvp.client.AnimatableDisplay;
 import com.googlecode.mgwt.mvp.client.AnimatingActivityManager;
 import com.googlecode.mgwt.mvp.client.AnimationMapper;
@@ -36,7 +38,7 @@ public class TabletFactory {
         new OrientationRegionHandler(navContainer, tabletPortraitOverlay, navDisplay);
         new MasterRegionHandler(clientFactory.getEventBus(), "nav", tabletPortraitOverlay);
 
-        ActivityMapper navActivityMapper = new TabletNavActivityMapper(clientFactory);
+        ActivityMapper navActivityMapper = new TabletNavActivityMapper(new ActivityMapperDelegate(clientFactory));
 
         AnimationMapper navAnimationMapper = new TabletNavAnimationMapper();
 
@@ -52,9 +54,9 @@ public class TabletFactory {
         mainContainer.getElement().setId("main");
         AnimatableDisplay mainDisplay = GWT.create(AnimatableDisplay.class);
 
-        TabletMainActivityMapper tabletMainActivityMapper = new TabletMainActivityMapper(clientFactory);
+        TabletMainActivityMapper tabletMainActivityMapper = new TabletMainActivityMapper(new ActivityMapperDelegate(clientFactory));
 
-        AnimationMapper tabletMainAnimationMapper = new TabletMainAnimationMapper();
+        AnimationMapper tabletMainAnimationMapper = new TabletMainAnimationMapper(new AnimationMapperDelegate());
 
         AnimatingActivityManager mainActivityManager =
             new AnimatingActivityManager(

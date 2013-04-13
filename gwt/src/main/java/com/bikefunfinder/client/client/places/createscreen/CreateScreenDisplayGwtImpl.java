@@ -6,15 +6,17 @@ package com.bikefunfinder.client.client.places.createscreen;
 
 import com.bikefunfinder.client.shared.model.BikeRide;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.Element;
 import com.google.gwt.http.client.Response;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
-import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.FormPanel;
-import com.google.gwt.user.client.ui.Widget;
-import com.google.gwt.user.datepicker.client.DatePicker;
+import com.google.gwt.user.client.ui.*;
+
+import static com.google.gwt.query.client.GQuery.$;
+import static gwtquery.plugins.ui.Ui.Ui;
 import com.googlecode.mgwt.dom.client.event.tap.TapEvent;
+import gwtquery.plugins.ui.widgets.Datepicker;
 
 public class CreateScreenDisplayGwtImpl  extends Composite implements CreateScreenDisplay {
     private static OverviewDisplayGwtImplUiBinder uiBinder = GWT.create(OverviewDisplayGwtImplUiBinder.class);
@@ -23,10 +25,21 @@ public class CreateScreenDisplayGwtImpl  extends Composite implements CreateScre
     }
 
     @UiField
-    DatePicker startTime;
+    TextBox startTime;
+//    DatePicker startTime;
+    @UiField
+    FormPanel form;
+
+    @UiField
+    HTMLPanel formContents;
+
+    @UiField
+    FlowPanel dateTimeFP;
 
     public CreateScreenDisplayGwtImpl() {
         initWidget(uiBinder.createAndBindUi(this));
+        startTime.getElement().setId("datepicker");
+        setupDemoElement(dateTimeFP.getElement());
     }
 
     @Override
@@ -46,8 +59,7 @@ public class CreateScreenDisplayGwtImpl  extends Composite implements CreateScre
         this.presenter = presenter;
     }
 
-    @UiField
-    FormPanel form;
+
 
     @UiHandler("submitRide")
     protected void onSubmitRidePressed(TapEvent event) {
@@ -61,5 +73,15 @@ public class CreateScreenDisplayGwtImpl  extends Composite implements CreateScre
             presenter.backButtonSelected();
         }
     }
+
+    public void setupDemoElement(Element demo) {
+//        $("#datepicker", demo).as(Ui).datepicker();
+
+        $("#datepicker", demo).as(Ui).datepicker();
+
+
+    }
+
+
 
 }

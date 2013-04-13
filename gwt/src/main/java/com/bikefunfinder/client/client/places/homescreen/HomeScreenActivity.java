@@ -5,6 +5,7 @@ import com.bikefunfinder.client.client.places.createscreen.CreateScreenActivity;
 import com.bikefunfinder.client.client.places.createscreen.CreateScreenPlace;
 import com.bikefunfinder.client.client.places.loginscreen.LoginScreenPlace;
 import com.bikefunfinder.client.client.places.profilescreen.ProfileScreenPlace;
+import com.bikefunfinder.client.client.places.searchsettings.SearchSettingsScreenPlace;
 import com.bikefunfinder.client.shared.model.*;
 import com.bikefunfinder.client.shared.model.printer.JSODescriber;
 import com.bikefunfinder.client.shared.request.SearchByTimeOfDayRequest;
@@ -38,11 +39,16 @@ public class HomeScreenActivity extends MGWTAbstractActivity implements HomeScre
     public void start(AcceptsOneWidget panel, EventBus eventBus) {
         final HomeScreenDisplay display = clientFactory.getHomeScreenDisplay();
 
-        getGeoLocationAndIfSuccessfullCallDisplay(display);
-
         display.setPresenter(this);
 
         panel.setWidget(display);
+
+        //getGeoLocationAndIfSuccessfullCallDisplay(display);
+        currentList = getModuleList(justForShits());
+        display.display(currentList);
+
+        Root root = testObjectParse(justForShits());
+        display.display(root.getClosestLocation().getCity());
     }
 
 
@@ -191,7 +197,7 @@ public class HomeScreenActivity extends MGWTAbstractActivity implements HomeScre
 
     @Override
     public void onSearchButton() {
-        Window.alert("todo: onSearchButton needs impl");
+        clientFactory.getPlaceController().goTo(new SearchSettingsScreenPlace());
     }
 
     @Override
@@ -223,8 +229,8 @@ public class HomeScreenActivity extends MGWTAbstractActivity implements HomeScre
                 display.display(root.getClosestLocation().getCity());
             }
         };
-        SearchByTimeOfDayRequest.Builder request = new SearchByTimeOfDayRequest.Builder(callback);
-        request.latitude(latitude).longitude(longitude).send();
+//        SearchByTimeOfDayRequest.Builder request = new SearchByTimeOfDayRequest.Builder(callback);
+//        request.latitude(latitude).longitude(longitude).send();
     }
 
     private void getGeoLocationAndIfSuccessfullCallDisplay(final HomeScreenDisplay display) {

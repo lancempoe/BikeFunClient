@@ -4,4 +4,5 @@
     <source path="bootstrap"/>
     <source path="shared"/>
     <inherits name="com.google.gwt.user.User"/>
+    <inherits name="gwtquery.plugins.Ui" />
 </module>

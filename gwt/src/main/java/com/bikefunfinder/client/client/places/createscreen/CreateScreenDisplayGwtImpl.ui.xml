@@ -25,24 +25,28 @@
 
         <mgwt:ScrollPanel scrollingEnabledX="false">
             <g:FormPanel ui:field="form">
-                <g:HTMLPanel>
+                <g:HTMLPanel ui:field="formContents">
                     <g:Label text="Bike Ride Name:" width="100%"/>
                     <g:TextBox ui:field="bikeRideName" width="100%"/>
-                    <g:Label text="Starting Address:" width="49px"/>
-                    <g:TextBox ui:field="locationAddress" width="100%"/>
-                    <g:Label text="Starting City:" width="49px"/>
+                    <g:Label text="Starting Address:" width="100%"/>
+                    <g:TextBox ui:field="locationAddress" width="118px"/>
+                    <g:Label text="Starting City:" width="100%"/>
                     <g:TextBox ui:field="locationCity" width="100%" />
-                    <g:Label text="Starting State:" width="49px"/>
-                    <g:TextBox ui:field="locationState" width="100%" />
-                    <g:Label text="Start Time:" width="49px"/>
-                    <dp:DatePicker ui:field="startTime" />
-                    <g:Label text="Ride Details:" width="49px"/>
+                    <g:Label text="Starting State:" width="100%"/>
+                    <g:ListBox ui:field="locationState" visibleItemCount="1" width="100%" />
+                    <g:FlowPanel ui:field="dateTimeFP">
+                        <g:Label text="Start Time:" width="100%"/>
+                        <g:TextBox ui:field="startTime" width="100%" />
+                    </g:FlowPanel>
+                    <!--<dp:DatePicker ui:field="startTime" />-->
+
+                    <g:Label text="Ride Details:" width="100%"/>
                     <g:TextArea ui:field="RideDetails" height="118px" width="100%"/>
-                    <g:Label text="Ride Image:" width="49px"/>
-                    <g:TextBox ui:field="image" width="100%"/>
-                    <g:Label text="Tracking Allowed:" width="49px"/>
+                    <g:Label text="Ride Image:" width="100%"/>
+                    <g:TextBox ui:field="image"/>
+                    <g:Label text="Tracking Allowed:" width="100%"/>
                     <g:CheckBox ui:field="trackingAllowed" />
-                    <mgwt:Button ui:field="submitRide" width="142px" text="Submit Ride"/>
+                    <g:Button text="Create ride"/>
                 </g:HTMLPanel>
             </g:FormPanel>
         </mgwt:ScrollPanel>

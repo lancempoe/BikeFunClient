@@ -24,5 +24,14 @@
         <g:HTMLPanel>
             <strong>Create ride screen stuff</strong>
         </g:HTMLPanel>
+        <g:FlowPanel>
+            <g:VerticalPanel width="100%">
+                <g:HorizontalPanel width="100%">
+                    <g:cell horizontalAlignment="ALIGN_LEFT">
+                        <mgwt:Button ui:field="googleLoginButton" text="GoogleLogin"/>
+                    </g:cell>
+                </g:HorizontalPanel>
+            </g:VerticalPanel>
+        </g:FlowPanel>
     </mgwt:LayoutPanel>
 </ui:UiBinder>

@@ -32,8 +32,7 @@ public class HomeScreenDisplayGwtImpl extends Composite implements HomeScreenDis
 
     private Presenter presenter;
 
-    @UiField
-    TextBox dateAndTime;
+
     @UiField
     FlowPanel bikeEntries;
 
@@ -67,9 +66,6 @@ public class HomeScreenDisplayGwtImpl extends Composite implements HomeScreenDis
         
         timeAndDayButton.addStyleName(style.buttonTreatment());
         hereAndNowButton.addStyleName(style.buttonTreatment());
-        dateAndTime.getElement().setId("demo");
-        //Here be dragons
-//        initMobiScroll(dateAndTime.getElement().getId());
     }
 
     @Override
@@ -79,6 +75,8 @@ public class HomeScreenDisplayGwtImpl extends Composite implements HomeScreenDis
 
     @Override
     public void display(List<BikeRide> list) {
+        bikeEntries.clear();
+
         Date firstDate = null;
         Date lastDay = null;
         Date dummyDate1 = null;
@@ -172,17 +170,5 @@ public class HomeScreenDisplayGwtImpl extends Composite implements HomeScreenDis
             presenter.onLoginButton();
         }
     }
-
-
-    public native void initMobiScroll(String idz) /*-{
-        alert("poop");
-        alert( $doc.getElementById(idz));
-            $(idz).mobiscroll().calendar({
-                theme: 'ios',
-                display: 'inline',
-                mode: 'scroller',
-                controls: ['calendar']
-            });
-    }-*/;
 
 }

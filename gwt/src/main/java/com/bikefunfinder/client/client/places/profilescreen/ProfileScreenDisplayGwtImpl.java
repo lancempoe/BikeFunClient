@@ -41,4 +41,11 @@ public class ProfileScreenDisplayGwtImpl extends Composite implements ProfileScr
             presenter.backButtonSelected();
         }
     }
+
+    @UiHandler("googleLoginButton")
+    protected void ongoogleLoginButton(TapEvent event) {
+        if (presenter != null) {
+            presenter.onLoginButtonPressed();
+        }
+    }
 }

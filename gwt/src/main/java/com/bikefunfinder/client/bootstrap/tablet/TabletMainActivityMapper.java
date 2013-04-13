@@ -22,49 +22,21 @@ import com.bikefunfinder.client.bootstrap.ClientFactory;
 
 class TabletMainActivityMapper implements ActivityMapper {
 
-    private final ClientFactory clientFactory;
-
     private Place lastPlace;
     private Activity lastActivity;
 
-    public TabletMainActivityMapper(ClientFactory clientFactory) {
-        this.clientFactory = clientFactory;
+    private final ActivityMapper activityMapperDelegate;
 
+    public TabletMainActivityMapper(ActivityMapper activityMapperDelegate) {
+        this.activityMapperDelegate = activityMapperDelegate;
     }
 
     @Override
     public Activity getActivity(Place place) {
-        Activity activity = getActivityFromPlace(place);
+        Activity activity = activityMapperDelegate.getActivity(place);
         lastPlace = place;
         lastActivity = activity;
         return activity;
 
     }
-
-    private Activity getActivityFromPlace(Place place) {
-        if(place instanceof CreateScreenPlace) {
-            return new CreateScreenActivity(clientFactory);
-        }
-        if(place instanceof EditScreenPlace) {
-            return new EditScreenActivity(clientFactory);
-        }
-        if(place instanceof EventScreenPlace) {
-            return new EventScreenActivity(clientFactory);
-        }
-        if(place instanceof HomeScreenPlace) {
-            return new HomeScreenActivity(clientFactory);
-        }
-        if(place instanceof LoginScreenPlace) {
-            return new LoginScreenActivity(clientFactory);
-        }
-        if(place instanceof ProfileScreenPlace) {
-            return new ProfileScreenActivity(clientFactory);
-        }
-        if(place instanceof UserEventsScreenPlace) {
-            return new UserEventsScreenActivity(clientFactory);
-        }
-
-        return null;
-    }
-
 }

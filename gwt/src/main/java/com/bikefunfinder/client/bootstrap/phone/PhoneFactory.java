@@ -1,5 +1,7 @@
 package com.bikefunfinder.client.bootstrap.phone;
 
+import com.bikefunfinder.client.bootstrap.ActivityMapperDelegate;
+import com.bikefunfinder.client.bootstrap.AnimationMapperDelegate;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.bikefunfinder.client.bootstrap.ClientFactory;
@@ -20,9 +22,9 @@ public class PhoneFactory {
     public static List<IsWidget> createPhoneDisplay(ClientFactory clientFactory) {
         AnimatableDisplay display = GWT.create(AnimatableDisplay.class);
 
-        PhoneActivityMapper appActivityMapper = new PhoneActivityMapper(clientFactory);
+        PhoneActivityMapper appActivityMapper = new PhoneActivityMapper(new ActivityMapperDelegate(clientFactory));
 
-        PhoneAnimationMapper appAnimationMapper = new PhoneAnimationMapper();
+        PhoneAnimationMapper appAnimationMapper = new PhoneAnimationMapper(new AnimationMapperDelegate());
 
         AnimatingActivityManager activityManager =
             new AnimatingActivityManager(appActivityMapper,
