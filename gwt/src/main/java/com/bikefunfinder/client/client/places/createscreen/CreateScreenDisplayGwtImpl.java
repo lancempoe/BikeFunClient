@@ -82,6 +82,7 @@ public class CreateScreenDisplayGwtImpl  extends Composite implements CreateScre
         if(presenter != null) {
             BikeRide br = (BikeRide)JavaScriptObject.createObject().cast();
 
+            br.setRideLeaderName("Todo:LeaderName!");
             br.setBikeRideName(bikeRideName.getText());
             br.setDetails(rideDetails.getText());
             br.setRideLeaderId("abc");
