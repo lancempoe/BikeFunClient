@@ -8,6 +8,7 @@ import com.bikefunfinder.client.client.places.homescreen.HomeScreenActivity;
 import com.bikefunfinder.client.shared.model.BikeRide;
 import com.bikefunfinder.client.shared.model.Root;
 import com.google.gwt.http.client.*;
+import com.google.gwt.json.client.JSONObject;
 import com.googlecode.mgwt.ui.client.dialog.Dialogs;
 
 public final class NewEventRequest {
@@ -47,7 +48,7 @@ public final class NewEventRequest {
         }
     }
 
-    private static final String URL = "http://appworks.timneuwerth.com/FunService/rest/bikerides/new ";
+    private static final String URL = "http://appworks.timneuwerth.com/FunService/rest/bikerides/new";
 
     private final NewEventRequest.Callback callback;
     private final BikeRide bikeRide;
@@ -72,7 +73,7 @@ public final class NewEventRequest {
 
         final RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST, getUrlWithQuery());
         try {
-            request = requestBuilder.sendRequest(bikeRide.toSource(), getRequestCallback());
+            request = requestBuilder.sendRequest(new JSONObject(bikeRide).toString(), getRequestCallback());
         } catch (final RequestException e) {
             e.printStackTrace();
         }

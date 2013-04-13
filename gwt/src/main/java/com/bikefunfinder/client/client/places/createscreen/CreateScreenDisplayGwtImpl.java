@@ -5,14 +5,15 @@ package com.bikefunfinder.client.client.places.createscreen;
  */
 
 import com.bikefunfinder.client.shared.model.BikeRide;
+import com.bikefunfinder.client.shared.model.Location;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.http.client.Response;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.*;
-
 import static com.google.gwt.query.client.GQuery.$;
 import static gwtquery.plugins.ui.Ui.Ui;
 import com.googlecode.mgwt.dom.client.event.tap.TapEvent;
@@ -61,10 +62,37 @@ public class CreateScreenDisplayGwtImpl  extends Composite implements CreateScre
 
 
 
+    @UiField
+    TextBox bikeRideName;
+
+    @UiField
+    TextBox locationAddress;
+
+    @UiField
+    TextBox locationCity;
+
+    @UiField
+    TextBox locationState;
+
+    @UiField
+    TextArea rideDetails;
+
     @UiHandler("submitRide")
     protected void onSubmitRidePressed(TapEvent event) {
         if(presenter != null) {
-            //presenter.onFormSelected(new BikeRide());
+            BikeRide br = (BikeRide)JavaScriptObject.createObject().cast();
+
+            br.setBikeRideName(bikeRideName.getText());
+            br.setDetails(rideDetails.getText());
+            br.setRideLeaderId("abc");
+            Location location = (Location)JavaScriptObject.createObject().cast();
+            location.setCity(locationCity.getText());
+            location.setState(locationState.getText());
+            location.setStreetAddress(locationAddress.getText());
+            br.setLocation(location);
+            //br.setRideStartTime(startTime.getValue().getTime());
+
+            presenter.onFormSelected(br);
         }
     }
     @UiHandler("backButton")
