@@ -1,13 +1,11 @@
 package com.bikefunfinder.client.client.places.homescreen;
 
 import com.bikefunfinder.client.bootstrap.ClientFactory;
-import com.bikefunfinder.client.client.places.createscreen.CreateScreenActivity;
 import com.bikefunfinder.client.client.places.createscreen.CreateScreenPlace;
-import com.bikefunfinder.client.client.places.loginscreen.LoginScreenPlace;
 import com.bikefunfinder.client.client.places.profilescreen.ProfileScreenPlace;
 import com.bikefunfinder.client.client.places.searchsettings.SearchSettingsScreenPlace;
 import com.bikefunfinder.client.shared.model.*;
-import com.bikefunfinder.client.shared.model.printer.JSODescriber;
+import com.bikefunfinder.client.shared.request.SearchByProximityRequest;
 import com.bikefunfinder.client.shared.request.SearchByTimeOfDayRequest;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.core.client.JsArray;
@@ -43,7 +41,7 @@ public class HomeScreenActivity extends MGWTAbstractActivity implements HomeScre
 
         panel.setWidget(display);
 
-        getGeoLocationAndIfSuccessfullCallDisplay(display);
+        usePhoneLocationToMakeTimeOfDayRequestAndUpdateDisplay(display);
         //currentList = getModuleList(justForShits());
         //display.display(currentList);
 
@@ -207,12 +205,14 @@ public class HomeScreenActivity extends MGWTAbstractActivity implements HomeScre
 
     @Override
     public void onTimeAndDayButton() {
-        Window.alert("todo: onTimeAndDayButton needs impl");
+        final HomeScreenDisplay display = clientFactory.getHomeScreenDisplay();
+        usePhoneLocationToMakeTimeOfDayRequestAndUpdateDisplay(display);
     }
 
     @Override
     public void onHereAndNowButton() {
-        Window.alert("todo: onHereAndNowButton needs impl");
+        final HomeScreenDisplay display = clientFactory.getHomeScreenDisplay();
+        usePhoneLocationToMakeHereAndNowRequestAndUpdateDisplay(display);
     }
 
     private void fireRequestForTimeOfDay(final HomeScreenDisplay display, final double latitude, final double longitude) {
@@ -233,7 +233,7 @@ public class HomeScreenActivity extends MGWTAbstractActivity implements HomeScre
         request.latitude(latitude).longitude(longitude).send();
     }
 
-    private void getGeoLocationAndIfSuccessfullCallDisplay(final HomeScreenDisplay display) {
+    private void usePhoneLocationToMakeTimeOfDayRequestAndUpdateDisplay(final HomeScreenDisplay display) {
         final GeolocationOptions options = new GeolocationOptions();
         options.setEnableHighAccuracy(true);
         options.setTimeout(3000);
@@ -248,6 +248,53 @@ public class HomeScreenActivity extends MGWTAbstractActivity implements HomeScre
                 final double longitude = coordinates.getLongitude();
 
                 fireRequestForTimeOfDay(display, latitude, longitude);
+            }
+
+            @Override
+            public void onFailure(final PositionError error) {
+                Window.alert("Failed to get geo log.. using 80,80");
+                fireRequestForTimeOfDay(display, 80, 80);
+            }
+        };
+
+        Geolocation phoneGeoLocation = clientFactory.getPhoneGap().getGeolocation();
+        phoneGeoLocation.getCurrentPosition(geolocationCallback, options);
+    }
+
+
+    private void fireRequestForHereAndNow(final HomeScreenDisplay display, final double latitude, final double longitude) {
+        SearchByProximityRequest.Callback callback = new SearchByProximityRequest.Callback() {
+            @Override
+            public void onError() {
+                Window.alert("oh noes, server fail");
+            }
+
+            @Override
+            public void onResponseReceived(Root root) {
+                currentList = getModuleList(root);
+                display.display(currentList);
+                display.display(root.getClosestLocation().getCity());
+            }
+        };
+        SearchByProximityRequest.Builder request = new SearchByProximityRequest.Builder(callback);
+        request.latitude(latitude).longitude(longitude).send();
+    }
+
+    private void usePhoneLocationToMakeHereAndNowRequestAndUpdateDisplay(final HomeScreenDisplay display) {
+        final GeolocationOptions options = new GeolocationOptions();
+        options.setEnableHighAccuracy(true);
+        options.setTimeout(3000);
+        options.setMaximumAge(1000);
+
+        final GeolocationCallback geolocationCallback = new GeolocationCallback() {
+            @Override
+            public void onSuccess(final Position position) {
+
+                final Coordinates coordinates = position.getCoordinates();
+                final double latitude = coordinates.getLatitude();
+                final double longitude = coordinates.getLongitude();
+
+                fireRequestForHereAndNow(display, latitude, longitude);
             }
 
             @Override
