@@ -13,7 +13,11 @@
 
     <script>
         var iabRef = null;
+        var googleAuthCode = null;
 
+        function getGoogleAuthCode() {
+            return googleAuthCode;
+        }
 
         var OAUTHURL    =   "https://accounts.google.com/o/oauth2/auth?";
         var VALIDURL    =   "https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=";
@@ -33,7 +37,7 @@
         var user;
         var loggedIn    =   false;
 
-        function sayHello(name) {
+        function doGoogleForOauth(name) {
             <!--alert("Hello from JavaScript, " + name);-->
 
             try {
@@ -55,20 +59,24 @@
             //alert(event.type + ' - ' + event.url);
             //if(event.url == "http://pagethatuwant1/closeInAppBrowser.html"){
             if(/^http:\/\/localhost/i.test(event.url)) {
+                if(/^error/i.test(event.url)) {
+                    alert("login error");
+                } else {
+                    var secondPos = event.url.indexOf("code=");
+                    <!--alert("secondPos="+secondPos+", length="+event.url.length);-->
+                    googleAuthCode = event.url.substring(secondPos+"code=".length, event.url.length);
 
-        var secondPos = event.url.indexOf("code=");
-        <!--alert("secondPos="+secondPos+", length="+event.url.length);-->
-        var googleCode = event.url.substring(secondPos+"code=".length, event.url.length);
 
-        <!--tokenType = gup(event.url, 'token_type');-->
-                <!--expiresIn = gup(event.url, 'expires_in');-->
+                <!--tokenType = gup(event.url, 'token_type');-->
+                        <!--expiresIn = gup(event.url, 'expires_in');-->
 
-                <!--alert("event.url("+event.url+"),"+-->
-                      <!--"acToken("+acToken+"),"+-->
-                      <!--"tokenType("+tokenType+"),"+-->
-                      <!--"code("+googleCode+")");-->
+                        <!--alert("event.url("+event.url+"),"+-->
+                              <!--"acToken("+acToken+"),"+-->
+                              <!--"tokenType("+tokenType+"),"+-->
+                              <!--"code("+googleCode+")");-->
 
-                iabRef.close();
+                        iabRef.close();
+                }
             } else {
                 <!--alert(event.url);-->
             }

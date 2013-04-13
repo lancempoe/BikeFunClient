@@ -14,5 +14,6 @@ public interface ProfileScreenDisplay extends IsWidget {
     public interface Presenter {
         public void backButtonSelected();
         public void onLoginButtonPressed();
+        public void onCheckGooleLoginButtonPressed();
     }
 }
