@@ -13,7 +13,12 @@
 
     <script>
         var iabRef = null;
+        var googleAuthCode = null;
 
+        function getGoogleAuthCode() {
+            alert("native getGoogleAuthCode");
+            return googleAuthCode;
+        }
 
         var OAUTHURL    =   "https://accounts.google.com/o/oauth2/auth?";
         var VALIDURL    =   "https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=";
@@ -33,7 +38,7 @@
         var user;
         var loggedIn    =   false;
 
-        function sayHello(name) {
+        function doGoogleForOauth(name) {
             <!--alert("Hello from JavaScript, " + name);-->
 
             try {
@@ -43,7 +48,7 @@
                 iabRef.addEventListener('exit', onExit);
 
             } catch (e) {
-                alert(e);
+                alert("exception"+e);
             }
         }
 
@@ -56,11 +61,12 @@
             //if(event.url == "http://pagethatuwant1/closeInAppBrowser.html"){
             if(/^http:\/\/localhost/i.test(event.url)) {
 
-        var secondPos = event.url.indexOf("code=");
-        <!--alert("secondPos="+secondPos+", length="+event.url.length);-->
-        var googleCode = event.url.substring(secondPos+"code=".length, event.url.length);
+                var secondPos = event.url.indexOf("code=");
+                <!--alert("secondPos="+secondPos+", length="+event.url.length);-->
+                googleAuthCode = event.url.substring(secondPos+"code=".length, event.url.length);
+                alert("woot="+ googleAuthCode);
 
-        <!--tokenType = gup(event.url, 'token_type');-->
+                <!--tokenType = gup(event.url, 'token_type');-->
                 <!--expiresIn = gup(event.url, 'expires_in');-->
 
                 <!--alert("event.url("+event.url+"),"+-->

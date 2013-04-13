@@ -52,20 +52,24 @@ public class ProfileScreenActivity extends MGWTAbstractActivity implements Profi
 
     @Override
     public void onLoginButtonPressed() {
+        askGoogleForOauth();
+    }
 
-
-        sayHelloInJava("wtf");
-
-
+    @Override
+    public void onCheckGooleLoginButtonPressed() {
+        Window.alert("getGoogleAuthCode"+grabGoogleAuthCode());
     }
 
 
 
     // A Java method using JSNI
-    native void sayHelloInJava(String name) /*-{
-        $wnd.sayHello(name); // $wnd is a JSNI synonym for 'window'
+    native String grabGoogleAuthCode() /*-{
+        return $wnd.getGoogleAuthCode();
     }-*/;
 
-
+    // A Java method using JSNI
+    native void askGoogleForOauth() /*-{
+        $wnd.doGoogleForOauth(); // $wnd is a JSNI synonym for 'window'
+    }-*/;
 
 }

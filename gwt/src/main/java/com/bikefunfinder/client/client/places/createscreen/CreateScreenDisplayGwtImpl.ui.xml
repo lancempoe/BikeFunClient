@@ -33,7 +33,7 @@
                     <g:Label text="Starting City:" width="100%"/>
                     <g:TextBox ui:field="locationCity" width="100%" />
                     <g:Label text="Starting State:" width="100%"/>
-                    <g:TextBox ui:field="locationState" width="100%" />
+                    <g:ListBox ui:field="locationState" visibleItemCount="1" width="100%" />
                     <g:FlowPanel ui:field="dateTimeFP">
                         <g:Label text="Start Time:" width="100%"/>
                         <g:TextBox ui:field="startTime" width="100%" />
@@ -47,6 +47,7 @@
                     <g:Label text="Tracking Allowed:" width="100%"/>
                     <g:CheckBox ui:field="trackingAllowed" />
                     <mgwt:Button ui:field="submitRide" width="142px" text="Submit Ride"/>
+
                 </g:HTMLPanel>
             </g:FormPanel>
         </mgwt:ScrollPanel>
