@@ -7,5 +7,6 @@ package com.bikefunfinder.client.shared.request;
  * Time: 1:06 PM
  * To change this template use File | Settings | File Templates.
  */
-public class NewUserRequest {
+public class UserRequest {
+    //TODO similar to ananymous
 }

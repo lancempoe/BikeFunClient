@@ -18,6 +18,14 @@ public class User extends JavaScriptObject {
         return this.id;
     }-*/;
 
+    public final native String getForeignId() /*-{
+        return this.foreignId;
+    }-*/;
+
+    public final native String getForeignIdType() /*-{
+        return this.foreignIdType;
+    }-*/;
+
     public final native String getUserName() /*-{
         return this.userName;
     }-*/;
@@ -27,6 +35,10 @@ public class User extends JavaScriptObject {
     }-*/;
 
     public final native JsArray<DeviceAccounts> getDeviceAccounts() /*-{ return this.DeviceAccounts; }-*/;
+
+    public final native DeviceAccounts getDeviceAccount() /*-{
+		return this.deviceAccount;
+    }-*/;
 
     public final native Boolean getAccountActivated() /*-{
         return this.accountActivated;
@@ -57,10 +69,25 @@ public class User extends JavaScriptObject {
         return this.readTipsForRideLeaders;
     }-*/;
 
-    public final native ArrayList<String> getHostedBikeRides() /*-{ return this.hostedBikeRides; }-*/;
+    public final native String getLatestActiveTimeStamp() /*-{
+        return this.latestActiveTimeStamp;
+    }-*/;
 
-    public final native int getHostedBikeRideCount() /*-{
-        return this.hostedBikeRideCount;
+    public final String getLatestActiveTimeStampFormated() {
+        Long unformattedLatestActiveTimeStamp = Long.parseLong(getLatestActiveTimeStamp());
+        Date date = new Date(unformattedLatestActiveTimeStamp);
+        DateTimeFormat fmt = DateTimeFormat.getFormat("EEEE, MMMM dd, yyyy");
+        return fmt.format((date));
+    }
+
+    public final Date getLatestActiveTimeStampDate() {
+        Long unformattedLatestActiveTimeStamp = Long.parseLong(getLatestActiveTimeStamp());
+        Date date = new Date(unformattedLatestActiveTimeStamp);
+        return date;
+    }
+
+    public final native String getTotalHostedBikeRideCount() /*-{
+        return this.totalHostedBikeRideCount;
     }-*/;
 
 //    public String id;

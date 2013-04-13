@@ -111,7 +111,7 @@ public class BikeRide extends JavaScriptObject {
         return this.rideLeaderName;
     }-*/;
 
-    public final native String setRideLeaderName(String rideLeaderName) /*-{
+    public final native void setRideLeaderName(String rideLeaderName) /*-{
         this.rideLeaderName = rideLeaderName;
     }-*/;
 

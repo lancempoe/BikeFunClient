@@ -7,6 +7,9 @@ package com.bikefunfinder.client.shared.model;
  * To change this template use File | Settings | File Templates.
  */
 import com.google.gwt.core.client.JavaScriptObject;
+import com.google.gwt.i18n.client.DateTimeFormat;
+
+import java.util.Date;
 
 public class AnonymousUser extends JavaScriptObject {
 
@@ -33,6 +36,30 @@ public class AnonymousUser extends JavaScriptObject {
 		return this.joinedTimeStamp;
     }-*/;
 
+    public final native String getReadTipsForRideLeaders() /*-{
+		return this.readTipsForRideLeaders;
+    }-*/;
+
+    public final native String getLatestActiveTimeStamp() /*-{
+        return this.latestActiveTimeStamp;
+    }-*/;
+
+    public final String getLatestActiveTimeStampFormated() {
+        Long unformattedLatestActiveTimeStamp = Long.parseLong(getLatestActiveTimeStamp());
+        Date date = new Date(unformattedLatestActiveTimeStamp);
+        DateTimeFormat fmt = DateTimeFormat.getFormat("EEEE, MMMM dd, yyyy");
+        return fmt.format((date));
+    }
+
+    public final Date getLatestActiveTimeStampDate() {
+        Long unformattedLatestActiveTimeStamp = Long.parseLong(getLatestActiveTimeStamp());
+        Date date = new Date(unformattedLatestActiveTimeStamp);
+        return date;
+    }
+
+    public final native Long getTotalHostedBikeRideCount() /*-{
+		return this.totalHostedBikeRideCount;
+    }-*/;
     //public String id;
     //public DeviceAccounts deviceAccounts = new DeviceAccounts();
     //public String imagePath = "Images/Users/defaultUser.jpg"; //Default user image.

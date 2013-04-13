@@ -27,6 +27,10 @@ public class Query extends JavaScriptObject {
 		return this.targetAudience;
     }-*/;
 
+    public final native String getRideLeaderId() /*-{
+		return this.rideLeaderId;
+    }-*/;
+
     //    public String query;
     //    public String cityLocationId; //If not provided then use current location
     //    public Long date;
