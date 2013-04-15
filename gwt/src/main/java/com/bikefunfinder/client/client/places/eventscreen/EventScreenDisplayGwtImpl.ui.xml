@@ -3,37 +3,34 @@
              xmlns:g="urn:import:com.google.gwt.user.client.ui"
              xmlns:mgwt="urn:import:com.googlecode.mgwt.ui.client.widget">
 
+    <ui:style>
+        .positioningForName {
+        position:absolute; top:35%;
+        text-transform: none;
+        font-size: 13px !important;
+        font-weight: normal !important;
+        }
+    </ui:style>
+
     <mgwt:LayoutPanel>
         <mgwt:HeaderPanel>
             <mgwt:left>
-                <g:VerticalPanel verticalAlignment='ALIGN_MIDDLE' horizontalAlignment='ALIGN_CENTER' width="50%" height="100%">
-                    <g:cell><g:HTML ui:field="cityName">Portland</g:HTML></g:cell>
-                </g:VerticalPanel>
+                <mgwt:HeaderButton ui:field="backButton" backButton="true" text="Back" />
             </mgwt:left>
             <mgwt:right>
-                <g:HorizontalPanel>
-                    <mgwt:base.ButtonBase ui:field="addButton"/>
-                    <mgwt:base.ButtonBase ui:field="searchButton"/>
-                    <mgwt:base.ButtonBase ui:field="loginButton"/>
-                </g:HorizontalPanel>
+                <g:HTML styleName="{style.positioningForName}">View Ride</g:HTML>
             </mgwt:right>
         </mgwt:HeaderPanel>
 
         <mgwt:ScrollPanel scrollingEnabledX="false" >
-            <g:VerticalPanel  ui:field="cellVP" />
-            <!--<mgwt:CellList ui:field="cellList"></mgwt:CellList>-->
+            <g:FormPanel ui:field="form">
+                <g:HTMLPanel ui:field="formContents">
+                    <g:Label ui:field="rideName" text="No Ride Selected"/>
+                    <g:Label ui:field="address" />
+                    <g:Label ui:field="startTime" />
+                    <g:Label ui:field="details" />
+                </g:HTMLPanel>
+            </g:FormPanel>
         </mgwt:ScrollPanel>
-
-        <g:VerticalPanel  width="100%">
-            <g:HorizontalPanel width="100%">
-                <g:cell horizontalAlignment="ALIGN_LEFT">
-                    <mgwt:Button ui:field="hereAndNowButton" text="Here &amp; now"/>
-                </g:cell>
-                <g:cell horizontalAlignment="ALIGN_RIGHT">
-                    <mgwt:Button ui:field="timeAndDayButton" text="Time &amp; day"/>
-                </g:cell>
-            </g:HorizontalPanel>
-        </g:VerticalPanel>
-
     </mgwt:LayoutPanel>
 </ui:UiBinder>

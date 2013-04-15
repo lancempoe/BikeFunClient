@@ -1,7 +1,10 @@
 package com.bikefunfinder.client.client.places.homescreen;
 
 import com.bikefunfinder.client.shared.model.BikeRide;
+import com.bikefunfinder.client.shared.widgets.BasicCellSearchDetailImpl;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -83,15 +86,15 @@ public class HomeScreenDisplayGwtImpl extends Composite implements HomeScreenDis
         Date dummyDate2 = null;
         for(BikeRide br: list) {
             Date date = br.getRideStartTimeDate();
-            if(dummyDate1 == null) {
-                dummyDate1 = new Date(1333644540000l);
-                date = dummyDate1;
-            }
-            else if( dummyDate2 == null)
-            {
-                dummyDate2 = new Date(1333730940000l);
-                date = dummyDate2;
-            }
+//            if(dummyDate1 == null) {
+//                dummyDate1 = new Date(1333644540000l);
+//                date = dummyDate1;
+//            }
+//            else if( dummyDate2 == null)
+//            {
+//                dummyDate2 = new Date(1333730940000l);
+//                date = dummyDate2;
+//            }
             if(firstDate == null)
             {
                 firstDate = date;
@@ -108,7 +111,10 @@ public class HomeScreenDisplayGwtImpl extends Composite implements HomeScreenDis
                                    .append("<h2>").append(br.getBikeRideName()).append("</h2>")
                                    .append("<p>").append(timeString).append("</p>")
                                    .append("<p>").append(br.getDetails()).append("</p>");
-            bikeEntries.add(new HTML(html.toString()));
+
+            HTML cell = new HTML(html.toString());
+            cell.addClickHandler(new BikeRideClickHandler(presenter, br));
+            bikeEntries.add(cell);
         }
         scroller.refresh(); //The scroller needs to know that we've just added stuff
     }
@@ -117,7 +123,7 @@ public class HomeScreenDisplayGwtImpl extends Composite implements HomeScreenDis
     {
         DateTimeFormat fmtDay = DateTimeFormat.getFormat("EEEE, MMMM dd, yyyy");
 
-        StringBuilder dayBar = new StringBuilder("<div style=\"background-color:#3a413f\">")
+        StringBuilder dayBar = new StringBuilder("<div style=\"background-color:#dec8cb\">")
                 .append("<h2>").append(fmtDay.format(date)).append("</h2>")
                 .append("</div>");
         return dayBar.toString();

@@ -15,6 +15,7 @@ public interface HomeScreenDisplay extends IsWidget {
         public void onNewButton();
         public void onSearchButton();
         public void onLoginButton();
+        public void onRideClick(BikeRide bikeRide);
 
         public void onTimeAndDayButton();
         public void onHereAndNowButton();

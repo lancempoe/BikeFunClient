@@ -16,6 +16,7 @@
 package com.bikefunfinder.client.bootstrap;
 
 import com.bikefunfinder.client.client.places.createscreen.CreateScreenPlace;
+import com.bikefunfinder.client.client.places.eventscreen.EventScreenPlace;
 import com.bikefunfinder.client.client.places.homescreen.HomeScreenPlace;
 import com.bikefunfinder.client.client.places.loginscreen.LoginScreenPlace;
 import com.bikefunfinder.client.client.places.profilescreen.ProfileScreenPlace;
@@ -25,7 +26,8 @@ import com.google.gwt.place.shared.WithTokenizers;
 /**
  * @author Daniel Kurka
  */
-@WithTokenizers({CreateScreenPlace.Tokenizer.class,
+@WithTokenizers({EventScreenPlace.Tokenizer.class,
+                 CreateScreenPlace.Tokenizer.class,
                  HomeScreenPlace.Tokenizer.class,
                  LoginScreenPlace.Tokenizer.class,
                  ProfileScreenPlace.Tokenizer.class})

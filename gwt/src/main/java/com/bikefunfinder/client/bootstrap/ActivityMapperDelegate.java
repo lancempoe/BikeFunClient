@@ -50,6 +50,8 @@ public class ActivityMapperDelegate implements ActivityMapper {
             return new UserEventsScreenActivity(clientFactory);
         } else if(place instanceof SearchSettingsScreenPlace) {
             return new SearchSettingsScreenActivity(clientFactory);
+        } else if(place instanceof EventScreenPlace) {
+            return new EventScreenActivity(clientFactory);
         }
 
         return null;

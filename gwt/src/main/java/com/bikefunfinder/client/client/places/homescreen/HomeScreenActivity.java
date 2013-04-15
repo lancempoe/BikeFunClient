@@ -2,6 +2,8 @@ package com.bikefunfinder.client.client.places.homescreen;
 
 import com.bikefunfinder.client.bootstrap.ClientFactory;
 import com.bikefunfinder.client.client.places.createscreen.CreateScreenPlace;
+import com.bikefunfinder.client.client.places.eventscreen.EventScreenDisplay;
+import com.bikefunfinder.client.client.places.eventscreen.EventScreenPlace;
 import com.bikefunfinder.client.client.places.profilescreen.ProfileScreenPlace;
 import com.bikefunfinder.client.client.places.searchsettings.SearchSettingsScreenPlace;
 import com.bikefunfinder.client.shared.model.*;
@@ -201,6 +203,13 @@ public class HomeScreenActivity extends MGWTAbstractActivity implements HomeScre
     @Override
     public void onLoginButton() {
         clientFactory.getPlaceController().goTo(new ProfileScreenPlace());
+    }
+
+    @Override
+    public void onRideClick(BikeRide bikeRide) {
+        final EventScreenDisplay display = clientFactory.getEventScreenDisplay();
+        display.display(bikeRide);
+        clientFactory.getPlaceController().goTo(new EventScreenPlace());
     }
 
     @Override

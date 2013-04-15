@@ -1,6 +1,7 @@
 package com.bikefunfinder.client.bootstrap;
 
 import com.bikefunfinder.client.client.places.createscreen.CreateScreenDisplay;
+import com.bikefunfinder.client.client.places.eventscreen.EventScreenDisplay;
 import com.bikefunfinder.client.client.places.homescreen.HomeScreenDisplay;
 import com.bikefunfinder.client.client.places.profilescreen.ProfileScreenDisplay;
 import com.bikefunfinder.client.client.places.searchsettings.SearchSettingsScreenDisplay;
@@ -20,6 +21,8 @@ public interface ClientFactory {
     public HomeScreenDisplay getHomeScreenDisplay();
 
     public ProfileScreenDisplay getProfileScreenDisplay();
+
+    public EventScreenDisplay getEventScreenDisplay();
 
     public SearchSettingsScreenDisplay getSearchSettingsScreenDisplay();
 }
