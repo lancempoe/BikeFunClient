@@ -6,8 +6,8 @@ package com.bikefunfinder.client.shared.model;
 
 import com.google.gwt.core.client.JavaScriptObject;
 
-public class DeviceAccounts extends JavaScriptObject {
-    protected DeviceAccounts() {}
+public class DeviceAccount extends JavaScriptObject {
+    protected DeviceAccount() {}
 
     public final native String getDeviceUUID() /*-{
         return this.deviceUUID;
