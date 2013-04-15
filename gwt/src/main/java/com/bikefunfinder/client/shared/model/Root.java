@@ -13,5 +13,7 @@ public class Root extends JavaScriptObject {
 
     public final native JsArray<BikeRide> getBikeRides() /*-{ return this.BikeRides; }-*/;
     public final native ClosestLocation getClosestLocation() /*-{ return this.ClosestLocation; }-*/;
+    public final native User getUser() /*-{ return this.User; }-*/;
+    public final native AnonymousUser getAnonymousUser() /*-{ return this.AnonymousUser; }-*/;
 
 }

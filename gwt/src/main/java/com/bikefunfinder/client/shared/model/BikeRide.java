@@ -5,7 +5,9 @@ package com.bikefunfinder.client.shared.model;
  */
 
 import com.google.gwt.core.client.JavaScriptObject;
+import com.google.gwt.core.client.JsArray;
 import com.google.gwt.i18n.client.DateTimeFormat;
+
 import java.util.Date;
 
 
@@ -126,6 +128,12 @@ public class BikeRide extends JavaScriptObject {
     public final native String getTotalPeopleTrackingCount() /*-{
         return this.totalPeopleTrackingCount;
     }-*/;
+
+    public final native boolean isRideLeaderTracking() /*-{
+        return this.rideLeaderTracking;
+    }-*/;
+
+    public final native JsArray<Tracking> getCurrentTrackings() /*-{ return this.Trackings; }-*/;
 
 
     //    public String id;

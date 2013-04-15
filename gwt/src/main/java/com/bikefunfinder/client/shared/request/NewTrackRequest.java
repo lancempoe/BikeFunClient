@@ -6,8 +6,8 @@ package com.bikefunfinder.client.shared.request;
 
 import com.bikefunfinder.client.client.places.homescreen.HomeScreenActivity;
 import com.bikefunfinder.client.shared.model.BikeRide;
-import com.bikefunfinder.client.shared.model.Root;
 import com.bikefunfinder.client.shared.model.Tracking;
+import com.bikefunfinder.client.shared.model.printer.JSODescriber;
 import com.google.gwt.http.client.*;
 import com.googlecode.mgwt.ui.client.dialog.Dialogs;
 
@@ -48,7 +48,7 @@ public final class NewTrackRequest {
         }
     }
 
-    private static final String URL = "http://appworks.timneuwerth.com/FunService/rest/tracking/new ";
+    private static final String URL = "http://www.BikeFunFinder.com/FunService/rest/tracking/new ";
 
     private final NewTrackRequest.Callback callback;
     private final Tracking tracking;
@@ -73,7 +73,10 @@ public final class NewTrackRequest {
 
         final RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST, getUrlWithQuery());
         try {
-            request = requestBuilder.sendRequest(tracking.toSource(), getRequestCallback());
+            final String jsonText = JSODescriber.toJSON(tracking);
+            //Window.alert(jsonText); //if yer wanting some debuggerz
+            requestBuilder.setHeader("Content-Type", "application/json");
+            request = requestBuilder.sendRequest(jsonText, getRequestCallback());
         } catch (final RequestException e) {
             e.printStackTrace();
         }

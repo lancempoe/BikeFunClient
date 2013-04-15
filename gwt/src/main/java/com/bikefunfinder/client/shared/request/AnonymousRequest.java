@@ -9,12 +9,8 @@ package com.bikefunfinder.client.shared.request;
 
 import com.bikefunfinder.client.client.places.homescreen.HomeScreenActivity;
 import com.bikefunfinder.client.shared.model.AnonymousUser;
-import com.bikefunfinder.client.shared.model.Root;
-import com.bikefunfinder.client.shared.model.User;
 import com.google.gwt.http.client.*;
 import com.googlecode.mgwt.ui.client.dialog.Dialogs;
-
-import java.math.BigDecimal;
 
 public final class AnonymousRequest {
     public interface Callback {
@@ -58,7 +54,7 @@ public final class AnonymousRequest {
         }
     }
 
-    private static final String URL = "http://appworks.timneuwerth.com/FunService/rest/users/anonymous/";
+    private static final String URL = "http://www.BikeFunFinder.com/FunService/rest/users/anonymous/";
 
     private final AnonymousRequest.Callback callback;
     private final String key;

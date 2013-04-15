@@ -59,7 +59,7 @@ public final class SearchByParametersRequest {
         }
     }
 
-    private static final String URL = "http://appworks.timneuwerth.com/FunService/rest/display/by_search/";
+    private static final String URL = "http://www.BikeFunFinder.com/FunService/rest/display/by_search/";
 
     private final SearchByParametersRequest.Callback callback;
     private final BigDecimal latitude;

@@ -8,6 +8,8 @@ package com.bikefunfinder.client.shared.request;
  * To change this template use File | Settings | File Templates.
  */
 
+import com.bikefunfinder.client.shared.model.Root;
+import com.bikefunfinder.client.shared.model.printer.JSODescriber;
 import com.google.gwt.http.client.*;
 import com.googlecode.mgwt.ui.client.dialog.Dialogs;
 
@@ -19,9 +21,7 @@ public final class DeleteEventRequest {
 
     public static final class Builder {
         private DeleteEventRequest.Callback callback;
-        private String userId;
-        private String key;
-        private String uuid;
+        private Root root;
 
         public Builder(final DeleteEventRequest.Callback callback) {
             if (callback == null) {
@@ -40,30 +40,21 @@ public final class DeleteEventRequest {
             return this;
         }
 
-        public Builder userId(final String userId) {
-            this.userId = userId;
+        public Builder root(final Root root) {
+            this.root = root;
             return this;
         }
-        public Builder key(final String key) {
-            this.key = key;
-            return this;
-        }
-        public Builder uuid(final String uuid) {
-            this.uuid = uuid;
-            return this;
-        }
+
 
         public DeleteEventRequest send() {
             return new DeleteEventRequest(this);
         }
     }
 
-    private static final String URL = "http://appworks.timneuwerth.com/FunService/rest/bikerides/delete/";
+    private static final String URL = "http://www.BikeFunFinder.com/FunService/rest/bikerides/delete/";
 
     private final DeleteEventRequest.Callback callback;
-    private final String userId;
-    private final String key;
-    private final String uuid;
+    private final Root root;
     private final Request request;
 
     public void cancel() {
@@ -76,9 +67,7 @@ public final class DeleteEventRequest {
 
     private DeleteEventRequest(final Builder builder) {
         callback = builder.callback;
-        userId = builder.userId;
-        key = builder.key;
-        uuid = builder.uuid;
+        root = builder.root;
         request = send();
     }
 
@@ -88,6 +77,11 @@ public final class DeleteEventRequest {
         final RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST, getUrlWithQuery());
         try {
             request = requestBuilder.sendRequest(null, getRequestCallback());
+
+            final String jsonText = JSODescriber.toJSON(root);
+            //Window.alert(jsonText); //if yer wanting some debuggerz
+            requestBuilder.setHeader("Content-Type", "application/json");
+            request = requestBuilder.sendRequest(jsonText, getRequestCallback());
         } catch (final RequestException e) {
             e.printStackTrace();
         }
@@ -98,11 +92,6 @@ public final class DeleteEventRequest {
     private String getUrlWithQuery() {
         final StringBuilder builder = new StringBuilder();
         builder.append(URL);
-        builder.append(userId);
-        builder.append("/");
-        builder.append(key);
-        builder.append("/");
-        builder.append(uuid);
 
         return builder.toString();
     }

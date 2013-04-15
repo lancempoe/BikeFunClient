@@ -6,15 +6,8 @@ package com.bikefunfinder.client.shared.request;
 
 import com.bikefunfinder.client.client.places.homescreen.HomeScreenActivity;
 import com.bikefunfinder.client.shared.model.Root;
-import com.bikefunfinder.client.shared.model.printer.JSODescriber;
-import com.google.gwt.core.client.JsonUtils;
-import com.google.gwt.user.client.Window;
+import com.google.gwt.http.client.*;
 import com.googlecode.mgwt.ui.client.dialog.Dialogs;
-import com.google.gwt.http.client.Request;
-import com.google.gwt.http.client.RequestBuilder;
-import com.google.gwt.http.client.RequestCallback;
-import com.google.gwt.http.client.RequestException;
-import com.google.gwt.http.client.Response;
 
 import java.math.BigDecimal;
 
@@ -60,7 +53,7 @@ public final class SearchByTimeOfDayRequest {
         }
     }
 
-    private static final String URL = "http://appworks.timneuwerth.com/FunService/rest/display/by_time_of_day/";
+    private static final String URL = "http://www.BikeFunFinder.com/FunService/rest/display/by_time_of_day/";
     //private static final String URL = "";
 
     private final SearchByTimeOfDayRequest.Callback callback;

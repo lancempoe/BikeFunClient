@@ -26,7 +26,6 @@ public final class SearchByProximityRequest {
         private SearchByProximityRequest.Callback callback;
         private BigDecimal longitude;
         private BigDecimal latitude;
-        private String rideLeaderId;
 
         public Builder(final SearchByProximityRequest.Callback callback) {
             if (callback == null) {
@@ -60,12 +59,11 @@ public final class SearchByProximityRequest {
         }
     }
 
-    private static final String URL = "http://appworks.timneuwerth.com/FunService/rest/display/by_proximity/";
+    private static final String URL = "http://www.BikeFunFinder.com/FunService/rest/display/by_proximity/";
 
     private final SearchByProximityRequest.Callback callback;
     private final BigDecimal latitude;
     private final BigDecimal longitude;
-    private final String rideLeaderId;
     private final Request request;
 
     public void cancel() {
@@ -80,7 +78,6 @@ public final class SearchByProximityRequest {
         callback = builder.callback;
         latitude = builder.latitude;
         longitude = builder.longitude;
-        rideLeaderId = builder.rideLeaderId;
         request = send();
     }
 
@@ -137,7 +134,6 @@ public final class SearchByProximityRequest {
                 } else {
                     Root root = HomeScreenActivity.testObjectParse(response.getText());
                     callback.onResponseReceived(root);
-
                 }
             }
         };

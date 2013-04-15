@@ -62,7 +62,7 @@ public final class SearchByTimeOfDayForProfileRequest {
         }
     }
 
-    private static final String URL = "http://appworks.timneuwerth.com/FunService/rest/display/by_time_of_day/";
+    private static final String URL = "http://www.BikeFunFinder.com/FunService/rest/display/by_time_of_day/";
 
     private final SearchByTimeOfDayForProfileRequest.Callback callback;
     private final BigDecimal latitude;
@@ -141,7 +141,6 @@ public final class SearchByTimeOfDayForProfileRequest {
                 } else {
                     Root root = HomeScreenActivity.testObjectParse(response.getText());
                     callback.onResponseReceived(root);
-
                 }
             }
         };

@@ -6,11 +6,8 @@ package com.bikefunfinder.client.shared.request;
 
 import com.bikefunfinder.client.client.places.homescreen.HomeScreenActivity;
 import com.bikefunfinder.client.shared.model.BikeRide;
-import com.bikefunfinder.client.shared.model.Root;
 import com.bikefunfinder.client.shared.model.printer.JSODescriber;
 import com.google.gwt.http.client.*;
-import com.google.gwt.json.client.JSONObject;
-import com.google.gwt.user.client.Window;
 import com.googlecode.mgwt.ui.client.dialog.Dialogs;
 
 public final class NewEventRequest {
@@ -50,7 +47,7 @@ public final class NewEventRequest {
         }
     }
 
-    private static final String URL = "http://appworks.timneuwerth.com/FunService/rest/bikerides/new";
+    private static final String URL = "http://www.BikeFunFinder.com/FunService/rest/bikerides/new";
 
     private final NewEventRequest.Callback callback;
     private final BikeRide bikeRide;

@@ -8,7 +8,6 @@ import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.core.client.JsArray;
 import com.google.gwt.i18n.client.DateTimeFormat;
 
-import java.util.ArrayList;
 import java.util.Date;
 
 public class User extends JavaScriptObject {
@@ -16,6 +15,10 @@ public class User extends JavaScriptObject {
 
     public final native String getId() /*-{
         return this.id;
+    }-*/;
+
+    public final native OAuth getOAuth() /*-{
+		return this.oAuth;
     }-*/;
 
     public final native String getUserName() /*-{
@@ -26,7 +29,11 @@ public class User extends JavaScriptObject {
         return this.email;
     }-*/;
 
-    public final native JsArray<DeviceAccounts> getDeviceAccounts() /*-{ return this.DeviceAccounts; }-*/;
+    public final native JsArray<DeviceAccount> getDeviceAccounts() /*-{ return this.DeviceAccounts; }-*/;
+
+    public final native DeviceAccount getDeviceAccount() /*-{
+		return this.deviceAccount;
+    }-*/;
 
     public final native Boolean getAccountActivated() /*-{
         return this.accountActivated;
@@ -57,23 +64,38 @@ public class User extends JavaScriptObject {
         return this.readTipsForRideLeaders;
     }-*/;
 
-    public final native ArrayList<String> getHostedBikeRides() /*-{ return this.hostedBikeRides; }-*/;
+    public final native String getLatestActiveTimeStamp() /*-{
+        return this.latestActiveTimeStamp;
+    }-*/;
 
-    public final native int getHostedBikeRideCount() /*-{
-        return this.hostedBikeRideCount;
+    public final String getLatestActiveTimeStampFormated() {
+        Long unformattedLatestActiveTimeStamp = Long.parseLong(getJoinedTimeStamp());
+        Date date = new Date(unformattedLatestActiveTimeStamp);
+        DateTimeFormat fmt = DateTimeFormat.getFormat("EEEE, MMMM dd, yyyy");
+        return fmt.format((date));
+    }
+
+    public final Date getLatestActiveTimeStampDate() {
+        Long unformattedLatestActiveTimeStamp = Long.parseLong(getJoinedTimeStamp());
+        Date date = new Date(unformattedLatestActiveTimeStamp);
+        return date;
+    }
+
+    public final native int getTotalHostedBikeRideCount() /*-{
+        return this.totalHostedBikeRideCount;
     }-*/;
 
 //    public String id;
+//    public OAuth oAuth;
 //    public String userName;
 //    public String email;
-//    public List<DeviceAccounts> deviceAccounts = new ArrayList<DeviceAccounts>();
-//    public boolean accountActivated;
-//    public String imagePath = "Images/Users/defaultUser.jpg"; //In the event that no image is provided.
+//    public List<DeviceAccount> deviceAccounts = new ArrayList<DeviceAccount>();
+//    public DeviceAccount deviceAccount = new DeviceAccount();
+//    public boolean accountActivated = true;
+//    public String imagePath;
 //    public Long joinedTimeStamp = new DateTime().withZone(DateTimeZone.UTC).toInstant().getMillis();
-//    public boolean readTipsForRideLeaders;
-//
-//    //Generated and send back.  not in DB
-//    public List<String> hostedBikeRides;
-//    public int hostedBikeRideCount;
+//    public boolean readTipsForRideLeaders = false;
+//    public Long latestActiveTimeStamp = new DateTime().withZone(DateTimeZone.UTC).toInstant().getMillis();
+//    public int totalHostedBikeRideCount;
 
 }
