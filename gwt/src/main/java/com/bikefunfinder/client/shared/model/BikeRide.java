@@ -6,7 +6,12 @@ package com.bikefunfinder.client.shared.model;
 
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.core.client.JsArray;
+import com.google.gwt.core.client.JsDate;
+import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.i18n.client.DateTimeFormat;
+import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.user.client.Window;
+
 
 import java.util.Date;
 
@@ -66,12 +71,17 @@ public class BikeRide extends JavaScriptObject {
     }-*/;
 
     public final String getRideStartTimeFormated() {
-        Long unformattedStartTime = Long.parseLong(getRideStartTime());
-        Date date = new Date(unformattedStartTime);
+        String miliString = getRideStartTime();
+        Double miliDouble = Double.parseDouble(miliString);
+        JsDate jsDate = JsDate.create(miliDouble);
+
+
         DateTimeFormat fmt = DateTimeFormat.getFormat("EEEE, MMMM dd, yyyy");
-        return fmt.format((date));
+        //Window.alert("double: " + miliDouble + " String " + getRideStartTime());
+        return jsDate.toString();
     }
 
+    @Deprecated
     public final Date getRideStartTimeDate() {
         Long unformattedStartTime = Long.parseLong(getRideStartTime());
         Date date = new Date(unformattedStartTime);
@@ -133,8 +143,15 @@ public class BikeRide extends JavaScriptObject {
         return this.rideLeaderTracking;
     }-*/;
 
-    public final native JsArray<Tracking> getCurrentTrackings() /*-{ return this.Trackings; }-*/;
-
+    public final native JsArray<Tracking> getCurrentTrackings()
+    /*-{
+    	return this.Trackings;
+    }-*/;
+    
+ 	public final String getJSON()
+    {
+        return new JSONObject(this).toString();
+    }
 
     //    public String id;
 //    public String bikeRideName;

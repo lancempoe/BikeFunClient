@@ -18,9 +18,12 @@ import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.*;
 import static com.google.gwt.query.client.GQuery.$;
+import static com.google.gwt.query.client.GQuery.window;
 import static gwtquery.plugins.ui.Ui.Ui;
 import com.googlecode.mgwt.dom.client.event.tap.TapEvent;
-import gwtquery.plugins.ui.widgets.Datepicker;
+
+import com.google.gwt.i18n.shared.DateTimeFormat;
+import java.util.Date;
 
 public class CreateScreenDisplayGwtImpl  extends Composite implements CreateScreenDisplay {
     private static OverviewDisplayGwtImplUiBinder uiBinder = GWT.create(OverviewDisplayGwtImplUiBinder.class);
@@ -54,6 +57,7 @@ public class CreateScreenDisplayGwtImpl  extends Composite implements CreateScre
     @Override
     public void displayResponse(BikeRide bikeRide) {
         //To change body of implemented methods use File | Settings | File Templates.
+
     }
 
     private Presenter presenter;
@@ -101,7 +105,19 @@ public class CreateScreenDisplayGwtImpl  extends Composite implements CreateScre
             location.setGeoLoc(geoLoc);
             br.setLocation(location);
 
-            br.setRideStartTime(System.currentTimeMillis());
+            DateTimeFormat dtf = DateTimeFormat.getFormat("mm/dd/yyyy");
+            Date date = null;
+            try
+            {
+                date =  dtf.parse(startTime.getText());
+                Window.alert("getTime() " + date.getTime() + "   parseTime: " + date.toString());
+                br.setRideStartTime(date.getTime());
+            }
+            catch(IllegalArgumentException e)
+            {
+                Window.alert("Cannot read the date and time input.");
+            }
+
 
             presenter.onFormSelected(br);
         }
