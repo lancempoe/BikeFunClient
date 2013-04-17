@@ -1,4 +1,4 @@
-package com.bikefunfinder.client.client.places.searchsettings;
+package com.bikefunfinder.client.client.places.searchscreen;
 /*
  * @author: tneuwerth
  * @created 4/10/13 11:31 AM
@@ -6,7 +6,7 @@ package com.bikefunfinder.client.client.places.searchsettings;
 
 import com.google.gwt.user.client.ui.IsWidget;
 
-public interface SearchSettingsScreenDisplay extends IsWidget {
+public interface SearchScreenDisplay extends IsWidget {
 
     public void display();
     public void setPresenter(Presenter presenter);

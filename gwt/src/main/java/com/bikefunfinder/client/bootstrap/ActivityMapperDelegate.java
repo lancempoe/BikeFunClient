@@ -12,12 +12,10 @@ import com.bikefunfinder.client.client.places.eventscreen.EventScreenActivity;
 import com.bikefunfinder.client.client.places.eventscreen.EventScreenPlace;
 import com.bikefunfinder.client.client.places.homescreen.HomeScreenActivity;
 import com.bikefunfinder.client.client.places.homescreen.HomeScreenPlace;
-import com.bikefunfinder.client.client.places.loginscreen.LoginScreenActivity;
-import com.bikefunfinder.client.client.places.loginscreen.LoginScreenPlace;
 import com.bikefunfinder.client.client.places.profilescreen.ProfileScreenActivity;
 import com.bikefunfinder.client.client.places.profilescreen.ProfileScreenPlace;
-import com.bikefunfinder.client.client.places.searchsettings.SearchSettingsScreenActivity;
-import com.bikefunfinder.client.client.places.searchsettings.SearchSettingsScreenPlace;
+import com.bikefunfinder.client.client.places.searchscreen.SearchScreenActivity;
+import com.bikefunfinder.client.client.places.searchscreen.SearchScreenPlace;
 import com.bikefunfinder.client.client.places.usereventsscreen.UserEventsScreenActivity;
 import com.bikefunfinder.client.client.places.usereventsscreen.UserEventsScreenPlace;
 import com.google.gwt.activity.shared.Activity;
@@ -42,16 +40,12 @@ public class ActivityMapperDelegate implements ActivityMapper {
             return new EventScreenActivity(clientFactory);
         } else if(place instanceof HomeScreenPlace) {
             return new HomeScreenActivity(clientFactory);
-        } else if(place instanceof LoginScreenPlace) {
-            return new LoginScreenActivity(clientFactory);
         } else if(place instanceof ProfileScreenPlace) {
             return new ProfileScreenActivity(clientFactory);
         } else if(place instanceof UserEventsScreenPlace) {
             return new UserEventsScreenActivity(clientFactory);
-        } else if(place instanceof SearchSettingsScreenPlace) {
-            return new SearchSettingsScreenActivity(clientFactory);
-        } else if(place instanceof EventScreenPlace) {
-            return new EventScreenActivity(clientFactory);
+        } else if(place instanceof SearchScreenPlace) {
+            return new SearchScreenActivity(clientFactory);
         }
 
         return null;

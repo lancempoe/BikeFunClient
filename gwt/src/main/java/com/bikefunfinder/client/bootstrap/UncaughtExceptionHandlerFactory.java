@@ -1,10 +1,8 @@
 package com.bikefunfinder.client.bootstrap;
 
-import com.bikefunfinder.client.shared.model.BikeRide;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Window;
 
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 

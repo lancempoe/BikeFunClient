@@ -2,14 +2,18 @@ package com.bikefunfinder.client.bootstrap;
 
 import com.bikefunfinder.client.client.places.createscreen.CreateScreenDisplay;
 import com.bikefunfinder.client.client.places.createscreen.CreateScreenDisplayGwtImpl;
+import com.bikefunfinder.client.client.places.editscreen.EditScreenDisplay;
+import com.bikefunfinder.client.client.places.editscreen.EditScreenDisplayGwtImpl;
 import com.bikefunfinder.client.client.places.eventscreen.EventScreenDisplay;
 import com.bikefunfinder.client.client.places.eventscreen.EventScreenDisplayGwtImpl;
 import com.bikefunfinder.client.client.places.homescreen.HomeScreenDisplay;
 import com.bikefunfinder.client.client.places.homescreen.HomeScreenDisplayGwtImpl;
 import com.bikefunfinder.client.client.places.profilescreen.ProfileScreenDisplay;
 import com.bikefunfinder.client.client.places.profilescreen.ProfileScreenDisplayGwtImpl;
-import com.bikefunfinder.client.client.places.searchsettings.SearchSettingsDisplayGwtImpl;
-import com.bikefunfinder.client.client.places.searchsettings.SearchSettingsScreenDisplay;
+import com.bikefunfinder.client.client.places.searchscreen.SearchScreenDisplay;
+import com.bikefunfinder.client.client.places.searchscreen.SearchScreenDisplayGwtImpl;
+import com.bikefunfinder.client.client.places.usereventsscreen.UserEventsScreenDisplay;
+import com.bikefunfinder.client.client.places.usereventsscreen.UserEventsScreenDisplayGwtImpl;
 import com.google.gwt.place.shared.PlaceController;
 import com.google.web.bindery.event.shared.EventBus;
 import com.google.web.bindery.event.shared.SimpleEventBus;
@@ -24,8 +28,10 @@ public class ClientFactoryGwtImpl implements ClientFactory {
     private HomeScreenDisplay homeScreenDisplay;
     private CreateScreenDisplay createScreenDisplay;
     private ProfileScreenDisplay profileScreenDisplay;
-    private SearchSettingsScreenDisplay searchSettingsScreenDisplay;
+    private SearchScreenDisplay searchScreenDisplay;
     private EventScreenDisplay eventScreenDisplay;
+    private EditScreenDisplay editScreenDisplay;
+    private UserEventsScreenDisplay userEventsScreenDisplay;
 
     public ClientFactoryGwtImpl(PhoneGap phoneGap) {
         this.phoneGap = phoneGap;
@@ -58,8 +64,6 @@ public class ClientFactoryGwtImpl implements ClientFactory {
         return createScreenDisplay;
     }
 
-
-
     @Override
     public HomeScreenDisplay getHomeScreenDisplay() {
         if (homeScreenDisplay == null) {
@@ -85,10 +89,26 @@ public class ClientFactoryGwtImpl implements ClientFactory {
     }
 
     @Override
-    public SearchSettingsScreenDisplay getSearchSettingsScreenDisplay() {
-        if (searchSettingsScreenDisplay == null) {
-            searchSettingsScreenDisplay = new SearchSettingsDisplayGwtImpl();
+    public EditScreenDisplay getEditScreenDisplay() {
+        if (editScreenDisplay == null) {
+            editScreenDisplay = new EditScreenDisplayGwtImpl();
         }
-        return searchSettingsScreenDisplay;
+        return editScreenDisplay;
+    }
+
+    @Override
+    public SearchScreenDisplay getSearchScreenDisplay() {
+        if (searchScreenDisplay == null) {
+            searchScreenDisplay = new SearchScreenDisplayGwtImpl();
+        }
+        return searchScreenDisplay;
+    }
+
+    @Override
+    public UserEventsScreenDisplay getUserEventsScreenDisplay() {
+        if(userEventsScreenDisplay == null) {
+            userEventsScreenDisplay = new UserEventsScreenDisplayGwtImpl();
+        }
+        return userEventsScreenDisplay;
     }
 }

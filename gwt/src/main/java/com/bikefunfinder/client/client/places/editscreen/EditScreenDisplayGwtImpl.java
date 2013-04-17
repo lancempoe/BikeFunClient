@@ -1,31 +1,118 @@
 package com.bikefunfinder.client.client.places.editscreen;
 /*
- * @author: tneuwerth
- * @created 4/5/13 4:22 PM
+ * @author: lancepoehler
+ * @created 4/6/13 2:22 AM
  */
 
-import com.bikefunfinder.client.client.places.createscreen.CreateScreenDisplay;
+import com.bikefunfinder.client.shared.model.BikeRide;
+import com.bikefunfinder.client.shared.model.GeoLoc;
+import com.bikefunfinder.client.shared.model.Location;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.Element;
 import com.google.gwt.uibinder.client.UiBinder;
-import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.uibinder.client.UiHandler;
+import com.google.gwt.user.client.ui.*;
+import com.googlecode.mgwt.dom.client.event.tap.TapEvent;
 
-public class EditScreenDisplayGwtImpl extends Composite implements EditScreenDisplay {
+import static com.google.gwt.query.client.GQuery.$;
+import static gwtquery.plugins.ui.Ui.Ui;
+
+public class EditScreenDisplayGwtImpl  extends Composite implements EditScreenDisplay {
+
     private static OverviewDisplayGwtImplUiBinder uiBinder = GWT.create(OverviewDisplayGwtImplUiBinder.class);
 
     interface OverviewDisplayGwtImplUiBinder extends UiBinder<Widget, EditScreenDisplayGwtImpl> {
     }
 
+    @UiField
+    TextBox startTime;
+    //    DatePicker startTime;
+    @UiField
+    FormPanel form;
 
-    private Presenter presenter;
+    @UiField
+    HTMLPanel formContents;
+
+    @UiField
+    FlowPanel dateTimeFP;
+
+    public EditScreenDisplayGwtImpl() {
+        initWidget(uiBinder.createAndBindUi(this));
+        startTime.getElement().setId("datepicker");
+        setupDemoElement(dateTimeFP.getElement());
+    }
 
     @Override
-    public void display() {
+    public void displayFailedToEditRideMessage() {
         //To change body of implemented methods use File | Settings | File Templates.
     }
+
+    @Override
+    public void displayResponse() {
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    private Presenter presenter;
 
     @Override
     public void setPresenter(Presenter presenter) {
         this.presenter = presenter;
     }
+
+    @UiField
+    TextBox bikeRideName;
+
+    @UiField
+    TextBox locationAddress;
+
+    @UiField
+    TextBox locationCity;
+
+    @UiField
+    TextBox locationState;
+
+    @UiField
+    TextArea rideDetails;
+
+    @UiHandler("submitRide")
+    protected void onSubmitRidePressed(TapEvent event) {
+        if(presenter != null) {
+            BikeRide br = GWT.create(BikeRide.class);
+
+            br.setRideLeaderName("Todo:LeaderName!");
+            br.setBikeRideName(bikeRideName.getText());
+            br.setDetails(rideDetails.getText());
+            br.setRideLeaderId("abc");
+
+            Location location = GWT.create(Location.class);
+            location.setCity(locationCity.getText());
+            location.setState(locationState.getText());
+            location.setStreetAddress(locationAddress.getText());
+
+            GeoLoc geoLoc = GWT.create(GeoLoc.class);
+            geoLoc.setLatitude("0.00");
+            geoLoc.setLongitude("0.00");
+            location.setGeoLoc(geoLoc);
+            br.setLocation(location);
+
+            br.setRideStartTime(System.currentTimeMillis());
+
+            presenter.onFormSelected(br);
+        }
+    }
+    @UiHandler("backButton")
+    protected void onBackButtonPressed(TapEvent event) {
+        if (presenter != null) {
+            presenter.backButtonSelected();
+        }
+    }
+
+    public void setupDemoElement(Element demo) {
+        $("#datepicker", demo).as(Ui).datepicker();
+    }
+
+
+
 }
+

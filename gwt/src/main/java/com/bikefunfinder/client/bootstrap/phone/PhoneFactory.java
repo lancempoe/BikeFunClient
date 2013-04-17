@@ -2,9 +2,9 @@ package com.bikefunfinder.client.bootstrap.phone;
 
 import com.bikefunfinder.client.bootstrap.ActivityMapperDelegate;
 import com.bikefunfinder.client.bootstrap.AnimationMapperDelegate;
+import com.bikefunfinder.client.bootstrap.ClientFactory;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.ui.IsWidget;
-import com.bikefunfinder.client.bootstrap.ClientFactory;
 import com.googlecode.mgwt.mvp.client.AnimatableDisplay;
 import com.googlecode.mgwt.mvp.client.AnimatingActivityManager;
 

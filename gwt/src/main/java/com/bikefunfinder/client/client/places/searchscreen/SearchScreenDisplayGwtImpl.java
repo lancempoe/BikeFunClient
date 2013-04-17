@@ -1,4 +1,4 @@
-package com.bikefunfinder.client.client.places.searchsettings;
+package com.bikefunfinder.client.client.places.searchscreen;
 /*
  * @author: tneuwerth
  * @created 4/10/13 11:31 AM
@@ -11,10 +11,10 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
 import com.googlecode.mgwt.dom.client.event.tap.TapEvent;
 
-public class SearchSettingsDisplayGwtImpl extends Composite implements SearchSettingsScreenDisplay {
+public class SearchScreenDisplayGwtImpl extends Composite implements SearchScreenDisplay {
     private static OverviewDisplayGwtImplUiBinder uiBinder = GWT.create(OverviewDisplayGwtImplUiBinder.class);
 
-    interface OverviewDisplayGwtImplUiBinder extends UiBinder<Widget, SearchSettingsDisplayGwtImpl> {
+    interface OverviewDisplayGwtImplUiBinder extends UiBinder<Widget, SearchScreenDisplayGwtImpl> {
     }
 
     @Override
@@ -23,7 +23,7 @@ public class SearchSettingsDisplayGwtImpl extends Composite implements SearchSet
     }
 
 
-    public SearchSettingsDisplayGwtImpl() {
+    public SearchScreenDisplayGwtImpl() {
         initWidget(uiBinder.createAndBindUi(this));
     }
 

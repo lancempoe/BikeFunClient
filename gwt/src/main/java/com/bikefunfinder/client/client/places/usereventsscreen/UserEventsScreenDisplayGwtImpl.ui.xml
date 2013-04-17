@@ -3,9 +3,47 @@
              xmlns:g="urn:import:com.google.gwt.user.client.ui"
              xmlns:mgwt="urn:import:com.googlecode.mgwt.ui.client.widget">
 
+
+    <ui:style type='com.bikefunfinder.client.client.places.usereventsscreen.UserEventsScreenDisplayGwtImpl.MyStyle'>
+        .positioningForName { position:absolute; top:35%; }
+        .buttonTreatment {text-transform: none;
+        font-size: 13px !important;
+        font-weight: normal !important;}
+    </ui:style>
+
     <mgwt:LayoutPanel>
-        <g:HTMLPanel>
-            <strong>Create ride screen stuff</strong>
-        </g:HTMLPanel>
+        <mgwt:HeaderPanel>
+            <mgwt:left>
+                <g:FlowPanel width="50%" height="100%">
+                    <g:HTML ui:field="cityName"
+                            styleName="{style.positioningForName}">Portland</g:HTML>
+                </g:FlowPanel>
+            </mgwt:left>
+            <mgwt:right>
+                <g:HorizontalPanel>
+                    <mgwt:base.ButtonBase ui:field="addButton"/>
+                    <mgwt:base.ButtonBase ui:field="searchButton"/>
+                    <mgwt:base.ButtonBase ui:field="loginButton"/>
+                </g:HorizontalPanel>
+            </mgwt:right>
+        </mgwt:HeaderPanel>
+
+        <mgwt:ScrollPanel ui:field="scroller" scrollingEnabledX="false">
+            <g:FlowPanel  ui:field="bikeEntries"/>
+        </mgwt:ScrollPanel>
+
+        <g:FlowPanel>
+            <g:VerticalPanel width="100%">
+                <g:HorizontalPanel width="100%">
+                    <g:cell horizontalAlignment="ALIGN_LEFT">
+                        <mgwt:Button ui:field="hereAndNowButton" text="Here &amp; now"/>
+                    </g:cell>
+                    <g:cell horizontalAlignment="ALIGN_RIGHT">
+                        <mgwt:Button ui:field="timeAndDayButton" text="Time &amp; day"/>
+                    </g:cell>
+                </g:HorizontalPanel>
+            </g:VerticalPanel>
+        </g:FlowPanel>
+
     </mgwt:LayoutPanel>
 </ui:UiBinder>

@@ -1,0 +1,54 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+             xmlns:g="urn:import:com.google.gwt.user.client.ui"
+             xmlns:mgwt="urn:import:com.googlecode.mgwt.ui.client.widget"
+             xmlns:dp="urn:import:com.google.gwt.user.datepicker.client" >
+
+    <ui:style>
+        .positioningForName {
+        position:absolute; top:35%;
+        text-transform: none;
+        font-size: 13px !important;
+        font-weight: normal !important;
+        }
+    </ui:style>
+
+    <mgwt:LayoutPanel>
+        <mgwt:HeaderPanel>
+            <mgwt:left>
+                <mgwt:HeaderButton ui:field="backButton" backButton="true" text="Back" />
+            </mgwt:left>
+            <mgwt:right>
+                <g:HTML styleName="{style.positioningForName}">Create Ride</g:HTML>
+            </mgwt:right>
+        </mgwt:HeaderPanel>
+
+        <mgwt:ScrollPanel scrollingEnabledX="false">
+            <g:FormPanel ui:field="form">
+                <g:HTMLPanel ui:field="formContents">
+                    <g:Label text="Bike Ride Name:" width="100%"/>
+                    <g:TextBox ui:field="bikeRideName" width="100%"/>
+                    <g:Label text="Starting Address:" width="100%"/>
+                    <g:TextBox ui:field="locationAddress" width="118px"/>
+                    <g:Label text="Starting City:" width="100%"/>
+                    <g:TextBox ui:field="locationCity" width="100%" />
+                    <g:Label text="Starting State:" width="100%"/>
+                    <g:TextBox ui:field="locationState" width="100%" />
+                    <g:FlowPanel ui:field="dateTimeFP">
+                        <g:Label text="Start Time:" width="100%"/>
+                        <g:TextBox ui:field="startTime" width="100%" />
+                    </g:FlowPanel>
+                    <!--<dp:DatePicker ui:field="startTime" />-->
+
+                    <g:Label text="Ride Details:" width="100%"/>
+                    <g:TextArea ui:field="rideDetails" height="118px" width="100%"/>
+                    <g:Label text="Ride Image:" width="100%"/>
+                    <g:TextBox ui:field="image"/>
+                    <g:Label text="Tracking Allowed:" width="100%"/>
+                    <g:CheckBox ui:field="trackingAllowed" />
+                    <mgwt:Button ui:field="submitRide" width="142px" text="Submit Ride"/>
+                </g:HTMLPanel>
+            </g:FormPanel>
+        </mgwt:ScrollPanel>
+    </mgwt:LayoutPanel>
+</ui:UiBinder>

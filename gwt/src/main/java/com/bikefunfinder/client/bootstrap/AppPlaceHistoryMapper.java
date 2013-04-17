@@ -1,12 +1,12 @@
 /*
  * Copyright 2010 Daniel Kurka
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
  * the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
@@ -16,10 +16,12 @@
 package com.bikefunfinder.client.bootstrap;
 
 import com.bikefunfinder.client.client.places.createscreen.CreateScreenPlace;
+import com.bikefunfinder.client.client.places.editscreen.EditScreenPlace;
 import com.bikefunfinder.client.client.places.eventscreen.EventScreenPlace;
 import com.bikefunfinder.client.client.places.homescreen.HomeScreenPlace;
-import com.bikefunfinder.client.client.places.loginscreen.LoginScreenPlace;
 import com.bikefunfinder.client.client.places.profilescreen.ProfileScreenPlace;
+import com.bikefunfinder.client.client.places.searchscreen.SearchScreenPlace;
+import com.bikefunfinder.client.client.places.usereventsscreen.UserEventsScreenPlace;
 import com.google.gwt.place.shared.PlaceHistoryMapper;
 import com.google.gwt.place.shared.WithTokenizers;
 
@@ -29,7 +31,9 @@ import com.google.gwt.place.shared.WithTokenizers;
 @WithTokenizers({EventScreenPlace.Tokenizer.class,
                  CreateScreenPlace.Tokenizer.class,
                  HomeScreenPlace.Tokenizer.class,
-                 LoginScreenPlace.Tokenizer.class,
-                 ProfileScreenPlace.Tokenizer.class})
+                 EditScreenPlace.Tokenizer.class,
+                 SearchScreenPlace.Tokenizer.class,
+                 ProfileScreenPlace.Tokenizer.class,
+                 UserEventsScreenPlace.Tokenizer.class})
 public interface AppPlaceHistoryMapper extends PlaceHistoryMapper {
 }

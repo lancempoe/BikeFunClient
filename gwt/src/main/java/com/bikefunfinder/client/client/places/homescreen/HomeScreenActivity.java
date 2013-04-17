@@ -5,7 +5,7 @@ import com.bikefunfinder.client.client.places.createscreen.CreateScreenPlace;
 import com.bikefunfinder.client.client.places.eventscreen.EventScreenDisplay;
 import com.bikefunfinder.client.client.places.eventscreen.EventScreenPlace;
 import com.bikefunfinder.client.client.places.profilescreen.ProfileScreenPlace;
-import com.bikefunfinder.client.client.places.searchsettings.SearchSettingsScreenPlace;
+import com.bikefunfinder.client.client.places.searchscreen.SearchScreenPlace;
 import com.bikefunfinder.client.shared.model.*;
 import com.bikefunfinder.client.shared.request.SearchByProximityRequest;
 import com.bikefunfinder.client.shared.request.SearchByTimeOfDayRequest;
@@ -144,7 +144,7 @@ public class HomeScreenActivity extends MGWTAbstractActivity implements HomeScre
 
     @Override
     public void onSearchButton() {
-        clientFactory.getPlaceController().goTo(new SearchSettingsScreenPlace());
+        clientFactory.getPlaceController().goTo(new SearchScreenPlace());
     }
 
     @Override
