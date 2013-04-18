@@ -2,8 +2,6 @@ package com.bikefunfinder.client.bootstrap;
 
 import com.bikefunfinder.client.client.places.createscreen.CreateScreenDisplay;
 import com.bikefunfinder.client.client.places.createscreen.CreateScreenDisplayGwtImpl;
-import com.bikefunfinder.client.client.places.editscreen.EditScreenDisplay;
-import com.bikefunfinder.client.client.places.editscreen.EditScreenDisplayGwtImpl;
 import com.bikefunfinder.client.client.places.eventscreen.EventScreenDisplay;
 import com.bikefunfinder.client.client.places.eventscreen.EventScreenDisplayGwtImpl;
 import com.bikefunfinder.client.client.places.homescreen.HomeScreenActivity;
@@ -13,8 +11,6 @@ import com.bikefunfinder.client.client.places.profilescreen.ProfileScreenDisplay
 import com.bikefunfinder.client.client.places.profilescreen.ProfileScreenDisplayGwtImpl;
 import com.bikefunfinder.client.client.places.searchscreen.SearchScreenDisplay;
 import com.bikefunfinder.client.client.places.searchscreen.SearchScreenDisplayGwtImpl;
-import com.bikefunfinder.client.client.places.usereventsscreen.UserEventsScreenDisplay;
-import com.bikefunfinder.client.client.places.usereventsscreen.UserEventsScreenDisplayGwtImpl;
 import com.bikefunfinder.client.shared.model.BikeRide;
 import com.bikefunfinder.client.shared.model.printer.JSODescriber;
 import com.google.gwt.core.shared.GWT;
@@ -38,8 +34,6 @@ public class ClientFactoryGwtImpl implements ClientFactory {
     private ProfileScreenDisplay profileScreenDisplay;
     private SearchScreenDisplay searchScreenDisplay;
     private EventScreenDisplay eventScreenDisplay;
-    private EditScreenDisplay editScreenDisplay;
-    private UserEventsScreenDisplay userEventsScreenDisplay;
 
     public ClientFactoryGwtImpl(PhoneGap phoneGap) {
         this.phoneGap = phoneGap;
@@ -97,27 +91,11 @@ public class ClientFactoryGwtImpl implements ClientFactory {
     }
 
     @Override
-    public EditScreenDisplay getEditScreenDisplay() {
-        if (editScreenDisplay == null) {
-            editScreenDisplay = new EditScreenDisplayGwtImpl();
-        }
-        return editScreenDisplay;
-    }
-
-    @Override
     public SearchScreenDisplay getSearchScreenDisplay() {
         if (searchScreenDisplay == null) {
             searchScreenDisplay = new SearchScreenDisplayGwtImpl();
         }
         return searchScreenDisplay;
-    }
-
-    @Override
-    public UserEventsScreenDisplay getUserEventsScreenDisplay() {
-        if(userEventsScreenDisplay == null) {
-            userEventsScreenDisplay = new UserEventsScreenDisplayGwtImpl();
-        }
-        return userEventsScreenDisplay;
     }
 
     @Override

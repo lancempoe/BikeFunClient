@@ -14,7 +14,7 @@ import com.googlecode.mgwt.ui.client.dialog.Dialogs;
 public final class NewTrackRequest {
     public interface Callback {
         void onError();
-        void onResponseReceived();
+        void onResponseReceived(Tracking tracking);
     }
 
     public static final class Builder {
@@ -119,8 +119,8 @@ public final class NewTrackRequest {
                         }
                     });
                 } else {
-                    BikeRide bikeRide = HomeScreenActivity.testObjectParse(response.getText());
-                    callback.onResponseReceived();
+                    Tracking tracking = HomeScreenActivity.testObjectParse(response.getText());
+                    callback.onResponseReceived(tracking);
                 }
             }
         };

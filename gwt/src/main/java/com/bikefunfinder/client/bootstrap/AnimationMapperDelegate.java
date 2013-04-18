@@ -5,12 +5,10 @@ package com.bikefunfinder.client.bootstrap;
  */
 
 import com.bikefunfinder.client.client.places.createscreen.CreateScreenPlace;
-import com.bikefunfinder.client.client.places.editscreen.EditScreenPlace;
 import com.bikefunfinder.client.client.places.eventscreen.EventScreenPlace;
 import com.bikefunfinder.client.client.places.homescreen.HomeScreenPlace;
 import com.bikefunfinder.client.client.places.profilescreen.ProfileScreenPlace;
 import com.bikefunfinder.client.client.places.searchscreen.SearchScreenPlace;
-import com.bikefunfinder.client.client.places.usereventsscreen.UserEventsScreenPlace;
 import com.google.gwt.place.shared.Place;
 import com.googlecode.mgwt.mvp.client.Animation;
 import com.googlecode.mgwt.mvp.client.AnimationMapper;
@@ -30,10 +28,7 @@ public class AnimationMapperDelegate implements AnimationMapper {
             return Animation.POP;
         } else if (oldPlace instanceof CreateScreenPlace && newPlace instanceof HomeScreenPlace) {
             return Animation.POP_REVERSE;
-        }  else if (oldPlace instanceof CreateScreenPlace && newPlace instanceof EventScreenPlace) {
-            return Animation.POP_REVERSE;
-        }
-        if (oldPlace instanceof CreateScreenPlace && newPlace instanceof EventScreenPlace) {
+        } else if (oldPlace instanceof CreateScreenPlace && newPlace instanceof EventScreenPlace) {
             return Animation.FADE;
         }
 
@@ -57,8 +52,6 @@ public class AnimationMapperDelegate implements AnimationMapper {
             return Animation.FLIP_REVERSE;
         }  else if (oldPlace instanceof ProfileScreenPlace && newPlace instanceof EventScreenPlace) {
             return Animation.FLIP_REVERSE;
-        }  else if (oldPlace instanceof ProfileScreenPlace && newPlace instanceof UserEventsScreenPlace) {
-            return Animation.FLIP_REVERSE;
         }
 
         //Event Page
@@ -66,10 +59,6 @@ public class AnimationMapperDelegate implements AnimationMapper {
             return Animation.SLIDE;
         } else if (oldPlace instanceof EventScreenPlace && newPlace instanceof HomeScreenPlace) {
             return Animation.SLIDE_REVERSE;
-        } else if (oldPlace instanceof EventScreenPlace && newPlace instanceof EditScreenPlace) {
-            return Animation.FLIP;
-        }  else if (oldPlace instanceof EditScreenPlace && newPlace instanceof EventScreenPlace) {
-            return Animation.FLIP_REVERSE;
         }
 
         return Animation.SLIDE;

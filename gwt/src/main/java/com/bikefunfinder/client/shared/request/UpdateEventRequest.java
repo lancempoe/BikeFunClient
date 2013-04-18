@@ -7,6 +7,8 @@ package com.bikefunfinder.client.shared.request;
  * To change this template use File | Settings | File Templates.
  */
 
+import com.bikefunfinder.client.client.places.homescreen.HomeScreenActivity;
+import com.bikefunfinder.client.shared.model.BikeRide;
 import com.bikefunfinder.client.shared.model.Root;
 import com.bikefunfinder.client.shared.model.printer.JSODescriber;
 import com.google.gwt.http.client.*;
@@ -15,7 +17,7 @@ import com.googlecode.mgwt.ui.client.dialog.Dialogs;
 public final class UpdateEventRequest {
     public interface Callback {
         void onError();
-        void onResponseReceived();
+        void onResponseReceived(BikeRide bikeRide);
     }
 
     public static final class Builder {
@@ -116,7 +118,8 @@ public final class UpdateEventRequest {
                         }
                     });
                 } else {
-                    callback.onResponseReceived();
+                    BikeRide bikeRide = HomeScreenActivity.testObjectParse(response.getText());
+                    callback.onResponseReceived(bikeRide);
                 }
             }
         };

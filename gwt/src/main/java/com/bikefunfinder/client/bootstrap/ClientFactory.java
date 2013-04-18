@@ -1,12 +1,10 @@
 package com.bikefunfinder.client.bootstrap;
 
 import com.bikefunfinder.client.client.places.createscreen.CreateScreenDisplay;
-import com.bikefunfinder.client.client.places.editscreen.EditScreenDisplay;
 import com.bikefunfinder.client.client.places.eventscreen.EventScreenDisplay;
 import com.bikefunfinder.client.client.places.homescreen.HomeScreenDisplay;
 import com.bikefunfinder.client.client.places.profilescreen.ProfileScreenDisplay;
 import com.bikefunfinder.client.client.places.searchscreen.SearchScreenDisplay;
-import com.bikefunfinder.client.client.places.usereventsscreen.UserEventsScreenDisplay;
 import com.google.gwt.place.shared.PlaceController;
 import com.google.web.bindery.event.shared.EventBus;
 import com.googlecode.gwtphonegap.client.PhoneGap;
@@ -22,13 +20,9 @@ public interface ClientFactory {
 
     public HomeScreenDisplay getHomeScreenDisplay();
 
-    public UserEventsScreenDisplay getUserEventsScreenDisplay();
-
     public ProfileScreenDisplay getProfileScreenDisplay();
 
     public EventScreenDisplay getEventScreenDisplay();
-
-    public EditScreenDisplay getEditScreenDisplay();
 
     public SearchScreenDisplay getSearchScreenDisplay();
 

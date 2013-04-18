@@ -120,7 +120,6 @@ public final class NewEventRequest {
                 } else {
                     BikeRide bikeRide = HomeScreenActivity.testObjectParse(response.getText());
                     callback.onResponseReceived(bikeRide);
-                    //TODO NEED TO REVIEW SERVICE... NEEDS TO CHANGE SLIGHTLY TO HANDLE SEN
                 }
             }
         };
