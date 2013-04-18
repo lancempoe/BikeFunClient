@@ -1,10 +1,12 @@
 package com.bikefunfinder.client.client.places.homescreen;
 
+import com.bikefunfinder.client.shared.model.printer.JsDateWrapper;
 import com.bikefunfinder.client.shared.model.BikeRide;
 import com.bikefunfinder.client.shared.widgets.BasicCellSearchDetailImpl;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.core.client.JsDate;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -80,32 +82,27 @@ public class HomeScreenDisplayGwtImpl extends Composite implements HomeScreenDis
     public void display(List<BikeRide> list) {
         bikeEntries.clear();
 
-        Date firstDate = null;
-        Date lastDay = null;
-        Date dummyDate1 = null;
-        Date dummyDate2 = null;
+        JsDateWrapper firstDate = null;
+        JsDateWrapper lastDay = null;
+
         for(BikeRide br: list) {
-            Date date = br.getRideStartTimeDate();
-//            if(dummyDate1 == null) {
-//                dummyDate1 = new Date(1333644540000l);
-//                date = dummyDate1;
-//            }
-//            else if( dummyDate2 == null)
-//            {
-//                dummyDate2 = new Date(1333730940000l);
-//                date = dummyDate2;
-//            }
+            JsDateWrapper date = br.createJsDateWrapperRideStartTime();
+
+            // Date Bar Creation
             if(firstDate == null)
             {
                 firstDate = date;
                 lastDay = firstDate;
                 bikeEntries.add(new HTML(dayBar(firstDate)));
             }
-            else if(!isSameDay(date, lastDay)) {
+            else if(!date.isSameDay(lastDay)) {
                 lastDay = date;
                 bikeEntries.add(new HTML(dayBar(date)));
             }
-            String timeString = DateTimeFormat.getFormat(DateTimeFormat.PredefinedFormat.HOUR_MINUTE).format(date);
+
+
+            // Ride Item Creation
+            String timeString = date.toString("h:mm tt"); // 9:30 am
                     //getShortTimeFormat().format(date);
             StringBuilder html = new StringBuilder()
                                    .append("<h2>").append(br.getBikeRideName()).append("</h2>")
@@ -119,22 +116,27 @@ public class HomeScreenDisplayGwtImpl extends Composite implements HomeScreenDis
         scroller.refresh(); //The scroller needs to know that we've just added stuff
     }
 
-    public String dayBar(Date date)
+    public String dayBar(JsDateWrapper date)
     {
-        DateTimeFormat fmtDay = DateTimeFormat.getFormat("EEEE, MMMM dd, yyyy");
+        //DateTimeFormat fmtDay = DateTimeFormat.getFormat("EEEE, MMMM dd, yyyy");
 
         StringBuilder dayBar = new StringBuilder("<div style=\"background-color:#dec8cb\">")
-                .append("<h2>").append(fmtDay.format(date)).append("</h2>")
+                .append("<h2>").append(date.toString("dddd, MMMM dd, yyyy")).append("</h2>")
                 .append("</div>");
+
+
         return dayBar.toString();
     }
 
-    public static boolean isSameDay(Date date1, Date date2)
+    public static boolean isSameDate(JsDateWrapper date1, JsDateWrapper date2)
     {
-        DateTimeFormat fmtDay = DateTimeFormat.getFormat("EEEE, MMMM dd, yyyy");
-        String timeString1 = fmtDay.format(date1);
-        String timeString2 = fmtDay.format(date2);
-        return timeString1.equals(timeString2);
+        return date1.isSameDay(date2);
+    }
+    public static boolean isSameDay(JsDate date1, JsDate date2)
+    {
+        return date1.getDate() == date2.getDate() &&
+           date1.getMonth() == date2.getMonth() &&
+           date1.getFullYear() == date2.getFullYear();
     }
 
     @Override

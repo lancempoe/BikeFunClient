@@ -4,13 +4,12 @@ package com.bikefunfinder.client.shared.model;
  * @created 3/19/13 7:54 PM
  */
 
+import com.bikefunfinder.client.shared.model.printer.JsDateWrapper;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.core.client.JsArray;
 import com.google.gwt.core.client.JsDate;
-import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.json.client.JSONObject;
-import com.google.gwt.user.client.Window;
 
 
 import java.util.Date;
@@ -58,10 +57,14 @@ public class BikeRide extends JavaScriptObject {
         this.targetAudience = targetAudience;
     }-*/;
 
-    public final native String getRideStartTime() /*-{
+    public final native double getRideStartTime() /*-{
         return this.rideStartTime;
     }-*/;
 
+    public final JsDateWrapper createJsDateWrapperRideStartTime() {
+        JsDateWrapper bd = JsDateWrapper.create(getRideStartTime());
+        return bd;
+    }
     public final void setRideStartTime(Long time) {
        setRideStartTime(time.toString());
     }
@@ -70,22 +73,33 @@ public class BikeRide extends JavaScriptObject {
         this.rideStartTime = time;
     }-*/;
 
-    public final String getRideStartTimeFormated() {
-        String miliString = getRideStartTime();
-        Double miliDouble = Double.parseDouble(miliString);
-        JsDate jsDate = JsDate.create(miliDouble);
+    public final double getRideStartTimeDouble() {
+        return getRideStartTime();
+    }
 
+    public final String getRideStartTimeFormated()
+    {
+        JsDate jsDate = JsDate.create(getRideStartTimeDouble());
 
         DateTimeFormat fmt = DateTimeFormat.getFormat("EEEE, MMMM dd, yyyy");
         //Window.alert("double: " + miliDouble + " String " + getRideStartTime());
         return jsDate.toString();
     }
+    public final native String getRideStartTimeFancyFormat() /*-{
+        var rideDate = new $wnd.XDate(this.rideStartTime);
+        //return date.customFormat("#DDDD#, #MMMM# #D#, #YYYY#");
+        return rideDate.toString("dddd, MMMM dd, yyyy");
+    }-*/;
 
     @Deprecated
-    public final Date getRideStartTimeDate() {
-        Long unformattedStartTime = Long.parseLong(getRideStartTime());
-        Date date = new Date(unformattedStartTime);
-        return date;
+    public final Date getRideStartTimeDate()
+    {
+        return new Date();
+    }
+    public final JsDate getRideStartTimeJsDate()
+    {
+        JsDate jsDate = JsDate.create(getRideStartTimeDouble());
+        return jsDate;
     }
 
     public final native Location getLocation() /*-{
