@@ -89,7 +89,7 @@ public final class UpdateUserRequest {
 
     private String getUrlWithQuery() {
         final StringBuilder builder = new StringBuilder();
-        builder.append(URL);;
+        builder.append(URL);
 
         return builder.toString();
     }

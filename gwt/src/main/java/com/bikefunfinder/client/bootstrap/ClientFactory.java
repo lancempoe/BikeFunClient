@@ -31,4 +31,6 @@ public interface ClientFactory {
     public EditScreenDisplay getEditScreenDisplay();
 
     public SearchScreenDisplay getSearchScreenDisplay();
+
+    void testLocalStorage();
 }

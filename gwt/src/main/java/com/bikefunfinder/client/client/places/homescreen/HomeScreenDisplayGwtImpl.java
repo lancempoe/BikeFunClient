@@ -99,7 +99,7 @@ public class HomeScreenDisplayGwtImpl extends Composite implements HomeScreenDis
             {
                 firstDate = date;
                 lastDay = firstDate;
-                bikeEntries.add(new HTML(dayBar(firstDate).toString()));
+                bikeEntries.add(new HTML(dayBar(firstDate)));
             }
             else if(!isSameDay(date, lastDay)) {
                 lastDay = date;

@@ -13,6 +13,8 @@ import com.googlecode.gwtphonegap.client.PhoneGapTimeoutHandler;
 import com.bikefunfinder.client.bootstrap.PhoneGapDependentBootScrapper;
 import com.bikefunfinder.client.bootstrap.PhoneGapDependentBootScrapperImpl;
 import com.bikefunfinder.client.bootstrap.UncaughtExceptionHandlerFactory;
+import com.googlecode.mgwt.storage.client.LocalStorageGwtImpl;
+import com.googlecode.mgwt.storage.client.Storage;
 
 import java.util.logging.Logger;
 
@@ -29,5 +31,7 @@ public class BFFEntrypoint implements EntryPoint {
         phoneGapApi.addHandler((PhoneGapAvailableHandler) applicationBootStrapper);
         phoneGapApi.addHandler((PhoneGapTimeoutHandler) applicationBootStrapper);
         phoneGapApi.initializePhoneGap();
+
+
     }
 }

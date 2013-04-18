@@ -7,6 +7,7 @@ import com.bikefunfinder.client.client.places.eventscreen.EventScreenPlace;
 import com.bikefunfinder.client.client.places.profilescreen.ProfileScreenPlace;
 import com.bikefunfinder.client.client.places.searchscreen.SearchScreenPlace;
 import com.bikefunfinder.client.shared.model.*;
+import com.bikefunfinder.client.shared.model.printer.JSODescriber;
 import com.bikefunfinder.client.shared.request.SearchByProximityRequest;
 import com.bikefunfinder.client.shared.request.SearchByTimeOfDayRequest;
 import com.google.gwt.core.client.JavaScriptObject;
@@ -139,6 +140,8 @@ public class HomeScreenActivity extends MGWTAbstractActivity implements HomeScre
 
     @Override
     public void onNewButton() {
+
+        clientFactory.testLocalStorage();
         clientFactory.getPlaceController().goTo(new CreateScreenPlace());
     }
 
@@ -175,7 +178,7 @@ public class HomeScreenActivity extends MGWTAbstractActivity implements HomeScre
         SearchByTimeOfDayRequest.Callback callback = new SearchByTimeOfDayRequest.Callback() {
             @Override
             public void onError() {
-                Window.alert("oh noes, server fail");
+                Window.alert("oh noes, server fail11");
             }
 
             @Override
@@ -222,7 +225,7 @@ public class HomeScreenActivity extends MGWTAbstractActivity implements HomeScre
         SearchByProximityRequest.Callback callback = new SearchByProximityRequest.Callback() {
             @Override
             public void onError() {
-                Window.alert("oh noes, server fail");
+                Window.alert("oh noes, server fail11");
             }
 
             @Override

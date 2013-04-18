@@ -6,6 +6,7 @@ import com.bikefunfinder.client.client.places.editscreen.EditScreenDisplay;
 import com.bikefunfinder.client.client.places.editscreen.EditScreenDisplayGwtImpl;
 import com.bikefunfinder.client.client.places.eventscreen.EventScreenDisplay;
 import com.bikefunfinder.client.client.places.eventscreen.EventScreenDisplayGwtImpl;
+import com.bikefunfinder.client.client.places.homescreen.HomeScreenActivity;
 import com.bikefunfinder.client.client.places.homescreen.HomeScreenDisplay;
 import com.bikefunfinder.client.client.places.homescreen.HomeScreenDisplayGwtImpl;
 import com.bikefunfinder.client.client.places.profilescreen.ProfileScreenDisplay;
@@ -14,15 +15,22 @@ import com.bikefunfinder.client.client.places.searchscreen.SearchScreenDisplay;
 import com.bikefunfinder.client.client.places.searchscreen.SearchScreenDisplayGwtImpl;
 import com.bikefunfinder.client.client.places.usereventsscreen.UserEventsScreenDisplay;
 import com.bikefunfinder.client.client.places.usereventsscreen.UserEventsScreenDisplayGwtImpl;
+import com.bikefunfinder.client.shared.model.BikeRide;
+import com.bikefunfinder.client.shared.model.printer.JSODescriber;
+import com.google.gwt.core.shared.GWT;
 import com.google.gwt.place.shared.PlaceController;
+import com.google.gwt.user.client.Window;
 import com.google.web.bindery.event.shared.EventBus;
 import com.google.web.bindery.event.shared.SimpleEventBus;
 import com.googlecode.gwtphonegap.client.PhoneGap;
+import com.googlecode.mgwt.storage.client.Storage;
+
 
 
 public class ClientFactoryGwtImpl implements ClientFactory {
 
     private final PhoneGap phoneGap;
+    private final LocalStorageWrapper storageInterface;
     private SimpleEventBus eventBus;
     private PlaceController placeController;
     private HomeScreenDisplay homeScreenDisplay;
@@ -35,9 +43,9 @@ public class ClientFactoryGwtImpl implements ClientFactory {
 
     public ClientFactoryGwtImpl(PhoneGap phoneGap) {
         this.phoneGap = phoneGap;
-
-        eventBus = new SimpleEventBus();
-        placeController = new PlaceController(eventBus);
+        this.storageInterface = new LocalStorageWrapper();
+        this.eventBus = new SimpleEventBus();
+        this.placeController = new PlaceController(eventBus);
     }
 
     @Override
@@ -110,5 +118,30 @@ public class ClientFactoryGwtImpl implements ClientFactory {
             userEventsScreenDisplay = new UserEventsScreenDisplayGwtImpl();
         }
         return userEventsScreenDisplay;
+    }
+
+    @Override
+    public void testLocalStorage() {
+        Storage xxxx = storageInterface.getStorageInterfaceMyBeNull();
+        if(xxxx==null) {
+            Window.alert("Storage interface is not supported (null)");
+        } else {
+            final String oldBikeRideKey = "oldBikeRideKey";
+            String bikeRideJson = xxxx.getItem(oldBikeRideKey);
+            if(bikeRideJson==null || bikeRideJson.isEmpty()) {
+                Window.alert("New state, never stored it before!!");
+                BikeRide brTest = GWT.create(BikeRide.class);
+                brTest.setBikeRideName("TestingLocalStorage");
+
+                final String jsonText = JSODescriber.toJSON(brTest);
+                xxxx.setItem(oldBikeRideKey, jsonText);
+                Window.alert("ok it's stuffed.. shoudl work!");
+            } else {
+                final String jsonText = xxxx.getItem(oldBikeRideKey);
+                BikeRide brTest = HomeScreenActivity.testObjectParse(jsonText);
+                Window.alert("pulled from DB (alerady existed)");
+                Window.alert("BikeRideName: "+brTest.getBikeRideName());
+            }
+        }
     }
 }
