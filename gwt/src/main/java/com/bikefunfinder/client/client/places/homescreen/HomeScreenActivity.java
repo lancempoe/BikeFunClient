@@ -225,7 +225,9 @@ public class HomeScreenActivity extends MGWTAbstractActivity implements HomeScre
         SearchByProximityRequest.Callback callback = new SearchByProximityRequest.Callback() {
             @Override
             public void onError() {
-                Window.alert("oh noes, server fail11");
+                Window.alert("oh noes, server fail");
+                display.display(new ArrayList<BikeRide>());
+                display.display("City Unknown");
             }
 
             @Override
