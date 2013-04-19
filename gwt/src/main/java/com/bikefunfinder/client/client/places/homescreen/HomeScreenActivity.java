@@ -125,7 +125,7 @@ public class HomeScreenActivity extends MGWTAbstractActivity implements HomeScre
 
     public static <T extends JavaScriptObject> T testObjectParse(String json) {
         if(!JsonUtils.safeToEval(json)) {
-            Window.alert("woah nelly we're not safe to eval");
+            Window.alert("Woah nelly.  Unknown date.");
         }
 
         //Window.alert("PepPep: "+json);
@@ -178,7 +178,9 @@ public class HomeScreenActivity extends MGWTAbstractActivity implements HomeScre
         SearchByTimeOfDayRequest.Callback callback = new SearchByTimeOfDayRequest.Callback() {
             @Override
             public void onError() {
-                Window.alert("oh noes, server fail11");
+                Window.alert("Oops, your BFF will be back shortly.");
+                display.display(new ArrayList<BikeRide>());
+                display.display("City Unknown");
             }
 
             @Override
@@ -211,8 +213,8 @@ public class HomeScreenActivity extends MGWTAbstractActivity implements HomeScre
 
             @Override
             public void onFailure(final PositionError error) {
-                Window.alert("Failed to get geo log.. using 80,80");
-                fireRequestForTimeOfDay(display, 80, 80);
+                Window.alert("Failed to get GeoLocation.  Using Portland as default.");
+                fireRequestForTimeOfDay(display, 45.52345275878906, -122.6762084960938);
             }
         };
 
@@ -225,7 +227,7 @@ public class HomeScreenActivity extends MGWTAbstractActivity implements HomeScre
         SearchByProximityRequest.Callback callback = new SearchByProximityRequest.Callback() {
             @Override
             public void onError() {
-                Window.alert("oh noes, server fail");
+                Window.alert("Oops, your BFF will be back shortly.");
                 display.display(new ArrayList<BikeRide>());
                 display.display("City Unknown");
             }
@@ -260,8 +262,8 @@ public class HomeScreenActivity extends MGWTAbstractActivity implements HomeScre
 
             @Override
             public void onFailure(final PositionError error) {
-                Window.alert("Failed to get geo log.. using 80,80");
-                fireRequestForTimeOfDay(display, 80, 80);
+                Window.alert("Failed to get GeoLocation.  Using Portland as default.");
+                fireRequestForTimeOfDay(display, 45.52345275878906, -122.6762084960938);
             }
         };
 
