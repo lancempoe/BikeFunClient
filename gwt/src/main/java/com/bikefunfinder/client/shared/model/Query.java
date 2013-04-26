@@ -5,6 +5,7 @@ package com.bikefunfinder.client.shared.model;
  */
 
 import com.google.gwt.core.client.JavaScriptObject;
+import com.googlecode.mgwt.ui.client.widget.MTextBox;
 
 public class Query extends JavaScriptObject {
 
@@ -15,8 +16,8 @@ public class Query extends JavaScriptObject {
 		return this.query;
     }-*/;
 
-    public final native String getCityLocationId() /*-{
-		return this.cityLocationId;
+    public final native String getCityLocation() /*-{
+		return this.cityLocation;
     }-*/;
 
     public final native Long getDate() /*-{
@@ -31,8 +32,20 @@ public class Query extends JavaScriptObject {
 		return this.rideLeaderId;
     }-*/;
 
+    public final native void setQuery(String query) /*-{
+        this.query = query;
+    }-*/;
+
+    public final native void setTargetAudience(String targetAudience) /*-{
+        this.targetAudience = targetAudience;
+    }-*/;
+
+    public final native void setCity(String cityLocation) /*-{
+        this.cityLocation = cityLocation;
+    }-*/;
+
     //    public String query;
-    //    public String cityLocationId; //If not provided then use current location
+    //    public String cityLocation; //If not provided then use current location
     //    public Long date;
     //    public String targetAudience;
     //    public String rideLeaderId;

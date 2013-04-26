@@ -33,7 +33,7 @@ public class ActivityMapperDelegate implements ActivityMapper {
         } else if(place instanceof EventScreenPlace) {
             return new EventScreenActivity(clientFactory);
         } else if(place instanceof HomeScreenPlace) {
-            return new HomeScreenActivity(clientFactory);
+            return new HomeScreenActivity(clientFactory, ((HomeScreenPlace) place).getRoot());
         } else if(place instanceof ProfileScreenPlace) {
             return new ProfileScreenActivity(clientFactory);
         } else if(place instanceof SearchScreenPlace) {

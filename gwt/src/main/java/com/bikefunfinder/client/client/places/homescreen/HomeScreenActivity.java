@@ -31,9 +31,11 @@ public class HomeScreenActivity extends MGWTAbstractActivity implements HomeScre
     private final ClientFactory clientFactory;
     private GeolocationWatcher watcher = null;
     private List<BikeRide> currentList;
+    private Root root;
 
-    public HomeScreenActivity(ClientFactory clientFactory) {
+    public HomeScreenActivity(ClientFactory clientFactory, Root root) {
         this.clientFactory = clientFactory;
+        this.root = root;
     }
 
     @Override
@@ -48,7 +50,10 @@ public class HomeScreenActivity extends MGWTAbstractActivity implements HomeScre
         //currentList = getModuleList(justForShits());
         //display.display(currentList);
 
-        Root root = testObjectParse(justForShits());
+        if(root==null) {
+            Root root = testObjectParse(justForShits());
+        }
+
         display.display(root.getClosestLocation().getCity());
     }
 

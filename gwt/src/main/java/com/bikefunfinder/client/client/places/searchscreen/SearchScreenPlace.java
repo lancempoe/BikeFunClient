@@ -1,7 +1,7 @@
 package com.bikefunfinder.client.client.places.searchscreen;
 /*
- * @author: tneuwerth
- * @created 4/10/13 11:31 AM
+ * @author: lancepoehler
+ * @created 4/25/13 11:31 pm
  */
 
 import com.google.gwt.place.shared.Place;

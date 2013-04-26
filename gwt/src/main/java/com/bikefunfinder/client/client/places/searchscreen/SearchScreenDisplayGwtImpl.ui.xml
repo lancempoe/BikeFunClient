@@ -1,7 +1,8 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
              xmlns:g="urn:import:com.google.gwt.user.client.ui"
-             xmlns:mgwt="urn:import:com.googlecode.mgwt.ui.client.widget">
+             xmlns:mgwt="urn:import:com.googlecode.mgwt.ui.client.widget"
+             xmlns:dp="urn:import:com.google.gwt.user.datepicker.client" >
 
     <ui:style>
         .positioningForName {
@@ -18,11 +19,19 @@
                 <mgwt:HeaderButton ui:field="backButton" backButton="true" text="Back" />
             </mgwt:left>
             <mgwt:right>
-                <g:HTML styleName="{style.positioningForName}">Profile screen</g:HTML>
+                <g:HTML styleName="{style.positioningForName}">Advanced Search</g:HTML>
             </mgwt:right>
         </mgwt:HeaderPanel>
-        <g:HTMLPanel>
-            <strong>Create ride screen stuff</strong>
-        </g:HTMLPanel>
+
+        <mgwt:ScrollPanel scrollingEnabledX="false">
+            <g:FormPanel ui:field="form">
+                <g:HTMLPanel ui:field="formContents">
+
+                    <mgwt:WidgetList ui:field="widgetList" />
+                    <mgwt:Button ui:field="searchRide" width="100%" text="Search"/>
+
+                </g:HTMLPanel>
+            </g:FormPanel>
+        </mgwt:ScrollPanel>
     </mgwt:LayoutPanel>
 </ui:UiBinder>
