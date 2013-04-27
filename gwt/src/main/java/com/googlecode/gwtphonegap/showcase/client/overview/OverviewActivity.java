@@ -3,7 +3,7 @@ package com.googlecode.gwtphonegap.showcase.client.overview;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.web.bindery.event.shared.EventBus;
 import com.bikefunfinder.client.bootstrap.ClientFactory;
-import com.googlecode.gwtphonegap.showcase.client.gmap.GMapPlace;
+import com.bikefunfinder.client.client.places.gmap.GMapPlace;
 import com.googlecode.gwtphonegap.showcase.client.overview.OverviewDisplay.Presenter;
 import com.googlecode.gwtphonegap.showcase.client.about.AboutPlace;
 import com.googlecode.gwtphonegap.showcase.client.accelerometer.AccelerometerPlace;

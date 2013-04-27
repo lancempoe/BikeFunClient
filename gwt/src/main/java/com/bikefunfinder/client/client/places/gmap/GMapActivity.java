@@ -1,5 +1,9 @@
-package com.googlecode.gwtphonegap.showcase.client.gmap;
+package com.bikefunfinder.client.client.places.gmap;
 
+import com.bikefunfinder.client.shared.model.BikeRide;
+import com.bikefunfinder.client.shared.model.Root;
+import com.bikefunfinder.client.shared.model.helper.Extractor;
+import com.bikefunfinder.client.shared.request.SearchByProximityRequest;
 import com.google.gwt.place.shared.Place;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
@@ -8,6 +12,9 @@ import com.googlecode.gwtphonegap.client.geolocation.*;
 import com.bikefunfinder.client.bootstrap.ClientFactory;
 import com.googlecode.gwtphonegap.showcase.client.NavBaseActivity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created with IntelliJ IDEA.
  * User: tim
@@ -15,11 +22,12 @@ import com.googlecode.gwtphonegap.showcase.client.NavBaseActivity;
  * Time: 2:42 PM
  * To change this template use File | Settings | File Templates.
  */
-public class GMapActivity extends NavBaseActivity implements GMapView.Presenter {
+public class GMapActivity extends NavBaseActivity implements GMapDisplay.Presenter {
     private final ClientFactory clientFactory;
 
     private final Geolocation geolocation;
     private GeolocationWatcher watcher = null;
+    private List<BikeRide> currentList;
 
     public GMapActivity(final ClientFactory clientFactory) {
         super(clientFactory);
@@ -34,7 +42,7 @@ public class GMapActivity extends NavBaseActivity implements GMapView.Presenter 
             throw new IllegalStateException();
         }
 
-        final GMapView geoMapView = null;//clientFactory.getGMapView();
+        final GMapDisplay geoMapView = clientFactory.getHereAndNowDisplay();
         geoMapView.setPresenter(this);
         panel.setWidget(geoMapView);
 
@@ -67,7 +75,9 @@ public class GMapActivity extends NavBaseActivity implements GMapView.Presenter 
 
             @Override
             public void onFailure(final PositionError error) {
-                Window.alert("error code[" + error.getCode()+ "], msg[" + error.getMessage() + "]");
+                Window.alert("Failed to get GeoLocation. error code[" + error.getCode()+ "], msg[" + error.getMessage() + "]");
+                final GMapDisplay geoMapView = clientFactory.getHereAndNowDisplay();
+                fireRequestForHereAndNow(geoMapView, 45.52345275878906, -122.6762084960938, 0 );
             }
         };
         watchPosition(options, geolocationCallback);
@@ -86,7 +96,7 @@ public class GMapActivity extends NavBaseActivity implements GMapView.Presenter 
     }
 
     private void clearView() {
-        final GMapView gMapView = null;//clientFactory.getGMapView();
+        final GMapDisplay gMapView = clientFactory.getHereAndNowDisplay();
 
         gMapView.clearMapInfo();
         gMapView.refresh();
@@ -94,9 +104,53 @@ public class GMapActivity extends NavBaseActivity implements GMapView.Presenter 
 
     private void setView(final int count, final double latitude, final double longitude, final double altitude,
                          final double accuracy, final double altitudeAccuracy, final double heading, final double speed) {
-        final GMapView geoCheckinMapView = null;//
+        final GMapDisplay geoMapView = clientFactory.getHereAndNowDisplay();
+        fireRequestForHereAndNow(geoMapView, latitude, longitude, accuracy);
+    }
 
-        geoCheckinMapView.setMapInfo(latitude, longitude, accuracy);
-        geoCheckinMapView.refresh();
+
+
+    private void fireRequestForHereAndNow(final GMapDisplay display, final double latitude,
+                                          final double longitude,
+                                          final double altitudeAccuracy) {
+        SearchByProximityRequest.Callback callback = new SearchByProximityRequest.Callback() {
+            @Override
+            public void onError() {
+                Window.alert("Oops, your BFF will be back shortly.");
+                display.setMapInfo(latitude, longitude, altitudeAccuracy,
+                        new ArrayList<BikeRide>(),
+                        "City Unknown");
+                display.refresh();
+            }
+
+            @Override
+            public void onResponseReceived(Root root) {
+                currentList =  Extractor.getBikeRidesFrom(root);
+                final String city = getCityNameFromRoot(root);
+                display.setMapInfo(latitude, longitude, altitudeAccuracy,
+                        currentList,
+                        city);
+                display.refresh();
+            }
+
+            private String getCityNameFromRoot(Root root) {
+                if(root == null) {
+                    return "Unknown City";
+                }
+
+                if(root.getClosestLocation()==null) {
+                    return "Unknown City";
+                }
+
+                String cityName = root.getClosestLocation().getCity();
+                if(cityName==null || cityName.isEmpty()) {
+                    return "Unknown City";
+                }
+
+                return cityName;
+            }
+        };
+        SearchByProximityRequest.Builder request = new SearchByProximityRequest.Builder(callback);
+        request.latitude(latitude).longitude(longitude).send();
     }
 }

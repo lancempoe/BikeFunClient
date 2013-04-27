@@ -12,6 +12,7 @@ import com.bikefunfinder.client.client.places.searchscreen.SearchScreenPlace;
 import com.google.gwt.place.shared.Place;
 import com.googlecode.mgwt.mvp.client.Animation;
 import com.googlecode.mgwt.mvp.client.AnimationMapper;
+import com.bikefunfinder.client.client.places.gmap.*;
 
 public class AnimationMapperDelegate implements AnimationMapper {
 
@@ -58,6 +59,13 @@ public class AnimationMapperDelegate implements AnimationMapper {
         if (oldPlace instanceof HomeScreenPlace && newPlace instanceof EventScreenPlace) {
             return Animation.SLIDE;
         } else if (oldPlace instanceof EventScreenPlace && newPlace instanceof HomeScreenPlace) {
+            return Animation.SLIDE_REVERSE;
+        }
+
+        //Here and now page
+        if (oldPlace instanceof HomeScreenPlace && newPlace instanceof GMapPlace) {
+            return Animation.SLIDE;
+        } else if (oldPlace instanceof GMapPlace && newPlace instanceof HomeScreenPlace) {
             return Animation.SLIDE_REVERSE;
         }
 

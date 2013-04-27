@@ -17,6 +17,7 @@ import com.bikefunfinder.client.client.places.searchscreen.SearchScreenPlace;
 import com.google.gwt.activity.shared.Activity;
 import com.google.gwt.activity.shared.ActivityMapper;
 import com.google.gwt.place.shared.Place;
+import com.bikefunfinder.client.client.places.gmap.*;
 
 public class ActivityMapperDelegate implements ActivityMapper {
 
@@ -38,6 +39,8 @@ public class ActivityMapperDelegate implements ActivityMapper {
             return new ProfileScreenActivity(clientFactory);
         } else if(place instanceof SearchScreenPlace) {
             return new SearchScreenActivity(clientFactory);
+        } else if(place instanceof GMapPlace) {
+            return new GMapActivity(clientFactory);
         }
 
         return null;

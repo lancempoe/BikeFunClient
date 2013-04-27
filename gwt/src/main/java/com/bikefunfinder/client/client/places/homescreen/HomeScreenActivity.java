@@ -7,6 +7,7 @@ import com.bikefunfinder.client.client.places.eventscreen.EventScreenPlace;
 import com.bikefunfinder.client.client.places.profilescreen.ProfileScreenPlace;
 import com.bikefunfinder.client.client.places.searchscreen.SearchScreenPlace;
 import com.bikefunfinder.client.shared.model.*;
+import com.bikefunfinder.client.shared.model.helper.Extractor;
 import com.bikefunfinder.client.shared.model.json.Utils;
 import com.bikefunfinder.client.shared.model.printer.JSODescriber;
 import com.bikefunfinder.client.shared.request.SearchByProximityRequest;
@@ -19,7 +20,7 @@ import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.web.bindery.event.shared.EventBus;
 import com.googlecode.gwtphonegap.client.geolocation.*;
 import com.googlecode.mgwt.mvp.client.MGWTAbstractActivity;
-
+import com.bikefunfinder.client.client.places.gmap.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,84 +49,12 @@ public class HomeScreenActivity extends MGWTAbstractActivity implements HomeScre
         panel.setWidget(display);
 
         usePhoneLocationToMakeTimeOfDayRequestAndUpdateDisplay(display);
-        //currentList = getModuleList(justForShits());
-        //display.display(currentList);
-
-        Root root = Utils.castJsonTxtToJSOObject(justForShits());
-        display.display(root.getClosestLocation().getCity());
-    }
-
-
-    private List<BikeRide> getModuleList(Root root) {
-        ArrayList<BikeRide> list = new ArrayList<BikeRide>();
-        JsArray<BikeRide> bikeRides = root.getBikeRides();
-        final int numBikeRides = bikeRides.length();
-        for(int index=0; index< numBikeRides; index++) {
-            list.add(bikeRides.get(index));
-        }
-
-        return list;
     }
 
     private List<BikeRide> getModuleList(String rootJson) {
         Root root = Utils.castJsonTxtToJSOObject(rootJson);
-        return getModuleList(root);
+        return Extractor.getBikeRidesFrom(root);
     }
-
-    private String justForShits() {
-        String geoJson = "{\"longitude\":\"-122.65895080566406\",\"latitude\":\"45.52901840209961\"}";
-        //GeoLoc geoLoc = castJsonTxtToJSOObject(geoJson);
-        //Window.alert(JSODescriber.describe(geoLoc));
-
-        String locationJson = "{ " +
-                " \"streetAddress\": \"650 NE Holladay St\"," +
-                " \"city\": \"Portland\"," +
-                " \"state\": \"OR\"," +
-                " \"geoLoc\": " +geoJson+", "+
-                " \"formattedAddress\": \"650 Northeast Holladay Street, Portland, OR 97232, USA\"" +
-                " }";
-//        Location location = castJsonTxtToJSOObject(locationJson);
-//        Window.alert(JSODescriber.describe(location));
-
-        String bikeRideJson = "{" +
-                " \"id\": \"51494f39e4b0776ff69f738d\"," +
-                " \"bikeRideName\": \"2: Two Days in the future\"," +
-                " \"rideStartTime\": \"1365486905310\"," +
-                " \"location\": "+locationJson+"," +
-                " \"imagePath\": \"Images\\/BikeRides\\/defaultBikeRide.jpg\"," +
-                " \"trackingAllowed\": \"true\"," +
-                " \"distanceFromClient\": \"3717.7103706379244\"," +
-                " \"currentlyTracking\": \"false\"," +
-                " \"totalPeopleTrackingCount\": \"0\"" +
-              "}";
-//        BikeRide bikeRide = castJsonTxtToJSOObject(bikeRideJson);
-//        Window.alert(JSODescriber.describe(bikeRide));
-
-        String closestLocationJson = "{" +
-        "    \"id\": \"514943d0e4b0776ff69f714d\"," +
-                "    \"city\": \"Portland\"," +
-                "    \"state\": \"OR\"," +
-                "    \"geoLoc\": {" +
-                "      \"longitude\": \"-122.67620849609375\"," +
-                "      \"latitude\": \"45.52345275878906\"" +
-                "    }," +
-                "    \"formattedAddress\": \"Portland, OR, USA\"" +
-                "  }";
-//        ClosestLocation closestLocation = castJsonTxtToJSOObject(closestLocationJson);
-//        Window.alert(JSODescriber.describe(closestLocation));
-
-
-        String rootJson = "{" +
-                "  \"BikeRides\": [ "+ bikeRideJson + ","+ bikeRideJson + "  ]," +
-                "  \"ClosestLocation\": "+closestLocationJson+"," +
-                "  \"formattedAddress\": \"Portland, OR, USA\"" +
-            "}";
-
-//        Root root = castJsonTxtToJSOObject(rootJson);
-//        Window.alert(JSODescriber.describe(root));
-        return rootJson;
-    }
-
 
     @Override
     public void onNewButton() {
@@ -159,8 +88,7 @@ public class HomeScreenActivity extends MGWTAbstractActivity implements HomeScre
 
     @Override
     public void onHereAndNowButton() {
-        final HomeScreenDisplay display = clientFactory.getHomeScreenDisplay();
-        usePhoneLocationToMakeHereAndNowRequestAndUpdateDisplay(display);
+        clientFactory.getPlaceController().goTo(new GMapPlace("bookMark"));
     }
 
     private void fireRequestForTimeOfDay(final HomeScreenDisplay display, final double latitude, final double longitude) {
@@ -174,7 +102,7 @@ public class HomeScreenActivity extends MGWTAbstractActivity implements HomeScre
 
             @Override
             public void onResponseReceived(Root root) {
-                currentList = getModuleList(root);
+                currentList = Extractor.getBikeRidesFrom(root);
                 display.display(currentList);
                 display.display(root.getClosestLocation().getCity());
             }
@@ -212,51 +140,5 @@ public class HomeScreenActivity extends MGWTAbstractActivity implements HomeScre
     }
 
 
-    private void fireRequestForHereAndNow(final HomeScreenDisplay display, final double latitude, final double longitude) {
-        SearchByProximityRequest.Callback callback = new SearchByProximityRequest.Callback() {
-            @Override
-            public void onError() {
-                Window.alert("Oops, your BFF will be back shortly.");
-                display.display(new ArrayList<BikeRide>());
-                display.display("City Unknown");
-            }
 
-            @Override
-            public void onResponseReceived(Root root) {
-                currentList = getModuleList(root);
-                display.display(currentList);
-                display.display(root.getClosestLocation().getCity());
-            }
-        };
-        SearchByProximityRequest.Builder request = new SearchByProximityRequest.Builder(callback);
-        request.latitude(latitude).longitude(longitude).send();
-    }
-
-    private void usePhoneLocationToMakeHereAndNowRequestAndUpdateDisplay(final HomeScreenDisplay display) {
-        final GeolocationOptions options = new GeolocationOptions();
-        options.setEnableHighAccuracy(true);
-        options.setTimeout(3000);
-        options.setMaximumAge(1000);
-
-        final GeolocationCallback geolocationCallback = new GeolocationCallback() {
-            @Override
-            public void onSuccess(final Position position) {
-
-                final Coordinates coordinates = position.getCoordinates();
-                final double latitude = coordinates.getLatitude();
-                final double longitude = coordinates.getLongitude();
-
-                fireRequestForHereAndNow(display, latitude, longitude);
-            }
-
-            @Override
-            public void onFailure(final PositionError error) {
-                Window.alert("Failed to get GeoLocation.  Using Portland as default.");
-                fireRequestForTimeOfDay(display, 45.52345275878906, -122.6762084960938);
-            }
-        };
-
-        Geolocation phoneGeoLocation = clientFactory.getPhoneGap().getGeolocation();
-        phoneGeoLocation.getCurrentPosition(geolocationCallback, options);
-    }
 }

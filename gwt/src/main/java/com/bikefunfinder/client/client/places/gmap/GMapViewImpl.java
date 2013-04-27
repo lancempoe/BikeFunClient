@@ -1,5 +1,6 @@
-package com.googlecode.gwtphonegap.showcase.client.gmap;
+package com.bikefunfinder.client.client.places.gmap;
 
+import com.bikefunfinder.client.shared.model.BikeRide;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -16,6 +17,9 @@ import com.googlecode.mgwt.ui.client.widget.HeaderButton;
 import com.googlecode.mgwt.ui.client.widget.HeaderPanel;
 import com.googlecode.mgwt.ui.client.widget.LayoutPanel;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created with IntelliJ IDEA.
  * User: tim
@@ -23,7 +27,7 @@ import com.googlecode.mgwt.ui.client.widget.LayoutPanel;
  * Time: 2:46 PM
  * To change this template use File | Settings | File Templates.
  */
-public class GMapViewImpl implements GMapView {
+public class GMapViewImpl implements GMapDisplay {
     private static final double DEFAULT_ZOOM = 16;
     private static final int RESUME_AUTO_PAN_AND_ZOOM_DELAY_MILLIS = 10000;
 
@@ -34,6 +38,7 @@ public class GMapViewImpl implements GMapView {
 
     private GoogleMap map;
     private Circle circle;
+    private List<Circle> bikeRides = new ArrayList<Circle>();
     private Polygon polygon;
     private Polyline polyline;
 
@@ -45,19 +50,18 @@ public class GMapViewImpl implements GMapView {
 
     public GMapViewImpl() {
         main = new LayoutPanel();
-        final HeaderPanel headerPanel = new HeaderPanel();
-        backButton = new HeaderButton();
+
         mapPanel = new FlowPanel();
 
-        headerPanel.setCenter("Map");
+        backButton = new HeaderButton();
         backButton.setText("Back");
 
-        if (MGWT.getOsDetection().isTablet()) {
-            backButton.setBackButton(false);
-            backButton.addStyleName(MGWTStyle.getTheme().getMGWTClientBundle().getUtilCss().portraitonly());
-        } else {
-            backButton.setBackButton(true);
-        }
+//        if (MGWT.getOsDetection().isTablet()) {
+//            backButton.setBackButton(false);
+//            backButton.addStyleName(MGWTStyle.getTheme().getMGWTClientBundle().getUtilCss().portraitonly());
+//        } else {
+//            backButton.setBackButton(true);
+//        }
 
 
         backButton.addTapHandler(new TapHandler() {
@@ -66,11 +70,12 @@ public class GMapViewImpl implements GMapView {
                 oBackButtonPressed(tapEvent);
             }
         });
-
+        final HeaderPanel headerPanel = new HeaderPanel();
+        headerPanel.setCenter("Map");
+        headerPanel.setLeftWidget(backButton);
         mapPanel.addStyleName(MGWTStyle.getTheme().getMGWTClientBundle().getLayoutCss().fillPanelExpandChild());
 
         main.add(headerPanel);
-        headerPanel.setLeftWidget(backButton);
         main.add(mapPanel);
 
         resumeAutoPanAndZoomTimer = new Timer() {
@@ -88,7 +93,6 @@ public class GMapViewImpl implements GMapView {
     public Widget asWidget() {
         return main;
     }
-
 
     @Override
     public void setPresenter(Presenter presenter) {
@@ -108,11 +112,13 @@ public class GMapViewImpl implements GMapView {
 
     @Override
     public void clearMapInfo() {
-
     }
 
+
     @Override
-    public void setMapInfo(final double latitude, final double longitude, final double accuracy) {
+    public void setMapInfo(final double latitude, final double longitude, final double accuracy,
+                           List<BikeRide> list,
+                           String cityNameText) {
         center = LatLng.create(latitude, longitude);
         zoom = DEFAULT_ZOOM;
 
@@ -122,32 +128,32 @@ public class GMapViewImpl implements GMapView {
             map.addCenterChangedListener(new CenterChangedHandler() {
                 @Override
                 public void handle() {
-                    if (!map.getCenter().equals(center)) {
-                        isRecentUserActivity = true;
-                        resumeAutoPanAndZoomTimer.schedule(RESUME_AUTO_PAN_AND_ZOOM_DELAY_MILLIS);
-                    }
+                if (!map.getCenter().equals(center)) {
+                    isRecentUserActivity = true;
+                    resumeAutoPanAndZoomTimer.schedule(RESUME_AUTO_PAN_AND_ZOOM_DELAY_MILLIS);
+                }
                 }
             });
             map.addZoomChangedListener(new ZoomChangedHandler() {
                 @Override
                 public void handle() {
-                    if (map.getZoom() != zoom) {
-                        isRecentUserActivity = true;
-                        resumeAutoPanAndZoomTimer.schedule(RESUME_AUTO_PAN_AND_ZOOM_DELAY_MILLIS);
-                    }
+                if (map.getZoom() != zoom) {
+                    isRecentUserActivity = true;
+                    resumeAutoPanAndZoomTimer.schedule(RESUME_AUTO_PAN_AND_ZOOM_DELAY_MILLIS);
+                }
                 }
             });
             map.addDragStartListener(new DragStartHandler() {
                 @Override
                 public void handle() {
-                    isRecentUserActivity = true;
-                    resumeAutoPanAndZoomTimer.cancel();
+                isRecentUserActivity = true;
+                resumeAutoPanAndZoomTimer.cancel();
                 }
             });
             map.addDragEndListener(new DragEndHandler() {
                 @Override
                 public void handle() {
-                    resumeAutoPanAndZoomTimer.schedule(RESUME_AUTO_PAN_AND_ZOOM_DELAY_MILLIS);
+                resumeAutoPanAndZoomTimer.schedule(RESUME_AUTO_PAN_AND_ZOOM_DELAY_MILLIS);
                 }
             });
         } else {
@@ -165,12 +171,24 @@ public class GMapViewImpl implements GMapView {
             circle.setRadius(accuracy);
         }
 
-        if (polyline == null) {
-            final PolylineOptions polylineOptions = createPolylineOptions(map, center);
-            polyline = Polyline.create(polylineOptions);
-        } else {
-            polyline.getPath().push(center);
+        for(BikeRide bikeRide: list) {
+            final String latitude1 = bikeRide.getLocation().getGeoLoc().getLatitude();
+            final String longitude1 = bikeRide.getLocation().getGeoLoc().getLongitude();
+            final Double convertedLat = Double.parseDouble(latitude1);
+            final Double convertedLong = Double.parseDouble(longitude1);
+
+            final LatLng bikeRideLoc = LatLng.create(convertedLat, convertedLong);
+            final CircleOptions circleOptions = createCircleOptions(map, bikeRideLoc, 100);
+            final Circle bikeRideMarker = Circle.create(circleOptions);
+            bikeRides.add(bikeRideMarker);
         }
+
+//        if (polyline == null) {
+//            final PolylineOptions polylineOptions = createPolylineOptions(map, center);
+//            polyline = Polyline.create(polylineOptions);
+//        } else {
+//            polyline.getPath().push(center);
+//        }
     }
 
     private static MapOptions createMapOptions(final LatLng center, final double zoom) {

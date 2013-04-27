@@ -1,4 +1,4 @@
-package com.googlecode.gwtphonegap.showcase.client.gmap;
+package com.bikefunfinder.client.client.places.gmap;
 
 import com.google.gwt.place.shared.Place;
 import com.google.gwt.place.shared.PlaceTokenizer;
@@ -21,18 +21,18 @@ public class GMapPlace  extends Place {
         @Override
         public String getToken(final GMapPlace place) {
             final StringBuilder builder = new StringBuilder();
-            builder.append(place.getDeviceId());
+            builder.append(place.getPageName());
             return builder.toString();
         }
     }
 
-    private final String deviceId;
+    private final String pageName;
 
-    public GMapPlace(final String deviceId) {
-        this.deviceId = deviceId;
+    public GMapPlace(final String pageName) {
+        this.pageName = pageName;
     }
 
-    public String getDeviceId() {
-        return deviceId;
+    public String getPageName() {
+        return pageName;
     }
 }

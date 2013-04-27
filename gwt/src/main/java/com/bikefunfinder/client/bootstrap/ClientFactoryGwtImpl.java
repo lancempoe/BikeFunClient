@@ -24,7 +24,7 @@ import com.google.web.bindery.event.shared.EventBus;
 import com.google.web.bindery.event.shared.SimpleEventBus;
 import com.googlecode.gwtphonegap.client.PhoneGap;
 import com.googlecode.mgwt.storage.client.Storage;
-
+import com.bikefunfinder.client.client.places.gmap.*;
 import java.util.Date;
 
 
@@ -39,6 +39,7 @@ public class ClientFactoryGwtImpl implements ClientFactory {
     private ProfileScreenDisplay profileScreenDisplay;
     private SearchScreenDisplay searchScreenDisplay;
     private EventScreenDisplay eventScreenDisplay;
+    private GMapDisplay hereAndNowDisplay;
 
     public ClientFactoryGwtImpl(PhoneGap phoneGap) {
         this.phoneGap = phoneGap;
@@ -101,6 +102,14 @@ public class ClientFactoryGwtImpl implements ClientFactory {
             searchScreenDisplay = new SearchScreenDisplayGwtImpl();
         }
         return searchScreenDisplay;
+    }
+
+    @Override
+    public GMapDisplay getHereAndNowDisplay() {
+        if (hereAndNowDisplay == null) {
+            hereAndNowDisplay = new GMapViewImpl();
+        }
+        return hereAndNowDisplay;
     }
 
     @Override

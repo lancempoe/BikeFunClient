@@ -8,6 +8,7 @@ import com.bikefunfinder.client.client.places.searchscreen.SearchScreenDisplay;
 import com.google.gwt.place.shared.PlaceController;
 import com.google.web.bindery.event.shared.EventBus;
 import com.googlecode.gwtphonegap.client.PhoneGap;
+import com.bikefunfinder.client.client.places.gmap.*;
 
 public interface ClientFactory {
     public PhoneGap getPhoneGap();
@@ -25,6 +26,9 @@ public interface ClientFactory {
     public EventScreenDisplay getEventScreenDisplay();
 
     public SearchScreenDisplay getSearchScreenDisplay();
+
+    public GMapDisplay getHereAndNowDisplay();
+
 
     void testLocalStorage();
 }

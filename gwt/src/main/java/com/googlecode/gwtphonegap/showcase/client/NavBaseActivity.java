@@ -1,5 +1,6 @@
 package com.googlecode.gwtphonegap.showcase.client;
 
+import com.bikefunfinder.client.client.places.homescreen.HomeScreenPlace;
 import com.google.gwt.place.shared.PlaceController;
 import com.bikefunfinder.client.bootstrap.ClientFactory;
 import com.googlecode.gwtphonegap.showcase.client.overview.OverviewPlace;
@@ -18,11 +19,11 @@ public abstract class NavBaseActivity extends MGWTAbstractActivity {
     }
 
     public void onBackButtonPressed() {
-        if (MGWT.getOsDetection().isTablet()) {
-            eventBus.fireEvent(new ShowMasterEvent("nav"));
-        } else {
-            placeController.goTo(new OverviewPlace());
-        }
+//        if (MGWT.getOsDetection().isTablet()) {
+//            eventBus.fireEvent(new ShowMasterEvent("nav"));
+//        } else {
+            placeController.goTo(new HomeScreenPlace());
+//        }
     }
 
 }
