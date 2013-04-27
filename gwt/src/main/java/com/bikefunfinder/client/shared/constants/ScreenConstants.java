@@ -24,5 +24,9 @@ public class ScreenConstants {
         public String getDisplayName() {
             return displayName;
         }
+
     }
+
+    public static final String DateFormat = "mm/dd/yyyy";
+    public static final String TimeFormat = "h:mm a";
 }
