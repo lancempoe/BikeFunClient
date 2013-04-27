@@ -8,9 +8,9 @@ package com.bikefunfinder.client.shared.request;
  * To change this template use File | Settings | File Templates.
  */
 
-import com.bikefunfinder.client.client.places.homescreen.HomeScreenActivity;
 import com.bikefunfinder.client.shared.model.BikeRide;
 import com.bikefunfinder.client.shared.model.Query;
+import com.bikefunfinder.client.shared.model.json.Utils;
 import com.google.gwt.http.client.*;
 import com.googlecode.mgwt.ui.client.dialog.Dialogs;
 
@@ -64,7 +64,7 @@ public final class EventRequest {
         }
     }
 
-    private static final String URL = "http://www.BikeFunFinder.com/FunService/rest/bikerides/";
+    private static final String URL = "http://www.bikefunfinder.com/FunService/rest/bikerides/";
 
     private final EventRequest.Callback callback;
     private final String id;
@@ -140,7 +140,7 @@ public final class EventRequest {
                         }
                     });
                 } else {
-                    BikeRide bikeRide = HomeScreenActivity.testObjectParse(response.getText());
+                    BikeRide bikeRide = Utils.castJsonTxtToJSOObject(response.getText());
                     callback.onResponseReceived(bikeRide);
                 }
             }

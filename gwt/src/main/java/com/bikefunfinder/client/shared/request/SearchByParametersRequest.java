@@ -8,9 +8,9 @@ package com.bikefunfinder.client.shared.request;
  * To change this template use File | Settings | File Templates.
  */
 
-import com.bikefunfinder.client.client.places.homescreen.HomeScreenActivity;
 import com.bikefunfinder.client.shared.model.Query;
 import com.bikefunfinder.client.shared.model.Root;
+import com.bikefunfinder.client.shared.model.json.Utils;
 import com.google.gwt.http.client.*;
 import com.googlecode.mgwt.ui.client.dialog.Dialogs;
 
@@ -59,7 +59,7 @@ public final class SearchByParametersRequest {
         }
     }
 
-    private static final String URL = "http://www.BikeFunFinder.com/FunService/rest/display/by_search/";
+    private static final String URL = "http://www.bikefunfinder.com/FunService/rest/display/by_search/";
 
     private final SearchByParametersRequest.Callback callback;
     private final BigDecimal latitude;
@@ -132,7 +132,7 @@ public final class SearchByParametersRequest {
                         }
                     });
                 } else {
-                    Root root = HomeScreenActivity.testObjectParse(response.getText());
+                    Root root = Utils.castJsonTxtToJSOObject(response.getText());
                     callback.onResponseReceived(root);
 
                 }

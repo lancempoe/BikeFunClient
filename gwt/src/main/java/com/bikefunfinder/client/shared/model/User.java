@@ -17,16 +17,32 @@ public class User extends JavaScriptObject {
         return this.id;
     }-*/;
 
+    public final native String setId(String id) /*-{
+        this.id = id;
+    }-*/;
+
     public final native OAuth getOAuth() /*-{
 		return this.oAuth;
+    }-*/;
+
+    public final native void setOAuth(OAuth oAuth) /*-{
+		this.oAuth = oAuth;
     }-*/;
 
     public final native String getUserName() /*-{
         return this.userName;
     }-*/;
 
+    public final native void setUserName(String userName) /*-{
+        this.userName = userName;
+    }-*/;
+
     public final native String getEmail() /*-{
         return this.email;
+    }-*/;
+
+    public final native void setEmail(String email) /*-{
+        this.email = email;
     }-*/;
 
     public final native JsArray<DeviceAccount> getDeviceAccounts() /*-{ return this.DeviceAccounts; }-*/;
@@ -35,16 +51,32 @@ public class User extends JavaScriptObject {
 		return this.deviceAccount;
     }-*/;
 
+    public final native void setDeviceAccount(DeviceAccount deviceAccount) /*-{
+		this.deviceAccount = DeviceAccount;
+    }-*/;
+
     public final native Boolean getAccountActivated() /*-{
         return this.accountActivated;
+    }-*/;
+
+    public final native void setAccountActivated(Boolean accountActivated) /*-{
+        this.accountActivated = accountActivated;
     }-*/;
 
     public final native String getImagePath() /*-{
         return this.imagePath;
     }-*/;
 
+    public final native void getImagePath(String imagePath) /*-{
+        this.imagePath = imagePath;
+    }-*/;
+
     public final native String getJoinedTimeStamp() /*-{
         return this.joinedTimeStamp;
+    }-*/;
+
+    public final native void getJoinedTimeStamp(String joinedTimeStamp) /*-{
+        this.joinedTimeStamp = joinedTimeStamp;
     }-*/;
 
     public final String getJoinedTimeStampFormated() {
@@ -64,8 +96,16 @@ public class User extends JavaScriptObject {
         return this.readTipsForRideLeaders;
     }-*/;
 
+    public final native void setReadTipsForRideLeaders(boolean readTipsForRideLeaders) /*-{
+        this.readTipsForRideLeaders = readTipsForRideLeaders;
+    }-*/;
+
     public final native String getLatestActiveTimeStamp() /*-{
         return this.latestActiveTimeStamp;
+    }-*/;
+
+    public final native void setLatestActiveTimeStamp(String latestActiveTimeStamp) /*-{
+        this.latestActiveTimeStamp = latestActiveTimeStamp;
     }-*/;
 
     public final String getLatestActiveTimeStampFormated() {
@@ -83,6 +123,10 @@ public class User extends JavaScriptObject {
 
     public final native int getTotalHostedBikeRideCount() /*-{
         return this.totalHostedBikeRideCount;
+    }-*/;
+
+    public final native void setTotalHostedBikeRideCount(int totalHostedBikeRideCount) /*-{
+        this.totalHostedBikeRideCount = totalHostedBikeRideCount;
     }-*/;
 
 //    public String id;

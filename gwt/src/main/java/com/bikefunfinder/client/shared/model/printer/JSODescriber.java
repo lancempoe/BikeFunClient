@@ -14,8 +14,9 @@ public class JSODescriber {
     private static final DescribeableAsString<BikeRide> bikeRideJSOWrapper = new BikeRideJSOWrapper();
     private static final DescribeableAsString<ClosestLocation> closestLocationJSOWrapper = new ClosestLocationJSOWrapper();
     private static final DescribeableAsString<Root> rootJSOWrapper = new RootJSOWrapper();
-
-
+    private static final DescribeableAsString<User> userJSOWrapper = new UserJSOWrapper();
+    private static final DescribeableAsString<OAuth> oauthJSOWrapper = new OAuthJSOWrapper();
+    private static final DescribeableAsString<DeviceAccount> deviceAccountJSOWrapper = new DeviceAccountJSOWrapper();
 
     public static final String describe(GeoLoc geoLoc) {
         return geoLocJSOWrapper.describeAsString(geoLoc);
@@ -37,8 +38,19 @@ public class JSODescriber {
         return rootJSOWrapper.describeAsString(root);
     }
 
+    public static final String describe(User user) {
+        return userJSOWrapper.describeAsString(user);
+    }
+
+    public static final String describe(OAuth oAuth) {
+        return oauthJSOWrapper.describeAsString(oAuth);
+    }
+
+    public static final String describe(DeviceAccount deviceAccount) {
+        return deviceAccountJSOWrapper.describeAsString(deviceAccount);
+    }
+
     public static final String toJSON(JavaScriptObject jso) {
         return new JSONObject(jso).toString();
     }
-
 }

@@ -1,7 +1,7 @@
 package com.bikefunfinder.client.shared.request;
 
-import com.bikefunfinder.client.client.places.homescreen.HomeScreenActivity;
 import com.bikefunfinder.client.shared.model.User;
+import com.bikefunfinder.client.shared.model.json.Utils;
 import com.bikefunfinder.client.shared.model.printer.JSODescriber;
 import com.google.gwt.http.client.*;
 import com.googlecode.mgwt.ui.client.dialog.Dialogs;
@@ -49,7 +49,7 @@ public final class NewUserRequest {
         }
     }
 
-    private static final String URL = "http://www.BikeFunFinder.com/FunService/rest/users";
+    private static final String URL = "http://www.bikefunfinder.com/FunService/rest/users";
 
     private final NewUserRequest.Callback callback;
     private final User user;
@@ -120,7 +120,7 @@ public final class NewUserRequest {
                         }
                     });
                 } else {
-                    User user = HomeScreenActivity.testObjectParse(response.getText());
+                    User user = Utils.castJsonTxtToJSOObject(response.getText());
                     callback.onResponseReceived(user);
                 }
             }

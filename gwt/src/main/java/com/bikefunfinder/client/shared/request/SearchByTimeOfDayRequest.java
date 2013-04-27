@@ -4,8 +4,8 @@ package com.bikefunfinder.client.shared.request;
  * @created 3/19/13 10:33 PM
  */
 
-import com.bikefunfinder.client.client.places.homescreen.HomeScreenActivity;
 import com.bikefunfinder.client.shared.model.Root;
+import com.bikefunfinder.client.shared.model.json.Utils;
 import com.google.gwt.http.client.*;
 import com.googlecode.mgwt.ui.client.dialog.Dialogs;
 
@@ -53,7 +53,7 @@ public final class SearchByTimeOfDayRequest {
         }
     }
 
-    private static final String URL = "http://www.BikeFunFinder.com/FunService/rest/display/by_time_of_day/";
+    private static final String URL = "http://www.bikefunfinder.com/FunService/rest/display/by_time_of_day/";
     //private static final String URL = "";
 
     private final SearchByTimeOfDayRequest.Callback callback;
@@ -127,7 +127,7 @@ public final class SearchByTimeOfDayRequest {
                         }
                     });
                 } else {
-                    Root root = HomeScreenActivity.testObjectParse(response.getText());
+                    Root root = Utils.castJsonTxtToJSOObject(response.getText());
                     callback.onResponseReceived(root);
 
                 }

@@ -7,6 +7,7 @@ import com.bikefunfinder.client.client.places.eventscreen.EventScreenPlace;
 import com.bikefunfinder.client.client.places.profilescreen.ProfileScreenPlace;
 import com.bikefunfinder.client.client.places.searchscreen.SearchScreenPlace;
 import com.bikefunfinder.client.shared.model.*;
+import com.bikefunfinder.client.shared.model.json.Utils;
 import com.bikefunfinder.client.shared.model.printer.JSODescriber;
 import com.bikefunfinder.client.shared.request.SearchByProximityRequest;
 import com.bikefunfinder.client.shared.request.SearchByTimeOfDayRequest;
@@ -50,10 +51,7 @@ public class HomeScreenActivity extends MGWTAbstractActivity implements HomeScre
         //currentList = getModuleList(justForShits());
         //display.display(currentList);
 
-        if(root==null) {
-            Root root = testObjectParse(justForShits());
-        }
-
+        Root root = Utils.castJsonTxtToJSOObject(justForShits());
         display.display(root.getClosestLocation().getCity());
     }
 
@@ -70,13 +68,13 @@ public class HomeScreenActivity extends MGWTAbstractActivity implements HomeScre
     }
 
     private List<BikeRide> getModuleList(String rootJson) {
-        Root root = testObjectParse(rootJson);
+        Root root = Utils.castJsonTxtToJSOObject(rootJson);
         return getModuleList(root);
     }
 
     private String justForShits() {
         String geoJson = "{\"longitude\":\"-122.65895080566406\",\"latitude\":\"45.52901840209961\"}";
-        //GeoLoc geoLoc = testObjectParse(geoJson);
+        //GeoLoc geoLoc = castJsonTxtToJSOObject(geoJson);
         //Window.alert(JSODescriber.describe(geoLoc));
 
         String locationJson = "{ " +
@@ -86,7 +84,7 @@ public class HomeScreenActivity extends MGWTAbstractActivity implements HomeScre
                 " \"geoLoc\": " +geoJson+", "+
                 " \"formattedAddress\": \"650 Northeast Holladay Street, Portland, OR 97232, USA\"" +
                 " }";
-//        Location location = testObjectParse(locationJson);
+//        Location location = castJsonTxtToJSOObject(locationJson);
 //        Window.alert(JSODescriber.describe(location));
 
         String bikeRideJson = "{" +
@@ -100,7 +98,7 @@ public class HomeScreenActivity extends MGWTAbstractActivity implements HomeScre
                 " \"currentlyTracking\": \"false\"," +
                 " \"totalPeopleTrackingCount\": \"0\"" +
               "}";
-//        BikeRide bikeRide = testObjectParse(bikeRideJson);
+//        BikeRide bikeRide = castJsonTxtToJSOObject(bikeRideJson);
 //        Window.alert(JSODescriber.describe(bikeRide));
 
         String closestLocationJson = "{" +
@@ -113,7 +111,7 @@ public class HomeScreenActivity extends MGWTAbstractActivity implements HomeScre
                 "    }," +
                 "    \"formattedAddress\": \"Portland, OR, USA\"" +
                 "  }";
-//        ClosestLocation closestLocation = testObjectParse(closestLocationJson);
+//        ClosestLocation closestLocation = castJsonTxtToJSOObject(closestLocationJson);
 //        Window.alert(JSODescriber.describe(closestLocation));
 
 
@@ -123,24 +121,10 @@ public class HomeScreenActivity extends MGWTAbstractActivity implements HomeScre
                 "  \"formattedAddress\": \"Portland, OR, USA\"" +
             "}";
 
-//        Root root = testObjectParse(rootJson);
+//        Root root = castJsonTxtToJSOObject(rootJson);
 //        Window.alert(JSODescriber.describe(root));
         return rootJson;
     }
-
-    public static <T extends JavaScriptObject> T testObjectParse(String json) {
-        if(!JsonUtils.safeToEval(json)) {
-            Window.alert("Woah nelly.  Unknown date.");
-        }
-
-        //Window.alert("PepPep: "+json);
-        //Window.alert("jsonLenght: "+json.length());
-
-
-        T castingObject = JsonUtils.safeEval(json);
-        return castingObject;
-    }
-
 
 
     @Override

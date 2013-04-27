@@ -4,9 +4,8 @@ package com.bikefunfinder.client.shared.request;
  * @created 4/8/13 9:33 PM
  */
 
-import com.bikefunfinder.client.client.places.homescreen.HomeScreenActivity;
-import com.bikefunfinder.client.shared.model.BikeRide;
 import com.bikefunfinder.client.shared.model.Tracking;
+import com.bikefunfinder.client.shared.model.json.Utils;
 import com.bikefunfinder.client.shared.model.printer.JSODescriber;
 import com.google.gwt.http.client.*;
 import com.googlecode.mgwt.ui.client.dialog.Dialogs;
@@ -48,7 +47,7 @@ public final class NewTrackRequest {
         }
     }
 
-    private static final String URL = "http://www.BikeFunFinder.com/FunService/rest/tracking/new ";
+    private static final String URL = "http://www.bikefunfinder.com/FunService/rest/tracking/new ";
 
     private final NewTrackRequest.Callback callback;
     private final Tracking tracking;
@@ -119,7 +118,7 @@ public final class NewTrackRequest {
                         }
                     });
                 } else {
-                    Tracking tracking = HomeScreenActivity.testObjectParse(response.getText());
+                    Tracking tracking = Utils.castJsonTxtToJSOObject(response.getText());
                     callback.onResponseReceived(tracking);
                 }
             }

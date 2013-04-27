@@ -51,7 +51,7 @@ public final class DeleteEventRequest {
         }
     }
 
-    private static final String URL = "http://www.BikeFunFinder.com/FunService/rest/bikerides/delete/";
+    private static final String URL = "http://www.bikefunfinder.com/FunService/rest/bikerides/delete/";
 
     private final DeleteEventRequest.Callback callback;
     private final Root root;

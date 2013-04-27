@@ -7,9 +7,10 @@ package com.bikefunfinder.client.shared.request;
  * Time: 12:57 PM
  */
 
-import com.bikefunfinder.client.client.places.homescreen.HomeScreenActivity;
 import com.bikefunfinder.client.shared.model.AnonymousUser;
+import com.bikefunfinder.client.shared.model.json.Utils;
 import com.google.gwt.http.client.*;
+import com.google.gwt.user.client.Window;
 import com.googlecode.mgwt.ui.client.dialog.Dialogs;
 
 public final class AnonymousRequest {
@@ -54,7 +55,7 @@ public final class AnonymousRequest {
         }
     }
 
-    private static final String URL = "http://www.BikeFunFinder.com/FunService/rest/users/anonymous/";
+    private static final String URL = "http://www.bikefunfinder.com/FunService/rest/users/anonymous/";
 
     private final AnonymousRequest.Callback callback;
     private final String key;
@@ -82,6 +83,8 @@ public final class AnonymousRequest {
         final RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.GET, getUrlWithQuery());
         try {
             request = requestBuilder.sendRequest(null, getRequestCallback());
+            requestBuilder.setHeader("Accept", "application/json");
+            requestBuilder.setHeader("content-type", "application/json");
         } catch (final RequestException e) {
             e.printStackTrace();
         }
@@ -96,6 +99,7 @@ public final class AnonymousRequest {
         builder.append("/");
         builder.append(uuid);
 
+        Window.alert(builder.toString());
         return builder.toString();
     }
 
@@ -119,6 +123,7 @@ public final class AnonymousRequest {
                     builder.append("Unable to get anonymous user.");
                     builder.append(" Status Code: ").append(statusCode);
                     builder.append("; Status Text: ").append(response.getStatusText());
+                    builder.append("; orly? ").append(response.getText());
                     Dialogs.alert("Error", builder.toString(), new Dialogs.AlertCallback() {
                         @Override
                         public void onButtonPressed() {
@@ -126,7 +131,7 @@ public final class AnonymousRequest {
                         }
                     });
                 } else {
-                    AnonymousUser anonymousUser = HomeScreenActivity.testObjectParse(response.getText());
+                    AnonymousUser anonymousUser = Utils.castJsonTxtToJSOObject(response.getText());
                     callback.onResponseReceived(anonymousUser);
 
                 }
