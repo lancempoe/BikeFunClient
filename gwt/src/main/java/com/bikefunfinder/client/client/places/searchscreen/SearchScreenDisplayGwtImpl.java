@@ -41,7 +41,7 @@ public class SearchScreenDisplayGwtImpl extends Composite implements SearchScree
             query.setQuery(mTextBoxSearch.getValue());
             query.setTargetAudience(mListBoxTargetAudience.getValue(
                     mListBoxTargetAudience.getSelectedIndex()));
-//            query.setCity(mTextBoxCity.getValue());
+            query.setCity(mTextBoxCity.getValue());
             presenter.searchRideButtonSelected(query);
         }
     }
@@ -66,8 +66,8 @@ public class SearchScreenDisplayGwtImpl extends Composite implements SearchScree
         }
         widgetList.add(mListBoxTargetAudience);
 
-//        mTextBoxCity.setPlaceHolder("City");
-//        widgetList.add(mTextBoxCity);
+        mTextBoxCity.setPlaceHolder("City");
+        widgetList.add(mTextBoxCity);
 
     }
 

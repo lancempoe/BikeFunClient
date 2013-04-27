@@ -16,8 +16,8 @@ public class Query extends JavaScriptObject {
 		return this.query;
     }-*/;
 
-    public final native String getCityLocation() /*-{
-		return this.cityLocation;
+    public final native String getCity() /*-{
+		return this.city;
     }-*/;
 
     public final native Long getDate() /*-{
@@ -40,12 +40,12 @@ public class Query extends JavaScriptObject {
         this.targetAudience = targetAudience;
     }-*/;
 
-    public final native void setCity(String cityLocation) /*-{
-        this.cityLocation = cityLocation;
+    public final native void setCity(String city) /*-{
+        this.city = city;
     }-*/;
 
     //    public String query;
-    //    public String cityLocation; //If not provided then use current location
+    //    public String city; //If not provided then use current location
     //    public Long date;
     //    public String targetAudience;
     //    public String rideLeaderId;
