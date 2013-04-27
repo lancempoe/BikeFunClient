@@ -2,6 +2,7 @@ package com.bikefunfinder.client.client.places.gmap;
 
 import com.bikefunfinder.client.shared.model.BikeRide;
 import com.google.gwt.user.client.Timer;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.maps.gwt.client.*;
@@ -74,7 +75,6 @@ public class GMapViewImpl implements GMapDisplay {
         headerPanel.setCenter("Map");
         headerPanel.setLeftWidget(backButton);
         mapPanel.addStyleName(MGWTStyle.getTheme().getMGWTClientBundle().getLayoutCss().fillPanelExpandChild());
-
         main.add(headerPanel);
         main.add(mapPanel);
 
@@ -171,7 +171,15 @@ public class GMapViewImpl implements GMapDisplay {
             circle.setRadius(accuracy);
         }
 
-        for(BikeRide bikeRide: list) {
+        circle.addClickListener(new Circle.ClickHandler() {
+            @Override
+            public void handle(MouseEvent event) {
+                //Window.alert("It's a ME! " );
+            }
+        });
+
+//        Window.alert("BikeRideSize="+list.size());
+        for(final BikeRide bikeRide: list) {
             final String latitude1 = bikeRide.getLocation().getGeoLoc().getLatitude();
             final String longitude1 = bikeRide.getLocation().getGeoLoc().getLongitude();
             final Double convertedLat = Double.parseDouble(latitude1);
@@ -180,6 +188,13 @@ public class GMapViewImpl implements GMapDisplay {
             final LatLng bikeRideLoc = LatLng.create(convertedLat, convertedLong);
             final CircleOptions circleOptions = createCircleOptions(map, bikeRideLoc, 100);
             final Circle bikeRideMarker = Circle.create(circleOptions);
+
+            bikeRideMarker.addClickListener(new Circle.ClickHandler() {
+                @Override
+                public void handle(MouseEvent event) {
+                    Window.alert("Ow that hurts! " +bikeRide.getBikeRideName());
+                }
+            });
             bikeRides.add(bikeRideMarker);
         }
 

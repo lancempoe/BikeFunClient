@@ -3,6 +3,7 @@ package com.bikefunfinder.client.client.places.gmap;
 import com.bikefunfinder.client.shared.model.BikeRide;
 import com.bikefunfinder.client.shared.model.Root;
 import com.bikefunfinder.client.shared.model.helper.Extractor;
+import com.bikefunfinder.client.shared.model.printer.JSODescriber;
 import com.bikefunfinder.client.shared.request.SearchByProximityRequest;
 import com.google.gwt.place.shared.Place;
 import com.google.gwt.user.client.Window;
@@ -109,7 +110,7 @@ public class GMapActivity extends NavBaseActivity implements GMapDisplay.Present
     }
 
 
-
+    private int calledTimes = 0;
     private void fireRequestForHereAndNow(final GMapDisplay display, final double latitude,
                                           final double longitude,
                                           final double altitudeAccuracy) {
@@ -151,6 +152,18 @@ public class GMapActivity extends NavBaseActivity implements GMapDisplay.Present
             }
         };
         SearchByProximityRequest.Builder request = new SearchByProximityRequest.Builder(callback);
-        request.latitude(latitude).longitude(longitude).send();
+
+        if(calledTimes == 0) {
+            request.latitude(latitude).longitude(longitude).sendAndDebug();
+            calledTimes++;
+        } else {
+            request.latitude(latitude).longitude(longitude).send();
+            calledTimes++;
+        }
+
+        if(calledTimes>100) {
+            calledTimes=0;
+        }
+
     }
 }

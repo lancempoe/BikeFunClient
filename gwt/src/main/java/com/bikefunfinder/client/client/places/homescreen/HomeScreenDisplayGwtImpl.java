@@ -1,26 +1,27 @@
 package com.bikefunfinder.client.client.places.homescreen;
 
-import com.bikefunfinder.client.shared.model.printer.JsDateWrapper;
 import com.bikefunfinder.client.shared.model.BikeRide;
-import com.bikefunfinder.client.shared.widgets.BasicCellSearchDetailImpl;
+import com.bikefunfinder.client.shared.model.printer.JsDateWrapper;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.core.client.JsDate;
-import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
-import com.google.gwt.user.client.ui.*;
+import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.Widget;
 import com.googlecode.mgwt.dom.client.event.tap.TapEvent;
 import com.googlecode.mgwt.ui.client.MGWTStyle;
 import com.googlecode.mgwt.ui.client.widget.Button;
 import com.googlecode.mgwt.ui.client.widget.base.ButtonBase;
+import com.googlecode.mgwt.ui.client.widget.base.PullArrowHeader;
+import com.googlecode.mgwt.ui.client.widget.base.PullPanel;
 import com.googlecode.mgwt.ui.client.widget.tabbar.TabBarButton;
 
-import java.util.Date;
 import java.util.List;
+import com.google.gwt.user.client.Timer;
 
 public class HomeScreenDisplayGwtImpl extends Composite implements HomeScreenDisplay {
 
@@ -37,12 +38,11 @@ public class HomeScreenDisplayGwtImpl extends Composite implements HomeScreenDis
 
     private Presenter presenter;
 
+    @UiField(provided = true)
+    PullPanel bikeEntries;
 
-    @UiField
-    FlowPanel bikeEntries;
-
-    @UiField
-    com.googlecode.mgwt.ui.client.widget.ScrollPanel scroller;
+//    @UiField
+//    com.googlecode.mgwt.ui.client.widget.ScrollPanel scroller;
 
     @UiField
     HTML cityName;
@@ -62,7 +62,76 @@ public class HomeScreenDisplayGwtImpl extends Composite implements HomeScreenDis
     @UiField
     Button hereAndNowButton;
 
+    private PullArrowHeader pullArrowHeader;
+
+    private boolean failed = false;
+    private boolean callRunning = false;
+
     public HomeScreenDisplayGwtImpl() {
+        pullArrowHeader = new PullArrowHeader();
+        bikeEntries = new PullPanel();
+        bikeEntries.setHeader(pullArrowHeader);
+        bikeEntries.setHeaderPullHandler(new PullPanel.Pullhandler() {
+            @Override
+            public void onPullStateChanged(PullPanel.PullWidget pullWidget, PullPanel.PullWidget.PullState state) {
+                switch (state) {
+                    case NORMAL:
+                        pullWidget.setHTML("pull down");
+                        break;
+                    case PULLED:
+                        pullWidget.setHTML("release to load");
+                        break;
+
+                    default:
+                        break;
+                }
+            }
+
+            @Override
+            public void onPullAction(final PullPanel.PullWidget pullWidget) {
+                if (callRunning)
+                    return;
+
+                callRunning = true;
+                pullWidget.setHTML("loading");
+
+                pullArrowHeader.showLoadingIndicator();
+
+                new Timer() {
+
+                    @Override
+                    public void run() {
+                        callRunning = false;
+                        if (failed) {
+                            pullArrowHeader.showError();
+                            pullWidget.setHTML("Error");
+                            callRunning = true;
+
+                            new Timer() {
+
+                                @Override
+                                public void run() {
+                                    callRunning = false;
+                                    presenter.onTimeAndDayButton();
+
+                                    pullWidget.setHTML("pull down");
+                                    pullArrowHeader.showArrow();
+
+                                }
+                            }.schedule(1000);
+
+                        } else {
+                            presenter.onTimeAndDayButton();
+
+                        }
+                        failed = !failed;
+
+                    }
+                }.schedule(1000);
+
+            } });
+
+
         addButton = new TabBarButton(MGWTStyle.getTheme().getMGWTClientBundle().tabBarMostRecentImage());
         searchButton = new TabBarButton(MGWTStyle.getTheme().getMGWTClientBundle().tabBarSearchImage());
         loginButton = new TabBarButton(MGWTStyle.getTheme().getMGWTClientBundle().tabBarContactsImage());
@@ -113,7 +182,8 @@ public class HomeScreenDisplayGwtImpl extends Composite implements HomeScreenDis
             cell.addClickHandler(new BikeRideClickHandler(presenter, br));
             bikeEntries.add(cell);
         }
-        scroller.refresh(); //The scroller needs to know that we've just added stuff
+        bikeEntries.refresh();
+//        scroller.refresh(); //The scroller needs to know that we've just added stuff
     }
 
     public String dayBar(JsDateWrapper date)

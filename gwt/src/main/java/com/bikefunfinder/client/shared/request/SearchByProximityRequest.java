@@ -13,6 +13,7 @@ import com.bikefunfinder.client.shared.model.Root;
 import com.bikefunfinder.client.shared.constants.Settings;
 import com.bikefunfinder.client.shared.model.json.Utils;
 import com.google.gwt.http.client.*;
+import com.google.gwt.user.client.Window;
 import com.googlecode.mgwt.ui.client.dialog.Dialogs;
 
 import java.math.BigDecimal;
@@ -58,6 +59,10 @@ public final class SearchByProximityRequest {
         public SearchByProximityRequest send() {
             return new SearchByProximityRequest(this);
         }
+
+        public SearchByProximityRequest sendAndDebug() {
+            return new SearchByProximityRequest(this, true);
+        }
     }
 
     private static final String URL = Settings.HOST + "FunService/rest/display/by_proximity/";
@@ -76,16 +81,20 @@ public final class SearchByProximityRequest {
     }
 
     private SearchByProximityRequest(final Builder builder) {
+        this(builder, false);
+    }
+
+    private SearchByProximityRequest(final Builder builder, boolean debug) {
         callback = builder.callback;
         latitude = builder.latitude;
         longitude = builder.longitude;
-        request = send();
+        request = send(debug);
     }
 
-    private Request send() {
+    private Request send(Boolean debug) {
         Request request = null;
 
-        final RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.GET, getUrlWithQuery());
+        final RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.GET, getUrlWithQuery(debug));
         try {
             request = requestBuilder.sendRequest(null, getRequestCallback());
         } catch (final RequestException e) {
@@ -95,13 +104,17 @@ public final class SearchByProximityRequest {
         return request;
     }
 
-    private String getUrlWithQuery() {
+    private String getUrlWithQuery(boolean debug) {
         final StringBuilder builder = new StringBuilder();
         builder.append(URL);
         builder.append("geoloc=");
         builder.append(latitude);
         builder.append(",");
         builder.append(longitude);
+
+        if(debug) {
+            Window.alert(builder.toString());
+        }
 
         return builder.toString();
     }
