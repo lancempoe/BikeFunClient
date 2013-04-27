@@ -8,6 +8,7 @@ package com.bikefunfinder.client.shared.request;
  */
 
 import com.bikefunfinder.client.shared.model.BikeRide;
+import com.bikefunfinder.client.shared.constants.Settings;
 import com.bikefunfinder.client.shared.model.Root;
 import com.bikefunfinder.client.shared.model.json.Utils;
 import com.bikefunfinder.client.shared.model.printer.JSODescriber;
@@ -47,7 +48,7 @@ public final class UpdateEventRequest {
         }
     }
 
-    private static final String URL = "http://www.bikefunfinder.com/FunService/rest/bikerides/update ";
+    private static final String URL = Settings.HOST + "FunService/rest/bikerides/update ";
 
     private final UpdateEventRequest.Callback callback;
     private final Root root;

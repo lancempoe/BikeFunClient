@@ -5,6 +5,7 @@ package com.bikefunfinder.client.shared.request;
  */
 
 import com.bikefunfinder.client.shared.model.Root;
+import com.bikefunfinder.client.shared.constants.Settings;
 import com.bikefunfinder.client.shared.model.json.Utils;
 import com.google.gwt.http.client.*;
 import com.googlecode.mgwt.ui.client.dialog.Dialogs;
@@ -53,7 +54,7 @@ public final class SearchByTimeOfDayRequest {
         }
     }
 
-    private static final String URL = "http://www.bikefunfinder.com/FunService/rest/display/by_time_of_day/";
+    private static final String URL = Settings.HOST + "FunService/rest/display/by_time_of_day/";
     //private static final String URL = "";
 
     private final SearchByTimeOfDayRequest.Callback callback;

@@ -2,6 +2,7 @@ package com.bikefunfinder.client.shared.request;
 
 
 import com.bikefunfinder.client.shared.model.User;
+import com.bikefunfinder.client.shared.constants.Settings;
 import com.bikefunfinder.client.shared.model.json.Utils;
 import com.bikefunfinder.client.shared.model.printer.JSODescriber;
 import com.google.gwt.http.client.*;
@@ -51,7 +52,7 @@ public final class UpdateUserRequest {
         }
     }
 
-    private static final String URL = "http://www.bikefunfinder.com/FunService/rest/users/update ";
+    private static final String URL = Settings.HOST + "FunService/rest/users/update ";
 
     private final UpdateUserRequest.Callback callback;
     private final User user;

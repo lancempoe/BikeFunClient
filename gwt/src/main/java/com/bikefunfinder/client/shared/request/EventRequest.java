@@ -9,6 +9,7 @@ package com.bikefunfinder.client.shared.request;
  */
 
 import com.bikefunfinder.client.shared.model.BikeRide;
+import com.bikefunfinder.client.shared.constants.Settings;
 import com.bikefunfinder.client.shared.model.Query;
 import com.bikefunfinder.client.shared.model.json.Utils;
 import com.google.gwt.http.client.*;
@@ -64,7 +65,7 @@ public final class EventRequest {
         }
     }
 
-    private static final String URL = "http://www.bikefunfinder.com/FunService/rest/bikerides/";
+    private static final String URL = Settings.HOST + "FunService/rest/bikerides/";
 
     private final EventRequest.Callback callback;
     private final String id;

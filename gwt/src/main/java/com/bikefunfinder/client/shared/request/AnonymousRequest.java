@@ -9,6 +9,7 @@ package com.bikefunfinder.client.shared.request;
 
 import com.bikefunfinder.client.shared.model.AnonymousUser;
 import com.bikefunfinder.client.shared.model.json.Utils;
+import com.bikefunfinder.client.shared.constants.Settings;
 import com.google.gwt.http.client.*;
 import com.google.gwt.user.client.Window;
 import com.googlecode.mgwt.ui.client.dialog.Dialogs;
@@ -55,7 +56,7 @@ public final class AnonymousRequest {
         }
     }
 
-    private static final String URL = "http://www.bikefunfinder.com/FunService/rest/users/anonymous/";
+    private static final String URL = Settings.HOST + "FunService/rest/users/anonymous/";
 
     private final AnonymousRequest.Callback callback;
     private final String key;

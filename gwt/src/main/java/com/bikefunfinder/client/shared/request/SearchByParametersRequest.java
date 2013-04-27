@@ -8,6 +8,7 @@ package com.bikefunfinder.client.shared.request;
  * To change this template use File | Settings | File Templates.
  */
 
+import com.bikefunfinder.client.shared.constants.Settings;
 import com.bikefunfinder.client.shared.model.Query;
 import com.bikefunfinder.client.shared.model.Root;
 import com.bikefunfinder.client.shared.model.json.Utils;
@@ -59,7 +60,7 @@ public final class SearchByParametersRequest {
         }
     }
 
-    private static final String URL = "http://www.bikefunfinder.com/FunService/rest/display/by_search/";
+    private static final String URL = Settings.HOST + "FunService/rest/display/by_search/";
 
     private final SearchByParametersRequest.Callback callback;
     private final BigDecimal latitude;

@@ -11,5 +11,5 @@ public class Settings {
 
     //Local: Localhost
     //Test: ??
-    public static String HOST = "www.BikeFunFinder.com";
+    public static String HOST = "http://www.bikefunfinder.com/";
 }

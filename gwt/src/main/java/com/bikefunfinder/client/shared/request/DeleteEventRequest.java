@@ -10,6 +10,7 @@ package com.bikefunfinder.client.shared.request;
 
 import com.bikefunfinder.client.shared.model.Root;
 import com.bikefunfinder.client.shared.model.printer.JSODescriber;
+import com.bikefunfinder.client.shared.constants.Settings;
 import com.google.gwt.http.client.*;
 import com.googlecode.mgwt.ui.client.dialog.Dialogs;
 
@@ -51,7 +52,7 @@ public final class DeleteEventRequest {
         }
     }
 
-    private static final String URL = "http://www.bikefunfinder.com/FunService/rest/bikerides/delete/";
+    private static final String URL = Settings.HOST + "FunService/rest/bikerides/delete/";
 
     private final DeleteEventRequest.Callback callback;
     private final Root root;

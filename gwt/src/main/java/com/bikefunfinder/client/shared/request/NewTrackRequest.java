@@ -4,6 +4,7 @@ package com.bikefunfinder.client.shared.request;
  * @created 4/8/13 9:33 PM
  */
 
+import com.bikefunfinder.client.shared.constants.Settings;
 import com.bikefunfinder.client.shared.model.Tracking;
 import com.bikefunfinder.client.shared.model.json.Utils;
 import com.bikefunfinder.client.shared.model.printer.JSODescriber;
@@ -47,7 +48,7 @@ public final class NewTrackRequest {
         }
     }
 
-    private static final String URL = "http://www.bikefunfinder.com/FunService/rest/tracking/new ";
+    private static final String URL = Settings.HOST + "FunService/rest/tracking/new ";
 
     private final NewTrackRequest.Callback callback;
     private final Tracking tracking;
