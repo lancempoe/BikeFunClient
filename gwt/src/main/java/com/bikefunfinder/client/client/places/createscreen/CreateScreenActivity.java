@@ -60,4 +60,13 @@ public class CreateScreenActivity extends MGWTAbstractActivity implements Create
     public void backButtonSelected() {
         clientFactory.getPlaceController().goTo(new HomeScreenPlace());
     }
+
+    @Override
+    public void onTimeSelected() {
+
+    }
+
+    native void showTimeModal() /*-{
+        //$('#timepicker').mobiscroll('show');
+    }-*/;
 }

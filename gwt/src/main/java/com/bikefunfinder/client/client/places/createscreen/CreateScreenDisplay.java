@@ -28,5 +28,6 @@ public interface CreateScreenDisplay extends IsWidget {
     public interface Presenter {
         public void onFormSelected(BikeRide br);
         public void backButtonSelected();
+        public void onTimeSelected();
     }
 }

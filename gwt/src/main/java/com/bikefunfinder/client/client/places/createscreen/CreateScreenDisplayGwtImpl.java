@@ -7,20 +7,17 @@ package com.bikefunfinder.client.client.places.createscreen;
 import com.bikefunfinder.client.shared.model.BikeRide;
 import com.bikefunfinder.client.shared.model.GeoLoc;
 import com.bikefunfinder.client.shared.model.Location;
-import com.bikefunfinder.client.shared.model.printer.JSODescriber;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.dom.client.Element;
-import com.google.gwt.http.client.Response;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.*;
 import static com.google.gwt.query.client.GQuery.$;
-import static com.google.gwt.query.client.GQuery.window;
 import static gwtquery.plugins.ui.Ui.Ui;
 import com.googlecode.mgwt.dom.client.event.tap.TapEvent;
+import com.googlecode.mgwt.ui.client.widget.*;
 
 import com.google.gwt.i18n.shared.DateTimeFormat;
 import java.util.Date;
@@ -32,8 +29,11 @@ public class CreateScreenDisplayGwtImpl  extends Composite implements CreateScre
     }
 
     @UiField
+    TextBox startDate;
+
+    @UiField
     TextBox startTime;
-//    DatePicker startTime;
+
     @UiField
     FormPanel form;
 
@@ -43,10 +43,20 @@ public class CreateScreenDisplayGwtImpl  extends Composite implements CreateScre
     @UiField
     FlowPanel dateTimeFP;
 
+
     public CreateScreenDisplayGwtImpl() {
         initWidget(uiBinder.createAndBindUi(this));
-        startTime.getElement().setId("datepicker");
+        startDate.getElement().setId("datepicker");
+        startDate.setReadOnly(true);
+        startTime.getElement().setId("timepicker");
+        startTime.setReadOnly(true);
         setupDemoElement(dateTimeFP.getElement());
+    }
+
+    @Override
+    protected void onLoad()
+    {
+        initTimeModal();
     }
 
     @Override
@@ -105,11 +115,11 @@ public class CreateScreenDisplayGwtImpl  extends Composite implements CreateScre
             location.setGeoLoc(geoLoc);
             br.setLocation(location);
 
-            DateTimeFormat dtf = DateTimeFormat.getFormat("mm/dd/yyyy");
+            DateTimeFormat dtf = DateTimeFormat.getFormat("mm/dd/yyyy h:mm a");
             Date date = null;
             try
             {
-                date =  dtf.parse(startTime.getText());
+                date =  dtf.parse(startDate.getText() + " " + startTime.getText());
                 Window.alert("getTime() " + date.getTime() + "   parseTime: " + date.toString());
                 br.setRideStartTime(date.getTime());
             }
@@ -133,9 +143,11 @@ public class CreateScreenDisplayGwtImpl  extends Composite implements CreateScre
 //        $("#datepicker", demo).as(Ui).datepicker();
 
         $("#datepicker", demo).as(Ui).datepicker();
-
-
     }
+
+    native void initTimeModal() /*-{
+       $wnd.poop();
+    }-*/;
 
 
 
