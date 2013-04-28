@@ -117,7 +117,7 @@ public class ClientFactoryGwtImpl implements ClientFactory {
 
         Storage storageInterface = this.storageInterface.getStorageInterfaceMyBeNull();
         if(storageInterface==null) {
-            Window.alert("Storage interface is not supported (null)");
+//            Window.alert("Storage interface is not supported (null)");
         } else {
 
             String userIdJson = storageInterface.getItem(DBKeys.ANONYMOUS_USER_ID);
@@ -131,8 +131,8 @@ public class ClientFactoryGwtImpl implements ClientFactory {
                 User user = Utils.castJsonTxtToJSOObject(jsonText);
 
 //                BikeRide brTest = Utils.castJsonTxtToJSOObject(jsonText);
-                Window.alert("pulled from DB (alerady existed)");
-                Window.alert("UserId: "+user.getId());
+//                Window.alert("pulled from DB (alerady existed)");
+//                Window.alert("UserId: "+user.getId());
             }
         }
     }
@@ -146,12 +146,12 @@ public class ClientFactoryGwtImpl implements ClientFactory {
 
             @Override
             public void onResponseReceived(AnonymousUser anonymousUser) {
-                Window.alert("anonymous user created id:" + anonymousUser.getId() );
+//                Window.alert("anonymous user created id:" + anonymousUser.getId() );
                 final String jsonText = JSODescriber.toJSON(anonymousUser);
 
-                Window.alert("storing");
+//                Window.alert("storing");
                 storageInterface.setItem(DBKeys.ANONYMOUS_USER_ID, jsonText);
-                Window.alert("stored");
+//                Window.alert("stored");
 
             }
         };

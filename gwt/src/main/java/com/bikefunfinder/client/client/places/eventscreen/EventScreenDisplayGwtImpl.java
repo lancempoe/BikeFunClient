@@ -39,7 +39,7 @@ public class EventScreenDisplayGwtImpl extends Composite implements EventScreenD
         address.setText(bikeRide.getLocation().getCity());
         startTime.setText(bikeRide.createJsDateWrapperRideStartTime().toString("h:mm tt dddd, MMMM dd, yyyy"));
         details.setText(bikeRide.getJSON());
-        Window.alert(bikeRide.getJSON());
+//        Window.alert(bikeRide.getJSON());
     }
 
 

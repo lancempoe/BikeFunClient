@@ -125,6 +125,10 @@ public class GMapViewImpl implements GMapDisplay {
         if (map == null) {
             final MapOptions mapOptions = createMapOptions(center, zoom);
             map = GoogleMap.create(mapPanel.getElement(), mapOptions);
+
+            BicyclingLayer bicyclingLayer = BicyclingLayer.create();
+            bicyclingLayer.setMap(map);
+
             map.addCenterChangedListener(new CenterChangedHandler() {
                 @Override
                 public void handle() {
@@ -212,6 +216,7 @@ public class GMapViewImpl implements GMapDisplay {
         mapOptions.setZoom(zoom);
         mapOptions.setMapTypeId(MapTypeId.ROADMAP);
         mapOptions.setStreetViewControl(false);
+
 
         return mapOptions;
     }

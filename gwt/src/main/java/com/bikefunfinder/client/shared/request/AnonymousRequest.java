@@ -100,7 +100,7 @@ public final class AnonymousRequest {
         builder.append("/");
         builder.append(uuid);
 
-        Window.alert(builder.toString());
+//        Window.alert(builder.toString());
         return builder.toString();
     }
 

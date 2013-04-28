@@ -120,7 +120,7 @@ public class CreateScreenDisplayGwtImpl  extends Composite implements CreateScre
             try
             {
                 date =  dtf.parse(startDate.getText() + " " + startTime.getText());
-                Window.alert("getTime() " + date.getTime() + "   parseTime: " + date.toString());
+//                Window.alert("getTime() " + date.getTime() + "   parseTime: " + date.toString());
                 br.setRideStartTime(date.getTime());
             }
             catch(IllegalArgumentException e)
