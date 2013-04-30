@@ -17,8 +17,7 @@
         <mgwt:HeaderPanel>
             <mgwt:left>
                 <g:FlowPanel width="50%" height="100%">
-                    <g:HTML ui:field="cityName"
-                            styleName="{style.positioningForName}">Portland</g:HTML>
+                    <g:HTML ui:field="cityName" styleName="{style.positioningForName}"/>
                 </g:FlowPanel>
             </mgwt:left>
             <mgwt:right>

@@ -4,26 +4,24 @@ import com.bikefunfinder.client.bootstrap.ClientFactory;
 import com.bikefunfinder.client.client.places.createscreen.CreateScreenPlace;
 import com.bikefunfinder.client.client.places.eventscreen.EventScreenDisplay;
 import com.bikefunfinder.client.client.places.eventscreen.EventScreenPlace;
+import com.bikefunfinder.client.client.places.gmap.GMapPlace;
 import com.bikefunfinder.client.client.places.profilescreen.ProfileScreenPlace;
 import com.bikefunfinder.client.client.places.searchscreen.SearchScreenPlace;
-import com.bikefunfinder.client.shared.model.*;
+import com.bikefunfinder.client.shared.constants.ScreenConstants;
+import com.bikefunfinder.client.shared.model.BikeRide;
+import com.bikefunfinder.client.shared.model.Root;
 import com.bikefunfinder.client.shared.model.helper.Extractor;
 import com.bikefunfinder.client.shared.model.json.Utils;
-import com.bikefunfinder.client.shared.model.printer.JSODescriber;
-import com.bikefunfinder.client.shared.request.SearchByProximityRequest;
 import com.bikefunfinder.client.shared.request.SearchByTimeOfDayRequest;
-import com.google.gwt.core.client.JavaScriptObject;
-import com.google.gwt.core.client.JsArray;
-import com.google.gwt.core.client.JsonUtils;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.web.bindery.event.shared.EventBus;
 import com.googlecode.gwtphonegap.client.geolocation.*;
 import com.googlecode.mgwt.mvp.client.MGWTAbstractActivity;
-import com.bikefunfinder.client.client.places.gmap.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import com.google.gwt.regexp.shared.*;
 
 /**
  * @author: tneuwerth
@@ -48,7 +46,24 @@ public class HomeScreenActivity extends MGWTAbstractActivity implements HomeScre
 
         panel.setWidget(display);
 
-        usePhoneLocationToMakeTimeOfDayRequestAndUpdateDisplay(display);
+        if (this.root == null) { //Normal start.
+            usePhoneLocationToMakeTimeOfDayRequestAndUpdateDisplay(display);
+        }
+        else { //Redirect from the query screen
+            currentList = Extractor.getBikeRidesFrom(this.root);
+            display.display(currentList);
+
+            //Get City
+            RegExp regExp = RegExp.compile("^(.*),");
+            MatchResult matcher = regExp.exec(this.root.getClosestLocation().getFormattedAddress());
+            boolean matchFound = (matcher != null); // equivalent to regExp.test(inputStr);
+
+            if (matchFound)
+                display.display(matcher.getGroup(0));
+            else
+                display.display("Unknown City");
+
+        }
     }
 
     private List<BikeRide> getModuleList(String rootJson) {
@@ -59,7 +74,7 @@ public class HomeScreenActivity extends MGWTAbstractActivity implements HomeScre
     @Override
     public void onNewButton() {
 
-        clientFactory.testLocalStorage();
+        clientFactory.validateValidUser();
         clientFactory.getPlaceController().goTo(new CreateScreenPlace());
     }
 
@@ -131,7 +146,7 @@ public class HomeScreenActivity extends MGWTAbstractActivity implements HomeScre
             @Override
             public void onFailure(final PositionError error) {
                 Window.alert("Failed to get GeoLocation.  Using Portland as default.");
-                fireRequestForTimeOfDay(display, 45.52345275878906, -122.6762084960938);
+                fireRequestForTimeOfDay(display, ScreenConstants.PORTLAND_LATITUDE, ScreenConstants.PORTLAND_LOGITUDE);
             }
         };
 

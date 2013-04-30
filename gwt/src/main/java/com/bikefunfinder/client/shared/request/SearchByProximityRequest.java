@@ -2,7 +2,6 @@ package com.bikefunfinder.client.shared.request;
 
 /**
  * Created with IntelliJ IDEA.
- * This class is exactly the same as
  * User: lancepoehler
  * Date: 4/7/13
  * Time: 12:58 PM

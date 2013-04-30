@@ -33,7 +33,7 @@ public class GMapViewImpl implements GMapDisplay {
     private static final int RESUME_AUTO_PAN_AND_ZOOM_DELAY_MILLIS = 10000;
 
     private final LayoutPanel main;
-    private final HeaderButton backButton;
+    private final HeaderButton  backButton;
     private final FlowPanel mapPanel;
     private final Timer resumeAutoPanAndZoomTimer;
 
@@ -56,6 +56,7 @@ public class GMapViewImpl implements GMapDisplay {
 
         backButton = new HeaderButton();
         backButton.setText("Back");
+        backButton.setBackButton(true);
 
 //        if (MGWT.getOsDetection().isTablet()) {
 //            backButton.setBackButton(false);

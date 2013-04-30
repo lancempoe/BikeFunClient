@@ -29,6 +29,7 @@ public interface ClientFactory {
 
     public GMapDisplay getHereAndNowDisplay();
 
+    public String getStoredValue(String value);
 
-    void testLocalStorage();
+    public void validateValidUser();
 }

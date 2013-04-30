@@ -9,8 +9,9 @@ package com.bikefunfinder.client.shared.constants;
  */
 public class ScreenConstants {
 
+    public static String TargetAudienceLabel = "- Filter By Type -";
     public static enum TargetAudience {
-        ALL_AGES("All Ages"),
+        FAMILY_FRIENDLY("Family Friendly"),
         ROADIES("Roadies"),
         BOOZY("Boozy"),
         NAKED("Naked"),
@@ -29,4 +30,6 @@ public class ScreenConstants {
 
     public static final String DateFormat = "mm/dd/yyyy";
     public static final String TimeFormat = "h:mm a";
+    public static final Double PORTLAND_LATITUDE = 45.52345275878906;
+    public static final Double PORTLAND_LOGITUDE = -122.6762084960938;
 }

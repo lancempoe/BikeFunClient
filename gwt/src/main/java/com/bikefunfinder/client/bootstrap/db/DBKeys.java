@@ -9,5 +9,7 @@ public class DBKeys {
         throw new RuntimeException("hands off sucker this is private!");
     }
 
-    public static final String ANONYMOUS_USER_ID = "anonymous_user_id";
+    public static final String ANONYMOUS_USER = "anonymous_user";
+    public static final String USER = "user";
+    public static final String PRIOR_SEARCH = "prior_search";
 }

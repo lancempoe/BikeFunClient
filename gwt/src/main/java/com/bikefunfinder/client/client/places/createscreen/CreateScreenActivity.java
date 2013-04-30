@@ -5,22 +5,39 @@ package com.bikefunfinder.client.client.places.createscreen;
  */
 
 import com.bikefunfinder.client.bootstrap.ClientFactory;
+import com.bikefunfinder.client.bootstrap.db.DBKeys;
 import com.bikefunfinder.client.client.places.eventscreen.EventScreenDisplay;
 import com.bikefunfinder.client.client.places.eventscreen.EventScreenPlace;
 import com.bikefunfinder.client.client.places.homescreen.HomeScreenPlace;
+import com.bikefunfinder.client.shared.model.AnonymousUser;
 import com.bikefunfinder.client.shared.model.BikeRide;
+import com.bikefunfinder.client.shared.model.Root;
+import com.bikefunfinder.client.shared.model.User;
+import com.bikefunfinder.client.shared.model.json.Utils;
 import com.bikefunfinder.client.shared.request.NewEventRequest;
-import com.google.gwt.http.client.Response;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.web.bindery.event.shared.EventBus;
 import com.googlecode.mgwt.mvp.client.MGWTAbstractActivity;
 
 public class CreateScreenActivity extends MGWTAbstractActivity implements CreateScreenDisplay.Presenter {
     private final ClientFactory clientFactory;
+    private String userName = "";
+    private String userId = "";
 
     public CreateScreenActivity(ClientFactory clientFactory) {
         this.clientFactory = clientFactory;
+
+        //Set the logged in user details into the bike ride
+        if (clientFactory.getStoredValue(DBKeys.ANONYMOUS_USER) != null) {
+            AnonymousUser anonymousUser = Utils.castJsonTxtToJSOObject(clientFactory.getStoredValue(DBKeys.ANONYMOUS_USER));
+            this.userId = anonymousUser.getId();
+            this.userName = anonymousUser.getUserName();
+        }
+        else if (clientFactory.getStoredValue(DBKeys.USER) != null) {
+            User user = Utils.castJsonTxtToJSOObject(clientFactory.getStoredValue(DBKeys.USER));
+            this.userId = user.getId();
+            this.userName = user.getUserName();
+        }
     }
 
     @Override
@@ -28,6 +45,7 @@ public class CreateScreenActivity extends MGWTAbstractActivity implements Create
         final CreateScreenDisplay display = clientFactory.getCreateScreenDisplay();
 
         display.setPresenter(this);
+        display.setUserName(userName);
 
         panel.setWidget(display);
     }
@@ -44,12 +62,15 @@ public class CreateScreenActivity extends MGWTAbstractActivity implements Create
 
             @Override
             public void onResponseReceived(BikeRide bikeRide) {
-                display.displayResponse(bikeRide);
+                display.display(bikeRide);
                 final EventScreenDisplay display = clientFactory.getEventScreenDisplay();
                 display.display(bikeRide);
                 clientFactory.getPlaceController().goTo(new EventScreenPlace());
             }
         });
+
+        br.setRideLeaderId(userId);
+        br.setRideLeaderName(userName);
 
         request.bikeRide(br);
         request.send();

@@ -5,7 +5,6 @@ package com.bikefunfinder.client.client.places.searchscreen;
  */
 
 import com.bikefunfinder.client.shared.constants.ScreenConstants;
-import com.bikefunfinder.client.shared.model.BikeRide;
 import com.bikefunfinder.client.shared.model.Query;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -14,11 +13,10 @@ import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
 import com.googlecode.mgwt.dom.client.event.tap.TapEvent;
+import com.googlecode.mgwt.ui.client.widget.FormListEntry;
 import com.googlecode.mgwt.ui.client.widget.MListBox;
 import com.googlecode.mgwt.ui.client.widget.MTextBox;
 import com.googlecode.mgwt.ui.client.widget.WidgetList;
-
-import java.util.List;
 
 public class SearchScreenDisplayGwtImpl extends Composite implements SearchScreenDisplay {
 
@@ -30,18 +28,20 @@ public class SearchScreenDisplayGwtImpl extends Composite implements SearchScree
     private Presenter presenter;
 
     @UiField(provided = true) WidgetList widgetList;
-    MTextBox mTextBoxSearch = new MTextBox();
-    MListBox mListBoxTargetAudience = new MListBox();
-    MTextBox mTextBoxCity = new MTextBox();
+    FormListEntry formListEntry;
+
+    MTextBox search = new MTextBox();
+    MListBox targetAudience = new MListBox();
+    MTextBox city = new MTextBox();
 
     @UiHandler("searchRide")
     protected void onSearchButtonPressed(TapEvent event) {
         if (presenter != null) {
             Query query = GWT.create(Query.class);
-            query.setQuery(mTextBoxSearch.getValue());
-            query.setTargetAudience(mListBoxTargetAudience.getValue(
-                    mListBoxTargetAudience.getSelectedIndex()));
-            query.setCity(mTextBoxCity.getValue());
+            query.setQuery(search.getValue());
+            query.setTargetAudience(targetAudience.getValue(
+                    targetAudience.getSelectedIndex()));
+            query.setCity(city.getValue());
             presenter.searchRideButtonSelected(query);
         }
     }
@@ -53,22 +53,30 @@ public class SearchScreenDisplayGwtImpl extends Composite implements SearchScree
 
 
     public SearchScreenDisplayGwtImpl() {
-        initWidget(uiBinder.createAndBindUi(this));
 
         //Build the form.
         widgetList = new WidgetList();
 
-        mTextBoxSearch.setPlaceHolder("Search");
-        widgetList.add(mTextBoxSearch);
+        formListEntry = new FormListEntry();
+        formListEntry.setText("Search:");
+        formListEntry.add(search);
+        widgetList.add(formListEntry);
 
+        formListEntry = new FormListEntry();
+        formListEntry.setText("Target Audience:");
+        targetAudience.addItem("-Filter By Type-");
         for(ScreenConstants.TargetAudience enumVal: ScreenConstants.TargetAudience.values()) {
-            mListBoxTargetAudience.addItem(enumVal.getDisplayName());
+            targetAudience.addItem(enumVal.getDisplayName());
         }
-        widgetList.add(mListBoxTargetAudience);
+        formListEntry.add(targetAudience);
+        widgetList.add(formListEntry);
 
-        mTextBoxCity.setPlaceHolder("City");
-        widgetList.add(mTextBoxCity);
+        formListEntry = new FormListEntry();
+        formListEntry.setText("City:");
+        formListEntry.add(city);
+        widgetList.add(formListEntry);
 
+        initWidget(uiBinder.createAndBindUi(this));
     }
 
     @Override

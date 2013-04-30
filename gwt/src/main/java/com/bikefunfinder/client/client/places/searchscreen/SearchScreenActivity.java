@@ -1,7 +1,7 @@
 package com.bikefunfinder.client.client.places.searchscreen;
 /*
- * @author: tneuwerth
- * @created 4/10/13 11:31 AM
+ * @author: lancepoehler
+ * @created 4/27/13 11:31 AM
  */
 
 import com.bikefunfinder.client.bootstrap.ClientFactory;
@@ -9,6 +9,7 @@ import com.bikefunfinder.client.client.places.createscreen.CreateScreenDisplay;
 import com.bikefunfinder.client.client.places.eventscreen.EventScreenDisplay;
 import com.bikefunfinder.client.client.places.eventscreen.EventScreenPlace;
 import com.bikefunfinder.client.client.places.homescreen.HomeScreenPlace;
+import com.bikefunfinder.client.shared.constants.ScreenConstants;
 import com.bikefunfinder.client.shared.model.BikeRide;
 import com.bikefunfinder.client.shared.model.Query;
 import com.bikefunfinder.client.shared.model.Root;
@@ -26,11 +27,13 @@ import java.util.List;
 
 public class SearchScreenActivity extends MGWTAbstractActivity implements SearchScreenDisplay.Presenter {
     private final ClientFactory clientFactory;
+    private final Query query;
 
     private List<BikeRide> currentList;
 
-    public SearchScreenActivity(ClientFactory clientFactory) {
+    public SearchScreenActivity(ClientFactory clientFactory, Query query) {
         this.clientFactory = clientFactory;
+        this.query = query;
     }
 
     @Override
@@ -40,6 +43,8 @@ public class SearchScreenActivity extends MGWTAbstractActivity implements Search
         display.setPresenter(this);
 
         panel.setWidget(display);
+
+        //TODO PUT IN CODE TO POPULATE THE QUERY SCREEN FROM PRIOR QUERY SAVED IN LOCAL DB.
     }
 
     @Override
@@ -62,6 +67,11 @@ public class SearchScreenActivity extends MGWTAbstractActivity implements Search
                 clientFactory.getPlaceController().goTo(new HomeScreenPlace(root));
             }
         });
+
+        //Clear out defaults
+        if (ScreenConstants.TargetAudienceLabel.equals(query.getTargetAudience()))
+            query.setTargetAudience("");
+
 
         request.send(query);
     }

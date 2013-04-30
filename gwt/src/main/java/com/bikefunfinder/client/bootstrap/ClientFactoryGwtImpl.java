@@ -112,46 +112,62 @@ public class ClientFactoryGwtImpl implements ClientFactory {
         return hereAndNowDisplay;
     }
 
+    /**
+     * Pass a DBKey and get back the stored value if it exists.
+     * @param dbKey
+     * @return
+     */
     @Override
-    public void testLocalStorage() {
+    public String getStoredValue(String dbKey) {
+
+        String jsonText = "";
+        Storage storageInterface = this.storageInterface.getStorageInterfaceMyBeNull();
+        if(storageInterface==null) {
+            Window.alert("Storage interface is not supported (null)");
+        } else {
+            jsonText = storageInterface.getItem(dbKey);
+        }
+        return jsonText;
+    }
+
+    @Override
+    public void validateValidUser() {
 
         Storage storageInterface = this.storageInterface.getStorageInterfaceMyBeNull();
         if(storageInterface==null) {
-//            Window.alert("Storage interface is not supported (null)");
+            Window.alert("Storage interface is not supported (null)");
         } else {
 
-            String userIdJson = storageInterface.getItem(DBKeys.ANONYMOUS_USER_ID);
-            if(userIdJson==null || userIdJson.isEmpty()) {
-                final Date now = new Date();
-                fireSomeShit(storageInterface,
-                             Long.toString(now.getTime()),
-                             phoneGap.getDevice().getUuid());
-            } else {
-                final String jsonText = storageInterface.getItem(DBKeys.ANONYMOUS_USER_ID);
+            String jsonText = storageInterface.getItem(DBKeys.USER);
+            if(jsonText!=null && !jsonText.isEmpty()) {
                 User user = Utils.castJsonTxtToJSOObject(jsonText);
-
-//                BikeRide brTest = Utils.castJsonTxtToJSOObject(jsonText);
-//                Window.alert("pulled from DB (alerady existed)");
-//                Window.alert("UserId: "+user.getId());
+            }  else {
+                jsonText = storageInterface.getItem(DBKeys.ANONYMOUS_USER);
+                if(jsonText==null || jsonText.isEmpty()) {
+                    final Date now = new Date();
+                    createAnonymousAccount(storageInterface,
+                            Long.toString(now.getTime()),
+                            phoneGap.getDevice().getUuid());
+                } else {
+                    AnonymousUser anonymousUser = Utils.castJsonTxtToJSOObject(jsonText);
+                }
             }
         }
     }
 
-    private void fireSomeShit(final Storage storageInterface, final String key, final String uuid) {
+    private void createAnonymousAccount(final Storage storageInterface, final String key, final String uuid) {
         AnonymousRequest.Callback callback = new AnonymousRequest.Callback() {
             @Override
             public void onError() {
-                Window.alert("Oops, your BFF will be back shortly (anonReq).");
+                Window.alert("Oops, your BFF will be back shortly (AnonymousRequest).");
             }
 
             @Override
             public void onResponseReceived(AnonymousUser anonymousUser) {
-//                Window.alert("anonymous user created id:" + anonymousUser.getId() );
+                Window.alert("anonymous user created id:" + anonymousUser.getId() );
                 final String jsonText = JSODescriber.toJSON(anonymousUser);
-
-//                Window.alert("storing");
-                storageInterface.setItem(DBKeys.ANONYMOUS_USER_ID, jsonText);
-//                Window.alert("stored");
+                storageInterface.setItem(DBKeys.ANONYMOUS_USER, jsonText);
+                Window.alert("Anonymous User Created");
 
             }
         };

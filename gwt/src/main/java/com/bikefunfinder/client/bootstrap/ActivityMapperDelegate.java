@@ -38,7 +38,7 @@ public class ActivityMapperDelegate implements ActivityMapper {
         } else if(place instanceof ProfileScreenPlace) {
             return new ProfileScreenActivity(clientFactory);
         } else if(place instanceof SearchScreenPlace) {
-            return new SearchScreenActivity(clientFactory);
+            return new SearchScreenActivity(clientFactory, ((SearchScreenPlace) place).getQuery());
         } else if(place instanceof GMapPlace) {
             return new GMapActivity(clientFactory);
         }

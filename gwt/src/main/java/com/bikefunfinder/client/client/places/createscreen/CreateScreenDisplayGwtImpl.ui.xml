@@ -19,38 +19,17 @@
                 <mgwt:HeaderButton ui:field="backButton" backButton="true" text="Back" />
             </mgwt:left>
             <mgwt:right>
-                <g:HTML styleName="{style.positioningForName}">Create Ride</g:HTML>
+                <g:HTML ui:field="userName"/>
             </mgwt:right>
         </mgwt:HeaderPanel>
 
         <mgwt:ScrollPanel scrollingEnabledX="false">
             <g:FormPanel ui:field="form">
                 <g:HTMLPanel ui:field="formContents">
-                    <g:Label text="Bike Ride Name:" width="100%"/>
-                    <g:TextBox ui:field="bikeRideName" width="100%"/>
-                    <g:Label text="Starting Address:" width="100%"/>
-                    <g:TextBox ui:field="locationAddress" width="118px"/>
-                    <g:Label text="Starting City:" width="100%"/>
-                    <g:TextBox ui:field="locationCity" width="100%" />
-                    <g:Label text="Starting State:" width="100%"/>
-                    <g:TextBox ui:field="locationState" width="100%" />
-                    <g:FlowPanel ui:field="dateTimeFP">
-                        <g:Label text="Date:" width="100%"/>
-                        <g:TextBox ui:field="startDate" width="100%" />
 
-                        <g:Label text="Start Time" width="100%"/>
-                        <g:TextBox ui:field="startTime" width="100%" />
-                    </g:FlowPanel>
+                    <mgwt:WidgetList ui:field="widgetList" />
+                    <mgwt:Button ui:field="submitRide" width="100%" text="Search"/>
 
-                    <!--<dp:DatePicker ui:field="startDate" />-->
-
-                    <g:Label text="Ride Details:" width="100%"/>
-                    <g:TextArea ui:field="rideDetails" height="118px" width="100%"/>
-                    <g:Label text="Ride Image:" width="100%"/>
-                    <g:TextBox ui:field="image"/>
-                    <g:Label text="Tracking Allowed:" width="100%"/>
-                    <mgwt:MCheckBox ui:field="trackingAllowed" />
-                    <mgwt:Button ui:field="submitRide" width="142px" text="Submit Ride"/>
                 </g:HTMLPanel>
             </g:FormPanel>
         </mgwt:ScrollPanel>

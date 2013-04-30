@@ -4,23 +4,26 @@ package com.bikefunfinder.client.client.places.createscreen;
  * @created 4/6/13 2:22 AM
  */
 
+import com.bikefunfinder.client.shared.constants.ScreenConstants;
 import com.bikefunfinder.client.shared.model.BikeRide;
-import com.bikefunfinder.client.shared.model.GeoLoc;
 import com.bikefunfinder.client.shared.model.Location;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Element;
+import com.google.gwt.i18n.shared.DateTimeFormat;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.ui.*;
-import static com.google.gwt.query.client.GQuery.$;
-import static gwtquery.plugins.ui.Ui.Ui;
+import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.Widget;
 import com.googlecode.mgwt.dom.client.event.tap.TapEvent;
 import com.googlecode.mgwt.ui.client.widget.*;
 
-import com.google.gwt.i18n.shared.DateTimeFormat;
 import java.util.Date;
+
+import static com.google.gwt.query.client.GQuery.$;
+import static gwtquery.plugins.ui.Ui.Ui;
 
 public class CreateScreenDisplayGwtImpl  extends Composite implements CreateScreenDisplay {
     private static OverviewDisplayGwtImplUiBinder uiBinder = GWT.create(OverviewDisplayGwtImplUiBinder.class);
@@ -28,29 +31,87 @@ public class CreateScreenDisplayGwtImpl  extends Composite implements CreateScre
     interface OverviewDisplayGwtImplUiBinder extends UiBinder<Widget, CreateScreenDisplayGwtImpl> {
     }
 
-    @UiField
-    TextBox startDate;
+    private Presenter presenter;
 
-    @UiField
-    TextBox startTime;
+    @UiField HTML userName = new HTML();
 
-    @UiField
-    FormPanel form;
+    @UiField(provided = true) WidgetList widgetList;
+    FormListEntry formListEntry;
 
-    @UiField
-    HTMLPanel formContents;
-
-    @UiField
-    FlowPanel dateTimeFP;
-
+    MTextBox bikeRideName = new MTextBox();
+    MListBox targetAudience = new MListBox();
+    MTextBox locationAddress = new MTextBox();
+    MTextBox locationCity = new MTextBox();
+    MTextBox locationState = new MTextBox();
+    MTextBox startDate = new MTextBox();
+    MTextBox startTime = new MTextBox();
+    MTextBox rideDetails = new MTextBox();
+    MCheckBox trackingAllowed = new MCheckBox();
+    MTextBox rideImage = new MTextBox();
 
     public CreateScreenDisplayGwtImpl() {
-        initWidget(uiBinder.createAndBindUi(this));
+
+        //Build the form.
+        widgetList = new WidgetList();
+
+        formListEntry = new FormListEntry();
+        formListEntry.setText("Bike Ride Name:");
+        formListEntry.add(bikeRideName);
+        widgetList.add(formListEntry);
+
+        formListEntry = new FormListEntry();
+        formListEntry.setText("Target Audience:");
+        for(ScreenConstants.TargetAudience enumVal: ScreenConstants.TargetAudience.values()) {
+            targetAudience.addItem(enumVal.getDisplayName());
+        }
+        formListEntry.add(targetAudience);
+        widgetList.add(formListEntry);
+
+        formListEntry = new FormListEntry();
+        formListEntry.setText("Starting Address:");
+        formListEntry.add(locationAddress);
+        widgetList.add(formListEntry);
+
+        formListEntry = new FormListEntry();
+        formListEntry.setText("Starting City:");
+        formListEntry.add(locationCity);
+        widgetList.add(formListEntry);
+
+        formListEntry = new FormListEntry();
+        formListEntry.setText("Starting State:");
+        formListEntry.add(locationState);
+        widgetList.add(formListEntry);
+
+        formListEntry = new FormListEntry();
+        formListEntry.setText("Starting Date:");
         startDate.getElement().setId("datepicker");
         startDate.setReadOnly(true);
+        setupDatePicker(startDate.getElement());
+        formListEntry.add(startDate);
+        widgetList.add(formListEntry);
+
+        formListEntry = new FormListEntry();
+        formListEntry.setText("Starting Time:");
         startTime.getElement().setId("timepicker");
         startTime.setReadOnly(true);
-        setupDemoElement(dateTimeFP.getElement());
+        formListEntry.add(startTime);
+        widgetList.add(formListEntry);
+
+        formListEntry = new FormListEntry();
+        formListEntry.setText("Ride Details:");
+        formListEntry.add(rideDetails);
+        widgetList.add(formListEntry);
+
+        formListEntry = new FormListEntry();
+        formListEntry.setText("Tracking Allowed:");
+        formListEntry.add(trackingAllowed);
+        widgetList.add(formListEntry);
+
+        formListEntry = new FormListEntry();
+        formListEntry.setText("Ride Image:");
+        formListEntry.add(rideImage);
+        widgetList.add(formListEntry);
+
     }
 
     @Override
@@ -65,60 +126,37 @@ public class CreateScreenDisplayGwtImpl  extends Composite implements CreateScre
     }
 
     @Override
-    public void displayResponse(BikeRide bikeRide) {
+    public void display(BikeRide bikeRide) {
         //To change body of implemented methods use File | Settings | File Templates.
 
     }
 
-    private Presenter presenter;
+    @Override
+    public void setUserName(String userName) {
+        this.userName.setText("Create Ride by: " + userName);
+    }
 
     @Override
     public void setPresenter(Presenter presenter) {
         this.presenter = presenter;
     }
 
-
-
-    @UiField
-    TextBox bikeRideName;
-
-    @UiField
-    TextBox locationAddress;
-
-    @UiField
-    TextBox locationCity;
-
-    @UiField
-    TextBox locationState;
-
-    @UiField
-    TextArea rideDetails;
-
     @UiHandler("submitRide")
     protected void onSubmitRidePressed(TapEvent event) {
         if(presenter != null) {
             BikeRide br = GWT.create(BikeRide.class);
 
-            br.setRideLeaderName("Todo:LeaderName!");
             br.setBikeRideName(bikeRideName.getText());
-            br.setDetails(rideDetails.getText());
-            br.setRideLeaderId("abc");
-
+            br.setBikeRideName(targetAudience.getValue(targetAudience.getSelectedIndex()));
             Location location = GWT.create(Location.class);
             location.setCity(locationCity.getText());
             location.setState(locationState.getText());
             location.setStreetAddress(locationAddress.getText());
-
-            GeoLoc geoLoc = GWT.create(GeoLoc.class);
-            geoLoc.setLatitude("0.00");
-            geoLoc.setLongitude("0.00");
-            location.setGeoLoc(geoLoc);
             br.setLocation(location);
-
-            DateTimeFormat dtf = DateTimeFormat.getFormat("mm/dd/yyyy h:mm a");
-            Date date = null;
             try
             {
+                DateTimeFormat dtf = DateTimeFormat.getFormat("mm/dd/yyyy h:mm a");
+                Date date = null;
                 date =  dtf.parse(startDate.getText() + " " + startTime.getText());
 //                Window.alert("getTime() " + date.getTime() + "   parseTime: " + date.toString());
                 br.setRideStartTime(date.getTime());
@@ -127,7 +165,9 @@ public class CreateScreenDisplayGwtImpl  extends Composite implements CreateScre
             {
                 Window.alert("Cannot read the date and time input.");
             }
-
+            br.setDetails(rideDetails.getText());
+            br.setTrackingAllowed(trackingAllowed.getValue());
+            br.setImagePath(rideImage.getValue());
 
             presenter.onFormSelected(br);
         }
@@ -139,8 +179,8 @@ public class CreateScreenDisplayGwtImpl  extends Composite implements CreateScre
         }
     }
 
-    public void setupDemoElement(Element demo) {
-//        $("#datepicker", demo).as(Ui).datepicker();
+    public void setupDatePicker(Element demo) {
+//      $("#datepicker", demo).as(Ui).datepicker();
 
         $("#datepicker", demo).as(Ui).datepicker();
     }
