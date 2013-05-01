@@ -33,7 +33,8 @@ public class CreateScreenDisplayGwtImpl  extends Composite implements CreateScre
 
     private Presenter presenter;
 
-    @UiField HTML userName = new HTML();
+    @UiField
+    HTML userName;
 
     @UiField(provided = true) WidgetList widgetList;
     FormListEntry formListEntry;
@@ -112,6 +113,8 @@ public class CreateScreenDisplayGwtImpl  extends Composite implements CreateScre
         formListEntry.add(rideImage);
         widgetList.add(formListEntry);
 
+        initWidget(uiBinder.createAndBindUi(this));
+
     }
 
     @Override
@@ -131,8 +134,10 @@ public class CreateScreenDisplayGwtImpl  extends Composite implements CreateScre
 
     }
 
+    //setUserName
+
     @Override
-    public void setUserName(String userName) {
+    public void display(String userName) {
         this.userName.setText("Create Ride by: " + userName);
     }
 

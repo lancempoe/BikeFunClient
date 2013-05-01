@@ -15,6 +15,7 @@ import com.bikefunfinder.client.shared.model.Root;
 import com.bikefunfinder.client.shared.model.User;
 import com.bikefunfinder.client.shared.model.json.Utils;
 import com.bikefunfinder.client.shared.request.NewEventRequest;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.web.bindery.event.shared.EventBus;
 import com.googlecode.mgwt.mvp.client.MGWTAbstractActivity;
@@ -27,7 +28,7 @@ public class CreateScreenActivity extends MGWTAbstractActivity implements Create
     public CreateScreenActivity(ClientFactory clientFactory) {
         this.clientFactory = clientFactory;
 
-        //Set the logged in user details into the bike ride
+        //Set the logged in user details
         if (clientFactory.getStoredValue(DBKeys.ANONYMOUS_USER) != null) {
             AnonymousUser anonymousUser = Utils.castJsonTxtToJSOObject(clientFactory.getStoredValue(DBKeys.ANONYMOUS_USER));
             this.userId = anonymousUser.getId();
@@ -43,11 +44,9 @@ public class CreateScreenActivity extends MGWTAbstractActivity implements Create
     @Override
     public void start(AcceptsOneWidget panel, EventBus eventBus) {
         final CreateScreenDisplay display = clientFactory.getCreateScreenDisplay();
-
         display.setPresenter(this);
-        display.setUserName(userName);
-
         panel.setWidget(display);
+        display.display(userName);
     }
 
     @Override

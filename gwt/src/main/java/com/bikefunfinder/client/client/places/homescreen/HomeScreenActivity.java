@@ -52,17 +52,20 @@ public class HomeScreenActivity extends MGWTAbstractActivity implements HomeScre
         else { //Redirect from the query screen
             currentList = Extractor.getBikeRidesFrom(this.root);
             display.display(currentList);
+        }
 
-            //Get City
-            RegExp regExp = RegExp.compile("^(.*),");
-            MatchResult matcher = regExp.exec(this.root.getClosestLocation().getFormattedAddress());
+        //Get City
+        RegExp regExp = RegExp.compile("^(.*),");
+        MatchResult matcher = null;
+        if (this.root != null && this.root.getClosestLocation() != null)  {
+            matcher = regExp.exec(this.root.getClosestLocation().getFormattedAddress());
             boolean matchFound = (matcher != null); // equivalent to regExp.test(inputStr);
-
             if (matchFound)
                 display.display(matcher.getGroup(0));
             else
                 display.display("Unknown City");
-
+        }  else {
+            display.display("No Upcoming Rides");
         }
     }
 
@@ -112,14 +115,12 @@ public class HomeScreenActivity extends MGWTAbstractActivity implements HomeScre
             public void onError() {
                 Window.alert("Oops, your BFF will be back shortly.");
                 display.display(new ArrayList<BikeRide>());
-                display.display("City Unknown");
             }
 
             @Override
             public void onResponseReceived(Root root) {
                 currentList = Extractor.getBikeRidesFrom(root);
                 display.display(currentList);
-                display.display(root.getClosestLocation().getCity());
             }
         };
         SearchByTimeOfDayRequest.Builder request = new SearchByTimeOfDayRequest.Builder(callback);

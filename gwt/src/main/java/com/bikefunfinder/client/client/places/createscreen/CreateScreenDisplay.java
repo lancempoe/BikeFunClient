@@ -4,15 +4,8 @@ package com.bikefunfinder.client.client.places.createscreen;
  * @created 4/5/13 4:22 PM
  */
 
-import com.bikefunfinder.client.shared.model.AnonymousUser;
 import com.bikefunfinder.client.shared.model.BikeRide;
-import com.bikefunfinder.client.shared.model.Root;
-import com.bikefunfinder.client.shared.model.User;
-import com.google.gwt.http.client.Response;
 import com.google.gwt.user.client.ui.IsWidget;
-import com.google.gwt.user.datepicker.client.DatePicker;
-
-import java.util.List;
 
 public interface CreateScreenDisplay extends IsWidget {
 
@@ -21,7 +14,7 @@ public interface CreateScreenDisplay extends IsWidget {
      */
     public void displayFailedToCreateRideMessage();
     public void display(BikeRide bikeRide);
-    public void setUserName(String userName);
+    public void display(String userName);
 
     /**
      * This is the contract for what the activity can provide

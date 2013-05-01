@@ -137,7 +137,6 @@ public class ClientFactoryGwtImpl implements ClientFactory {
         if(storageInterface==null) {
             Window.alert("Storage interface is not supported (null)");
         } else {
-
             String jsonText = storageInterface.getItem(DBKeys.USER);
             if(jsonText!=null && !jsonText.isEmpty()) {
                 User user = Utils.castJsonTxtToJSOObject(jsonText);
@@ -164,10 +163,8 @@ public class ClientFactoryGwtImpl implements ClientFactory {
 
             @Override
             public void onResponseReceived(AnonymousUser anonymousUser) {
-                Window.alert("anonymous user created id:" + anonymousUser.getId() );
                 final String jsonText = JSODescriber.toJSON(anonymousUser);
                 storageInterface.setItem(DBKeys.ANONYMOUS_USER, jsonText);
-                Window.alert("Anonymous User Created");
 
             }
         };

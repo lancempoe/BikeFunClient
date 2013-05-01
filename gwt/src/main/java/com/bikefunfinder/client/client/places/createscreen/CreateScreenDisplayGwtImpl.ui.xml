@@ -19,7 +19,7 @@
                 <mgwt:HeaderButton ui:field="backButton" backButton="true" text="Back" />
             </mgwt:left>
             <mgwt:right>
-                <g:HTML ui:field="userName"/>
+                <g:HTML ui:field="userName" styleName="{style.positioningForName}"/>
             </mgwt:right>
         </mgwt:HeaderPanel>
 
