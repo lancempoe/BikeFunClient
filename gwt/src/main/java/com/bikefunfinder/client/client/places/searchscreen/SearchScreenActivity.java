@@ -26,7 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SearchScreenActivity extends MGWTAbstractActivity implements SearchScreenDisplay.Presenter {
-    private final ClientFactory clientFactory;
+    private final ClientFactory<SearchScreenDisplay> clientFactory;
     private final Query query;
 
     private List<BikeRide> currentList;
@@ -38,7 +38,7 @@ public class SearchScreenActivity extends MGWTAbstractActivity implements Search
 
     @Override
     public void start(AcceptsOneWidget panel, EventBus eventBus) {
-        final SearchScreenDisplay display = clientFactory.getSearchScreenDisplay();
+        final SearchScreenDisplay display = clientFactory.getDisplay(this);
 
         display.setPresenter(this);
 
@@ -54,7 +54,6 @@ public class SearchScreenActivity extends MGWTAbstractActivity implements Search
 
     @Override
     public void searchRideButtonSelected(Query query) {
-        final SearchScreenDisplay display = clientFactory.getSearchScreenDisplay();
 
         SearchByParametersRequest.Builder request = new SearchByParametersRequest.Builder(new SearchByParametersRequest.Callback() {
             @Override

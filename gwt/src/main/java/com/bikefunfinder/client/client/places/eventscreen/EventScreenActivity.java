@@ -11,11 +11,11 @@ import com.google.web.bindery.event.shared.EventBus;
 import com.googlecode.mgwt.mvp.client.MGWTAbstractActivity;
 
 public class EventScreenActivity extends MGWTAbstractActivity implements EventScreenDisplay.Presenter {
-    private final ClientFactory clientFactory;
+    private final ClientFactory<EventScreenDisplay> clientFactory;
 
     @Override
     public void start(AcceptsOneWidget panel, EventBus eventBus) {
-        final EventScreenDisplay display = clientFactory.getEventScreenDisplay();
+        final EventScreenDisplay display = clientFactory.getDisplay(this);
 
         display.setPresenter(this);
 

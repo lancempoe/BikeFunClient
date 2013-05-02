@@ -24,11 +24,12 @@ import java.util.List;
  * To change this template use File | Settings | File Templates.
  */
 public class GMapActivity extends NavBaseActivity implements GMapDisplay.Presenter {
-    private final ClientFactory clientFactory;
+    private final ClientFactory<GMapDisplay> clientFactory;
 
     private final Geolocation geolocation;
     private GeolocationWatcher watcher = null;
     private List<BikeRide> currentList;
+    private final GMapActivity itsAMeMario = this;
 
     public GMapActivity(final ClientFactory clientFactory) {
         super(clientFactory);
@@ -43,7 +44,7 @@ public class GMapActivity extends NavBaseActivity implements GMapDisplay.Present
             throw new IllegalStateException();
         }
 
-        final GMapDisplay geoMapView = clientFactory.getHereAndNowDisplay();
+        final GMapDisplay geoMapView = clientFactory.getDisplay(this);
         geoMapView.setPresenter(this);
         panel.setWidget(geoMapView);
 
@@ -77,7 +78,7 @@ public class GMapActivity extends NavBaseActivity implements GMapDisplay.Present
             @Override
             public void onFailure(final PositionError error) {
                 Window.alert("Failed to get GeoLocation. error code[" + error.getCode()+ "], msg[" + error.getMessage() + "]");
-                final GMapDisplay geoMapView = clientFactory.getHereAndNowDisplay();
+                final GMapDisplay geoMapView = clientFactory.getDisplay(itsAMeMario);
                 fireRequestForHereAndNow(geoMapView, 45.52345275878906, -122.6762084960938, 0 );
             }
         };
@@ -97,7 +98,7 @@ public class GMapActivity extends NavBaseActivity implements GMapDisplay.Present
     }
 
     private void clearView() {
-        final GMapDisplay gMapView = clientFactory.getHereAndNowDisplay();
+        final GMapDisplay gMapView = clientFactory.getDisplay(this);
 
         gMapView.clearMapInfo();
         gMapView.refresh();
@@ -105,7 +106,7 @@ public class GMapActivity extends NavBaseActivity implements GMapDisplay.Present
 
     private void setView(final int count, final double latitude, final double longitude, final double altitude,
                          final double accuracy, final double altitudeAccuracy, final double heading, final double speed) {
-        final GMapDisplay geoMapView = clientFactory.getHereAndNowDisplay();
+        final GMapDisplay geoMapView = clientFactory.getDisplay(this);
         fireRequestForHereAndNow(geoMapView, latitude, longitude, accuracy);
     }
 

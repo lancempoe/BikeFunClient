@@ -21,7 +21,7 @@ import com.google.web.bindery.event.shared.EventBus;
 import com.googlecode.mgwt.mvp.client.MGWTAbstractActivity;
 
 public class CreateScreenActivity extends MGWTAbstractActivity implements CreateScreenDisplay.Presenter {
-    private final ClientFactory clientFactory;
+    private final ClientFactory<CreateScreenDisplay> clientFactory;
     private String userName = "";
     private String userId = "";
 
@@ -43,7 +43,7 @@ public class CreateScreenActivity extends MGWTAbstractActivity implements Create
 
     @Override
     public void start(AcceptsOneWidget panel, EventBus eventBus) {
-        final CreateScreenDisplay display = clientFactory.getCreateScreenDisplay();
+        final CreateScreenDisplay display = clientFactory.getDisplay(this);
         display.setPresenter(this);
         panel.setWidget(display);
         display.display(userName);
@@ -51,7 +51,7 @@ public class CreateScreenActivity extends MGWTAbstractActivity implements Create
 
     @Override
     public void onFormSelected(BikeRide br) {
-        final CreateScreenDisplay display = clientFactory.getCreateScreenDisplay();
+        final CreateScreenDisplay display = clientFactory.getDisplay(this);
 
         NewEventRequest.Builder request = new NewEventRequest.Builder(new NewEventRequest.Callback() {
             @Override
@@ -61,10 +61,7 @@ public class CreateScreenActivity extends MGWTAbstractActivity implements Create
 
             @Override
             public void onResponseReceived(BikeRide bikeRide) {
-                display.display(bikeRide);
-                final EventScreenDisplay display = clientFactory.getEventScreenDisplay();
-                display.display(bikeRide);
-                clientFactory.getPlaceController().goTo(new EventScreenPlace());
+                clientFactory.getPlaceController().goTo(new EventScreenPlace(bikeRide));
             }
         });
 

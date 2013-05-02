@@ -1,14 +1,19 @@
 package com.bikefunfinder.client.bootstrap;
 
 import com.bikefunfinder.client.bootstrap.db.DBKeys;
+import com.bikefunfinder.client.client.places.createscreen.CreateScreenActivity;
 import com.bikefunfinder.client.client.places.createscreen.CreateScreenDisplay;
 import com.bikefunfinder.client.client.places.createscreen.CreateScreenDisplayGwtImpl;
+import com.bikefunfinder.client.client.places.eventscreen.EventScreenActivity;
 import com.bikefunfinder.client.client.places.eventscreen.EventScreenDisplay;
 import com.bikefunfinder.client.client.places.eventscreen.EventScreenDisplayGwtImpl;
+import com.bikefunfinder.client.client.places.homescreen.HomeScreenActivity;
 import com.bikefunfinder.client.client.places.homescreen.HomeScreenDisplay;
 import com.bikefunfinder.client.client.places.homescreen.HomeScreenDisplayGwtImpl;
+import com.bikefunfinder.client.client.places.profilescreen.ProfileScreenActivity;
 import com.bikefunfinder.client.client.places.profilescreen.ProfileScreenDisplay;
 import com.bikefunfinder.client.client.places.profilescreen.ProfileScreenDisplayGwtImpl;
+import com.bikefunfinder.client.client.places.searchscreen.SearchScreenActivity;
 import com.bikefunfinder.client.client.places.searchscreen.SearchScreenDisplay;
 import com.bikefunfinder.client.client.places.searchscreen.SearchScreenDisplayGwtImpl;
 import com.bikefunfinder.client.shared.model.AnonymousUser;
@@ -23,6 +28,7 @@ import com.google.gwt.user.client.Window;
 import com.google.web.bindery.event.shared.EventBus;
 import com.google.web.bindery.event.shared.SimpleEventBus;
 import com.googlecode.gwtphonegap.client.PhoneGap;
+import com.googlecode.mgwt.mvp.client.MGWTAbstractActivity;
 import com.googlecode.mgwt.storage.client.Storage;
 import com.bikefunfinder.client.client.places.gmap.*;
 import java.util.Date;
@@ -65,6 +71,26 @@ public class ClientFactoryGwtImpl implements ClientFactory {
 
 
     @Override
+    public Object getDisplay(MGWTAbstractActivity activity) {
+        if(activity instanceof CreateScreenActivity) {
+            return getCreateScreenDisplay();
+        } else if(activity instanceof EventScreenActivity ) {
+            return getEventScreenDisplay();
+        }  else if(activity instanceof HomeScreenActivity) {
+            return getHomeScreenDisplay();
+        } else if(activity instanceof ProfileScreenActivity) {
+            return getProfileScreenDisplay();
+        }  else if(activity instanceof SearchScreenActivity) {
+            return getSearchScreenDisplay();
+        }  else if(activity instanceof EventScreenActivity ) {
+            return getEventScreenDisplay();
+        }  else if(activity instanceof GMapActivity) {
+            return getHereAndNowDisplay();
+        }
+
+        throw new RuntimeException("No fair! We need a real activity");
+    }
+
     public CreateScreenDisplay getCreateScreenDisplay() {
         if (createScreenDisplay == null) {
             createScreenDisplay = new CreateScreenDisplayGwtImpl();
@@ -72,7 +98,7 @@ public class ClientFactoryGwtImpl implements ClientFactory {
         return createScreenDisplay;
     }
 
-    @Override
+
     public HomeScreenDisplay getHomeScreenDisplay() {
         if (homeScreenDisplay == null) {
             homeScreenDisplay = new HomeScreenDisplayGwtImpl();
@@ -80,7 +106,7 @@ public class ClientFactoryGwtImpl implements ClientFactory {
         return homeScreenDisplay;
     }
 
-    @Override
+
     public ProfileScreenDisplay getProfileScreenDisplay() {
         if (profileScreenDisplay == null) {
             profileScreenDisplay = new ProfileScreenDisplayGwtImpl();
@@ -88,7 +114,7 @@ public class ClientFactoryGwtImpl implements ClientFactory {
         return profileScreenDisplay;
     }
 
-    @Override
+
     public EventScreenDisplay getEventScreenDisplay() {
         if(eventScreenDisplay == null) {
             eventScreenDisplay = new EventScreenDisplayGwtImpl();
@@ -96,7 +122,7 @@ public class ClientFactoryGwtImpl implements ClientFactory {
         return eventScreenDisplay;
     }
 
-    @Override
+
     public SearchScreenDisplay getSearchScreenDisplay() {
         if (searchScreenDisplay == null) {
             searchScreenDisplay = new SearchScreenDisplayGwtImpl();
@@ -104,7 +130,7 @@ public class ClientFactoryGwtImpl implements ClientFactory {
         return searchScreenDisplay;
     }
 
-    @Override
+
     public GMapDisplay getHereAndNowDisplay() {
         if (hereAndNowDisplay == null) {
             hereAndNowDisplay = new GMapViewImpl();

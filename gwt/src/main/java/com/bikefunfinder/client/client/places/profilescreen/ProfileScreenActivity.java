@@ -21,7 +21,7 @@ import com.googlecode.gwtphonegap.showcase.client.inappbrowser.InAppBrowserDispl
 import com.googlecode.mgwt.mvp.client.MGWTAbstractActivity;
 
 public class ProfileScreenActivity extends MGWTAbstractActivity implements ProfileScreenDisplay.Presenter {
-    private final ClientFactory clientFactory;
+    private final ClientFactory<ProfileScreenDisplay> clientFactory;
     private InAppBrowserDisplay display;
     private PhoneGap phoneGap;
     private InAppBrowser inAppBrowser;
@@ -38,7 +38,7 @@ public class ProfileScreenActivity extends MGWTAbstractActivity implements Profi
 
     @Override
     public void start(AcceptsOneWidget panel, EventBus eventBus) {
-        final ProfileScreenDisplay display = clientFactory.getProfileScreenDisplay();
+        final ProfileScreenDisplay display = clientFactory.getDisplay(this);
 
         display.setPresenter(this);
 

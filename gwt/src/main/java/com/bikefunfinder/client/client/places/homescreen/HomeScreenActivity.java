@@ -34,7 +34,7 @@ import com.google.gwt.regexp.shared.*;
  * @created 4/5/13 3:59 PM
  */
 public class HomeScreenActivity extends MGWTAbstractActivity implements HomeScreenDisplay.Presenter {
-    private final ClientFactory clientFactory;
+    private final ClientFactory<HomeScreenDisplay> clientFactory;
     private GeolocationWatcher watcher = null;
     private List<BikeRide> currentList;
     private Root root;
@@ -51,12 +51,13 @@ public class HomeScreenActivity extends MGWTAbstractActivity implements HomeScre
 
     @Override
     public void start(AcceptsOneWidget panel, EventBus eventBus) {
-        final HomeScreenDisplay display = clientFactory.getHomeScreenDisplay();
+        final HomeScreenDisplay display = clientFactory.getDisplay(this);
 
         display.setPresenter(this);
 
         panel.setWidget(display);
 
+Window.alert("HomeScreenStart");
 
         //Get City
         RegExp regExp = RegExp.compile("^(.*),");
@@ -95,14 +96,12 @@ public class HomeScreenActivity extends MGWTAbstractActivity implements HomeScre
 
     @Override
     public void onRideClick(BikeRide bikeRide) {
-        final EventScreenDisplay display = clientFactory.getEventScreenDisplay();
-        display.display(bikeRide);
-        clientFactory.getPlaceController().goTo(new EventScreenPlace());
+        clientFactory.getPlaceController().goTo(new EventScreenPlace(bikeRide));
     }
 
     @Override
     public void onTimeAndDayButton() {
-        final HomeScreenDisplay display = clientFactory.getHomeScreenDisplay();
+        final HomeScreenDisplay display = clientFactory.getDisplay(this);
 
         usePhoneLocationToMakeTimeOfDayRequestAndUpdateDisplay(display, noOpNotifyTimeAndDayCallback);
     }
@@ -114,7 +113,7 @@ public class HomeScreenActivity extends MGWTAbstractActivity implements HomeScre
 
     @Override
     public void refreshTimeAndDayReq(NotifyTimeAndDayCallback callback) {
-        final HomeScreenDisplay display = clientFactory.getHomeScreenDisplay();
+        final HomeScreenDisplay display = clientFactory.getDisplay(this);
         usePhoneLocationToMakeTimeOfDayRequestAndUpdateDisplay(display, callback);
     }
 
@@ -176,7 +175,4 @@ public class HomeScreenActivity extends MGWTAbstractActivity implements HomeScre
         Geolocation phoneGeoLocation = clientFactory.getPhoneGap().getGeolocation();
         phoneGeoLocation.getCurrentPosition(geolocationCallback, options);
     }
-
-
-
 }
