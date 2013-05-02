@@ -87,7 +87,7 @@ public class CreateScreenDisplayGwtImpl  extends Composite implements CreateScre
         formListEntry.setText("Starting Date:");
         startDate.getElement().setId("datepicker");
         startDate.setReadOnly(true);
-        setupDatePicker(startDate.getElement());
+        setupDatePicker();
         formListEntry.add(startDate);
         widgetList.add(formListEntry);
 
@@ -121,7 +121,8 @@ public class CreateScreenDisplayGwtImpl  extends Composite implements CreateScre
     @Override
     protected void onLoad()
     {
-        initTimeModal();
+        setupTimePicker();
+        setupDatePicker();
     }
 
     @Override
@@ -185,14 +186,12 @@ public class CreateScreenDisplayGwtImpl  extends Composite implements CreateScre
         }
     }
 
-    public void setupDatePicker(Element demo) {
-//      $("#datepicker", demo).as(Ui).datepicker();
+    native void setupDatePicker() /*-{
+        $wnd.setupDatePicker();
+     }-*/;
 
-        $("#datepicker", demo).as(Ui).datepicker();
-    }
-
-    native void initTimeModal() /*-{
-       $wnd.poop();
+    native void setupTimePicker() /*-{
+       $wnd.setupTimePicker();
     }-*/;
 
 

@@ -11,7 +11,7 @@
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>phonegapfileapi</servlet-name>
-		<url-pattern>/showcase/phonegapfileapi</url-pattern>
+		<url-pattern>/bikefunfinder/phonegapfileapi</url-pattern>
 	</servlet-mapping>
 
 
