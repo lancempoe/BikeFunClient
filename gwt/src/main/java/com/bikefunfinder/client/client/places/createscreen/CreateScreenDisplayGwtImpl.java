@@ -46,7 +46,7 @@ public class CreateScreenDisplayGwtImpl  extends Composite implements CreateScre
     MTextBox locationState = new MTextBox();
     MTextBox startDate = new MTextBox();
     MTextBox startTime = new MTextBox();
-    MTextBox rideDetails = new MTextBox();
+    MTextArea details = new MTextArea();
     MCheckBox trackingAllowed = new MCheckBox();
     MTextBox rideImage = new MTextBox();
 
@@ -100,7 +100,8 @@ public class CreateScreenDisplayGwtImpl  extends Composite implements CreateScre
 
         formListEntry = new FormListEntry();
         formListEntry.setText("Ride Details:");
-        formListEntry.add(rideDetails);
+        details.setVisibleLines(10);
+        formListEntry.add(details);
         widgetList.add(formListEntry);
 
         formListEntry = new FormListEntry();
@@ -170,7 +171,7 @@ public class CreateScreenDisplayGwtImpl  extends Composite implements CreateScre
             {
                 Window.alert("Cannot read the date and time input.");
             }
-            br.setDetails(rideDetails.getText());
+            br.setDetails(details.getText());
             br.setTrackingAllowed(trackingAllowed.getValue());
             br.setImagePath(rideImage.getValue());
 

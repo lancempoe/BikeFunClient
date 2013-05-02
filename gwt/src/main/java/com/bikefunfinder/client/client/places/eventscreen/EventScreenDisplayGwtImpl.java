@@ -117,6 +117,7 @@ public class EventScreenDisplayGwtImpl extends Composite implements EventScreenD
 
         formListEntry = new FormListEntry();
         formListEntry.setText("Ride Details:");
+        details.setVisibleLines(10);
         formListEntry.add(details);
         widgetList.add(formListEntry);
 
