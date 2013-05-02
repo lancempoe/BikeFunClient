@@ -153,7 +153,7 @@ public class BikeRide extends JavaScriptObject {
         return this.totalPeopleTrackingCount;
     }-*/;
 
-    public final native boolean isRideLeaderTracking() /*-{
+    public final native Tracking getRideLeaderTracking() /*-{
         return this.rideLeaderTracking;
     }-*/;
 
