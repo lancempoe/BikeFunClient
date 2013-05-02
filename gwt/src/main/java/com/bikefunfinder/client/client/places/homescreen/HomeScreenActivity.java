@@ -144,7 +144,7 @@ public class HomeScreenActivity extends MGWTAbstractActivity implements HomeScre
         request.latitude(latitude).longitude(longitude).send();
     }
 
-    private void usePhoneLocationToMakeTimeOfDayRequestAndUpdateDisplay(final HomeScreenDisplay display) {
+    private void usePhoneLocationToMakeTimeOfDayRequestAndUpdateDisplay(
             final HomeScreenDisplay display,
             final NotifyTimeAndDayCallback callback) {
         final GeolocationOptions options = new GeolocationOptions();
@@ -160,7 +160,7 @@ public class HomeScreenActivity extends MGWTAbstractActivity implements HomeScre
                 final double latitude = coordinates.getLatitude();
                 final double longitude = coordinates.getLongitude();
 
-                fireRequestForTimeOfDay(display, latitude, longitude);
+                fireRequestForTimeOfDay(display, latitude, longitude, callback);
             }
 
             @Override
