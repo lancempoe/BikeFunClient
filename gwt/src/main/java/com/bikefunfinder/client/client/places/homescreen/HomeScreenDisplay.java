@@ -19,5 +19,11 @@ public interface HomeScreenDisplay extends IsWidget {
 
         public void onTimeAndDayButton();
         public void onHereAndNowButton();
+
+        public void refreshTimeAndDayReq(NotifyTimeAndDayCallback callback);
+        public interface NotifyTimeAndDayCallback {
+            void onError();
+            void onResponseReceived();
+        }
     }
 }

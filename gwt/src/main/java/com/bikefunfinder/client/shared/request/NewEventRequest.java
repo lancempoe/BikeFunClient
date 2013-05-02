@@ -73,9 +73,8 @@ public final class NewEventRequest {
 
         final RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST, getUrlWithQuery());
         try {
-            final String jsonText = JSODescriber.toJSON(bikeRide);
-            //Window.alert(jsonText); //if yer wanting some debuggerz
             requestBuilder.setHeader("Content-Type", "application/json");
+            final String jsonText = JSODescriber.toJSON(bikeRide);
             request = requestBuilder.sendRequest(jsonText, getRequestCallback());
         } catch (final RequestException e) {
             e.printStackTrace();

@@ -14,16 +14,26 @@ import com.google.gwt.event.dom.client.ClickHandler;
  * To change this template use File | Settings | File Templates.
  */
 public class BikeRideClickHandler implements ClickHandler {
-    private Presenter presenter;
-    private BikeRide bikeRide;
-    public BikeRideClickHandler(Presenter presenter, BikeRide bikeRide)
-    {
+    private final Presenter presenter;
+    private final BikeRide bikeRide;
+    private final HomeRefreshPullHandler homeRefreshPullHandler;
+
+    public BikeRideClickHandler(Presenter presenter,
+                                BikeRide bikeRide,
+                                HomeRefreshPullHandler homeRefreshPullHandler) {
         this.presenter = presenter;
         this.bikeRide = bikeRide;
+        this.homeRefreshPullHandler = homeRefreshPullHandler;
     }
+
     @Override
     public void onClick(ClickEvent event) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        if(homeRefreshPullHandler == null ||
+           homeRefreshPullHandler.isRefreshActionHappening()) {
+            return;
+        }
+
         presenter.onRideClick(bikeRide);
+
     }
 }

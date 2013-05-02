@@ -21,7 +21,7 @@ import com.googlecode.mgwt.ui.client.widget.base.PullPanel;
 import com.googlecode.mgwt.ui.client.widget.tabbar.TabBarButton;
 
 import java.util.List;
-import com.google.gwt.user.client.Timer;
+
 
 public class HomeScreenDisplayGwtImpl extends Composite implements HomeScreenDisplay {
 
@@ -64,73 +64,15 @@ public class HomeScreenDisplayGwtImpl extends Composite implements HomeScreenDis
 
     private PullArrowHeader pullArrowHeader;
 
-    private boolean failed = false;
-    private boolean callRunning = false;
+    private final HomeRefreshPullHandler homeRefreshPullHandler;
 
     public HomeScreenDisplayGwtImpl() {
         pullArrowHeader = new PullArrowHeader();
         bikeEntries = new PullPanel();
         bikeEntries.setHeader(pullArrowHeader);
-        bikeEntries.setHeaderPullHandler(new PullPanel.Pullhandler() {
-            @Override
-            public void onPullStateChanged(PullPanel.PullWidget pullWidget, PullPanel.PullWidget.PullState state) {
-                switch (state) {
-                    case NORMAL:
-                        pullWidget.setHTML("pull down");
-                        break;
-                    case PULLED:
-                        pullWidget.setHTML("release to load");
-                        break;
+        homeRefreshPullHandler = new HomeRefreshPullHandler(pullArrowHeader, presenter);
 
-                    default:
-                        break;
-                }
-            }
-
-            @Override
-            public void onPullAction(final PullPanel.PullWidget pullWidget) {
-                if (callRunning)
-                    return;
-
-                callRunning = true;
-                pullWidget.setHTML("loading");
-
-                pullArrowHeader.showLoadingIndicator();
-
-                new Timer() {
-
-                    @Override
-                    public void run() {
-                        callRunning = false;
-                        if (failed) {
-                            pullArrowHeader.showError();
-                            pullWidget.setHTML("Error");
-                            callRunning = true;
-
-                            new Timer() {
-
-                                @Override
-                                public void run() {
-                                    callRunning = false;
-                                    presenter.onTimeAndDayButton();
-
-                                    pullWidget.setHTML("pull down");
-                                    pullArrowHeader.showArrow();
-
-                                }
-                            }.schedule(1000);
-
-                        } else {
-                            presenter.onTimeAndDayButton();
-
-                        }
-                        failed = !failed;
-
-                    }
-                }.schedule(1000);
-
-            } });
-
+        bikeEntries.setHeaderPullHandler(homeRefreshPullHandler);
 
         addButton = new TabBarButton(MGWTStyle.getTheme().getMGWTClientBundle().tabBarMostRecentImage());
         searchButton = new TabBarButton(MGWTStyle.getTheme().getMGWTClientBundle().tabBarSearchImage());
@@ -145,6 +87,7 @@ public class HomeScreenDisplayGwtImpl extends Composite implements HomeScreenDis
     @Override
     public void setPresenter(Presenter presenter) {
         this.presenter = presenter;
+        homeRefreshPullHandler.setPresenter(presenter);
     }
 
     @Override
@@ -179,11 +122,11 @@ public class HomeScreenDisplayGwtImpl extends Composite implements HomeScreenDis
                                    .append("<p>").append(br.getDetails()).append("</p>");
 
             HTML cell = new HTML(html.toString());
-            cell.addClickHandler(new BikeRideClickHandler(presenter, br));
+            cell.addClickHandler(new BikeRideClickHandler(presenter, br, homeRefreshPullHandler));
             bikeEntries.add(cell);
         }
+
         bikeEntries.refresh();
-//        scroller.refresh(); //The scroller needs to know that we've just added stuff
     }
 
     public String dayBar(JsDateWrapper date)
@@ -198,12 +141,10 @@ public class HomeScreenDisplayGwtImpl extends Composite implements HomeScreenDis
         return dayBar.toString();
     }
 
-    public static boolean isSameDate(JsDateWrapper date1, JsDateWrapper date2)
-    {
+    public static boolean isSameDate(JsDateWrapper date1, JsDateWrapper date2) {
         return date1.isSameDay(date2);
     }
-    public static boolean isSameDay(JsDate date1, JsDate date2)
-    {
+    public static boolean isSameDay(JsDate date1, JsDate date2) {
         return date1.getDate() == date2.getDate() &&
            date1.getMonth() == date2.getMonth() &&
            date1.getFullYear() == date2.getFullYear();

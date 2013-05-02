@@ -8,16 +8,22 @@ import com.bikefunfinder.client.client.places.gmap.GMapPlace;
 import com.bikefunfinder.client.client.places.profilescreen.ProfileScreenPlace;
 import com.bikefunfinder.client.client.places.searchscreen.SearchScreenPlace;
 import com.bikefunfinder.client.shared.constants.ScreenConstants;
-import com.bikefunfinder.client.shared.model.BikeRide;
+import com.bikefunfinder.client.shared.model.*;
 import com.bikefunfinder.client.shared.model.Root;
 import com.bikefunfinder.client.shared.model.helper.Extractor;
 import com.bikefunfinder.client.shared.model.json.Utils;
+import com.bikefunfinder.client.shared.model.printer.JSODescriber;
+import com.bikefunfinder.client.shared.request.SearchByProximityRequest;
 import com.bikefunfinder.client.shared.request.SearchByTimeOfDayRequest;
+import com.google.gwt.core.client.JavaScriptObject;
+import com.google.gwt.core.client.JsArray;
+import com.google.gwt.core.client.JsonUtils;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.web.bindery.event.shared.EventBus;
 import com.googlecode.gwtphonegap.client.geolocation.*;
 import com.googlecode.mgwt.mvp.client.MGWTAbstractActivity;
+import com.bikefunfinder.client.client.places.gmap.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +39,11 @@ public class HomeScreenActivity extends MGWTAbstractActivity implements HomeScre
     private List<BikeRide> currentList;
     private Root root;
 
+    final NotifyTimeAndDayCallback noOpNotifyTimeAndDayCallback = new NotifyTimeAndDayCallback() {
+        @Override public void onError() { } // noOp
+        @Override public void onResponseReceived() { } // noOp
+    };
+
     public HomeScreenActivity(ClientFactory clientFactory, Root root) {
         this.clientFactory = clientFactory;
         this.root = root;
@@ -46,13 +57,6 @@ public class HomeScreenActivity extends MGWTAbstractActivity implements HomeScre
 
         panel.setWidget(display);
 
-        if (this.root == null) { //Normal start.
-            usePhoneLocationToMakeTimeOfDayRequestAndUpdateDisplay(display);
-        }
-        else { //Redirect from the query screen
-            currentList = Extractor.getBikeRidesFrom(this.root);
-            display.display(currentList);
-        }
 
         //Get City
         RegExp regExp = RegExp.compile("^(.*),");
@@ -67,11 +71,9 @@ public class HomeScreenActivity extends MGWTAbstractActivity implements HomeScre
         }  else {
             display.display("No Upcoming Rides");
         }
-    }
-
-    private List<BikeRide> getModuleList(String rootJson) {
-        Root root = Utils.castJsonTxtToJSOObject(rootJson);
-        return Extractor.getBikeRidesFrom(root);
+ 
+        
+        usePhoneLocationToMakeTimeOfDayRequestAndUpdateDisplay(display, noOpNotifyTimeAndDayCallback);
     }
 
     @Override
@@ -101,7 +103,8 @@ public class HomeScreenActivity extends MGWTAbstractActivity implements HomeScre
     @Override
     public void onTimeAndDayButton() {
         final HomeScreenDisplay display = clientFactory.getHomeScreenDisplay();
-        usePhoneLocationToMakeTimeOfDayRequestAndUpdateDisplay(display);
+
+        usePhoneLocationToMakeTimeOfDayRequestAndUpdateDisplay(display, noOpNotifyTimeAndDayCallback);
     }
 
     @Override
@@ -109,18 +112,32 @@ public class HomeScreenActivity extends MGWTAbstractActivity implements HomeScre
         clientFactory.getPlaceController().goTo(new GMapPlace("bookMark"));
     }
 
-    private void fireRequestForTimeOfDay(final HomeScreenDisplay display, final double latitude, final double longitude) {
+    @Override
+    public void refreshTimeAndDayReq(NotifyTimeAndDayCallback callback) {
+        final HomeScreenDisplay display = clientFactory.getHomeScreenDisplay();
+        usePhoneLocationToMakeTimeOfDayRequestAndUpdateDisplay(display, callback);
+    }
+
+    private void fireRequestForTimeOfDay(
+            final HomeScreenDisplay display,
+            final double latitude,
+            final double longitude,
+            final NotifyTimeAndDayCallback notifyTimeAndDayCallback) {
         SearchByTimeOfDayRequest.Callback callback = new SearchByTimeOfDayRequest.Callback() {
             @Override
             public void onError() {
                 Window.alert("Oops, your BFF will be back shortly.");
                 display.display(new ArrayList<BikeRide>());
+                display.display("City Unknown");
+                notifyTimeAndDayCallback.onError();
             }
 
             @Override
             public void onResponseReceived(Root root) {
                 currentList = Extractor.getBikeRidesFrom(root);
                 display.display(currentList);
+                display.display(root.getClosestLocation().getCity());
+                notifyTimeAndDayCallback.onResponseReceived();
             }
         };
         SearchByTimeOfDayRequest.Builder request = new SearchByTimeOfDayRequest.Builder(callback);
@@ -128,6 +145,8 @@ public class HomeScreenActivity extends MGWTAbstractActivity implements HomeScre
     }
 
     private void usePhoneLocationToMakeTimeOfDayRequestAndUpdateDisplay(final HomeScreenDisplay display) {
+            final HomeScreenDisplay display,
+            final NotifyTimeAndDayCallback callback) {
         final GeolocationOptions options = new GeolocationOptions();
         options.setEnableHighAccuracy(true);
         options.setTimeout(3000);
@@ -147,7 +166,10 @@ public class HomeScreenActivity extends MGWTAbstractActivity implements HomeScre
             @Override
             public void onFailure(final PositionError error) {
                 Window.alert("Failed to get GeoLocation.  Using Portland as default.");
-                fireRequestForTimeOfDay(display, ScreenConstants.PORTLAND_LATITUDE, ScreenConstants.PORTLAND_LOGITUDE);
+
+                fireRequestForTimeOfDay(display, ScreenConstants.PORTLAND_LATITUDE,
+	                ScreenConstants.PORTLAND_LOGITUDE,
+    	            callback);
             }
         };
 
