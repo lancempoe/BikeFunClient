@@ -6,18 +6,19 @@ import com.google.gwt.place.shared.PlaceTokenizer;
 
 public class HomeScreenPlace extends Place {
 
-    Root root;
+    private final Root root;
+
+    public HomeScreenPlace() {
+        root = null;
+    }
 
     public HomeScreenPlace(Root root) {
         this.root = root;
     }
 
-
     public Root getRoot() {
         return root;
     }
-
-    public HomeScreenPlace() { }
 
     public static class Tokenizer implements PlaceTokenizer<HomeScreenPlace> {
 

@@ -17,6 +17,7 @@ package com.bikefunfinder.client.bootstrap.phone;
 
 import com.google.gwt.activity.shared.Activity;
 import com.google.gwt.activity.shared.ActivityMapper;
+import com.google.gwt.activity.shared.CachingActivityMapper;
 import com.google.gwt.place.shared.Place;
 
 class PhoneActivityMapper implements ActivityMapper {
@@ -24,7 +25,7 @@ class PhoneActivityMapper implements ActivityMapper {
     private final ActivityMapper activityMapperDelegate;
 
     public PhoneActivityMapper(ActivityMapper activityMapperDelegate) {
-        this.activityMapperDelegate = activityMapperDelegate;
+        this.activityMapperDelegate = new CachingActivityMapper(activityMapperDelegate);
     }
 
     @Override

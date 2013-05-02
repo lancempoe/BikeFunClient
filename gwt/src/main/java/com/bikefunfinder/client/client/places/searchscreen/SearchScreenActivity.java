@@ -34,17 +34,19 @@ public class SearchScreenActivity extends MGWTAbstractActivity implements Search
     public SearchScreenActivity(ClientFactory clientFactory, Query query) {
         this.clientFactory = clientFactory;
         this.query = query;
+        setupDisplay();
+
+    }
+
+    private void setupDisplay() {
+        //TODO PUT IN CODE TO POPULATE THE QUERY SCREEN FROM PRIOR QUERY SAVED IN LOCAL DB.
     }
 
     @Override
     public void start(AcceptsOneWidget panel, EventBus eventBus) {
         final SearchScreenDisplay display = clientFactory.getDisplay(this);
-
         display.setPresenter(this);
-
         panel.setWidget(display);
-
-        //TODO PUT IN CODE TO POPULATE THE QUERY SCREEN FROM PRIOR QUERY SAVED IN LOCAL DB.
     }
 
     @Override

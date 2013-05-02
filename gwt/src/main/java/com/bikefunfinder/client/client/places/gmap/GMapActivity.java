@@ -1,5 +1,6 @@
 package com.bikefunfinder.client.client.places.gmap;
 
+import com.bikefunfinder.client.shared.constants.ScreenConstants;
 import com.bikefunfinder.client.shared.model.BikeRide;
 import com.bikefunfinder.client.shared.model.Root;
 import com.bikefunfinder.client.shared.model.helper.Extractor;
@@ -39,16 +40,11 @@ public class GMapActivity extends NavBaseActivity implements GMapDisplay.Present
 
     @Override
     public void start(final AcceptsOneWidget panel, final EventBus eventBus) {
-        final Place place = clientFactory.getPlaceController().getWhere();
-        if (!(place instanceof GMapPlace)) {
-            throw new IllegalStateException();
-        }
-
         final GMapDisplay geoMapView = clientFactory.getDisplay(this);
         geoMapView.setPresenter(this);
         panel.setWidget(geoMapView);
 
-        startWatching();
+        startWatching();  //naughty! ?? or maybenot =D
     }
 
     private void startWatching() {
@@ -79,7 +75,12 @@ public class GMapActivity extends NavBaseActivity implements GMapDisplay.Present
             public void onFailure(final PositionError error) {
                 Window.alert("Failed to get GeoLocation. error code[" + error.getCode()+ "], msg[" + error.getMessage() + "]");
                 final GMapDisplay geoMapView = clientFactory.getDisplay(itsAMeMario);
-                fireRequestForHereAndNow(geoMapView, 45.52345275878906, -122.6762084960938, 0 );
+                fireRequestForHereAndNow(
+                    geoMapView,
+                    ScreenConstants.PORTLAND_LATITUDE,
+                    ScreenConstants.PORTLAND_LOGITUDE,
+                    0
+                );
             }
         };
         watchPosition(options, geolocationCallback);

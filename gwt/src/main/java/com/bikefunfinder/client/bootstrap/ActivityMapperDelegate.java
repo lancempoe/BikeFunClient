@@ -18,10 +18,13 @@ import com.google.gwt.activity.shared.Activity;
 import com.google.gwt.activity.shared.ActivityMapper;
 import com.google.gwt.place.shared.Place;
 import com.bikefunfinder.client.client.places.gmap.*;
+import com.google.gwt.user.client.Window;
 
 public class ActivityMapperDelegate implements ActivityMapper {
 
     private final ClientFactory clientFactory;
+    private static Place lastSeen;
+    private static Activity lastActivity;
 
     public ActivityMapperDelegate(ClientFactory clientFactory) {
         this.clientFactory = clientFactory;
@@ -29,20 +32,26 @@ public class ActivityMapperDelegate implements ActivityMapper {
 
     @Override
     public Activity getActivity(Place place) {
-        if(place instanceof CreateScreenPlace) {
-            return new CreateScreenActivity(clientFactory);
-        } else if(place instanceof EventScreenPlace) {
-            return new EventScreenActivity(clientFactory, ((EventScreenPlace) place).getBikeRide());
-        } else if(place instanceof HomeScreenPlace) {
-            return new HomeScreenActivity(clientFactory, ((HomeScreenPlace) place).getRoot());
-        } else if(place instanceof ProfileScreenPlace) {
-            return new ProfileScreenActivity(clientFactory);
-        } else if(place instanceof SearchScreenPlace) {
-            return new SearchScreenActivity(clientFactory, ((SearchScreenPlace) place).getQuery());
-        } else if(place instanceof GMapPlace) {
-            return new GMapActivity(clientFactory);
+        if(lastSeen!=null && (lastSeen.getClass().equals(place.getClass()))) {
+            return lastActivity;
         }
 
-        return null;
+        lastSeen=place;
+
+        if(place instanceof CreateScreenPlace) {
+            lastActivity = new CreateScreenActivity(clientFactory);
+        } else if(place instanceof EventScreenPlace) {
+            lastActivity = new EventScreenActivity(clientFactory, ((EventScreenPlace) place).getBikeRide());
+        } else if(place instanceof HomeScreenPlace) {
+            lastActivity =  new HomeScreenActivity(clientFactory, ((HomeScreenPlace) place).getRoot());
+        } else if(place instanceof ProfileScreenPlace) {
+            lastActivity =  new ProfileScreenActivity(clientFactory);
+        } else if(place instanceof SearchScreenPlace) {
+            lastActivity =  new SearchScreenActivity(clientFactory, ((SearchScreenPlace) place).getQuery());
+        } else if(place instanceof GMapPlace) {
+            lastActivity =  new GMapActivity(clientFactory);
+        }
+
+        return lastActivity;
     }
 }

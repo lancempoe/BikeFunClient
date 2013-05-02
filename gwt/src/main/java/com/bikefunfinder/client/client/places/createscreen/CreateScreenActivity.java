@@ -25,20 +25,36 @@ public class CreateScreenActivity extends MGWTAbstractActivity implements Create
     private String userName = "";
     private String userId = "";
 
-    public CreateScreenActivity(ClientFactory clientFactory) {
+    public CreateScreenActivity(ClientFactory<CreateScreenDisplay> clientFactory) {
         this.clientFactory = clientFactory;
+        setUserNameFields(clientFactory);
 
+        clientFactory.getDisplay(this).display(userName);
+    }
+
+    private void setUserNameFields(ClientFactory<CreateScreenDisplay> clientFactory) {
         //Set the logged in user details
         if (clientFactory.getStoredValue(DBKeys.ANONYMOUS_USER) != null) {
             AnonymousUser anonymousUser = Utils.castJsonTxtToJSOObject(clientFactory.getStoredValue(DBKeys.ANONYMOUS_USER));
-            this.userId = anonymousUser.getId();
-            this.userName = anonymousUser.getUserName();
+            setUserDetails(anonymousUser);
         }
         else if (clientFactory.getStoredValue(DBKeys.USER) != null) {
             User user = Utils.castJsonTxtToJSOObject(clientFactory.getStoredValue(DBKeys.USER));
-            this.userId = user.getId();
-            this.userName = user.getUserName();
+            setUserDetails(user);
         }
+    }
+
+    private void setUserDetails(AnonymousUser anonymousUser) {
+        setUserDisplayElements(anonymousUser.getId(), anonymousUser.getUserName());
+    }
+
+    private void setUserDetails(User user) {
+        setUserDisplayElements(user.getId(), user.getUserName());
+    }
+
+    private void setUserDisplayElements(String id, String name) {
+        this.userId = id;
+        this.userName = name;
     }
 
     @Override
@@ -46,7 +62,6 @@ public class CreateScreenActivity extends MGWTAbstractActivity implements Create
         final CreateScreenDisplay display = clientFactory.getDisplay(this);
         display.setPresenter(this);
         panel.setWidget(display);
-        display.display(userName);
     }
 
     @Override

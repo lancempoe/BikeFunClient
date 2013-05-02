@@ -19,6 +19,7 @@ import java.util.List;
 public class RootUiFactory {
     public static List<IsWidget> getUserInterfaceRootWidgets(ClientFactory clientFactory) {
         StyleInjector.inject(AppBundle.INSTANCE.css().getText());
+
         List<IsWidget> elementsToAdd;
         if (MGWT.getOsDetection().isTablet()) {
 

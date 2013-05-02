@@ -8,6 +8,7 @@ import com.bikefunfinder.client.shared.model.Root;
 import com.bikefunfinder.client.shared.constants.Settings;
 import com.bikefunfinder.client.shared.model.json.Utils;
 import com.google.gwt.http.client.*;
+import com.google.gwt.user.client.Window;
 import com.googlecode.mgwt.ui.client.dialog.Dialogs;
 
 import java.math.BigDecimal;

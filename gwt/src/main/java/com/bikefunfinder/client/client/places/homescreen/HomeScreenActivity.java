@@ -2,7 +2,6 @@ package com.bikefunfinder.client.client.places.homescreen;
 
 import com.bikefunfinder.client.bootstrap.ClientFactory;
 import com.bikefunfinder.client.client.places.createscreen.CreateScreenPlace;
-import com.bikefunfinder.client.client.places.eventscreen.EventScreenDisplay;
 import com.bikefunfinder.client.client.places.eventscreen.EventScreenPlace;
 import com.bikefunfinder.client.client.places.gmap.GMapPlace;
 import com.bikefunfinder.client.client.places.profilescreen.ProfileScreenPlace;
@@ -11,19 +10,12 @@ import com.bikefunfinder.client.shared.constants.ScreenConstants;
 import com.bikefunfinder.client.shared.model.*;
 import com.bikefunfinder.client.shared.model.Root;
 import com.bikefunfinder.client.shared.model.helper.Extractor;
-import com.bikefunfinder.client.shared.model.json.Utils;
-import com.bikefunfinder.client.shared.model.printer.JSODescriber;
-import com.bikefunfinder.client.shared.request.SearchByProximityRequest;
 import com.bikefunfinder.client.shared.request.SearchByTimeOfDayRequest;
-import com.google.gwt.core.client.JavaScriptObject;
-import com.google.gwt.core.client.JsArray;
-import com.google.gwt.core.client.JsonUtils;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.web.bindery.event.shared.EventBus;
 import com.googlecode.gwtphonegap.client.geolocation.*;
 import com.googlecode.mgwt.mvp.client.MGWTAbstractActivity;
-import com.bikefunfinder.client.client.places.gmap.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,46 +27,59 @@ import com.google.gwt.regexp.shared.*;
  */
 public class HomeScreenActivity extends MGWTAbstractActivity implements HomeScreenDisplay.Presenter {
     private final ClientFactory<HomeScreenDisplay> clientFactory;
-    private GeolocationWatcher watcher = null;
-    private List<BikeRide> currentList;
-    private Root root;
 
     final NotifyTimeAndDayCallback noOpNotifyTimeAndDayCallback = new NotifyTimeAndDayCallback() {
         @Override public void onError() { } // noOp
         @Override public void onResponseReceived() { } // noOp
     };
 
-    public HomeScreenActivity(ClientFactory clientFactory, Root root) {
+    public HomeScreenActivity(ClientFactory<HomeScreenDisplay> clientFactory, Root root) {
         this.clientFactory = clientFactory;
-        this.root = root;
+
+
+        if(root == null ) {
+            //save one and use a few times?
+            //store in db maybe for later?
+            usePhoneLocationToMakeTimeOfDayRequestAndUpdateDisplay(
+                    clientFactory.getDisplay(this),
+                    noOpNotifyTimeAndDayCallback);
+        } else {
+            setupDisplay(root);
+        }
+
+
+    }
+
+    private void setupDisplay(Root root) {
+        final HomeScreenDisplay display = clientFactory.getDisplay(this);
+        if(root != null) {
+            display.display(Extractor.getBikeRidesFrom(root));
+        }
+
+        //Get City
+        if (root != null && root.getClosestLocation() != null)  {
+            MatchResult matcher = buildMatcher(root.getClosestLocation().getFormattedAddress());
+            boolean matchFound = (matcher != null); // equivalent to regExp.test(inputStr);
+            if (matchFound) {
+                display.display(matcher.getGroup(0));
+            } else {
+                display.display("Unknown City");
+            }
+        }  else {
+            display.display("No Upcoming Rides");
+        }
+    }
+
+    private MatchResult buildMatcher(String formattedAddress) {
+        RegExp regExp = RegExp.compile("^(.*),");
+        return regExp.exec(formattedAddress);
     }
 
     @Override
     public void start(AcceptsOneWidget panel, EventBus eventBus) {
         final HomeScreenDisplay display = clientFactory.getDisplay(this);
-
         display.setPresenter(this);
-
         panel.setWidget(display);
-
-Window.alert("HomeScreenStart");
-
-        //Get City
-        RegExp regExp = RegExp.compile("^(.*),");
-        MatchResult matcher = null;
-        if (this.root != null && this.root.getClosestLocation() != null)  {
-            matcher = regExp.exec(this.root.getClosestLocation().getFormattedAddress());
-            boolean matchFound = (matcher != null); // equivalent to regExp.test(inputStr);
-            if (matchFound)
-                display.display(matcher.getGroup(0));
-            else
-                display.display("Unknown City");
-        }  else {
-            display.display("No Upcoming Rides");
-        }
- 
-        
-        usePhoneLocationToMakeTimeOfDayRequestAndUpdateDisplay(display, noOpNotifyTimeAndDayCallback);
     }
 
     @Override
@@ -133,9 +138,7 @@ Window.alert("HomeScreenStart");
 
             @Override
             public void onResponseReceived(Root root) {
-                currentList = Extractor.getBikeRidesFrom(root);
-                display.display(currentList);
-                display.display(root.getClosestLocation().getCity());
+                setupDisplay(root);
                 notifyTimeAndDayCallback.onResponseReceived();
             }
         };

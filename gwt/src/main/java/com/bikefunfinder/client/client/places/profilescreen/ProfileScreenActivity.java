@@ -39,9 +39,7 @@ public class ProfileScreenActivity extends MGWTAbstractActivity implements Profi
     @Override
     public void start(AcceptsOneWidget panel, EventBus eventBus) {
         final ProfileScreenDisplay display = clientFactory.getDisplay(this);
-
         display.setPresenter(this);
-
         panel.setWidget(display);
     }
 

@@ -2,6 +2,7 @@ package com.bikefunfinder.client.bootstrap.tablet;
 
 import com.google.gwt.activity.shared.Activity;
 import com.google.gwt.activity.shared.ActivityMapper;
+import com.google.gwt.activity.shared.CachingActivityMapper;
 import com.google.gwt.place.shared.Place;
 
 
@@ -13,7 +14,7 @@ class TabletMainActivityMapper implements ActivityMapper {
     private final ActivityMapper activityMapperDelegate;
 
     public TabletMainActivityMapper(ActivityMapper activityMapperDelegate) {
-        this.activityMapperDelegate = activityMapperDelegate;
+        this.activityMapperDelegate = new CachingActivityMapper(activityMapperDelegate);
     }
 
     @Override
