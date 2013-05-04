@@ -28,7 +28,6 @@ public interface HomeScreenDisplay extends IsWidget {
         }
     }
 
-    public void render(List<CellGroup<Header, Content>> models);
 
     public class Header {
         private final String name;

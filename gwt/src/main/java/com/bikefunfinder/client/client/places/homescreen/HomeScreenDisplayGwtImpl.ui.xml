@@ -30,7 +30,9 @@
         </mgwt:HeaderPanel>
 
 
-        <mgwt.base:PullPanel  ui:field="bikeEntries"/>
+        <mgwt.base:PullPanel  ui:field="bikeEntries">
+            <mgwt:HeaderList ui:field="bikeEntriesHeaderList"/>
+        </mgwt.base:PullPanel>
 
 
         <g:FlowPanel>
