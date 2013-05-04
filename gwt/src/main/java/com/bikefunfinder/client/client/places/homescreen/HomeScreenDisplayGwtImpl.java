@@ -19,6 +19,8 @@ import com.googlecode.mgwt.ui.client.widget.base.ButtonBase;
 import com.googlecode.mgwt.ui.client.widget.base.PullArrowHeader;
 import com.googlecode.mgwt.ui.client.widget.base.PullPanel;
 import com.googlecode.mgwt.ui.client.widget.tabbar.TabBarButton;
+import com.googlecode.mgwt.ui.client.widget.HeaderList;
+import com.googlecode.mgwt.ui.client.widget.GroupingCellList.CellGroup;
 
 import java.util.List;
 
@@ -93,6 +95,7 @@ public class HomeScreenDisplayGwtImpl extends Composite implements HomeScreenDis
     @Override
     public void display(List<BikeRide> list) {
         bikeEntries.clear();
+
 
         JsDateWrapper firstDate = null;
         JsDateWrapper lastDay = null;
