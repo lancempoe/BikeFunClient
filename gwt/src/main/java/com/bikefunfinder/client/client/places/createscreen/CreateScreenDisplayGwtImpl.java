@@ -162,10 +162,11 @@ public class CreateScreenDisplayGwtImpl  extends Composite implements CreateScre
             br.setLocation(location);
             try
             {
+                Window.alert("StartDate: " + getDatePickerText() + "\nStartTime: " + getTimePickerText());
                 DateTimeFormat dtf = DateTimeFormat.getFormat("mm/dd/yyyy h:mm a");
                 Date date = null;
-                date =  dtf.parse(startDate.getText() + " " + startTime.getText());
-//                Window.alert("getTime() " + date.getTime() + "   parseTime: " + date.toString());
+                date =  dtf.parse(getDatePickerText() + " " + getTimePickerText());
+                Window.alert("getTime() " + date.getTime() + "   parseTime: " + date.toString());
                 br.setRideStartTime(date.getTime());
             }
             catch(IllegalArgumentException e)
@@ -190,8 +191,16 @@ public class CreateScreenDisplayGwtImpl  extends Composite implements CreateScre
         $wnd.setupDatePicker();
      }-*/;
 
+    native String getDatePickerText() /*-{
+        return $wnd.getDatePickerText();
+    }-*/;
+
     native void setupTimePicker() /*-{
        $wnd.setupTimePicker();
+    }-*/;
+
+    native String getTimePickerText() /*-{
+        return $wnd.getTimePickerText();
     }-*/;
 
 
