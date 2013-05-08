@@ -1,6 +1,7 @@
 package com.bikefunfinder.client.client.places.homescreen;
 
 import com.bikefunfinder.client.shared.model.BikeRide;
+import com.bikefunfinder.client.shared.model.printer.JsDateWrapper;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.googlecode.mgwt.ui.client.widget.GroupingCellList.CellGroup;
 
@@ -42,14 +43,27 @@ public interface HomeScreenDisplay extends IsWidget {
     }
 
     public class Content {
-        private final String name;
+        private final String rideName;
+        private final String timeDisplay;
+        private final String details;
 
-        public Content(String name) {
-            this.name = name;
+        public Content(BikeRide bikeRide) {
+            this.rideName = bikeRide.getBikeRideName();
+            this.details = bikeRide.getDetails();
+            JsDateWrapper bikeRideDate = bikeRide.createJsDateWrapperRideStartTime();
+            this.timeDisplay = bikeRideDate.toString("h:mm tt");
         }
 
-        public String getName() {
-            return name;
+        public String getRideName() {
+            return rideName;
+        }
+
+        public String getTimeDisplay() {
+            return timeDisplay;
+        }
+
+        public String getDetails() {
+            return details;
         }
     }
 }

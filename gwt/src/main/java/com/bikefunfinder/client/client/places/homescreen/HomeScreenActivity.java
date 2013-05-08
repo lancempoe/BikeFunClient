@@ -59,43 +59,6 @@ public class HomeScreenActivity extends MGWTAbstractActivity implements HomeScre
 
     }
 
-    private List<CellGroup<Header, Content>> buildList(List<BikeRide> bikeRides) {
-        ArrayList<CellGroup<Header, Content>> list = new ArrayList<CellGroup<Header, Content>>();
-
-        Header header  = null;
-        ArrayList<Content> contentList = new ArrayList<Content>();
-        JsDateWrapper priorDate = null;
-        for (BikeRide bikeRide : bikeRides) {
-
-            JsDateWrapper bikeRideDate = bikeRide.createJsDateWrapperRideStartTime();
-            if (priorDate == null || !priorDate.isSameDay(bikeRideDate)) {
-                if (header != null && contentList.size() > 0) {
-                    CellGroup<Header, Content> cellGroup = new StandardCellGroup<Header, Content>(header.getName(), header, contentList);
-                    list.add(cellGroup);
-                }
-                priorDate = bikeRideDate;
-                header = new Header(bikeRideDate.toString("dddd, MMMM dd, yyyy"));
-                contentList = new ArrayList<Content>();
-            }
-
-            //Build content of 1 ride
-            String timeString = bikeRideDate.toString("h:mm tt");
-            StringBuilder html = new StringBuilder()
-                    .append("<h2>").append(bikeRide.getBikeRideName()).append("</h2>")
-                    .append("<p>").append(timeString).append("</p>")
-                    .append("<p>").append(bikeRide.getDetails()).append("</p>");
-            contentList.add(new Content(html.toString()));
-        }
-
-        //add the final item
-        if (header != null && contentList.size() > 0) {
-            CellGroup<Header, Content> cellGroup = new StandardCellGroup<Header, Content>(header.getName(), header, contentList);
-            list.add(cellGroup);
-        }
-
-        return list;
-    }
-
     private void setupDisplay(Root root) {
         final HomeScreenDisplay display = clientFactory.getDisplay(this);
         if(root != null) {

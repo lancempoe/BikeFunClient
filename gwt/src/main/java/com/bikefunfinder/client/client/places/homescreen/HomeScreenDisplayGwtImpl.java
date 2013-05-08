@@ -213,11 +213,7 @@ public class HomeScreenDisplayGwtImpl extends Composite implements HomeScreenDis
 
             //Build content of 1 ride
             String timeString = bikeRideDate.toString("h:mm tt");
-            StringBuilder html = new StringBuilder()
-                    .append("<h2>").append(bikeRide.getBikeRideName()).append("</h2>")
-                    .append("<p>").append(timeString).append("</p>")
-                    .append("<p>").append(bikeRide.getDetails()).append("</p>");
-            contentList.add(new Content(html.toString()));
+            contentList.add(new Content(bikeRide));
         }
 
         //add the final item
@@ -233,8 +229,24 @@ public class HomeScreenDisplayGwtImpl extends Composite implements HomeScreenDis
 
         @Override
         public void render(SafeHtmlBuilder safeHtmlBuilder, Content model) {
-            safeHtmlBuilder.appendEscaped(model.getName());
 
+            safeHtmlBuilder.appendHtmlConstant("<h2>");
+            if(model.getRideName()!=null && !model.getRideName().isEmpty()) {
+                safeHtmlBuilder.appendEscaped(model.getRideName());
+            }
+            safeHtmlBuilder.appendHtmlConstant("</h2>");
+
+            safeHtmlBuilder.appendHtmlConstant("<p>");
+            if(model.getTimeDisplay()!=null && !model.getTimeDisplay().isEmpty()) {
+                safeHtmlBuilder.appendEscaped(model.getTimeDisplay());
+            }
+            safeHtmlBuilder.appendHtmlConstant("</p>");
+
+            safeHtmlBuilder.appendHtmlConstant("<p>");
+            if(model.getDetails()!=null && !model.getDetails().isEmpty()) {
+                safeHtmlBuilder.appendEscaped(model.getDetails());
+            }
+            safeHtmlBuilder.appendHtmlConstant("</p>");
         }
 
         @Override
