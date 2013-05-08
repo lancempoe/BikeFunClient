@@ -38,8 +38,12 @@ private final BikeRide bikeRide;
         display.display(bikeRide);
 
         JsArray<Tracking> trackings = bikeRide.getCurrentTrackings();
-        trackings.push(bikeRide.getRideLeaderTracking());
-        display.display(trackings);
+        if(trackings!=null) {
+            if(bikeRide.getRideLeaderTracking()!=null) {
+                trackings.push(bikeRide.getRideLeaderTracking());
+            }
+        }
+        display.displayTrackings(trackings);
 
     }
 

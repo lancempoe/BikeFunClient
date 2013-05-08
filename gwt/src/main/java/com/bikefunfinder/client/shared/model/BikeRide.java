@@ -157,9 +157,8 @@ public class BikeRide extends JavaScriptObject {
         return this.rideLeaderTracking;
     }-*/;
 
-    public final native JsArray<Tracking> getCurrentTrackings()
-    /*-{
-    	return this.Trackings;
+    public final native JsArray<Tracking> getCurrentTrackings() /*-{
+    	return this.currentTrackings;
     }-*/;
     
  	public final String getJSON()

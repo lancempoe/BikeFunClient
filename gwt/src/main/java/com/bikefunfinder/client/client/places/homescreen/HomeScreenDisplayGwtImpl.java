@@ -18,10 +18,7 @@ import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Widget;
 import com.googlecode.mgwt.dom.client.event.tap.TapEvent;
 import com.googlecode.mgwt.ui.client.MGWTStyle;
-import com.googlecode.mgwt.ui.client.widget.Button;
-import com.googlecode.mgwt.ui.client.widget.GroupingCellList;
-import com.googlecode.mgwt.ui.client.widget.HeaderList;
-import com.googlecode.mgwt.ui.client.widget.LayoutPanel;
+import com.googlecode.mgwt.ui.client.widget.*;
 import com.googlecode.mgwt.ui.client.widget.base.ButtonBase;
 import com.googlecode.mgwt.ui.client.widget.base.PullArrowHeader;
 import com.googlecode.mgwt.ui.client.widget.base.PullPanel;
@@ -72,6 +69,8 @@ public class HomeScreenDisplayGwtImpl extends Composite implements HomeScreenDis
     @UiField
     Button hereAndNowButton;
 
+    @UiField
+    HeaderPanel headerPanel;
 
 
 
@@ -91,30 +90,13 @@ public class HomeScreenDisplayGwtImpl extends Composite implements HomeScreenDis
         groupingCellList.addSelectionHandler(new SelectionHandler<Content>() {
             @Override
             public void onSelection(SelectionEvent<Content> event) {
-
+                presenter.onRideClick(event.getSelectedItem().getBikeRide());
             }
         });
-
-//        HeaderList<Header, Content> bikeEntriesHeaderList;
-//        bikeEntriesHeaderList = );
-        //bikeEntriesHeaderList = new HeaderListWithPullPanel<Header, Content>(groupingCellList);
 
 
         pp = new PullGroupPanel<Header, Content>(new HeaderListWithPullPanel<Header, Content>(groupingCellList), presenter);
         headerListWidget.add(pp);
-
-
-//        pp.add(bikeEntriesHeaderList);
-//        pp.refresh();
-
-
-//        pp.getScrollPanel().removeStyleName(MGWTStyle.getTheme().getMGWTClientBundle().getLayoutCss().fillPanelExpandChild());
-
-
-
-        //headerListWidget.add(bikeEntriesHeaderList);
-
-
 
     }
 
@@ -124,23 +106,16 @@ public class HomeScreenDisplayGwtImpl extends Composite implements HomeScreenDis
         //bikeEntriesHeaderList.setPresenter(presenter);
     }
 
+    boolean wasAdjusted = false;
     @Override
     public void display(List<BikeRide> list) {
 
         pp.render(buildList(list));
 
-    }
+        if(!wasAdjusted) {
+            wasAdjusted = adjustSizeForShits();
+        }
 
-    public String dayBar(JsDateWrapper date)
-    {
-        //DateTimeFormat fmtDay = DateTimeFormat.getFormat("EEEE, MMMM dd, yyyy");
-
-        StringBuilder dayBar = new StringBuilder("<div style=\"background-color:#dec8cb\">")
-                .append("<h2>").append(date.toString("dddd, MMMM dd, yyyy")).append("</h2>")
-                .append("</div>");
-
-
-        return dayBar.toString();
     }
 
     public static boolean isSameDate(JsDateWrapper date1, JsDateWrapper date2) {
@@ -280,5 +255,22 @@ public class HomeScreenDisplayGwtImpl extends Composite implements HomeScreenDis
         HomeRefreshPullHandler homeRefreshPullHandler = new HomeRefreshPullHandler(pullArrowHeader, presenter);
         pp.setHeaderPullHandler(homeRefreshPullHandler);
         pullArrowHeader.asWidget().setVisible(false); // is managed by the pull process .. this mess could be nicer.. but needs love
+    }
+
+    private boolean adjustSizeForShits() {
+        if(headerListWidget==null || !headerListWidget.isAttached()) {
+            return false;
+        }
+
+        int adjustedHeight = headerListWidget.getOffsetHeight();
+        adjustedHeight -= timeAndDayButton.getOffsetHeight();
+        adjustedHeight -= hereAndNowButton.getOffsetHeight();
+        adjustedHeight -= headerPanel.getOffsetHeight();
+
+        if(adjustedHeight<=0) {
+            return false;
+        }
+        headerListWidget.setPixelSize(headerListWidget.getOffsetWidth(), adjustedHeight);
+        return true;
     }
 }

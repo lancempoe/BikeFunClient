@@ -43,11 +43,13 @@ public interface HomeScreenDisplay extends IsWidget {
     }
 
     public class Content {
+        private final BikeRide bikeRide;
         private final String rideName;
         private final String timeDisplay;
         private final String details;
 
         public Content(BikeRide bikeRide) {
+            this.bikeRide = bikeRide;
             this.rideName = bikeRide.getBikeRideName();
             this.details = bikeRide.getDetails();
             JsDateWrapper bikeRideDate = bikeRide.createJsDateWrapperRideStartTime();
@@ -64,6 +66,10 @@ public interface HomeScreenDisplay extends IsWidget {
 
         public String getDetails() {
             return details;
+        }
+
+        public BikeRide getBikeRide() {
+            return bikeRide;
         }
     }
 }

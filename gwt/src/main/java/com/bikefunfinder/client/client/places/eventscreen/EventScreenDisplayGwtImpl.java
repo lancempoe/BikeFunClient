@@ -9,6 +9,7 @@ import com.bikefunfinder.client.shared.model.BikeRide;
 import com.bikefunfinder.client.shared.model.Tracking;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JsArray;
+import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
@@ -19,6 +20,7 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.client.ui.Label;
 import com.googlecode.mgwt.dom.client.event.tap.TapEvent;
 import com.googlecode.mgwt.ui.client.widget.*;
+import com.googlecode.mgwt.ui.client.widget.base.MValueBoxBase;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,8 +34,8 @@ public class EventScreenDisplayGwtImpl extends Composite implements EventScreenD
 
     private Presenter presenter;
 
-    @UiField(provided = true) WidgetList widgetList;
-    FormListEntry formListEntry;
+    @UiField
+    WidgetList widgetList;
 
     MIntegerBox totalPeopleTrackingCount = new MIntegerBox();
     MCheckBox currentlyTracking = new MCheckBox();
@@ -47,12 +49,17 @@ public class EventScreenDisplayGwtImpl extends Composite implements EventScreenD
     MTextArea details = new MTextArea();
 
     @UiField
-    HTML currentTrackings;
+    HTML currentTrackings = new HTML();
 
+
+    private static Widget buildFormWidget(String title, Widget widget) {
+        FormListEntry formListEntry = new FormListEntry();
+        formListEntry.setText(title);
+        formListEntry.add(widget);
+        return formListEntry;
+    }
     public EventScreenDisplayGwtImpl() {
-
-        //Build the form.
-        widgetList = new WidgetList();
+        initWidget(uiBinder.createAndBindUi(this));
 
         totalPeopleTrackingCount.setReadOnly(true);
         currentlyTracking.setReadOnly(true);
@@ -64,64 +71,19 @@ public class EventScreenDisplayGwtImpl extends Composite implements EventScreenD
         distanceFromClient.setReadOnly(true);
         rideStartTime.setReadOnly(true);
         details.setReadOnly(true);
-
-        formListEntry = new FormListEntry();
-        formListEntry.setText("Total People Tracking:");
-        formListEntry.add(totalPeopleTrackingCount);
-        widgetList.add(formListEntry);
-
-        formListEntry = new FormListEntry();
-        formListEntry.setText("Someone is tracking:");
-        formListEntry.add(currentlyTracking);
-        widgetList.add(formListEntry);
-
-        formListEntry = new FormListEntry();
-        formListEntry.setText("Ride Image:");
-        formListEntry.add(rideImage);
-        widgetList.add(formListEntry);
-
-        formListEntry = new FormListEntry();
-        formListEntry.setText("Bike Ride Name:");
-        formListEntry.add(bikeRideName);
-        widgetList.add(formListEntry);
-
-        formListEntry = new FormListEntry();
-        formListEntry.setText("Ride Leader Name:");
-        formListEntry.add(rideLeaderName);
-        widgetList.add(formListEntry);
-
-        formListEntry = new FormListEntry();
-        formListEntry.setText("Target Audience:");
-        formListEntry.add(targetAudience);
-        widgetList.add(formListEntry);
-
-        formListEntry = new FormListEntry();
-        formListEntry.setText("Starting Address:");
-        formListEntry.add(formattedAddress);
-        widgetList.add(formListEntry);
-
-        formListEntry = new FormListEntry();
-        formListEntry.setText("Starting Address:");
-        formListEntry.add(formattedAddress);
-        widgetList.add(formListEntry);
-
-        formListEntry = new FormListEntry();
-        formListEntry.setText("Distance from the Start:");
-        formListEntry.add(distanceFromClient);
-        widgetList.add(formListEntry);
-
-        formListEntry = new FormListEntry();
-        formListEntry.setText("Start Time:");
-        formListEntry.add(rideStartTime);
-        widgetList.add(formListEntry);
-
-        formListEntry = new FormListEntry();
-        formListEntry.setText("Ride Details:");
         details.setVisibleLines(10);
-        formListEntry.add(details);
-        widgetList.add(formListEntry);
 
-        initWidget(uiBinder.createAndBindUi(this));
+        widgetList.add(buildFormWidget("Total People Tracking:", totalPeopleTrackingCount));
+        widgetList.add(buildFormWidget("Someone is tracking:", currentlyTracking));
+        widgetList.add(buildFormWidget("Ride Image:", rideImage));
+        widgetList.add(buildFormWidget("Bike Ride Name:", bikeRideName));
+        widgetList.add(buildFormWidget("Ride Leader Name:", rideLeaderName));
+        widgetList.add(buildFormWidget("Target Audience:", targetAudience));
+        widgetList.add(buildFormWidget("Starting Address:", formattedAddress));
+        widgetList.add(buildFormWidget("Starting Address:", formattedAddress));
+        widgetList.add(buildFormWidget("Distance from the Start:", distanceFromClient));
+        widgetList.add(buildFormWidget("Start Time:", rideStartTime));
+        widgetList.add(buildFormWidget("Ride Details:", details));
     }
 
     @Override
@@ -131,28 +93,65 @@ public class EventScreenDisplayGwtImpl extends Composite implements EventScreenD
 
     @Override
     public void display(BikeRide bikeRide) {
-        totalPeopleTrackingCount.setText(bikeRide.getTotalPeopleTrackingCount());
-        currentlyTracking.setValue(Boolean.parseBoolean(bikeRide.isCurrentlyTracking()));
-        rideImage.setText(bikeRide.getImagePath());
-        bikeRideName.setText(bikeRide.getBikeRideName());
-        rideLeaderName.setText(bikeRide.getRideLeaderName());
-        targetAudience.setText(bikeRide.getTargetAudience());
-        formattedAddress.setText(bikeRide.getLocation().getFormattedAddress());
-        distanceFromClient.setText(bikeRide.getDistanceFromClient() + " Miles");
-        rideStartTime.setText(bikeRide.createJsDateWrapperRideStartTime().toString("h:mm tt dddd, MMMM dd, yyyy"));
-        details.setText(bikeRide.getDetails());
+        if(bikeRide==null) return; // failSafe but ugly;
+
+        setSafeText(totalPeopleTrackingCount, bikeRide.getTotalPeopleTrackingCount());
+
+        if(bikeRide.isCurrentlyTracking()!=null && !bikeRide.isCurrentlyTracking().isEmpty()) {
+            currentlyTracking.setValue(Boolean.parseBoolean(bikeRide.isCurrentlyTracking()));
+        }
+
+        setSafeText(rideImage, bikeRide.getImagePath());
+        setSafeText(bikeRideName, bikeRide.getBikeRideName());
+        setSafeText(rideLeaderName, bikeRide.getRideLeaderName());
+        setSafeText(targetAudience, bikeRide.getTargetAudience());
+
+        if(bikeRide.getLocation()!=null) {
+            setSafeText(formattedAddress, bikeRide.getLocation().getFormattedAddress());
+        }
+
+        final String distanceFromClientString = bikeRide.getDistanceFromClient();
+        if(distanceFromClient!=null) {
+            setSafeText(distanceFromClient, distanceFromClientString + " Miles");
+        }
+
+
+        if(bikeRide.createJsDateWrapperRideStartTime()!=null) {
+            final String timeText = bikeRide.createJsDateWrapperRideStartTime().toString("h:mm tt dddd, MMMM dd, yyyy");
+            setSafeText(rideStartTime, timeText);
+        } else {
+            setSafeText(rideStartTime, " ");
+        }
+
+        setSafeText(details, bikeRide.getDetails());
     }
 
-    @Override
-    public void display(JsArray<Tracking> trackings) {
-        StringBuffer currentTrackings = new StringBuffer();
-
-        final int numTrackings = trackings.length();
-        for(int index=0; index< numTrackings; index++) {
-            Tracking tracking = trackings.get(index);
-            currentTrackings.append("<li>").append(tracking.getTrackingUserName()).append("</li>");
+    private static void setSafeText(MValueBoxBase widget, String text) {
+        if(text!=null && !text.isEmpty()) {
+            widget.setText(text);
         }
-        this.currentTrackings.setText("<ol>" + currentTrackings.toString() + "</ol>");
+    }
+    @Override
+    public void displayTrackings(JsArray<Tracking> trackings) {
+
+        final SafeHtmlBuilder safeHtmlBuilder = new SafeHtmlBuilder();
+        safeHtmlBuilder.appendHtmlConstant("<ol>");
+
+        if(trackings!=null && trackings.length()>0) {
+            final int numTrackings = trackings.length();
+
+            for(int index=0; index< numTrackings; index++) {
+                Tracking tracking = trackings.get(index);
+                if(tracking!=null && tracking.getTrackingUserName()!=null) {
+                    safeHtmlBuilder.appendHtmlConstant("<li>")
+                                   .appendEscaped(tracking.getTrackingUserName())
+                                   .appendHtmlConstant("</li>");
+                }
+            }
+        }
+        safeHtmlBuilder.appendHtmlConstant("</ol>");
+
+        this.currentTrackings.setHTML(safeHtmlBuilder.toSafeHtml());
     }
 
     @Override
