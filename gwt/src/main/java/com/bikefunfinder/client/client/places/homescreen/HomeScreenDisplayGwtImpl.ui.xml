@@ -29,10 +29,7 @@
             </mgwt:right>
         </mgwt:HeaderPanel>
 
-
-        <mgwt.base:PullPanel  ui:field="bikePullPanelList">
-        </mgwt.base:PullPanel>
-
+        <mgwt:LayoutPanel ui:field="headerListWidget"/>
 
         <g:FlowPanel>
             <g:VerticalPanel width="100%">

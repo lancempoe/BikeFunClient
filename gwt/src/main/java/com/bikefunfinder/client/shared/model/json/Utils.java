@@ -8,7 +8,11 @@ import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.core.client.JsonUtils;
 import com.google.gwt.user.client.Window;
 
+
+import java.util.Date;
+
 public class Utils {
+    private static final int MILLISECONDS_IN_A_DAY = 86400000;
     private Utils() {
         throw new RuntimeException("hey, this is private no touchies!");
     }
@@ -28,52 +32,30 @@ public class Utils {
 
 
     //Indeed just for shits.
-    private String justForShits() {
-        String geoJson = "{\"longitude\":\"-122.65895080566406\",\"latitude\":\"45.52901840209961\"}";
-        //GeoLoc geoLoc = castJsonTxtToJSOObject(geoJson);
-        //Window.alert(JSODescriber.describe(geoLoc));
+    public static String getTestingRootNodeJson(int numberOfRides) {
 
-        String locationJson = "{ " +
-                " \"streetAddress\": \"650 NE Holladay St\"," +
-                " \"city\": \"Portland\"," +
-                " \"state\": \"OR\"," +
-                " \"geoLoc\": " +geoJson+", "+
-                " \"formattedAddress\": \"650 Northeast Holladay Street, Portland, OR 97232, USA\"" +
-                " }";
-//        Location location = castJsonTxtToJSOObject(locationJson);
-//        Window.alert(JSODescriber.describe(location));
+        Date date = new Date();
 
-        String bikeRideJson = "{" +
-                " \"id\": \"51494f39e4b0776ff69f738d\"," +
-                " \"bikeRideName\": \"2: Two Days in the future\"," +
-                " \"rideStartTime\": \"1365486905310\"," +
-                " \"location\": "+locationJson+"," +
-                " \"imagePath\": \"Images\\/BikeRides\\/defaultBikeRide.jpg\"," +
-                " \"trackingAllowed\": \"true\"," +
-                " \"distanceFromClient\": \"3717.7103706379244\"," +
-                " \"currentlyTracking\": \"false\"," +
-                " \"totalPeopleTrackingCount\": \"0\"" +
-                "}";
-//        BikeRide bikeRide = castJsonTxtToJSOObject(bikeRideJson);
-//        Window.alert(JSODescriber.describe(bikeRide));
+        int dayCounterIndex=0;
 
-        String closestLocationJson = "{" +
-                "    \"id\": \"514943d0e4b0776ff69f714d\"," +
-                "    \"city\": \"Portland\"," +
-                "    \"state\": \"OR\"," +
-                "    \"geoLoc\": {" +
-                "      \"longitude\": \"-122.67620849609375\"," +
-                "      \"latitude\": \"45.52345275878906\"" +
-                "    }," +
-                "    \"formattedAddress\": \"Portland, OR, USA\"" +
-                "  }";
-//        ClosestLocation closestLocation = castJsonTxtToJSOObject(closestLocationJson);
-//        Window.alert(JSODescriber.describe(closestLocation));
+        StringBuilder stringBuilder = new StringBuilder();
+        for(int index=0;index<numberOfRides;index++) {
+            stringBuilder.append(buildBikeRideJson(Long.toString(date.getTime())));
+            if(index<(numberOfRides-1)) {
+                stringBuilder.append(",");
+            }
 
+            if(dayCounterIndex>=7) {
+                dayCounterIndex = 0;
+                date.setTime(date.getTime()+MILLISECONDS_IN_A_DAY);
+            } else {
+                dayCounterIndex++;
+            }
+        }
 
         String rootJson = "{" +
-                "  \"BikeRides\": [ "+ bikeRideJson + ","+ bikeRideJson + "  ]," +
-                "  \"ClosestLocation\": "+closestLocationJson+"," +
+                "  \"BikeRides\": [ "+ stringBuilder.toString() + "  ]," +
+                "  \"ClosestLocation\": "+buildClosestLocationJson()+"," +
                 "  \"formattedAddress\": \"Portland, OR, USA\"" +
                 "}";
 
@@ -82,6 +64,50 @@ public class Utils {
         return rootJson;
     }
 
+    private static String buildClosestLocationJson() {
+        return "{" +
+                    "    \"id\": \"514943d0e4b0776ff69f714d\"," +
+                    "    \"city\": \"Portland\"," +
+                    "    \"state\": \"OR\"," +
+                    "    \"geoLoc\": {" +
+                    "      \"longitude\": \"-122.67620849609375\"," +
+                    "      \"latitude\": \"45.52345275878906\"" +
+                    "    }," +
+                    "    \"formattedAddress\": \"Portland, OR, USA\"" +
+                    "  }";
+    }
+
+    private static String buildGeoLocationJson() {
+        return "{\"longitude\":\"-122.65895080566406\",\"latitude\":\"45.52901840209961\"}";
+    }
+
+    private static String buildLocationJson(String geoJson) {
+        return "{ " +
+                    " \"streetAddress\": \"650 NE Holladay St\"," +
+                    " \"city\": \"Portland\"," +
+                    " \"state\": \"OR\"," +
+                    " \"geoLoc\": " +geoJson+", "+
+                    " \"formattedAddress\": \"650 Northeast Holladay Street, Portland, OR 97232, USA\"" +
+                    " }";
+    }
+
+    private static String buildBikeRideJson(String startTimeMillies) {
+
+        String geoJson = buildGeoLocationJson();
+        String locationJson = buildLocationJson(geoJson);
+
+        return "{" +
+                    " \"id\": \"51494f39e4b0776ff69f738d\"," +
+                    " \"bikeRideName\": \"2: Two Days in the future\"," +
+                    " \"rideStartTime\": "+startTimeMillies+"," +
+                    " \"location\": "+locationJson+"," +
+                    " \"imagePath\": \"Images\\/BikeRides\\/defaultBikeRide.jpg\"," +
+                    " \"trackingAllowed\": \"true\"," +
+                    " \"distanceFromClient\": \"3717.7103706379244\"," +
+                    " \"currentlyTracking\": \"false\"," +
+                    " \"totalPeopleTrackingCount\": \"0\"" +
+                    "}";
+    }
 
 
 }

@@ -2,8 +2,13 @@ package com.bikefunfinder.client.client.places.homescreen;
 
 import com.bikefunfinder.client.shared.model.BikeRide;
 import com.bikefunfinder.client.shared.model.printer.JsDateWrapper;
+import com.bikefunfinder.client.shared.widgets.HeaderListWithPullPanel;
+import com.bikefunfinder.client.shared.widgets.PullGroupPanel;
+import com.bikefunfinder.client.shared.widgets.PullToRefreshTextHeader;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JsDate;
+import com.google.gwt.event.logical.shared.SelectionEvent;
+import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -15,11 +20,12 @@ import com.googlecode.mgwt.dom.client.event.tap.TapEvent;
 import com.googlecode.mgwt.ui.client.MGWTStyle;
 import com.googlecode.mgwt.ui.client.widget.Button;
 import com.googlecode.mgwt.ui.client.widget.GroupingCellList;
+import com.googlecode.mgwt.ui.client.widget.HeaderList;
+import com.googlecode.mgwt.ui.client.widget.LayoutPanel;
 import com.googlecode.mgwt.ui.client.widget.base.ButtonBase;
 import com.googlecode.mgwt.ui.client.widget.base.PullArrowHeader;
 import com.googlecode.mgwt.ui.client.widget.base.PullPanel;
 import com.googlecode.mgwt.ui.client.widget.tabbar.TabBarButton;
-import com.googlecode.mgwt.ui.client.widget.HeaderList;
 import com.googlecode.mgwt.ui.client.widget.GroupingCellList.CellGroup;
 import com.googlecode.mgwt.ui.client.widget.celllist.Cell;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
@@ -43,12 +49,10 @@ public class HomeScreenDisplayGwtImpl extends Composite implements HomeScreenDis
 
     private Presenter presenter;
 
+    PullGroupPanel pp;
 
-    /** BikeRide List **/
-    @UiField(provided = true)
-    PullPanel bikePullPanelList;
-    HeaderList<Header, Content> bikeEntriesHeaderList;
-    private GroupingCellList<Header, Content> groupingCellList = new GroupingCellList<Header, Content>(new ContentCell(), new HeaderCell());
+    @UiField
+    LayoutPanel headerListWidget;
 
     @UiField
     HTML cityName;
@@ -68,18 +72,11 @@ public class HomeScreenDisplayGwtImpl extends Composite implements HomeScreenDis
     @UiField
     Button hereAndNowButton;
 
-    private PullArrowHeader pullArrowHeader;
 
-    private final HomeRefreshPullHandler homeRefreshPullHandler;
+
 
     public HomeScreenDisplayGwtImpl() {
-        pullArrowHeader = new PullArrowHeader();
-        bikePullPanelList = new PullPanel();
-        //Interesting!  Set header
-        bikePullPanelList.setHeader(pullArrowHeader);
-        homeRefreshPullHandler = new HomeRefreshPullHandler(pullArrowHeader, presenter);
 
-        bikePullPanelList.setHeaderPullHandler(homeRefreshPullHandler);
 
         addButton = new TabBarButton(MGWTStyle.getTheme().getMGWTClientBundle().tabBarMostRecentImage());
         searchButton = new TabBarButton(MGWTStyle.getTheme().getMGWTClientBundle().tabBarSearchImage());
@@ -90,7 +87,32 @@ public class HomeScreenDisplayGwtImpl extends Composite implements HomeScreenDis
         timeAndDayButton.addStyleName(style.buttonTreatment());
         hereAndNowButton.addStyleName(style.buttonTreatment());
 
-        bikeEntriesHeaderList = new HeaderList<Header, Content>(groupingCellList);
+        GroupingCellList<Header, Content> groupingCellList = new GroupingCellList<Header, Content>(new ContentCell(), new HeaderCell());
+        groupingCellList.addSelectionHandler(new SelectionHandler<Content>() {
+            @Override
+            public void onSelection(SelectionEvent<Content> event) {
+
+            }
+        });
+
+//        HeaderList<Header, Content> bikeEntriesHeaderList;
+//        bikeEntriesHeaderList = );
+        //bikeEntriesHeaderList = new HeaderListWithPullPanel<Header, Content>(groupingCellList);
+
+
+        pp = new PullGroupPanel<Header, Content>(new HeaderListWithPullPanel<Header, Content>(groupingCellList), presenter);
+        headerListWidget.add(pp);
+
+
+//        pp.add(bikeEntriesHeaderList);
+//        pp.refresh();
+
+
+//        pp.getScrollPanel().removeStyleName(MGWTStyle.getTheme().getMGWTClientBundle().getLayoutCss().fillPanelExpandChild());
+
+
+
+        //headerListWidget.add(bikeEntriesHeaderList);
 
 
 
@@ -99,53 +121,14 @@ public class HomeScreenDisplayGwtImpl extends Composite implements HomeScreenDis
     @Override
     public void setPresenter(Presenter presenter) {
         this.presenter = presenter;
-        homeRefreshPullHandler.setPresenter(presenter);
+        //bikeEntriesHeaderList.setPresenter(presenter);
     }
 
     @Override
     public void display(List<BikeRide> list) {
-        bikePullPanelList.clear();
 
-        List<CellGroup<Header, Content>> visList = buildList(list);
+        pp.render(buildList(list));
 
-        bikeEntriesHeaderList.render(buildList(list));
-        bikePullPanelList.add(bikeEntriesHeaderList);
-
-//        bikePullPanelList.add(bikeEntriesHeaderList);
-/*
-        JsDateWrapper firstDate = null;
-        JsDateWrapper lastDay = null;
-
-        for(BikeRide br: list) {
-            JsDateWrapper date = br.createJsDateWrapperRideStartTime();
-
-            // Date Bar Creation
-            if(firstDate == null)
-            {
-                firstDate = date;
-                lastDay = firstDate;
-                bikePullPanelList.add(new HTML(dayBar(firstDate)));
-            }
-            else if(!date.isSameDay(lastDay)) {
-                lastDay = date;
-                bikePullPanelList.add(new HTML(dayBar(date)));
-            }
-
-
-            // Ride Item Creation
-            String timeString = date.toString("h:mm tt"); // 9:30 am
-                    //getShortTimeFormat().format(date);
-            StringBuilder html = new StringBuilder()
-                                   .append("<h2>").append(br.getBikeRideName()).append("</h2>")
-                                   .append("<p>").append(timeString).append("</p>")
-                                   .append("<p>").append(br.getDetails()).append("</p>");
-
-            HTML cell = new HTML(html.toString());
-            cell.addClickHandler(new BikeRideClickHandler(presenter, br, homeRefreshPullHandler));
-            bikePullPanelList.add(cell);
-        }
-//*/
-        bikePullPanelList.refresh();
     }
 
     public String dayBar(JsDateWrapper date)
@@ -275,4 +258,15 @@ public class HomeScreenDisplayGwtImpl extends Composite implements HomeScreenDis
 
     }
 
+    @Override
+    protected void onAttach() {
+        super.onAttach();    //To change body of overridden methods use File | Settings | File Templates.
+        pp.setupScrollPanel();
+
+        PullPanel.PullWidget pullArrowHeader = new PullToRefreshTextHeader();
+        pp.setHeader(pullArrowHeader);
+        HomeRefreshPullHandler homeRefreshPullHandler = new HomeRefreshPullHandler(pullArrowHeader, presenter);
+        pp.setHeaderPullHandler(homeRefreshPullHandler);
+        pullArrowHeader.asWidget().setVisible(false); // is managed by the pull process .. this mess could be nicer.. but needs love
+    }
 }

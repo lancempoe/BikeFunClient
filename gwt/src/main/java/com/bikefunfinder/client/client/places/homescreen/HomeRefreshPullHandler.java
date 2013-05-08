@@ -4,20 +4,21 @@ package com.bikefunfinder.client.client.places.homescreen;
  * @created 4/28/13 3:37 PM
  */
 
+import com.google.gwt.user.client.Window;
 import com.googlecode.mgwt.ui.client.widget.base.PullArrowWidget;
 import com.googlecode.mgwt.ui.client.widget.base.PullPanel;
 
 public class HomeRefreshPullHandler implements PullPanel.Pullhandler {
     private boolean failed = false;
     private boolean callRunning = false;
-    private final PullArrowWidget pullArrowWidget;
+    private final PullPanel.PullWidget pullWidget;
     private HomeScreenDisplay.Presenter presenter;
     private HomeScreenDisplay.Presenter.NotifyTimeAndDayCallback notifyTimeAndDayCallback;
     private long lastMilliesRefreshedPullDown = 0;
 
-    public HomeRefreshPullHandler(PullArrowWidget pullArrowWidget,
+    public HomeRefreshPullHandler(PullPanel.PullWidget pullWidget,
                                   HomeScreenDisplay.Presenter presenter) {
-        this.pullArrowWidget = pullArrowWidget;
+        this.pullWidget = pullWidget;
         this.presenter = presenter;
 
     }
@@ -30,9 +31,11 @@ public class HomeRefreshPullHandler implements PullPanel.Pullhandler {
     public void onPullStateChanged(PullPanel.PullWidget pullWidget, PullPanel.PullWidget.PullState state) {
       switch (state) {
             case NORMAL:
+                this.pullWidget.asWidget().setVisible(false);
                 break;
 
             case PULLED:
+                this.pullWidget.asWidget().setVisible(true);
                 pullWidget.setHTML("release to load");
                 lastMilliesRefreshedPullDown = System.currentTimeMillis();
                 break;
@@ -50,7 +53,7 @@ public class HomeRefreshPullHandler implements PullPanel.Pullhandler {
         callRunning = true;
         pullWidget.setHTML("loading");
 
-        pullArrowWidget.showLoadingIndicator();
+//        this.pullWidget.showLoadingIndicator();
         presenter.refreshTimeAndDayReq(askForRefresh(pullWidget));
     }
 
@@ -59,7 +62,7 @@ public class HomeRefreshPullHandler implements PullPanel.Pullhandler {
             @Override
             public void onError() {
                 callRunning = false;
-                pullArrowWidget.showError();
+//                HomeRefreshPullHandler.this.pullWidget.showError();
                 pullWidget.setHTML("Call waiting..");
                 lastMilliesRefreshedPullDown = System.currentTimeMillis();
                 presenter.refreshTimeAndDayReq(askForRefresh(pullWidget));
@@ -69,6 +72,8 @@ public class HomeRefreshPullHandler implements PullPanel.Pullhandler {
             public void onResponseReceived() {
                 callRunning = false;
                 lastMilliesRefreshedPullDown = System.currentTimeMillis();
+                HomeRefreshPullHandler.this.pullWidget.asWidget().setVisible(false);
+//                HomeRefreshPullHandler.this.pullWidget.showArrow();
             }
         };
     }

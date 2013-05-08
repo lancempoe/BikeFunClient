@@ -47,6 +47,11 @@ public class HomeScreenActivity extends MGWTAbstractActivity implements HomeScre
             usePhoneLocationToMakeTimeOfDayRequestAndUpdateDisplay(
                     clientFactory.getDisplay(this),
                     noOpNotifyTimeAndDayCallback);
+
+//            String rootJson = com.bikefunfinder.client.shared.model.json.Utils.getTestingRootNodeJson(40);
+//            Root largeFakeRoot = com.bikefunfinder.client.shared.model.json.Utils.castJsonTxtToJSOObject(rootJson);
+//            setupDisplay(largeFakeRoot);
+
         } else {
             setupDisplay(root);
         }
