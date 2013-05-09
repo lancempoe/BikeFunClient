@@ -42,6 +42,8 @@ public class BikeRideViewUtils {
         if(isView) {
             newWidgetList.add(buildFormWidget(peopleTracking, ((BikeRideViewWidgets)u).totalPeopleTrackingCount));
             newWidgetList.add(buildFormWidget(someoneIsTracking, ((BikeRideViewWidgets)u).currentlyTracking));
+        } else {
+            newWidgetList.add(buildFormWidget("Tracking allowed", u.trackingAllowed));
         }
 
         newWidgetList.add(buildFormWidget(bikeRideNames, u.bikeRideName));
