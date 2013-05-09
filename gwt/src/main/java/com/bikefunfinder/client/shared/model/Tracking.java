@@ -4,6 +4,7 @@ package com.bikefunfinder.client.shared.model;
  * @created 3/19/13 7:58 PM
  */
 
+import com.bikefunfinder.client.shared.model.printer.JsDateWrapper;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.i18n.client.DateTimeFormat;
 
@@ -25,22 +26,15 @@ public class Tracking extends JavaScriptObject {
         return this.geoLoc;
     }-*/;
 
-    public final native String getTrackingTime() /*-{
+    public final native double getTrackingTime() /*-{
         return this.trackingTime;
     }-*/;
 
-    public final String getTrackingTimeFormated() {
-        Long unformattedTrackingTime = Long.parseLong(getTrackingTime());
-        Date date = new Date(unformattedTrackingTime);
-        DateTimeFormat fmt = DateTimeFormat.getFormat("EEEE, MMMM dd, yyyy");
-        return fmt.format((date));
+    public final JsDateWrapper createJsDateWrapperTrackingStartTime() {
+        JsDateWrapper bd = JsDateWrapper.create(getTrackingTime());
+        return bd;
     }
 
-    public final Date getTrackingTimeDate() {
-        Long unformattedTrackingTime = Long.parseLong(getTrackingTime());
-        Date date = new Date(unformattedTrackingTime);
-        return date;
-    }
     public final native String getTrackingUserId() /*-{
         return this.trackingUserId;
     }-*/;

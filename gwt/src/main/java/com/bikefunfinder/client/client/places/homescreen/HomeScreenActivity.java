@@ -1,6 +1,7 @@
 package com.bikefunfinder.client.client.places.homescreen;
 
 import com.bikefunfinder.client.bootstrap.ClientFactory;
+import com.bikefunfinder.client.bootstrap.db.DBKeys;
 import com.bikefunfinder.client.client.places.createscreen.CreateScreenPlace;
 import com.bikefunfinder.client.client.places.eventscreen.EventScreenPlace;
 import com.bikefunfinder.client.client.places.gmap.GMapPlace;
@@ -12,6 +13,7 @@ import com.bikefunfinder.client.shared.constants.ScreenConstants;
 import com.bikefunfinder.client.shared.model.*;
 import com.bikefunfinder.client.shared.model.Root;
 import com.bikefunfinder.client.shared.model.helper.Extractor;
+import com.bikefunfinder.client.shared.model.json.Utils;
 import com.bikefunfinder.client.shared.model.printer.JsDateWrapper;
 import com.bikefunfinder.client.shared.request.SearchByTimeOfDayRequest;
 import com.google.gwt.user.client.Window;
@@ -101,7 +103,16 @@ public class HomeScreenActivity extends MGWTAbstractActivity implements HomeScre
 
     @Override
     public void onLoginButton() {
-        clientFactory.getPlaceController().goTo(new ProfileScreenPlace());
+
+        //Set the logged in user details
+        if (clientFactory.getStoredValue(DBKeys.USER) != null) {
+            User user = Utils.castJsonTxtToJSOObject(clientFactory.getStoredValue(DBKeys.USER));
+            clientFactory.getPlaceController().goTo(new ProfileScreenPlace(user));
+        }
+        else if (clientFactory.getStoredValue(DBKeys.ANONYMOUS_USER) != null) {
+            AnonymousUser anonymousUser = Utils.castJsonTxtToJSOObject(clientFactory.getStoredValue(DBKeys.ANONYMOUS_USER));
+            clientFactory.getPlaceController().goTo(new ProfileScreenPlace(anonymousUser));
+        }
     }
 
     @Override

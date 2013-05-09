@@ -35,13 +35,13 @@ public class CreateScreenActivity extends MGWTAbstractActivity implements Create
 
     private void setUserNameFields(ClientFactory<CreateScreenDisplay> clientFactory) {
         //Set the logged in user details
-        if (clientFactory.getStoredValue(DBKeys.ANONYMOUS_USER) != null) {
-            AnonymousUser anonymousUser = Utils.castJsonTxtToJSOObject(clientFactory.getStoredValue(DBKeys.ANONYMOUS_USER));
-            setUserDetails(anonymousUser);
-        }
-        else if (clientFactory.getStoredValue(DBKeys.USER) != null) {
+        if (clientFactory.getStoredValue(DBKeys.USER) != null) {
             User user = Utils.castJsonTxtToJSOObject(clientFactory.getStoredValue(DBKeys.USER));
             setUserDetails(user);
+        }
+        else if (clientFactory.getStoredValue(DBKeys.ANONYMOUS_USER) != null) {
+            AnonymousUser anonymousUser = Utils.castJsonTxtToJSOObject(clientFactory.getStoredValue(DBKeys.ANONYMOUS_USER));
+            setUserDetails(anonymousUser);
         }
     }
 

@@ -1,7 +1,11 @@
 package com.bikefunfinder.client.client.places.homescreen;
 
+import com.bikefunfinder.client.bootstrap.db.DBKeys;
 import com.bikefunfinder.client.shared.constants.ScreenConstants;
+import com.bikefunfinder.client.shared.model.AnonymousUser;
 import com.bikefunfinder.client.shared.model.BikeRide;
+import com.bikefunfinder.client.shared.model.User;
+import com.bikefunfinder.client.shared.model.json.Utils;
 import com.bikefunfinder.client.shared.model.printer.JsDateWrapper;
 import com.bikefunfinder.client.shared.widgets.HeaderListWithPullPanel;
 import com.bikefunfinder.client.shared.widgets.PullGroupPanel;
@@ -162,9 +166,7 @@ public class HomeScreenDisplayGwtImpl extends Composite implements HomeScreenDis
 
     @UiHandler("loginButton")
     protected void onLoginButton(TapEvent event) {
-        if (presenter != null) {
-            presenter.onLoginButton();
-        }
+        presenter.onLoginButton();
     }
 
     private List<CellGroup<Header, Content>> buildList(List<BikeRide> bikeRides) {

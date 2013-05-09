@@ -18,23 +18,22 @@
                 <mgwt:HeaderButton ui:field="backButton" backButton="true" text="Back" />
             </mgwt:left>
             <mgwt:right>
-                <g:HTML styleName="{style.positioningForName}">Profile screen</g:HTML>
+                <g:HTML styleName="{style.positioningForName}">Profile</g:HTML>
             </mgwt:right>
         </mgwt:HeaderPanel>
-        <g:HTMLPanel>
-            <strong>Create ride screen stuff</strong>
-        </g:HTMLPanel>
-        <g:FlowPanel>
-            <g:VerticalPanel width="100%">
-                <g:HorizontalPanel width="100%">
-                    <g:cell horizontalAlignment="ALIGN_LEFT">
-                        <mgwt:Button ui:field="googleLoginButton" text="GoogleLogin"/>
-                    </g:cell>
-                    <g:cell horizontalAlignment="ALIGN_LEFT">
-                        <mgwt:Button ui:field="googleAuthCheckButton" text="GetGoogleAuthToken"/>
-                    </g:cell>
-                </g:HorizontalPanel>
-            </g:VerticalPanel>
-        </g:FlowPanel>
+
+        <mgwt:ScrollPanel scrollingEnabledX="false">
+            <g:FormPanel ui:field="form">
+                <g:HTMLPanel ui:field="formContents">
+
+                    <mgwt:Button ui:field="showMyRides" width="100%" text="Show My Rides"/>
+                    <mgwt:Button ui:field="startTracking" width="100%" text="Google Login"/>
+                    <mgwt:Button ui:field="googleLoginButton" width="100%" text="Facebook Login"/>
+                    <mgwt:WidgetList ui:field="widgetList" />
+
+                </g:HTMLPanel>
+            </g:FormPanel>
+        </mgwt:ScrollPanel>
+
     </mgwt:LayoutPanel>
 </ui:UiBinder>

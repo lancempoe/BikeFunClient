@@ -4,6 +4,7 @@ package com.bikefunfinder.client.shared.model;
  * @created 4/8/13 10:20 PM
  */
 
+import com.bikefunfinder.client.shared.model.printer.JsDateWrapper;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.core.client.JsArray;
 import com.google.gwt.i18n.client.DateTimeFormat;
@@ -71,25 +72,13 @@ public class User extends JavaScriptObject {
         this.imagePath = imagePath;
     }-*/;
 
-    public final native String getJoinedTimeStamp() /*-{
+    public final native double getJoinedTimeStamp() /*-{
         return this.joinedTimeStamp;
     }-*/;
 
-    public final native void getJoinedTimeStamp(String joinedTimeStamp) /*-{
-        this.joinedTimeStamp = joinedTimeStamp;
-    }-*/;
-
-    public final String getJoinedTimeStampFormated() {
-        Long unformattedJoinedTimeStamp = Long.parseLong(getJoinedTimeStamp());
-        Date date = new Date(unformattedJoinedTimeStamp);
-        DateTimeFormat fmt = DateTimeFormat.getFormat("EEEE, MMMM dd, yyyy");
-        return fmt.format((date));
-    }
-
-    public final Date getJoinedTimeStampDate() {
-        Long unformattedJoinedTimeStamp = Long.parseLong(getJoinedTimeStamp());
-        Date date = new Date(unformattedJoinedTimeStamp);
-        return date;
+    public final JsDateWrapper createJsDateWrapperJoinedTimeStamp() {
+        JsDateWrapper bd = JsDateWrapper.create(getJoinedTimeStamp());
+        return bd;
     }
 
     public final native boolean getReadTipsForRideLeaders() /*-{
@@ -108,17 +97,13 @@ public class User extends JavaScriptObject {
         this.latestActiveTimeStamp = latestActiveTimeStamp;
     }-*/;
 
-    public final String getLatestActiveTimeStampFormated() {
-        Long unformattedLatestActiveTimeStamp = Long.parseLong(getJoinedTimeStamp());
-        Date date = new Date(unformattedLatestActiveTimeStamp);
-        DateTimeFormat fmt = DateTimeFormat.getFormat("EEEE, MMMM dd, yyyy");
-        return fmt.format((date));
-    }
+    public final native double getLatestActiveTime() /*-{
+        return this.latestActiveTimeStamp;
+    }-*/;
 
-    public final Date getLatestActiveTimeStampDate() {
-        Long unformattedLatestActiveTimeStamp = Long.parseLong(getJoinedTimeStamp());
-        Date date = new Date(unformattedLatestActiveTimeStamp);
-        return date;
+    public final JsDateWrapper createJsDateWrapperLatestActiveTime() {
+        JsDateWrapper bd = JsDateWrapper.create(getLatestActiveTime());
+        return bd;
     }
 
     public final native int getTotalHostedBikeRideCount() /*-{

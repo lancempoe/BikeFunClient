@@ -5,8 +5,14 @@ package com.bikefunfinder.client.client.places.profilescreen;
  */
 
 import com.bikefunfinder.client.bootstrap.ClientFactory;
+import com.bikefunfinder.client.client.places.eventscreen.EventScreenDisplay;
 import com.bikefunfinder.client.client.places.homescreen.HomeScreenPlace;
+import com.bikefunfinder.client.shared.model.AnonymousUser;
+import com.bikefunfinder.client.shared.model.BikeRide;
+import com.bikefunfinder.client.shared.model.Tracking;
+import com.bikefunfinder.client.shared.model.User;
 import com.google.gwt.core.client.JavaScriptObject;
+import com.google.gwt.core.client.JsArray;
 import com.google.gwt.core.shared.GWT;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
@@ -21,20 +27,9 @@ import com.googlecode.gwtphonegap.showcase.client.inappbrowser.InAppBrowserDispl
 import com.googlecode.mgwt.mvp.client.MGWTAbstractActivity;
 
 public class ProfileScreenActivity extends MGWTAbstractActivity implements ProfileScreenDisplay.Presenter {
+
     private final ClientFactory<ProfileScreenDisplay> clientFactory;
-    private InAppBrowserDisplay display;
-    private PhoneGap phoneGap;
-    private InAppBrowser inAppBrowser;
 
-    public ProfileScreenActivity(ClientFactory clientFactory) {
-        this.clientFactory = clientFactory;
-
-        this.display = null;//clientFactory.getChildBrowserDisplay();
-        this.phoneGap = clientFactory.getPhoneGap();
-
-        inAppBrowser = this.phoneGap.getInAppBrowser();
-//        inAppBrowser = GWT.create(InAppBrowserReferenceJsImpl.class);
-    }
 
     @Override
     public void start(AcceptsOneWidget panel, EventBus eventBus) {
@@ -43,31 +38,75 @@ public class ProfileScreenActivity extends MGWTAbstractActivity implements Profi
         panel.setWidget(display);
     }
 
+    public ProfileScreenActivity(ClientFactory clientFactory, User user) {
+        this.clientFactory = clientFactory;
+        setupDisplay(user);
+    }
+
+    public ProfileScreenActivity(ClientFactory clientFactory, AnonymousUser anonymousUser) {
+        this.clientFactory = clientFactory;
+        setupDisplay(anonymousUser);
+    }
+
+    private void setupDisplay(User user) {
+        ProfileScreenDisplay display = clientFactory.getDisplay(this);
+        display.display(user);
+    }
+
+    private void setupDisplay(AnonymousUser anonymousUser) {
+        ProfileScreenDisplay display = clientFactory.getDisplay(this);
+        display.display(anonymousUser);
+    }
+
     @Override
     public void backButtonSelected() {
         clientFactory.getPlaceController().goTo(new HomeScreenPlace());
     }
 
+//    private InAppBrowserDisplay display;
+//    private PhoneGap phoneGap;
+//    private InAppBrowser inAppBrowser;
+//
+//    public ProfileScreenActivity(ClientFactory clientFactory) {
+//            this.clientFactory = clientFactory;
+//
+//            this.display = null;//clientFactory.getChildBrowserDisplay();
+//            this.phoneGap = clientFactory.getPhoneGap();
+//
+//            inAppBrowser = this.phoneGap.getInAppBrowser();
+////        inAppBrowser = GWT.create(InAppBrowserReferenceJsImpl.class);
+//    }
+//
+//    @Override
+//    public void start(AcceptsOneWidget panel, EventBus eventBus) {
+//        final ProfileScreenDisplay display = clientFactory.getDisplay(this);
+//        display.setPresenter(this);
+//        panel.setWidget(display);
+//    }
+//
+//    @Override
+//    public void backButtonSelected() {
+//        clientFactory.getPlaceController().goTo(new HomeScreenPlace());
+//    }
+
     @Override
     public void onLoginButtonPressed() {
-        askGoogleForOauth();
+//        askGoogleForOauth();
     }
 
-    @Override
-    public void onCheckGooleLoginButtonPressed() {
-        Window.alert("getGoogleAuthCode"+grabGoogleAuthCode());
-    }
-
-
-
-    // A Java method using JSNI
-    native String grabGoogleAuthCode() /*-{
-        return $wnd.getGoogleAuthCode();
-    }-*/;
-
-    // A Java method using JSNI
-    native void askGoogleForOauth() /*-{
-        $wnd.doGoogleForOauth(); // $wnd is a JSNI synonym for 'window'
-    }-*/;
+//    @Override
+//    public void onCheckGooleLoginButtonPressed() {
+//        Window.alert("getGoogleAuthCode"+grabGoogleAuthCode());
+//    }
+//
+//    // A Java method using JSNI
+//    native String grabGoogleAuthCode() /*-{
+//        return $wnd.getGoogleAuthCode();
+//    }-*/;
+//
+//    // A Java method using JSNI
+//    native void askGoogleForOauth() /*-{
+//        $wnd.doGoogleForOauth(); // $wnd is a JSNI synonym for 'window'
+//    }-*/;
 
 }

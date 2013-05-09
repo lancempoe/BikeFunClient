@@ -4,16 +4,27 @@ package com.bikefunfinder.client.client.places.profilescreen;
  * @created 4/5/13 4:22 PM
  */
 
+import com.bikefunfinder.client.shared.model.AnonymousUser;
+import com.bikefunfinder.client.shared.model.BikeRide;
+import com.bikefunfinder.client.shared.model.User;
 import com.google.gwt.user.client.ui.IsWidget;
 
 public interface ProfileScreenDisplay extends IsWidget {
 
-    public void display();
+    /**
+     * This are the items that the display can provide
+     */
+    public void displayFailedToLoadProfileMessage();
+    public void display(User user);
+    public void display(AnonymousUser anonymousUser);
+
+    /**
+     * This is the contract for what the activity can provide
+     */
     public void setPresenter(Presenter presenter);
 
     public interface Presenter {
         public void backButtonSelected();
         public void onLoginButtonPressed();
-        public void onCheckGooleLoginButtonPressed();
     }
 }

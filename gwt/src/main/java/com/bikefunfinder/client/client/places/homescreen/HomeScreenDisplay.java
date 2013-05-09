@@ -1,7 +1,9 @@
 package com.bikefunfinder.client.client.places.homescreen;
 
 import com.bikefunfinder.client.shared.constants.ScreenConstants;
+import com.bikefunfinder.client.shared.model.AnonymousUser;
 import com.bikefunfinder.client.shared.model.BikeRide;
+import com.bikefunfinder.client.shared.model.User;
 import com.bikefunfinder.client.shared.model.printer.JsDateWrapper;
 import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
