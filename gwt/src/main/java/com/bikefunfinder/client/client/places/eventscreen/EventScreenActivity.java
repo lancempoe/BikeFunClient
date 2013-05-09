@@ -9,7 +9,6 @@ import com.bikefunfinder.client.client.places.homescreen.HomeScreenPlace;
 import com.bikefunfinder.client.shared.model.BikeRide;
 import com.bikefunfinder.client.shared.model.Tracking;
 import com.google.gwt.core.client.JsArray;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.web.bindery.event.shared.EventBus;
 import com.googlecode.mgwt.mvp.client.MGWTAbstractActivity;
@@ -34,7 +33,6 @@ private final ClientFactory<EventScreenDisplay> clientFactory;
         EventScreenDisplay display = clientFactory.getDisplay(this);
 
         display.display(bikeRide);
-        Window.alert("Lance, Post display: ");
         JsArray<Tracking> trackings = bikeRide.getCurrentTrackings();
         if(trackings!=null) {
             if(bikeRide.getRideLeaderTracking()!=null) {

@@ -90,7 +90,6 @@ public class HomeScreenActivity extends MGWTAbstractActivity implements HomeScre
 
     @Override
     public void onNewButton() {
-
         clientFactory.validateValidUser();
         clientFactory.getPlaceController().goTo(new CreateScreenPlace());
     }

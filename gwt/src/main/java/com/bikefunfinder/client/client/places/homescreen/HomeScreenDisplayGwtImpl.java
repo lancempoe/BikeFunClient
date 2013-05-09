@@ -77,8 +77,6 @@ public class HomeScreenDisplayGwtImpl extends Composite implements HomeScreenDis
 
 
     public HomeScreenDisplayGwtImpl() {
-
-
         addButton = new TabBarButton(MGWTStyle.getTheme().getMGWTClientBundle().tabBarMostRecentImage());
         searchButton = new TabBarButton(MGWTStyle.getTheme().getMGWTClientBundle().tabBarSearchImage());
         loginButton = new TabBarButton(MGWTStyle.getTheme().getMGWTClientBundle().tabBarContactsImage());
@@ -92,7 +90,7 @@ public class HomeScreenDisplayGwtImpl extends Composite implements HomeScreenDis
         groupingCellList.addSelectionHandler(new SelectionHandler<Content>() {
             @Override
             public void onSelection(SelectionEvent<Content> event) {
-                presenter.onRideClick(event.getSelectedItem().getBikeRide());
+            presenter.onRideClick(event.getSelectedItem().getBikeRide());
             }
         });
 
