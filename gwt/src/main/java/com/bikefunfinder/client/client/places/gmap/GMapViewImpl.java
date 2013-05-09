@@ -1,15 +1,19 @@
 package com.bikefunfinder.client.client.places.gmap;
 
 import com.bikefunfinder.client.shared.model.BikeRide;
+import com.bikefunfinder.client.shared.model.printer.JsDateWrapper;
+import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.maps.gwt.client.*;
 import com.google.maps.gwt.client.GoogleMap.CenterChangedHandler;
 import com.google.maps.gwt.client.GoogleMap.DragEndHandler;
 import com.google.maps.gwt.client.GoogleMap.DragStartHandler;
 import com.google.maps.gwt.client.GoogleMap.ZoomChangedHandler;
+import com.google.maps.gwt.client.OverlayView.*;
 import com.googlecode.mgwt.dom.client.event.tap.TapEvent;
 import com.googlecode.mgwt.dom.client.event.tap.TapHandler;
 import com.googlecode.mgwt.ui.client.MGWT;
@@ -17,6 +21,7 @@ import com.googlecode.mgwt.ui.client.MGWTStyle;
 import com.googlecode.mgwt.ui.client.widget.HeaderButton;
 import com.googlecode.mgwt.ui.client.widget.HeaderPanel;
 import com.googlecode.mgwt.ui.client.widget.LayoutPanel;
+import com.google.gwt.user.client.ui.VerticalPanel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,9 +44,10 @@ public class GMapViewImpl implements GMapDisplay {
 
     private GoogleMap map;
     private Circle circle;
-    private List<Circle> bikeRides = new ArrayList<Circle>();
+    private List<Marker> bikeRides = new ArrayList<Marker>();
     private Polygon polygon;
     private Polyline polyline;
+    private Marker marker;
 
     private LatLng center;
     private double zoom;
@@ -183,21 +189,35 @@ public class GMapViewImpl implements GMapDisplay {
             }
         });
 
+        if (marker == null)
+        {
+            final MarkerOptions markerOptions = createMarkerOptions(map, center);
+            marker = Marker.create(markerOptions);
+            marker.addClickListener(new Marker.ClickHandler() {
+                @Override
+                public void handle(MouseEvent event) {
+                    drawInfoWindow(marker, null, event);
+                }
+            });
+        } else {
+            marker.setPosition(center);
+        }
 //        Window.alert("BikeRideSize="+list.size());
         for(final BikeRide bikeRide: list) {
+
             final String latitude1 = bikeRide.getLocation().getGeoLoc().getLatitude();
             final String longitude1 = bikeRide.getLocation().getGeoLoc().getLongitude();
             final Double convertedLat = Double.parseDouble(latitude1);
             final Double convertedLong = Double.parseDouble(longitude1);
 
             final LatLng bikeRideLoc = LatLng.create(convertedLat, convertedLong);
-            final CircleOptions circleOptions = createCircleOptions(map, bikeRideLoc, 100);
-            final Circle bikeRideMarker = Circle.create(circleOptions);
+            final MarkerOptions markerOptions = createMarkerOptions(map, bikeRideLoc);
+            final Marker bikeRideMarker = Marker.create(markerOptions);
 
-            bikeRideMarker.addClickListener(new Circle.ClickHandler() {
+            bikeRideMarker.addClickListener(new Marker.ClickHandler() {
                 @Override
                 public void handle(MouseEvent event) {
-                    Window.alert("Ow that hurts! " +bikeRide.getBikeRideName());
+                    drawInfoWindow(bikeRideMarker, bikeRide, event);
                 }
             });
             bikeRides.add(bikeRideMarker);
@@ -236,6 +256,17 @@ public class GMapViewImpl implements GMapDisplay {
         return circleOptions;
     }
 
+    private static MarkerOptions createMarkerOptions(final GoogleMap map, final LatLng center)
+    {
+        final MarkerOptions markerOptions = MarkerOptions.create();
+        markerOptions.setMap(map);
+        MarkerImage markerImage = MarkerImage.create("icons/rideIcon28.png");
+        markerOptions.setIcon(markerImage);
+        markerOptions.setPosition(center);
+        return markerOptions;
+    }
+
+
     private static PolylineOptions createPolylineOptions(final GoogleMap map, final LatLng point) {
         final MVCArray<LatLng> path = MVCArray.<LatLng> create();
         path.push(point);
@@ -250,4 +281,41 @@ public class GMapViewImpl implements GMapDisplay {
         return polylineOptions;
     }
 
+    protected void drawInfoWindow(final Marker marker, BikeRide bikeRide, MouseEvent mouseEvent) {
+        if (marker == null || mouseEvent == null) {
+            return;
+        }
+        StringBuilder htmlString;
+        SafeHtmlBuilder safeHtml = new SafeHtmlBuilder();
+        if(bikeRide == null)
+        {
+            safeHtml.appendHtmlConstant("<h2>")
+                    .appendEscaped("Hello, this is you!");
+
+        }
+        else {
+        JsDateWrapper bikeRideDate = bikeRide.createJsDateWrapperRideStartTime();
+        String timeString = bikeRideDate.toString("h:mm tt");
+
+
+        safeHtml.appendHtmlConstant("<h2>")
+                .appendEscaped(bikeRide.getBikeRideName())
+                .appendHtmlConstant("</h2><p>")
+                .appendEscaped(timeString)
+                .appendHtmlConstant("</p><p>")
+                .appendEscaped(bikeRide.getDetails())
+                .appendHtmlConstant("</p>");
+        }
+
+
+        InfoWindowOptions options = InfoWindowOptions.create();
+        options.setContent(safeHtml.toString());
+        InfoWindow iw = InfoWindow.create(options);
+        iw.open(map, marker);
+
+
+        // If you want to clear widgets, Use options.clear() to remove the widgets
+        // from map
+        // options.clear();
+    }
 }
