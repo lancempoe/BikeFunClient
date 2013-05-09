@@ -1,7 +1,10 @@
 package com.bikefunfinder.client.client.places.homescreen;
 
+import com.bikefunfinder.client.shared.constants.ScreenConstants;
 import com.bikefunfinder.client.shared.model.BikeRide;
 import com.bikefunfinder.client.shared.model.printer.JsDateWrapper;
+import com.google.gwt.safehtml.shared.SafeHtml;
+import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.googlecode.mgwt.ui.client.widget.GroupingCellList.CellGroup;
 
@@ -46,15 +49,16 @@ public interface HomeScreenDisplay extends IsWidget {
         private final BikeRide bikeRide;
         private final String rideName;
         private final String timeDisplay;
-        private final String details;
+        private final String distance;
 
         public Content(BikeRide bikeRide) {
             this.bikeRide = bikeRide;
             this.rideName = bikeRide.getBikeRideName();
-            this.details = bikeRide.getDetails();
+            this.distance = ScreenConstants.DISTANCE_FORMAT.format(bikeRide.getDistanceFromClient());
             JsDateWrapper bikeRideDate = bikeRide.createJsDateWrapperRideStartTime();
-            this.timeDisplay = bikeRideDate.toString("h:mm tt");
+            this.timeDisplay = bikeRideDate.toString(ScreenConstants.TimeFormatPrintPretty);
         }
+
 
         public String getRideName() {
             return rideName;
@@ -64,12 +68,32 @@ public interface HomeScreenDisplay extends IsWidget {
             return timeDisplay;
         }
 
-        public String getDetails() {
-            return details;
+        public String getDistance() {
+            return distance;
         }
 
         public BikeRide getBikeRide() {
             return bikeRide;
+        }
+
+        public SafeHtml getShortDescription() {
+            SafeHtmlBuilder safeHtmlBuilder = new SafeHtmlBuilder();
+            if(this.getRideName()!=null && !this.getRideName().isEmpty()) {
+                safeHtmlBuilder.appendEscaped(this.getRideName());
+            }
+            safeHtmlBuilder.appendHtmlConstant(", ");
+
+            if(this.getTimeDisplay()!=null && !this.getTimeDisplay().isEmpty()) {
+                safeHtmlBuilder.appendEscaped(this.getTimeDisplay());
+            }
+            safeHtmlBuilder.appendHtmlConstant(", ");
+
+            if(this.getDistance()!=null && !this.getDistance().isEmpty()) {
+                safeHtmlBuilder.appendEscaped(this.getDistance());
+            }
+            safeHtmlBuilder.appendHtmlConstant(" Miles Away");
+
+            return safeHtmlBuilder.toSafeHtml();
         }
     }
 }

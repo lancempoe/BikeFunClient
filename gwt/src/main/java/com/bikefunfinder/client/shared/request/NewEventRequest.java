@@ -6,10 +6,13 @@ package com.bikefunfinder.client.shared.request;
 
 import com.bikefunfinder.client.shared.model.BikeRide;
 import com.bikefunfinder.client.shared.constants.Settings;
+import com.bikefunfinder.client.shared.model.GeoLoc;
 import com.bikefunfinder.client.shared.model.json.Utils;
 import com.bikefunfinder.client.shared.model.printer.JSODescriber;
 import com.google.gwt.http.client.*;
 import com.googlecode.mgwt.ui.client.dialog.Dialogs;
+
+import java.math.BigDecimal;
 
 public final class NewEventRequest {
     public interface Callback {
@@ -20,6 +23,8 @@ public final class NewEventRequest {
     public static final class Builder {
         private NewEventRequest.Callback callback;
         private BikeRide bikeRide;
+        private BigDecimal longitude;
+        private BigDecimal latitude;
 
         public Builder(final NewEventRequest.Callback callback) {
             if (callback == null) {
@@ -43,6 +48,16 @@ public final class NewEventRequest {
             return this;
         }
 
+        public Builder latitude(final GeoLoc geoLoc) {
+            this.latitude = new BigDecimal(geoLoc.getLatitude());
+            return this;
+        }
+
+        public Builder longitude(final GeoLoc geoLoc) {
+            this.longitude = new BigDecimal(geoLoc.getLongitude());
+            return this;
+        }
+
         public NewEventRequest send() {
             return new NewEventRequest(this);
         }
@@ -52,6 +67,8 @@ public final class NewEventRequest {
 
     private final NewEventRequest.Callback callback;
     private final BikeRide bikeRide;
+    private final BigDecimal latitude;
+    private final BigDecimal longitude;
     private final Request request;
 
     public void cancel() {
@@ -65,6 +82,8 @@ public final class NewEventRequest {
     private NewEventRequest(final Builder builder) {
         callback = builder.callback;
         bikeRide = builder.bikeRide;
+        latitude = builder.latitude;
+        longitude = builder.longitude;
         request = send();
     }
 
@@ -86,6 +105,10 @@ public final class NewEventRequest {
     private String getUrlWithQuery() {
         final StringBuilder builder = new StringBuilder();
         builder.append(URL);
+        builder.append("/geoloc=");
+        builder.append(latitude);
+        builder.append(",");
+        builder.append(longitude);
 
         return builder.toString();
     }

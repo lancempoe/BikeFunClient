@@ -39,7 +39,7 @@ public class EventScreenDisplayGwtImpl extends Composite implements EventScreenD
 
     MIntegerBox totalPeopleTrackingCount = new MIntegerBox();
     MCheckBox currentlyTracking = new MCheckBox();
-    MTextBox rideImage = new MTextBox();
+    //MTextBox rideImage = new MTextBox();
     MTextBox bikeRideName = new MTextBox();
     MTextBox rideLeaderName = new MTextBox();
     MTextBox targetAudience = new MTextBox();
@@ -63,7 +63,7 @@ public class EventScreenDisplayGwtImpl extends Composite implements EventScreenD
 
         totalPeopleTrackingCount.setReadOnly(true);
         currentlyTracking.setReadOnly(true);
-        rideImage.setReadOnly(true);
+        //rideImage.setReadOnly(true);
         bikeRideName.setReadOnly(true);
         rideLeaderName.setReadOnly(true);
         targetAudience.setReadOnly(true);
@@ -75,7 +75,7 @@ public class EventScreenDisplayGwtImpl extends Composite implements EventScreenD
 
         widgetList.add(buildFormWidget("Total People Tracking:", totalPeopleTrackingCount));
         widgetList.add(buildFormWidget("Someone is tracking:", currentlyTracking));
-        widgetList.add(buildFormWidget("Ride Image:", rideImage));
+        //widgetList.add(buildFormWidget("Ride Image:", rideImage));
         widgetList.add(buildFormWidget("Bike Ride Name:", bikeRideName));
         widgetList.add(buildFormWidget("Ride Leader Name:", rideLeaderName));
         widgetList.add(buildFormWidget("Target Audience:", targetAudience));
@@ -101,7 +101,7 @@ public class EventScreenDisplayGwtImpl extends Composite implements EventScreenD
             currentlyTracking.setValue(Boolean.parseBoolean(bikeRide.isCurrentlyTracking()));
         }
 
-        setSafeText(rideImage, bikeRide.getImagePath());
+        //setSafeText(rideImage, bikeRide.getImagePath());
         setSafeText(bikeRideName, bikeRide.getBikeRideName());
         setSafeText(rideLeaderName, bikeRide.getRideLeaderName());
         setSafeText(targetAudience, bikeRide.getTargetAudience());
@@ -110,14 +110,14 @@ public class EventScreenDisplayGwtImpl extends Composite implements EventScreenD
             setSafeText(formattedAddress, bikeRide.getLocation().getFormattedAddress());
         }
 
-        final String distanceFromClientString = bikeRide.getDistanceFromClient();
+        final String distanceFromClientString = ScreenConstants.DISTANCE_FORMAT.format(bikeRide.getDistanceFromClient());
         if(distanceFromClient!=null) {
             setSafeText(distanceFromClient, distanceFromClientString + " Miles");
         }
 
 
         if(bikeRide.createJsDateWrapperRideStartTime()!=null) {
-            final String timeText = bikeRide.createJsDateWrapperRideStartTime().toString("h:mm tt dddd, MMMM dd, yyyy");
+            final String timeText = bikeRide.createJsDateWrapperRideStartTime().toString(ScreenConstants.DateTimeFormatPrintPretty);
             setSafeText(rideStartTime, timeText);
         } else {
             setSafeText(rideStartTime, " ");

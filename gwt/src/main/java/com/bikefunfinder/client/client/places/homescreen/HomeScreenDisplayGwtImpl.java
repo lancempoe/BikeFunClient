@@ -1,5 +1,6 @@
 package com.bikefunfinder.client.client.places.homescreen;
 
+import com.bikefunfinder.client.shared.constants.ScreenConstants;
 import com.bikefunfinder.client.shared.model.BikeRide;
 import com.bikefunfinder.client.shared.model.printer.JsDateWrapper;
 import com.bikefunfinder.client.shared.widgets.HeaderListWithPullPanel;
@@ -9,6 +10,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JsDate;
 import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
+import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -182,12 +184,11 @@ public class HomeScreenDisplayGwtImpl extends Composite implements HomeScreenDis
                     list.add(cellGroup);
                 }
                 priorDate = bikeRideDate;
-                header = new Header(bikeRideDate.toString("dddd, MMMM dd, yyyy"));
+                header = new Header(bikeRideDate.toString(ScreenConstants.DateFormatPrintPretty));
                 contentList = new ArrayList<Content>();
             }
 
             //Build content of 1 ride
-            String timeString = bikeRideDate.toString("h:mm tt");
             contentList.add(new Content(bikeRide));
         }
 
@@ -204,24 +205,7 @@ public class HomeScreenDisplayGwtImpl extends Composite implements HomeScreenDis
 
         @Override
         public void render(SafeHtmlBuilder safeHtmlBuilder, Content model) {
-
-            safeHtmlBuilder.appendHtmlConstant("<h2>");
-            if(model.getRideName()!=null && !model.getRideName().isEmpty()) {
-                safeHtmlBuilder.appendEscaped(model.getRideName());
-            }
-            safeHtmlBuilder.appendHtmlConstant("</h2>");
-
-            safeHtmlBuilder.appendHtmlConstant("<p>");
-            if(model.getTimeDisplay()!=null && !model.getTimeDisplay().isEmpty()) {
-                safeHtmlBuilder.appendEscaped(model.getTimeDisplay());
-            }
-            safeHtmlBuilder.appendHtmlConstant("</p>");
-
-            safeHtmlBuilder.appendHtmlConstant("<p>");
-            if(model.getDetails()!=null && !model.getDetails().isEmpty()) {
-                safeHtmlBuilder.appendEscaped(model.getDetails());
-            }
-            safeHtmlBuilder.appendHtmlConstant("</p>");
+            safeHtmlBuilder.append(model.getShortDescription());
         }
 
         @Override

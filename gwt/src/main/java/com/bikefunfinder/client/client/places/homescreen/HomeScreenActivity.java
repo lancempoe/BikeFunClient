@@ -6,6 +6,8 @@ import com.bikefunfinder.client.client.places.eventscreen.EventScreenPlace;
 import com.bikefunfinder.client.client.places.gmap.GMapPlace;
 import com.bikefunfinder.client.client.places.profilescreen.ProfileScreenPlace;
 import com.bikefunfinder.client.client.places.searchscreen.SearchScreenPlace;
+import com.bikefunfinder.client.shared.Tools.DeviceTools;
+import com.bikefunfinder.client.shared.Tools.NonPhoneGapGeolocationCallback;
 import com.bikefunfinder.client.shared.constants.ScreenConstants;
 import com.bikefunfinder.client.shared.model.*;
 import com.bikefunfinder.client.shared.model.Root;
@@ -40,14 +42,11 @@ public class HomeScreenActivity extends MGWTAbstractActivity implements HomeScre
     public HomeScreenActivity(ClientFactory<HomeScreenDisplay> clientFactory, Root root) {
         this.clientFactory = clientFactory;
 
-
         if(root == null ) {
             //save one and use a few times?
             //store in db maybe for later?
-            usePhoneLocationToMakeTimeOfDayRequestAndUpdateDisplay(
-                    clientFactory.getDisplay(this),
-                    noOpNotifyTimeAndDayCallback);
-
+              refreshTimeAndDayReq(noOpNotifyTimeAndDayCallback);
+              
 //            String rootJson = com.bikefunfinder.client.shared.model.json.Utils.getTestingRootNodeJson(40);
 //            Root largeFakeRoot = com.bikefunfinder.client.shared.model.json.Utils.castJsonTxtToJSOObject(rootJson);
 //            setupDisplay(largeFakeRoot);
@@ -55,15 +54,12 @@ public class HomeScreenActivity extends MGWTAbstractActivity implements HomeScre
         } else {
             setupDisplay(root);
         }
-
-
     }
 
     private void setupDisplay(Root root) {
         final HomeScreenDisplay display = clientFactory.getDisplay(this);
         if(root != null) {
             display.display(Extractor.getBikeRidesFrom(root));
-            //TODO PUT HERE?
         }
 
         //Get City
@@ -118,7 +114,18 @@ public class HomeScreenActivity extends MGWTAbstractActivity implements HomeScre
     public void onTimeAndDayButton() {
         final HomeScreenDisplay display = clientFactory.getDisplay(this);
 
-        usePhoneLocationToMakeTimeOfDayRequestAndUpdateDisplay(display, noOpNotifyTimeAndDayCallback);
+        DeviceTools.getPhoneGeoLoc(clientFactory, new NonPhoneGapGeolocationCallback() {
+            @Override
+            public void onSuccess(GeoLoc geoLoc) {
+                fireRequestForTimeOfDay(display, geoLoc, noOpNotifyTimeAndDayCallback);
+
+            }
+
+            @Override
+            public void onFailure(GeoLoc geoLoc) {
+                fireRequestForTimeOfDay(display, geoLoc, noOpNotifyTimeAndDayCallback);
+            }
+        });
     }
 
     @Override
@@ -127,17 +134,36 @@ public class HomeScreenActivity extends MGWTAbstractActivity implements HomeScre
     }
 
     @Override
-    public void refreshTimeAndDayReq(NotifyTimeAndDayCallback callback) {
+    public void refreshTimeAndDayReq(final NotifyTimeAndDayCallback callback) {
         final HomeScreenDisplay display = clientFactory.getDisplay(this);
-        usePhoneLocationToMakeTimeOfDayRequestAndUpdateDisplay(display, callback);
+
+        DeviceTools.getPhoneGeoLoc(clientFactory, new NonPhoneGapGeolocationCallback() {
+            @Override
+            public void onSuccess(GeoLoc geoLoc) {
+                fireRequestForTimeOfDay(display, geoLoc, callback);
+                callback.onResponseReceived();
+            }
+
+            @Override
+            public void onFailure(GeoLoc geoLoc) {
+                fireRequestForTimeOfDay(display, geoLoc, callback);
+                callback.onError();
+            }
+        });
+
     }
 
     private void fireRequestForTimeOfDay(
             final HomeScreenDisplay display,
-            final double latitude,
-            final double longitude,
+            final GeoLoc geoLoc,
             final NotifyTimeAndDayCallback notifyTimeAndDayCallback) {
         SearchByTimeOfDayRequest.Callback callback = new SearchByTimeOfDayRequest.Callback() {
+            @Override
+            public void onResponseReceived(Root root) {
+                setupDisplay(root);
+                notifyTimeAndDayCallback.onResponseReceived();
+            }
+
             @Override
             public void onError() {
                 Window.alert("Oops, your BFF will be back shortly.");
@@ -145,47 +171,10 @@ public class HomeScreenActivity extends MGWTAbstractActivity implements HomeScre
                 display.display("City Unknown");
                 notifyTimeAndDayCallback.onError();
             }
-
-            @Override
-            public void onResponseReceived(Root root) {
-                setupDisplay(root);
-                notifyTimeAndDayCallback.onResponseReceived();
-            }
         };
         SearchByTimeOfDayRequest.Builder request = new SearchByTimeOfDayRequest.Builder(callback);
-        request.latitude(latitude).longitude(longitude).send();
+        request.latitude(geoLoc).longitude(geoLoc).send();
     }
 
-    private void usePhoneLocationToMakeTimeOfDayRequestAndUpdateDisplay(
-            final HomeScreenDisplay display,
-            final NotifyTimeAndDayCallback callback) {
-        final GeolocationOptions options = new GeolocationOptions();
-        options.setEnableHighAccuracy(true);
-        options.setTimeout(3000);
-        options.setMaximumAge(1000);
 
-        final GeolocationCallback geolocationCallback = new GeolocationCallback() {
-            @Override
-            public void onSuccess(final Position position) {
-
-                final Coordinates coordinates = position.getCoordinates();
-                final double latitude = coordinates.getLatitude();
-                final double longitude = coordinates.getLongitude();
-
-                fireRequestForTimeOfDay(display, latitude, longitude, callback);
-            }
-
-            @Override
-            public void onFailure(final PositionError error) {
-                Window.alert("Failed to get GeoLocation.  Using Portland as default.");
-
-                fireRequestForTimeOfDay(display, ScreenConstants.PORTLAND_LATITUDE,
-	                ScreenConstants.PORTLAND_LOGITUDE,
-    	            callback);
-            }
-        };
-
-        Geolocation phoneGeoLocation = clientFactory.getPhoneGap().getGeolocation();
-        phoneGeoLocation.getCurrentPosition(geolocationCallback, options);
-    }
 }

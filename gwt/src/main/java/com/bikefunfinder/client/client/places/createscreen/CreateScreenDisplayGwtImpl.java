@@ -48,7 +48,7 @@ public class CreateScreenDisplayGwtImpl  extends Composite implements CreateScre
     MTextBox startTime = new MTextBox();
     MTextArea details = new MTextArea();
     MCheckBox trackingAllowed = new MCheckBox();
-    MTextBox rideImage = new MTextBox();
+//    MTextBox rideImage = new MTextBox();
 
     public CreateScreenDisplayGwtImpl() {
 
@@ -108,11 +108,11 @@ public class CreateScreenDisplayGwtImpl  extends Composite implements CreateScre
         formListEntry.setText("Tracking Allowed:");
         formListEntry.add(trackingAllowed);
         widgetList.add(formListEntry);
-
-        formListEntry = new FormListEntry();
-        formListEntry.setText("Ride Image:");
-        formListEntry.add(rideImage);
-        widgetList.add(formListEntry);
+//
+//        formListEntry = new FormListEntry();
+//        formListEntry.setText("Ride Image:");
+//        formListEntry.add(rideImage);
+//        widgetList.add(formListEntry);
 
         initWidget(uiBinder.createAndBindUi(this));
 
@@ -154,7 +154,7 @@ public class CreateScreenDisplayGwtImpl  extends Composite implements CreateScre
             BikeRide br = GWT.create(BikeRide.class);
 
             br.setBikeRideName(bikeRideName.getText());
-            br.setBikeRideName(targetAudience.getValue(targetAudience.getSelectedIndex()));
+            br.setTargetAudience(targetAudience.getValue(targetAudience.getSelectedIndex()));
             Location location = GWT.create(Location.class);
             location.setCity(locationCity.getText());
             location.setState(locationState.getText());
@@ -162,11 +162,11 @@ public class CreateScreenDisplayGwtImpl  extends Composite implements CreateScre
             br.setLocation(location);
             try
             {
-                Window.alert("StartDate: " + getDatePickerText() + "\nStartTime: " + getTimePickerText());
-                DateTimeFormat dtf = DateTimeFormat.getFormat("mm/dd/yyyy h:mm a");
+                DateTimeFormat dtf = DateTimeFormat.getFormat(ScreenConstants.DateFormat +
+                                                              " " +
+                                                              ScreenConstants.TimeFormat);
                 Date date = null;
                 date =  dtf.parse(getDatePickerText() + " " + getTimePickerText());
-                Window.alert("getTime() " + date.getTime() + "   parseTime: " + date.toString());
                 br.setRideStartTime(date.getTime());
             }
             catch(IllegalArgumentException e)
@@ -175,7 +175,7 @@ public class CreateScreenDisplayGwtImpl  extends Composite implements CreateScre
             }
             br.setDetails(details.getText());
             br.setTrackingAllowed(trackingAllowed.getValue());
-            br.setImagePath(rideImage.getValue());
+//            br.setImagePath(rideImage.getValue());
 
             presenter.onFormSelected(br);
         }

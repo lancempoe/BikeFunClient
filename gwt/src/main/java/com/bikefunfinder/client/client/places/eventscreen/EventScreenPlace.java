@@ -7,6 +7,7 @@ package com.bikefunfinder.client.client.places.eventscreen;
 import com.bikefunfinder.client.shared.model.BikeRide;
 import com.google.gwt.place.shared.Place;
 import com.google.gwt.place.shared.PlaceTokenizer;
+import com.google.gwt.user.client.Window;
 
 public class EventScreenPlace extends Place {
     final BikeRide bikeRide;

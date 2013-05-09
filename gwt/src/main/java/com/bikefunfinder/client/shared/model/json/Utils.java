@@ -19,7 +19,7 @@ public class Utils {
 
     public static <T extends JavaScriptObject> T castJsonTxtToJSOObject(String json) {
         if(!JsonUtils.safeToEval(json)) {
-            Window.alert("Woah nelly.  Unknown date.");
+            Window.alert("Woah nelly.  Unknown data.");
         }
 
         //Window.alert("PepPep: "+json);

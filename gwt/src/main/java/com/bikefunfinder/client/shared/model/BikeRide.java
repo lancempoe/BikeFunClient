@@ -29,8 +29,8 @@ public class BikeRide extends JavaScriptObject {
         return this.bikeRideName;
     }-*/;
 
-    public final native void setBikeRideName(String name) /*-{
-        this.bikeRideName = name;
+    public final native void setBikeRideName(String bikeRideName) /*-{
+        this.bikeRideName = bikeRideName;
     }-*/;
 
     public final native String getDetails() /*-{
@@ -73,34 +73,34 @@ public class BikeRide extends JavaScriptObject {
         this.rideStartTime = time;
     }-*/;
 
-    public final double getRideStartTimeDouble() {
-        return getRideStartTime();
-    }
-
-    public final String getRideStartTimeFormated()
-    {
-        JsDate jsDate = JsDate.create(getRideStartTimeDouble());
-
-        DateTimeFormat fmt = DateTimeFormat.getFormat("EEEE, MMMM dd, yyyy");
-        //Window.alert("double: " + miliDouble + " String " + getRideStartTime());
-        return jsDate.toString();
-    }
-    public final native String getRideStartTimeFancyFormat() /*-{
-        var rideDate = new $wnd.XDate(this.rideStartTime);
-        //return date.customFormat("#DDDD#, #MMMM# #D#, #YYYY#");
-        return rideDate.toString("dddd, MMMM dd, yyyy");
-    }-*/;
-
-    @Deprecated
-    public final Date getRideStartTimeDate()
-    {
-        return new Date();
-    }
-    public final JsDate getRideStartTimeJsDate()
-    {
-        JsDate jsDate = JsDate.create(getRideStartTimeDouble());
-        return jsDate;
-    }
+//    public final double getRideStartTimeDouble() {
+//        return getRideStartTime();
+//    }
+//
+//    public final String getRideStartTimeFormated()
+//    {
+//        JsDate jsDate = JsDate.create(getRideStartTimeDouble());
+//
+//        DateTimeFormat fmt = DateTimeFormat.getFormat("EEEE, MMMM dd, yyyy");
+//        //Window.alert("double: " + miliDouble + " String " + getRideStartTime());
+//        return jsDate.toString();
+//    }
+//    public final native String getRideStartTimeFancyFormat() /*-{
+//        var rideDate = new $wnd.XDate(this.rideStartTime);
+//        //return date.customFormat("#DDDD#, #MMMM# #D#, #YYYY#");
+//        return rideDate.toString("dddd, MMMM dd, yyyy");
+//    }-*/;
+//
+//    @Deprecated
+//    public final Date getRideStartTimeDate()
+//    {
+//        return new Date();
+//    }
+//    public final JsDate getRideStartTimeJsDate()
+//    {
+//        JsDate jsDate = JsDate.create(getRideStartTimeDouble());
+//        return jsDate;
+//    }
 
     public final native Location getLocation() /*-{
         return this.location;
@@ -141,8 +141,12 @@ public class BikeRide extends JavaScriptObject {
         this.rideLeaderName = rideLeaderName;
     }-*/;
 
-    public final native String getDistanceFromClient() /*-{
+    public final native Double getDistanceFromClient() /*-{
         return this.distanceFromClient;
+    }-*/;
+
+    public final native void setDistanceFromClient(String distanceFromClient) /*-{
+        this.distanceFromClient = distanceFromClient;
     }-*/;
 
     public final native String isCurrentlyTracking() /*-{

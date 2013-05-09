@@ -60,7 +60,7 @@ public final class EventRequest {
             return this;
         }
 
-        public EventRequest send(Query query) {
+        public EventRequest send() {
             return new EventRequest(this);
         }
     }
