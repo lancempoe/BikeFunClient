@@ -71,7 +71,8 @@ public class HomeScreenActivity extends MGWTAbstractActivity implements HomeScre
             if (matchFound) {
                 display.display(matcher.getGroup(0));
             } else {
-                if (root.getClosestLocation() != null) {
+                if (root.getClosestLocation() != null &&
+                    root.getClosestLocation().getFormattedAddress() != null) {
                     display.display("Unknown City");
                 } else {
                     display.display("Sorry, No Rides");
