@@ -136,7 +136,7 @@ public class GMapActivity extends NavBaseActivity implements GMapDisplay.Present
 
             private String getCityNameFromRoot(Root root) {
                 if(root == null) {
-                    return "Unknown City";
+                    return "Sorry, No Rides";
                 }
 
                 if(root.getClosestLocation()==null) {
