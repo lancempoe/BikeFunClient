@@ -5,31 +5,21 @@ package com.bikefunfinder.client.client.places.profilescreen;
  */
 
 import com.bikefunfinder.client.bootstrap.ClientFactory;
-import com.bikefunfinder.client.client.places.eventscreen.EventScreenDisplay;
 import com.bikefunfinder.client.client.places.homescreen.HomeScreenPlace;
-import com.bikefunfinder.client.shared.model.AnonymousUser;
-import com.bikefunfinder.client.shared.model.BikeRide;
-import com.bikefunfinder.client.shared.model.Tracking;
-import com.bikefunfinder.client.shared.model.User;
-import com.google.gwt.core.client.JavaScriptObject;
-import com.google.gwt.core.client.JsArray;
-import com.google.gwt.core.shared.GWT;
+import com.bikefunfinder.client.shared.Tools.DeviceTools;
+import com.bikefunfinder.client.shared.Tools.NonPhoneGapGeolocationCallback;
+import com.bikefunfinder.client.shared.model.*;
+import com.bikefunfinder.client.shared.request.SearchByTimeOfDayForProfileRequest;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.web.bindery.event.shared.EventBus;
-import com.googlecode.gwtphonegap.client.PhoneGap;
-import com.googlecode.gwtphonegap.client.inappbrowser.InAppBrowser;
-import com.googlecode.gwtphonegap.client.inappbrowser.InAppBrowserReference;
-import com.googlecode.gwtphonegap.client.inappbrowser.LoadStopEvent;
-import com.googlecode.gwtphonegap.client.inappbrowser.LoadStopHandler;
-import com.googlecode.gwtphonegap.client.inappbrowser.js.InAppBrowserReferenceJsImpl;
-import com.googlecode.gwtphonegap.showcase.client.inappbrowser.InAppBrowserDisplay;
 import com.googlecode.mgwt.mvp.client.MGWTAbstractActivity;
+
+import java.util.ArrayList;
 
 public class ProfileScreenActivity extends MGWTAbstractActivity implements ProfileScreenDisplay.Presenter {
 
     private final ClientFactory<ProfileScreenDisplay> clientFactory;
-
 
     @Override
     public void start(AcceptsOneWidget panel, EventBus eventBus) {
@@ -61,6 +51,37 @@ public class ProfileScreenActivity extends MGWTAbstractActivity implements Profi
     @Override
     public void backButtonSelected() {
         clientFactory.getPlaceController().goTo(new HomeScreenPlace());
+    }
+
+    @Override
+    public void onShowMyRidesButton() {
+        DeviceTools.getPhoneGeoLoc(clientFactory, new NonPhoneGapGeolocationCallback() {
+            @Override
+            public void onSuccess(GeoLoc geoLoc) {
+                fireRequestForsearchByTimeOfDayForProfile(geoLoc);
+            }
+
+            @Override
+            public void onFailure(GeoLoc geoLoc) {
+                fireRequestForsearchByTimeOfDayForProfile(geoLoc);
+            }
+        });
+    }
+
+    private void fireRequestForsearchByTimeOfDayForProfile(GeoLoc geoLoc) {
+        SearchByTimeOfDayForProfileRequest.Callback callback = new SearchByTimeOfDayForProfileRequest.Callback() {
+            @Override
+            public void onResponseReceived(Root root) {
+                clientFactory.getPlaceController().goTo(new HomeScreenPlace(root));
+            }
+
+            @Override
+            public void onError() {
+                Window.alert("Oops, your BFF will be back shortly.");
+            }
+        };
+        SearchByTimeOfDayForProfileRequest.Builder request = new SearchByTimeOfDayForProfileRequest.Builder(callback);
+        request.latitude(geoLoc).longitude(geoLoc).send();
     }
 
 //    private InAppBrowserDisplay display;

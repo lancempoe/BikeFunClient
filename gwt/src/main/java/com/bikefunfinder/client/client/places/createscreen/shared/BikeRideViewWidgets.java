@@ -56,9 +56,10 @@ public class BikeRideViewWidgets extends BikeRideCreateWidgets {
             setSafeText(distanceFromClient, distanceFromClientString + " Miles");
         }
 
-
         if(bikeRide.createJsDateWrapperRideStartTime()!=null) {
-            final String timeText = bikeRide.createJsDateWrapperRideStartTime().toString(ScreenConstants.DateTimeFormatPrintPretty);
+            final String timeText = bikeRide.createJsDateWrapperRideStartTime().toString(ScreenConstants.DateFormatPrintPretty) +
+                                    " at " +
+                                    bikeRide.createJsDateWrapperRideStartTime().toString(ScreenConstants.TimeFormatPrintPretty);
             setSafeText(startTime, timeText);
         } else {
             setSafeText(startTime, " ");

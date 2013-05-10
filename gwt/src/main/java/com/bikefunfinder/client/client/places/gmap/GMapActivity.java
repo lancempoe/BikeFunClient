@@ -4,9 +4,7 @@ import com.bikefunfinder.client.shared.constants.ScreenConstants;
 import com.bikefunfinder.client.shared.model.BikeRide;
 import com.bikefunfinder.client.shared.model.Root;
 import com.bikefunfinder.client.shared.model.helper.Extractor;
-import com.bikefunfinder.client.shared.model.printer.JSODescriber;
 import com.bikefunfinder.client.shared.request.SearchByProximityRequest;
-import com.google.gwt.place.shared.Place;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.web.bindery.event.shared.EventBus;
@@ -78,7 +76,7 @@ public class GMapActivity extends NavBaseActivity implements GMapDisplay.Present
                 fireRequestForHereAndNow(
                     geoMapView,
                     ScreenConstants.PORTLAND_LATITUDE,
-                    ScreenConstants.PORTLAND_LOGITUDE,
+                    ScreenConstants.PORTLAND_LONGITUDE,
                     0
                 );
             }

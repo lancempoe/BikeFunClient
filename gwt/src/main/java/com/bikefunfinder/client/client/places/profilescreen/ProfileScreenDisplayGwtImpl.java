@@ -72,7 +72,9 @@ public class ProfileScreenDisplayGwtImpl extends Composite implements ProfileScr
         setSafeText(totalHostedBikeRideCount, String.valueOf(anonymousUser.getTotalHostedBikeRideCount()));
 
         if(anonymousUser.createJsDateWrapperJoinedTimeStamp()!=null) {
-            final String timeText = anonymousUser.createJsDateWrapperJoinedTimeStamp().toString(ScreenConstants.DateTimeFormatPrintPretty);
+            final String timeText = anonymousUser.createJsDateWrapperJoinedTimeStamp().toString(ScreenConstants.DateFormatPrintPretty) +
+                                    " at " +
+                                    anonymousUser.createJsDateWrapperJoinedTimeStamp().toString(ScreenConstants.TimeFormatPrintPretty);
             setSafeText(joinedTimeStamp, timeText);
         } else {
             setSafeText(joinedTimeStamp, " ");
@@ -95,6 +97,13 @@ public class ProfileScreenDisplayGwtImpl extends Composite implements ProfileScr
         this.presenter = presenter;
     }
 
+    @UiHandler("showMyRidesButton")
+    protected void onShowMyRidesButton(TapEvent event) {
+        if (presenter != null) {
+            presenter.onShowMyRidesButton();
+        }
+    }
+
     @UiHandler("backButton")
     protected void onBackButtonPressed(TapEvent event) {
         if (presenter != null) {
@@ -102,12 +111,12 @@ public class ProfileScreenDisplayGwtImpl extends Composite implements ProfileScr
         }
     }
 
-    @UiHandler("googleLoginButton")
-    protected void ongoogleLoginButton(TapEvent event) {
-        if (presenter != null) {
-            //Window.alert("ongoogleLoginButton clicked");
-            presenter.onLoginButtonPressed();
-        }
-    }
+//    @UiHandler("googleLoginButton")
+//    protected void ongoogleLoginButton(TapEvent event) {
+//        if (presenter != null) {
+//            //Window.alert("ongoogleLoginButton clicked");
+//            presenter.onLoginButtonPressed();
+//        }
+//    }
 
 }

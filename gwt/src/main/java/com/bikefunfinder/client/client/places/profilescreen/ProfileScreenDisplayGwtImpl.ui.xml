@@ -26,9 +26,9 @@
             <g:FormPanel ui:field="form">
                 <g:HTMLPanel ui:field="formContents">
 
-                    <mgwt:Button ui:field="showMyRides" width="100%" text="Show My Rides"/>
-                    <mgwt:Button ui:field="startTracking" width="100%" text="Google Login"/>
-                    <mgwt:Button ui:field="googleLoginButton" width="100%" text="Facebook Login"/>
+                    <mgwt:Button ui:field="showMyRidesButton" width="100%" text="Show My Rides"/>
+                    <!--<mgwt:Button ui:field="googleLoginButton" width="100%" text="Google Login"/>-->
+                    <!--<mgwt:Button ui:field="facebookLoginButton" width="100%" text="Facebook Login"/>-->
                     <mgwt:WidgetList ui:field="widgetList" />
 
                 </g:HTMLPanel>

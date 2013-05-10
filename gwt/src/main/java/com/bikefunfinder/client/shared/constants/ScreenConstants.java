@@ -31,13 +31,12 @@ public class ScreenConstants {
     }
 
     public static final String DateFormat = "mm/dd/yyyy";
-    public static final String DateFormatPrintPretty = "dddd, MMMM dd, yyyy";
     public static final String TimeFormat = "h:mm a";
+    public static final String DateFormatPrintPretty = "dddd, MMMM dd, yyyy";
     public static final String TimeFormatPrintPretty = "h:mm tt";
-    public static final String DateTimeFormatPrintPretty = "h:mm tt dddd, MMMM dd, yyyy";
 
     public static final Double PORTLAND_LATITUDE = 45.52345275878906;
-    public static final Double PORTLAND_LOGITUDE = -122.6762084960938;
+    public static final Double PORTLAND_LONGITUDE = -122.6762084960938;
 
     public static final NumberFormat DISTANCE_FORMAT = NumberFormat.getFormat(".##");
 }
