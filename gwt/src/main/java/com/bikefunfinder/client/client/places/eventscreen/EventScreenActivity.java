@@ -26,6 +26,8 @@ private final ClientFactory<EventScreenDisplay> clientFactory;
 
     public EventScreenActivity(ClientFactory clientFactory, BikeRide bikeRide) {
         this.clientFactory = clientFactory;
+        final EventScreenDisplay display = this.clientFactory.getDisplay(this);
+        display.resetState();
         setupDisplay(bikeRide);
     }
 

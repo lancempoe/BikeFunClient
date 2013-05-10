@@ -18,7 +18,6 @@ public class BikeRideCreateWidgets {
     public final MTextBox locationState = new MTextBox();
     public final MCheckBox trackingAllowed = new MCheckBox();
     public final MListBox targetAudience = new MListBox();
-
     public final MTextBox startDate = new MTextBox();
     public final MTextBox startTime = new MTextBox();
     public final MTextArea details = new MTextArea();
@@ -31,5 +30,18 @@ public class BikeRideCreateWidgets {
         startTime.getElement().setId("timepicker");
         startDate.getElement().setId("datepicker");
 
+    }
+
+    public void resetState() {
+        bikeRideName.setText("");
+        rideLeaderName.setText("");
+        locationAddress.setText("");
+        locationCity.setText("");
+        locationState.setText("");
+        trackingAllowed.setValue(false);
+        targetAudience.setSelectedIndex(0);
+        startDate.setText("");
+        startTime.setText("");
+        details.setText("");
     }
 }

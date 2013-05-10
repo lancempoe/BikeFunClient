@@ -12,6 +12,7 @@ public interface CreateScreenDisplay extends IsWidget {
     /**
      * This are the items that the display can provide
      */
+    public void resetState();
     public void displayFailedToCreateRideMessage();
     public void display(BikeRide bikeRide);
     public void display(String userName);

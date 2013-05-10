@@ -28,10 +28,10 @@ public class EventScreenDisplayGwtImpl extends Composite implements EventScreenD
     @UiField
     HTML currentTrackings = new HTML();
 
-    final BikeRideViewWidgets viewWidgets = new BikeRideViewWidgets(true);
+    final BikeRideViewWidgets bikeDisplayWidgets = new BikeRideViewWidgets(true);
 
     public EventScreenDisplayGwtImpl() {
-        widgetList = BikeRideViewUtils.builBikeViewWidgitList(viewWidgets);
+        widgetList = BikeRideViewUtils.builBikeViewWidgitList(bikeDisplayWidgets);
         initWidget(uiBinder.createAndBindUi(this));
     }
 
@@ -42,7 +42,7 @@ public class EventScreenDisplayGwtImpl extends Composite implements EventScreenD
 
     @Override
     public void display(BikeRide bikeRide) {
-        viewWidgets.setWidgetsFrom(bikeRide);
+        bikeDisplayWidgets.setWidgetsFrom(bikeRide);
     }
 
     @Override
@@ -60,5 +60,10 @@ public class EventScreenDisplayGwtImpl extends Composite implements EventScreenD
         if (presenter != null) {
             presenter.backButtonSelected();
         }
+    }
+
+    @Override
+    public void resetState() {
+        bikeDisplayWidgets.resetState();
     }
 }

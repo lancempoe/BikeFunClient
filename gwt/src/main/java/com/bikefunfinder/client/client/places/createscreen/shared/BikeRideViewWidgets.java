@@ -72,4 +72,12 @@ public class BikeRideViewWidgets extends BikeRideCreateWidgets {
             widget.setText(text);
         }
     }
+
+    public void resetState() {
+        super.resetState();
+        totalPeopleTrackingCount.setText("");
+        currentlyTracking.setValue(false);
+        formattedAddress.setText("");
+        distanceFromClient.setText("");
+    }
 }

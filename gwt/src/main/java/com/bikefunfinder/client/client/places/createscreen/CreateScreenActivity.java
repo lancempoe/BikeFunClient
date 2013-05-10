@@ -6,19 +6,19 @@ package com.bikefunfinder.client.client.places.createscreen;
 
 import com.bikefunfinder.client.bootstrap.ClientFactory;
 import com.bikefunfinder.client.bootstrap.db.DBKeys;
-import com.bikefunfinder.client.client.places.eventscreen.EventScreenDisplay;
 import com.bikefunfinder.client.client.places.eventscreen.EventScreenPlace;
 import com.bikefunfinder.client.client.places.homescreen.HomeScreenPlace;
 import com.bikefunfinder.client.shared.Tools.DeviceTools;
 import com.bikefunfinder.client.shared.Tools.NonPhoneGapGeolocationCallback;
-import com.bikefunfinder.client.shared.model.*;
+import com.bikefunfinder.client.shared.model.AnonymousUser;
+import com.bikefunfinder.client.shared.model.BikeRide;
+import com.bikefunfinder.client.shared.model.GeoLoc;
+import com.bikefunfinder.client.shared.model.User;
 import com.bikefunfinder.client.shared.model.json.Utils;
 import com.bikefunfinder.client.shared.request.NewEventRequest;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.web.bindery.event.shared.EventBus;
-import com.googlecode.gwtphonegap.client.geolocation.Coordinates;
-import com.googlecode.gwtphonegap.client.geolocation.Geolocation;
 import com.googlecode.mgwt.mvp.client.MGWTAbstractActivity;
 
 public class CreateScreenActivity extends MGWTAbstractActivity implements CreateScreenDisplay.Presenter {
@@ -62,6 +62,7 @@ public class CreateScreenActivity extends MGWTAbstractActivity implements Create
     public void start(AcceptsOneWidget panel, EventBus eventBus) {
         final CreateScreenDisplay display = clientFactory.getDisplay(this);
         display.setPresenter(this);
+        display.resetState();
         panel.setWidget(display);
     }
 

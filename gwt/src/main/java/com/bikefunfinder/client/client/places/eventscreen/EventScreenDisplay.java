@@ -19,6 +19,7 @@ public interface EventScreenDisplay extends IsWidget {
     public void displayFailedToLoadRideMessage();
     public void display(BikeRide bikeRide);
     public void displayTrackings(JsArray<Tracking> trackings);
+    public void resetState();
 
     /**
      * This is the contract for what the activity can provide

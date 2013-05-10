@@ -21,9 +21,7 @@ import com.googlecode.mgwt.ui.client.widget.WidgetList;
 
 public class CreateScreenDisplayGwtImpl  extends Composite implements CreateScreenDisplay {
     private static OverviewDisplayGwtImplUiBinder uiBinder = GWT.create(OverviewDisplayGwtImplUiBinder.class);
-
-    interface OverviewDisplayGwtImplUiBinder extends UiBinder<Widget, CreateScreenDisplayGwtImpl> {
-    }
+    interface OverviewDisplayGwtImplUiBinder extends UiBinder<Widget, CreateScreenDisplayGwtImpl> {}
 
     private Presenter presenter;
 
@@ -33,11 +31,10 @@ public class CreateScreenDisplayGwtImpl  extends Composite implements CreateScre
     @UiField(provided = true)
     WidgetList widgetList;
 
-
-    final BikeRideCreateWidgets rideCreateWidgets = new BikeRideCreateWidgets();
+    final BikeRideCreateWidgets bikeDisplayWidgets = new BikeRideCreateWidgets();
 
     public CreateScreenDisplayGwtImpl() {
-        widgetList = BikeRideViewUtils.builBikeViewWidgitList(rideCreateWidgets);
+        widgetList = BikeRideViewUtils.builBikeViewWidgitList(bikeDisplayWidgets);
 
         initWidget(uiBinder.createAndBindUi(this));
     }
@@ -73,6 +70,11 @@ public class CreateScreenDisplayGwtImpl  extends Composite implements CreateScre
     }
 
     @Override
+    public void resetState() {
+        bikeDisplayWidgets.resetState();
+    }
+
+    @Override
     public void setPresenter(Presenter presenter) {
         this.presenter = presenter;
     }
@@ -80,11 +82,12 @@ public class CreateScreenDisplayGwtImpl  extends Composite implements CreateScre
     @UiHandler("submitRide")
     protected void onSubmitRidePressed(TapEvent event) {
         if(presenter != null) {
-            BikeRide br = BikeRideCreateUtils.createBikeRideFromState(rideCreateWidgets);
+            BikeRide br = BikeRideCreateUtils.createBikeRideFromState(bikeDisplayWidgets);
 
             presenter.onFormSelected(br);
         }
     }
+
     @UiHandler("backButton")
     protected void onBackButtonPressed(TapEvent event) {
         if (presenter != null) {
