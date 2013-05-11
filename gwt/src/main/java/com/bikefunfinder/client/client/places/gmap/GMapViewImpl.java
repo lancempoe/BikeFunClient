@@ -139,32 +139,32 @@ public class GMapViewImpl implements GMapDisplay {
             map.addCenterChangedListener(new CenterChangedHandler() {
                 @Override
                 public void handle() {
-                if (!map.getCenter().equals(center)) {
-                    isRecentUserActivity = true;
-                    resumeAutoPanAndZoomTimer.schedule(RESUME_AUTO_PAN_AND_ZOOM_DELAY_MILLIS);
-                }
+                    if (!map.getCenter().equals(center)) {
+                        isRecentUserActivity = true;
+                        resumeAutoPanAndZoomTimer.schedule(RESUME_AUTO_PAN_AND_ZOOM_DELAY_MILLIS);
+                    }
                 }
             });
             map.addZoomChangedListener(new ZoomChangedHandler() {
                 @Override
                 public void handle() {
-                if (map.getZoom() != zoom) {
-                    isRecentUserActivity = true;
-                    resumeAutoPanAndZoomTimer.schedule(RESUME_AUTO_PAN_AND_ZOOM_DELAY_MILLIS);
-                }
+                    if (map.getZoom() != zoom) {
+                        isRecentUserActivity = true;
+                        resumeAutoPanAndZoomTimer.schedule(RESUME_AUTO_PAN_AND_ZOOM_DELAY_MILLIS);
+                    }
                 }
             });
             map.addDragStartListener(new DragStartHandler() {
                 @Override
                 public void handle() {
-                isRecentUserActivity = true;
-                resumeAutoPanAndZoomTimer.cancel();
+                    isRecentUserActivity = true;
+                    resumeAutoPanAndZoomTimer.cancel();
                 }
             });
             map.addDragEndListener(new DragEndHandler() {
                 @Override
                 public void handle() {
-                resumeAutoPanAndZoomTimer.schedule(RESUME_AUTO_PAN_AND_ZOOM_DELAY_MILLIS);
+                    resumeAutoPanAndZoomTimer.schedule(RESUME_AUTO_PAN_AND_ZOOM_DELAY_MILLIS);
                 }
             });
         } else {
@@ -201,6 +201,7 @@ public class GMapViewImpl implements GMapDisplay {
             });
         } else {
             marker.setPosition(center);
+            marker.setVisible(true);
         }
 //        Window.alert("BikeRideSize="+list.size());
         for(final BikeRide bikeRide: list) {
@@ -282,34 +283,13 @@ public class GMapViewImpl implements GMapDisplay {
     }
 
     protected void drawInfoWindow(final Marker marker, BikeRide bikeRide, MouseEvent mouseEvent) {
-        if (marker == null || mouseEvent == null) {
+        if (marker == null) {
             return;
         }
-        StringBuilder htmlString;
-        SafeHtmlBuilder safeHtml = new SafeHtmlBuilder();
-        if(bikeRide == null)
-        {
-            safeHtml.appendHtmlConstant("<h2>")
-                    .appendEscaped("Hello, this is you!");
 
-        }
-        else {
-        JsDateWrapper bikeRideDate = bikeRide.createJsDateWrapperRideStartTime();
-        String timeString = bikeRideDate.toString("h:mm tt");
-
-
-        safeHtml.appendHtmlConstant("<h2>")
-                .appendEscaped(bikeRide.getBikeRideName())
-                .appendHtmlConstant("</h2><p>")
-                .appendEscaped(timeString)
-                .appendHtmlConstant("</p><p>")
-                .appendEscaped(bikeRide.getDetails())
-                .appendHtmlConstant("</p>");
-        }
-
-
+        HTML content = buildBikeRideHTMLWidgetFor(bikeRide);
         InfoWindowOptions options = InfoWindowOptions.create();
-        options.setContent(safeHtml.toString());
+        options.setContent(content.getElement());
         InfoWindow iw = InfoWindow.create(options);
         iw.open(map, marker);
 
@@ -317,5 +297,34 @@ public class GMapViewImpl implements GMapDisplay {
         // If you want to clear widgets, Use options.clear() to remove the widgets
         // from map
         // options.clear();
+    }
+
+    private HTML buildBikeRideHTMLWidgetFor(BikeRide bikeRide) {
+        final SafeHtmlBuilder safeHtml = describeBikeRideInHTML(bikeRide);
+        final HTML htmlWidget = new HTML(safeHtml.toSafeHtml());
+        htmlWidget.getElement().getStyle().setColor("black");
+        return htmlWidget;
+    }
+
+    private SafeHtmlBuilder describeBikeRideInHTML(BikeRide bikeRide) {
+        SafeHtmlBuilder safeHtml = new SafeHtmlBuilder();
+        if(bikeRide == null) {
+            safeHtml.appendHtmlConstant("<h2>")
+                    .appendEscaped("Hello, this is you!");
+
+        } else {
+            JsDateWrapper bikeRideDate = bikeRide.createJsDateWrapperRideStartTime();
+            String timeString = bikeRideDate.toString("h:mm tt");
+
+
+            safeHtml.appendHtmlConstant("<h2>")
+                    .appendEscaped(bikeRide.getBikeRideName())
+                    .appendHtmlConstant("</h2><p>")
+                    .appendEscaped(timeString)
+                    .appendHtmlConstant("</p><p>")
+                    .appendEscaped(bikeRide.getDetails())
+                    .appendHtmlConstant("</p>");
+        }
+        return safeHtml;
     }
 }
