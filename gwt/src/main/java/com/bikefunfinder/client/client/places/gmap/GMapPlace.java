@@ -13,13 +13,16 @@ import com.google.gwt.place.shared.PlaceTokenizer;
 public class GMapPlace  extends Place {
     public static final class Tokenizer implements PlaceTokenizer<GMapPlace> {
         @Override
-        public GMapPlace getPlace(String token) {
-            return new GMapPlace(null);
+        public GMapPlace getPlace(final String token) {
+            final String[] strings = token.split(",");
+            return new GMapPlace(strings[0]);
         }
 
         @Override
-        public String getToken(GMapPlace place) {
-            return null;
+        public String getToken(final GMapPlace place) {
+            final StringBuilder builder = new StringBuilder();
+            builder.append(place.getPageName());
+            return builder.toString();
         }
     }
 
