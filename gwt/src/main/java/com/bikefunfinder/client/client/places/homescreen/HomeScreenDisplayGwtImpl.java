@@ -189,7 +189,9 @@ public class HomeScreenDisplayGwtImpl extends Composite implements HomeScreenDis
             }
 
             //Build content of 1 ride
-            contentList.add(new Content(bikeRide));
+            if(bikeRide!= null) {
+                contentList.add(new Content(bikeRide));
+            }
         }
 
         //add the final item

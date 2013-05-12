@@ -49,6 +49,7 @@ public class PhoneGapDependentBootScrapperImpl extends PhoneGapDependentBootScra
         AppPlaceHistoryMapper historyMapper = GWT.create(AppPlaceHistoryMapper.class);
         final PlaceHistoryHandler historyHandler = new PlaceHistoryHandler(historyMapper);
 
+        clientFactory.setPlaceHistoryMapper(historyMapper);
         historyHandler.register(clientFactory.getPlaceController(),
                 clientFactory.getEventBus(),
                 new HomeScreenPlace());

@@ -1,10 +1,14 @@
 package com.bikefunfinder.client.client.places.gmap;
 
+import com.bikefunfinder.client.client.places.eventscreen.EventScreenPlace;
 import com.bikefunfinder.client.shared.constants.ScreenConstants;
 import com.bikefunfinder.client.shared.model.BikeRide;
+import com.bikefunfinder.client.shared.model.GeoLoc;
 import com.bikefunfinder.client.shared.model.Root;
 import com.bikefunfinder.client.shared.model.helper.Extractor;
 import com.bikefunfinder.client.shared.request.SearchByProximityRequest;
+import com.google.gwt.core.shared.GWT;
+import com.google.gwt.http.client.UrlBuilder;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.web.bindery.event.shared.EventBus;
@@ -114,11 +118,15 @@ public class GMapActivity extends NavBaseActivity implements GMapDisplay.Present
     private void fireRequestForHereAndNow(final GMapDisplay display, final double latitude,
                                           final double longitude,
                                           final double altitudeAccuracy) {
+
         SearchByProximityRequest.Callback callback = new SearchByProximityRequest.Callback() {
             @Override
             public void onError() {
                 Window.alert("Oops, your BFF will be back shortly.");
-                display.setMapInfo(latitude, longitude, altitudeAccuracy,
+                GeoLoc phonesGeoLoc = GWT.create(GeoLoc.class);
+                phonesGeoLoc.setLatitude(Double.toString(latitude));
+                phonesGeoLoc.setLongitude(Double.toString(longitude));
+                display.setMapInfo(phonesGeoLoc, altitudeAccuracy,
                         new ArrayList<BikeRide>(),
                         "City Unknown");
                 display.refresh();
@@ -128,7 +136,10 @@ public class GMapActivity extends NavBaseActivity implements GMapDisplay.Present
             public void onResponseReceived(Root root) {
                 currentList =  Extractor.getBikeRidesFrom(root);
                 final String city = getCityNameFromRoot(root);
-                display.setMapInfo(latitude, longitude, altitudeAccuracy,
+                GeoLoc phonesGeoLoc = GWT.create(GeoLoc.class);
+                phonesGeoLoc.setLatitude(Double.toString(latitude));
+                phonesGeoLoc.setLongitude(Double.toString(longitude));
+                display.setMapInfo(phonesGeoLoc, altitudeAccuracy,
                         currentList,
                         city);
                 display.refresh();
@@ -165,5 +176,21 @@ public class GMapActivity extends NavBaseActivity implements GMapDisplay.Present
             calledTimes=0;
         }
 
+    }
+
+    @Override
+    public void moreRideDetilsScreenRequested(BikeRide bikeRide) {
+        clientFactory.getPlaceController().goTo(new EventScreenPlace(bikeRide));
+    }
+
+    @Override
+    public String provideTokenHrefFor(BikeRide bikeRide) {
+        if(bikeRide==null) {
+            return "";
+        }
+
+        String hashToken = clientFactory.getPlaceHistoryMapper().getToken(new EventScreenPlace(bikeRide));
+        UrlBuilder urlBuilder = Window.Location.createUrlBuilder().setHash(hashToken);
+        return urlBuilder.buildString();
     }
 }

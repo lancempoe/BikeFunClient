@@ -1,9 +1,7 @@
 package com.bikefunfinder.client.client.places.homescreen;
 
 import com.bikefunfinder.client.shared.constants.ScreenConstants;
-import com.bikefunfinder.client.shared.model.AnonymousUser;
 import com.bikefunfinder.client.shared.model.BikeRide;
-import com.bikefunfinder.client.shared.model.User;
 import com.bikefunfinder.client.shared.model.printer.JsDateWrapper;
 import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
@@ -55,7 +53,12 @@ public interface HomeScreenDisplay extends IsWidget {
 
         public Content(BikeRide bikeRide) {
             this.bikeRide = bikeRide;
-            this.rideName = bikeRide.getBikeRideName();
+            if(bikeRide.getBikeRideName()!=null) {
+                this.rideName = bikeRide.getBikeRideName();
+            } else {
+                this.rideName = "";
+            }
+
             this.distance = ScreenConstants.DISTANCE_FORMAT.format(bikeRide.getDistanceFromClient());
             JsDateWrapper bikeRideDate = bikeRide.createJsDateWrapperRideStartTime();
             this.timeDisplay = bikeRideDate.toString(ScreenConstants.TimeFormatPrintPretty);

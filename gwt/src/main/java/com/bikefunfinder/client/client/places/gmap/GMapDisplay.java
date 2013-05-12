@@ -1,6 +1,7 @@
 package com.bikefunfinder.client.client.places.gmap;
 
 import com.bikefunfinder.client.shared.model.BikeRide;
+import com.bikefunfinder.client.shared.model.GeoLoc;
 import com.google.gwt.user.client.ui.IsWidget;
 
 import java.util.List;
@@ -18,13 +19,14 @@ public interface GMapDisplay extends IsWidget {
 
     public interface Presenter {
         public void onBackButtonPressed();
+        public void moreRideDetilsScreenRequested(BikeRide bikeRide);
+        public String provideTokenHrefFor(BikeRide bikeRide);
     }
 
     public void clearMapInfo();
     public void refresh();
 
-    void setMapInfo(double latitude,
-                    double longitude,
+    void setMapInfo(GeoLoc phonesGpsLoc,
                     double accuracy,
                     List<BikeRide> list,
                     String cityNameText);

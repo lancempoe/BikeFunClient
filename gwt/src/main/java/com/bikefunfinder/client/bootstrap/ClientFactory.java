@@ -6,6 +6,7 @@ import com.bikefunfinder.client.client.places.homescreen.HomeScreenDisplay;
 import com.bikefunfinder.client.client.places.profilescreen.ProfileScreenDisplay;
 import com.bikefunfinder.client.client.places.searchscreen.SearchScreenDisplay;
 import com.google.gwt.place.shared.PlaceController;
+import com.google.gwt.place.shared.PlaceHistoryHandler;
 import com.google.web.bindery.event.shared.EventBus;
 import com.googlecode.gwtphonegap.client.PhoneGap;
 import com.bikefunfinder.client.client.places.gmap.*;
@@ -34,5 +35,9 @@ public interface ClientFactory<DisplayType> {
     public String getStoredValue(String value);
 
     public void validateValidUser();
+
+
+    public void setPlaceHistoryMapper(AppPlaceHistoryMapper historyHandler);
+    public AppPlaceHistoryMapper getPlaceHistoryMapper();
 
 }

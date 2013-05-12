@@ -34,7 +34,12 @@ private final ClientFactory<EventScreenDisplay> clientFactory;
     private void setupDisplay(BikeRide bikeRide) {
         EventScreenDisplay display = clientFactory.getDisplay(this);
 
+        if(bikeRide==null) {
+            return;
+        }
+
         display.display(bikeRide);
+
         JsArray<Tracking> trackings = bikeRide.getCurrentTrackings();
         if(trackings!=null) {
             if(bikeRide.getRideLeaderTracking()!=null) {

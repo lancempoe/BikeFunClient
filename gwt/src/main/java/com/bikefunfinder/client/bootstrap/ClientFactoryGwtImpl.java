@@ -24,6 +24,7 @@ import com.bikefunfinder.client.shared.model.printer.JSODescriber;
 import com.bikefunfinder.client.shared.request.AnonymousRequest;
 import com.google.gwt.core.shared.GWT;
 import com.google.gwt.place.shared.PlaceController;
+import com.google.gwt.place.shared.PlaceHistoryHandler;
 import com.google.gwt.user.client.Window;
 import com.google.web.bindery.event.shared.EventBus;
 import com.google.web.bindery.event.shared.SimpleEventBus;
@@ -46,6 +47,7 @@ public class ClientFactoryGwtImpl implements ClientFactory {
     private SearchScreenDisplay searchScreenDisplay;
     private EventScreenDisplay eventScreenDisplay;
     private GMapDisplay hereAndNowDisplay;
+    private AppPlaceHistoryMapper historyHandler;
 
     public ClientFactoryGwtImpl(PhoneGap phoneGap) {
         this.phoneGap = phoneGap;
@@ -213,4 +215,13 @@ public class ClientFactoryGwtImpl implements ClientFactory {
         return JSODescriber.toJSON(user);
     }
 
+    @Override
+    public void setPlaceHistoryMapper(AppPlaceHistoryMapper historyMapper) {
+        this.historyHandler = historyHandler;
+    }
+
+    @Override
+    public AppPlaceHistoryMapper getPlaceHistoryMapper() {
+        return historyHandler;
+    }
 }

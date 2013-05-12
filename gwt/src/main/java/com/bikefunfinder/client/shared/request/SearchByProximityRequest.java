@@ -60,7 +60,7 @@ public final class SearchByProximityRequest {
         }
 
         public SearchByProximityRequest sendAndDebug() {
-            return new SearchByProximityRequest(this, true);
+            return new SearchByProximityRequest(this, false);
         }
     }
 
