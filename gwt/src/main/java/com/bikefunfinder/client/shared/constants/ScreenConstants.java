@@ -13,21 +13,26 @@ public class ScreenConstants {
 
     public static String TargetAudienceLabel = "- Filter By Type -";
     public static enum TargetAudience {
-        FAMILY_FRIENDLY("Family Friendly"),
-        ROADIES("Roadies"),
-        BOOZY("Boozy"),
-        NAKED("Naked"),
-        BOOZY_AND_NAKED("Boozy and Naked");
+        FAMILY_FRIENDLY("Family Friendly", 0),
+        ROADIES("Roadies", 1),
+        BOOZY("Boozy", 2),
+        NAKED("Naked", 3),
+        BOOZY_AND_NAKED("Boozy and Naked", 4);
 
         private final String displayName;
-        TargetAudience(String displayName) {
+        private final int orderCount;
+        TargetAudience(String displayName, int orderCount) {
             this.displayName = displayName;
+            this.orderCount = orderCount;
         }
 
         public String getDisplayName() {
             return displayName;
         }
 
+        public int getOrderCount() {
+            return orderCount;
+        }
     }
 
     public static final String DateFormat = "mm/dd/yyyy";

@@ -34,7 +34,7 @@ public class CreateScreenDisplayGwtImpl  extends Composite implements CreateScre
     final BikeRideCreateWidgets bikeDisplayWidgets = new BikeRideCreateWidgets();
 
     public CreateScreenDisplayGwtImpl() {
-        widgetList = BikeRideViewUtils.builBikeViewWidgitList(bikeDisplayWidgets);
+        widgetList = BikeRideViewUtils.buildBikeViewWidgitList(bikeDisplayWidgets);
 
         initWidget(uiBinder.createAndBindUi(this));
     }

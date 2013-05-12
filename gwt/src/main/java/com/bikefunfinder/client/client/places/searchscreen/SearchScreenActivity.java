@@ -9,8 +9,11 @@ import com.bikefunfinder.client.client.places.createscreen.CreateScreenDisplay;
 import com.bikefunfinder.client.client.places.eventscreen.EventScreenDisplay;
 import com.bikefunfinder.client.client.places.eventscreen.EventScreenPlace;
 import com.bikefunfinder.client.client.places.homescreen.HomeScreenPlace;
+import com.bikefunfinder.client.shared.Tools.DeviceTools;
+import com.bikefunfinder.client.shared.Tools.NonPhoneGapGeolocationCallback;
 import com.bikefunfinder.client.shared.constants.ScreenConstants;
 import com.bikefunfinder.client.shared.model.BikeRide;
+import com.bikefunfinder.client.shared.model.GeoLoc;
 import com.bikefunfinder.client.shared.model.Query;
 import com.bikefunfinder.client.shared.model.Root;
 import com.bikefunfinder.client.shared.request.NewEventRequest;
@@ -57,7 +60,7 @@ public class SearchScreenActivity extends MGWTAbstractActivity implements Search
     @Override
     public void searchRideButtonSelected(Query query) {
 
-        SearchByParametersRequest.Builder request = new SearchByParametersRequest.Builder(new SearchByParametersRequest.Callback() {
+        final SearchByParametersRequest.Builder request = new SearchByParametersRequest.Builder(new SearchByParametersRequest.Callback() {
             @Override
             public void onError() {
                 Window.alert("Oops, your BFF will be back shortly.");
@@ -73,7 +76,18 @@ public class SearchScreenActivity extends MGWTAbstractActivity implements Search
         if (ScreenConstants.TargetAudienceLabel.equals(query.getTargetAudience()))
             query.setTargetAudience("");
 
+        request.query(query);
 
-        request.send(query);
+        DeviceTools.getPhoneGeoLoc(clientFactory, new NonPhoneGapGeolocationCallback() {
+            @Override
+            public void onSuccess(GeoLoc geoLoc) {
+                request.latitude(geoLoc).longitude(geoLoc).send();
+            }
+
+            @Override
+            public void onFailure(GeoLoc geoLoc) {
+                request.latitude(geoLoc).longitude(geoLoc).send();
+            }
+        });
     }
 }

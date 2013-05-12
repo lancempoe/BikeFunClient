@@ -6,6 +6,7 @@ package com.bikefunfinder.client.client.places.createscreen.shared;
 
 import com.bikefunfinder.client.shared.constants.ScreenConstants;
 import com.bikefunfinder.client.shared.model.BikeRide;
+import com.google.gwt.user.client.ui.ListBox;
 import com.googlecode.mgwt.ui.client.widget.MCheckBox;
 import com.googlecode.mgwt.ui.client.widget.MIntegerBox;
 import com.googlecode.mgwt.ui.client.widget.MTextBox;
@@ -13,7 +14,7 @@ import com.googlecode.mgwt.ui.client.widget.base.MValueBoxBase;
 
 public class BikeRideViewWidgets extends BikeRideCreateWidgets {
     public final MIntegerBox totalPeopleTrackingCount = new MIntegerBox();
-    public final MCheckBox currentlyTracking = new MCheckBox();
+    public final MTextBox currentlyTracking = new MTextBox();
     public final MTextBox formattedAddress = new MTextBox();
     public final MTextBox distanceFromClient = new MTextBox();
 
@@ -24,7 +25,7 @@ public class BikeRideViewWidgets extends BikeRideCreateWidgets {
         currentlyTracking.setReadOnly(readOnly);
         bikeRideName.setReadOnly(readOnly);
         rideLeaderName.setReadOnly(readOnly);
-        targetAudience.setEnabled(false); //false on purpose
+        targetAudience.setEnabled(readOnly);
         formattedAddress.setReadOnly(readOnly);
         distanceFromClient.setReadOnly(readOnly);
         startTime.setReadOnly(readOnly);
@@ -37,15 +38,28 @@ public class BikeRideViewWidgets extends BikeRideCreateWidgets {
 
         setSafeText(totalPeopleTrackingCount, bikeRide.getTotalPeopleTrackingCount());
 
-        if(bikeRide.isCurrentlyTracking()!=null && !bikeRide.isCurrentlyTracking().isEmpty()) {
-            currentlyTracking.setValue(Boolean.parseBoolean(bikeRide.isCurrentlyTracking()));
+        if(bikeRide.isCurrentlyTracking()!=null &&
+           !bikeRide.isCurrentlyTracking().isEmpty() &&
+           bikeRide.getCurrentTrackings().equals("True")) {
+            setSafeText(currentlyTracking, "Yes");
+        } else {
+            setSafeText(currentlyTracking, "No");
         }
 
         //setSafeText(rideImage, bikeRide.getImagePath());
         setSafeText(bikeRideName, bikeRide.getBikeRideName());
         setSafeText(rideLeaderName, bikeRide.getRideLeaderName());
-        //setSafeText(targetAudience, bikeRide.getTargetAudience());
 
+        int targetAudienceOrderCount = 0;
+        for (ScreenConstants.TargetAudience target : ScreenConstants.TargetAudience.values()) {
+            if (target.getDisplayName().equals(bikeRide.getTargetAudience())) {
+                targetAudienceOrderCount = target.getOrderCount();
+                break;
+            }
+        }
+        if(bikeRide.getTargetAudience()!=null && !bikeRide.getTargetAudience().isEmpty()) {
+            this.targetAudience.setSelectedIndex(targetAudienceOrderCount);
+        }
 
         if(bikeRide.getLocation()!=null) {
             setSafeText(formattedAddress, bikeRide.getLocation().getFormattedAddress());
@@ -77,7 +91,7 @@ public class BikeRideViewWidgets extends BikeRideCreateWidgets {
     public void resetState() {
         super.resetState();
         totalPeopleTrackingCount.setText("");
-        currentlyTracking.setValue(false);
+        currentlyTracking.setText("No");
         formattedAddress.setText("");
         distanceFromClient.setText("");
     }

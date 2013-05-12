@@ -80,7 +80,7 @@ public class BikeRideViewUtils {
         return newWidgetList;
     }
 
-    public static WidgetList builBikeViewWidgitList(BikeRideCreateWidgets viewWidgets) {
+    public static WidgetList buildBikeViewWidgitList(BikeRideCreateWidgets viewWidgets) {
         WidgetList newWidgetList = buildWidgetListWithLabels(null,
                 null,
                 "Bike Ride Name:",

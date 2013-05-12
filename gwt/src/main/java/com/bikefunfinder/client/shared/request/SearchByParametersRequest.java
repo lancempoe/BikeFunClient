@@ -9,9 +9,12 @@ package com.bikefunfinder.client.shared.request;
  */
 
 import com.bikefunfinder.client.shared.constants.Settings;
+import com.bikefunfinder.client.shared.model.BikeRide;
+import com.bikefunfinder.client.shared.model.GeoLoc;
 import com.bikefunfinder.client.shared.model.Query;
 import com.bikefunfinder.client.shared.model.Root;
 import com.bikefunfinder.client.shared.model.json.Utils;
+import com.bikefunfinder.client.shared.model.printer.JSODescriber;
 import com.google.gwt.http.client.*;
 import com.googlecode.mgwt.ui.client.dialog.Dialogs;
 
@@ -25,6 +28,7 @@ public final class SearchByParametersRequest {
 
     public static final class Builder {
         private SearchByParametersRequest.Callback callback;
+        private Query query;
         private BigDecimal longitude;
         private BigDecimal latitude;
 
@@ -45,17 +49,22 @@ public final class SearchByParametersRequest {
             return this;
         }
 
-        public Builder latitude(final double latitude) {
-            this.latitude = new BigDecimal(latitude);
+        public Builder query(final Query query) {
+            this.query = query;
             return this;
         }
 
-        public Builder longitude(final double longitude) {
-            this.longitude = new BigDecimal(longitude);
+        public Builder latitude(final GeoLoc geoLoc) {
+            this.latitude = new BigDecimal(geoLoc.getLatitude());
             return this;
         }
 
-        public SearchByParametersRequest send(Query query) {
+        public Builder longitude(final GeoLoc geoLoc) {
+            this.longitude = new BigDecimal(geoLoc.getLongitude());
+            return this;
+        }
+
+        public SearchByParametersRequest send() {
             return new SearchByParametersRequest(this);
         }
     }
@@ -63,6 +72,7 @@ public final class SearchByParametersRequest {
     private static final String URL = Settings.HOST + "FunService/rest/display/by_search/";
 
     private final SearchByParametersRequest.Callback callback;
+    private final Query query;
     private final BigDecimal latitude;
     private final BigDecimal longitude;
     private final Request request;
@@ -77,6 +87,7 @@ public final class SearchByParametersRequest {
 
     private SearchByParametersRequest(final Builder builder) {
         callback = builder.callback;
+        query = builder.query;
         latitude = builder.latitude;
         longitude = builder.longitude;
         request = send();
@@ -85,9 +96,11 @@ public final class SearchByParametersRequest {
     private Request send() {
         Request request = null;
 
-        final RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.GET, getUrlWithQuery());
+        final RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST, getUrlWithQuery());
         try {
-            request = requestBuilder.sendRequest(null, getRequestCallback());
+            requestBuilder.setHeader("Content-Type", "application/json");
+            final String jsonText = JSODescriber.toJSON(query);
+            request = requestBuilder.sendRequest(jsonText, getRequestCallback());
         } catch (final RequestException e) {
             e.printStackTrace();
         }
