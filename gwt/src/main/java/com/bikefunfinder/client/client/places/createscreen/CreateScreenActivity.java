@@ -79,7 +79,6 @@ public class CreateScreenActivity extends MGWTAbstractActivity implements Create
             @Override
             public void onResponseReceived(BikeRide bikeRide) {
                 clientFactory.getPlaceController().goTo(new EventScreenPlace(bikeRide));
-                Window.alert("Success!");
             }
         });
 

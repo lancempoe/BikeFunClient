@@ -65,7 +65,12 @@ public class BikeRideViewWidgets extends BikeRideCreateWidgets {
             setSafeText(formattedAddress, bikeRide.getLocation().getFormattedAddress());
         }
 
-        final String distanceFromClientString = ScreenConstants.DISTANCE_FORMAT.format(bikeRide.getDistanceFromClient());
+        String distanceFromClientString = "";
+        if(bikeRide.getDistanceFromClient()!=null) {
+            distanceFromClientString = ScreenConstants.DISTANCE_FORMAT.format(
+                    Double.parseDouble(bikeRide.getDistanceFromClient()));
+        }
+
         if(distanceFromClient!=null) {
             setSafeText(distanceFromClient, distanceFromClientString + " Miles");
         }
@@ -79,12 +84,18 @@ public class BikeRideViewWidgets extends BikeRideCreateWidgets {
             setSafeText(startTime, " ");
         }
 
-        setSafeText(details, bikeRide.getDetails());
+        setSafeValue(details, bikeRide.getDetails());
     }
 
     private static void setSafeText(MValueBoxBase widget, String text) {
         if(text!=null && !text.isEmpty()) {
             widget.setText(text);
+        }
+    }
+
+    private static void setSafeValue(MValueBoxBase widget, String text) {
+        if(text!=null && !text.isEmpty()) {
+            widget.setValue(text);
         }
     }
 

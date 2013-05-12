@@ -59,7 +59,14 @@ public interface HomeScreenDisplay extends IsWidget {
                 this.rideName = "";
             }
 
-            this.distance = ScreenConstants.DISTANCE_FORMAT.format(bikeRide.getDistanceFromClient());
+            if(bikeRide.getDistanceFromClient()!=null) {
+                this.distance = ScreenConstants.DISTANCE_FORMAT.format(
+                        Double.parseDouble(bikeRide.getDistanceFromClient()));
+
+            } else {
+                this.distance ="";
+            }
+
             JsDateWrapper bikeRideDate = bikeRide.createJsDateWrapperRideStartTime();
             this.timeDisplay = bikeRideDate.toString(ScreenConstants.TimeFormatPrintPretty);
         }

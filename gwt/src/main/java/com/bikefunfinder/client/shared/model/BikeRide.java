@@ -112,7 +112,7 @@ public class BikeRide extends JavaScriptObject {
         this.rideLeaderName = rideLeaderName;
     }-*/;
 
-    public final native Double getDistanceFromClient() /*-{
+    public final native String getDistanceFromClient() /*-{
         return this.distanceFromClient;
     }-*/;
 

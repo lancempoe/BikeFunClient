@@ -26,7 +26,7 @@ public class BikeRideCreateUtils {
         br.setBikeRideName(rideCreateWidgets.bikeRideName.getText());
         br.setTargetAudience(rideCreateWidgets.targetAudience.getValue(rideCreateWidgets.targetAudience.getSelectedIndex()));
         br.setLocation(createLocationFrom(rideCreateWidgets));
-        br.setDetails(rideCreateWidgets.details.getText());
+        br.setDetails(rideCreateWidgets.details.getValue());
         br.setTrackingAllowed(rideCreateWidgets.trackingAllowed.getValue());
 
         DateTimeFormat dtf = DateTimeFormat.getFormat(ScreenConstants.DateFormat +
