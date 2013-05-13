@@ -5,9 +5,14 @@ package com.bikefunfinder.client.client.places.eventscreen;
  */
 
 import com.bikefunfinder.client.bootstrap.ClientFactory;
+import com.bikefunfinder.client.bootstrap.db.DBKeys;
+import com.bikefunfinder.client.client.places.createscreen.CreateScreenDisplay;
 import com.bikefunfinder.client.client.places.homescreen.HomeScreenPlace;
+import com.bikefunfinder.client.shared.model.AnonymousUser;
 import com.bikefunfinder.client.shared.model.BikeRide;
 import com.bikefunfinder.client.shared.model.Tracking;
+import com.bikefunfinder.client.shared.model.User;
+import com.bikefunfinder.client.shared.model.json.Utils;
 import com.google.gwt.core.client.JsArray;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.web.bindery.event.shared.EventBus;
@@ -16,6 +21,8 @@ import com.googlecode.mgwt.mvp.client.MGWTAbstractActivity;
 public class EventScreenActivity extends MGWTAbstractActivity implements EventScreenDisplay.Presenter {
 
 private final ClientFactory<EventScreenDisplay> clientFactory;
+    private String userName = "";
+    private String userId = "";
 
     @Override
     public void start(AcceptsOneWidget panel, EventBus eventBus) {
@@ -27,8 +34,31 @@ private final ClientFactory<EventScreenDisplay> clientFactory;
     public EventScreenActivity(ClientFactory clientFactory, BikeRide bikeRide) {
         this.clientFactory = clientFactory;
         final EventScreenDisplay display = this.clientFactory.getDisplay(this);
+        setUserNameFields(clientFactory);
         display.resetState();
         setupDisplay(bikeRide);
+        if (bikeRide.getRideLeaderId().equals(userId)) {
+            display.displayEdit(true);
+        } else {
+            display.displayEdit(false);
+        }
+    }
+
+    private void setUserNameFields(ClientFactory<CreateScreenDisplay> clientFactory) {
+        //Set the logged in user details
+        if (clientFactory.getStoredValue(DBKeys.USER) != null) {
+            User user = Utils.castJsonTxtToJSOObject(clientFactory.getStoredValue(DBKeys.USER));
+            setUserDisplayElements(user.getId(), user.getUserName());
+        }
+        else if (clientFactory.getStoredValue(DBKeys.ANONYMOUS_USER) != null) {
+            AnonymousUser anonymousUser = Utils.castJsonTxtToJSOObject(clientFactory.getStoredValue(DBKeys.ANONYMOUS_USER));
+            setUserDisplayElements(anonymousUser.getId(), anonymousUser.getUserName());
+        }
+    }
+
+    private void setUserDisplayElements(String id, String name) {
+        this.userId = id;
+        this.userName = name;
     }
 
     private void setupDisplay(BikeRide bikeRide) {
@@ -54,5 +84,17 @@ private final ClientFactory<EventScreenDisplay> clientFactory;
     public void backButtonSelected() {
         clientFactory.getPlaceController().goTo(new HomeScreenPlace());
     }
+
+    @Override
+    public void eventRideMapButtonSelected() {
+        //TODO clientFactory.getPlaceController().goTo(new HomeScreenPlace());
+    }
+
+    @Override
+    public void editRideButtonSelected() {
+        //TODO clientFactory.getPlaceController().goTo(new HomeScreenPlace());
+    }
+
+
 
 }

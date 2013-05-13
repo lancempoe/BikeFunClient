@@ -37,20 +37,12 @@ public class CreateScreenActivity extends MGWTAbstractActivity implements Create
         //Set the logged in user details
         if (clientFactory.getStoredValue(DBKeys.USER) != null) {
             User user = Utils.castJsonTxtToJSOObject(clientFactory.getStoredValue(DBKeys.USER));
-            setUserDetails(user);
+            setUserDisplayElements(user.getId(), user.getUserName());
         }
         else if (clientFactory.getStoredValue(DBKeys.ANONYMOUS_USER) != null) {
             AnonymousUser anonymousUser = Utils.castJsonTxtToJSOObject(clientFactory.getStoredValue(DBKeys.ANONYMOUS_USER));
-            setUserDetails(anonymousUser);
+            setUserDisplayElements(anonymousUser.getId(), anonymousUser.getUserName());
         }
-    }
-
-    private void setUserDetails(AnonymousUser anonymousUser) {
-        setUserDisplayElements(anonymousUser.getId(), anonymousUser.getUserName());
-    }
-
-    private void setUserDetails(User user) {
-        setUserDisplayElements(user.getId(), user.getUserName());
     }
 
     private void setUserDisplayElements(String id, String name) {

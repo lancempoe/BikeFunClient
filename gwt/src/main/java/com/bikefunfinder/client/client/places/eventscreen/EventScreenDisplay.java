@@ -20,6 +20,7 @@ public interface EventScreenDisplay extends IsWidget {
     public void display(BikeRide bikeRide);
     public void displayTrackings(JsArray<Tracking> trackings);
     public void resetState();
+    public void displayEdit(boolean display);
 
     /**
      * This is the contract for what the activity can provide
@@ -29,5 +30,7 @@ public interface EventScreenDisplay extends IsWidget {
     public interface Presenter {
 
         public void backButtonSelected();
+        public void eventRideMapButtonSelected();
+        public void editRideButtonSelected();
     }
 }

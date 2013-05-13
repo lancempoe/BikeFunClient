@@ -52,7 +52,6 @@ public class BikeRideViewUtils {
         if(isView) {
             newWidgetList.add(buildFormWidget(rideLeaderName, u.rideLeaderName));
             newWidgetList.add(buildFormWidget(startingAddress1, ((BikeRideViewWidgets)u).formattedAddress));
-            newWidgetList.add(buildFormWidget(startingAddress1, ((BikeRideViewWidgets)u).formattedAddress));
             newWidgetList.add(buildFormWidget(distanceFromTheStart, ((BikeRideViewWidgets)u).distanceFromClient));
         } else {
             newWidgetList.add(buildFormWidget("Starting Address:", u.locationAddress));
@@ -65,10 +64,10 @@ public class BikeRideViewUtils {
         return newWidgetList;
     }
 
-    public static WidgetList builBikeViewWidgitList(BikeRideViewWidgets viewWidgets) {
+    public static WidgetList buildBikeViewWidgitList(BikeRideViewWidgets viewWidgets) {
 
-        WidgetList newWidgetList = buildWidgetListWithLabels("Total People Tracking:",
-        "Someone is tracking:",
+        WidgetList newWidgetList = buildWidgetListWithLabels("Historical Tracking Count:",
+        "Someone is Tracking:",
         "Bike Ride Name:",
         "Ride Leader Name:",
         "Target Audience:",

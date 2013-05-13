@@ -7,12 +7,7 @@ package com.bikefunfinder.client.shared.model;
 import com.bikefunfinder.client.shared.model.printer.JsDateWrapper;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.core.client.JsArray;
-import com.google.gwt.core.client.JsDate;
-import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.json.client.JSONObject;
-
-
-import java.util.Date;
 
 
 public class BikeRide extends JavaScriptObject {
@@ -124,7 +119,7 @@ public class BikeRide extends JavaScriptObject {
         return this.currentlyTracking;
     }-*/;
 
-    public final native String getTotalPeopleTrackingCount() /*-{
+    public final native int getTotalPeopleTrackingCount() /*-{
         return this.totalPeopleTrackingCount;
     }-*/;
 

@@ -61,7 +61,7 @@ public class Location extends JavaScriptObject {
         this.geoLoc = geoLoc;
     }-*/;
 
-    public final native  String getFormattedAddress() /*-{
+    public final native String getFormattedAddress() /*-{
         return this.formattedAddress;
     }-*/;
 }

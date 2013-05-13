@@ -6,14 +6,11 @@ package com.bikefunfinder.client.client.places.createscreen.shared;
 
 import com.bikefunfinder.client.shared.constants.ScreenConstants;
 import com.bikefunfinder.client.shared.model.BikeRide;
-import com.google.gwt.user.client.ui.ListBox;
-import com.googlecode.mgwt.ui.client.widget.MCheckBox;
-import com.googlecode.mgwt.ui.client.widget.MIntegerBox;
 import com.googlecode.mgwt.ui.client.widget.MTextBox;
 import com.googlecode.mgwt.ui.client.widget.base.MValueBoxBase;
 
 public class BikeRideViewWidgets extends BikeRideCreateWidgets {
-    public final MIntegerBox totalPeopleTrackingCount = new MIntegerBox();
+    public final MTextBox totalPeopleTrackingCount = new MTextBox();
     public final MTextBox currentlyTracking = new MTextBox();
     public final MTextBox formattedAddress = new MTextBox();
     public final MTextBox distanceFromClient = new MTextBox();
@@ -36,7 +33,7 @@ public class BikeRideViewWidgets extends BikeRideCreateWidgets {
     public void setWidgetsFrom(BikeRide bikeRide) {
         if(bikeRide==null) return; // failSafe but ugly;
 
-        setSafeText(totalPeopleTrackingCount, bikeRide.getTotalPeopleTrackingCount());
+        setSafeText(totalPeopleTrackingCount, String.valueOf(bikeRide.getTotalPeopleTrackingCount()));
 
         if(bikeRide.isCurrentlyTracking()!=null &&
            !bikeRide.isCurrentlyTracking().isEmpty() &&

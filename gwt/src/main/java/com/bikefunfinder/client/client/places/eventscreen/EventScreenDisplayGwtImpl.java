@@ -13,6 +13,7 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Widget;
 import com.googlecode.mgwt.dom.client.event.tap.TapEvent;
+import com.googlecode.mgwt.ui.client.widget.Button;
 import com.googlecode.mgwt.ui.client.widget.WidgetList;
 
 public class EventScreenDisplayGwtImpl extends Composite implements EventScreenDisplay {
@@ -26,12 +27,15 @@ public class EventScreenDisplayGwtImpl extends Composite implements EventScreenD
     WidgetList widgetList;
 
     @UiField
+    Button editRideButton;
+
+    @UiField
     HTML currentTrackings = new HTML();
 
     final BikeRideViewWidgets bikeDisplayWidgets = new BikeRideViewWidgets(true);
 
     public EventScreenDisplayGwtImpl() {
-        widgetList = BikeRideViewUtils.builBikeViewWidgitList(bikeDisplayWidgets);
+        widgetList = BikeRideViewUtils.buildBikeViewWidgitList(bikeDisplayWidgets);
         initWidget(uiBinder.createAndBindUi(this));
     }
 
@@ -43,6 +47,11 @@ public class EventScreenDisplayGwtImpl extends Composite implements EventScreenD
     @Override
     public void display(BikeRide bikeRide) {
         bikeDisplayWidgets.setWidgetsFrom(bikeRide);
+    }
+
+    @Override
+    public void displayEdit(boolean display) {
+        editRideButton.setVisible(display);
     }
 
     @Override
@@ -62,8 +71,23 @@ public class EventScreenDisplayGwtImpl extends Composite implements EventScreenD
         }
     }
 
+    @UiHandler("eventRideMapButton")
+    protected void onEventRideMapButtonPressed(TapEvent event) {
+        if (presenter != null) {
+            presenter.eventRideMapButtonSelected();
+        }
+    }
+
+    @UiHandler("editRideButton")
+    protected void onEditRideButtonPressed(TapEvent event) {
+        if (presenter != null) {
+            presenter.editRideButtonSelected();
+        }
+    }
+
     @Override
     public void resetState() {
         bikeDisplayWidgets.resetState();
     }
+
 }
