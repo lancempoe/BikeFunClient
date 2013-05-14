@@ -27,7 +27,7 @@ public class BikeRideViewWidgets extends BikeRideCreateWidgets {
         distanceFromClient.setReadOnly(readOnly);
         startTime.setReadOnly(readOnly);
         details.setReadOnly(readOnly);
-        details.setVisibleLines(10);
+        details.setVisibleLines(5);
     }
 
     public void setWidgetsFrom(BikeRide bikeRide) {

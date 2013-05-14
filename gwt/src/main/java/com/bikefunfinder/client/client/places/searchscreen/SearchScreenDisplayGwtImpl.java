@@ -64,7 +64,7 @@ public class SearchScreenDisplayGwtImpl extends Composite implements SearchScree
 
         formListEntry = new FormListEntry();
         formListEntry.setText("Target Audience:");
-        targetAudience.addItem("-Filter By Type-");
+        targetAudience.addItem(ScreenConstants.TargetAudienceLabel);
         for(ScreenConstants.TargetAudience enumVal: ScreenConstants.TargetAudience.values()) {
             targetAudience.addItem(enumVal.getDisplayName());
         }

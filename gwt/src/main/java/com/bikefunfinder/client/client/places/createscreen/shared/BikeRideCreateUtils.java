@@ -16,7 +16,7 @@ public class BikeRideCreateUtils {
     public static BikeRide createBikeRideFromState(BikeRideCreateWidgets rideCreateWidgets) throws IllegalArgumentException {
         try {
             return createBikeRideObjectFromInputs(rideCreateWidgets);
-        } catch(IllegalArgumentException e) {
+        } catch(IllegalArgumentException e) { //Should never happen again.
             throw new IllegalArgumentException("Cannot read the date and time input.");
         }
     }
@@ -29,12 +29,14 @@ public class BikeRideCreateUtils {
         br.setDetails(rideCreateWidgets.details.getValue());
         br.setTrackingAllowed(rideCreateWidgets.trackingAllowed.getValue());
 
-        DateTimeFormat dtf = DateTimeFormat.getFormat(ScreenConstants.DateFormat +
-                " " +
-                ScreenConstants.TimeFormat);
-        Date date = null;
-        date =  dtf.parse(getDatePickerText() + " " + getTimePickerText());
-        br.setRideStartTime(date.getTime());
+        if (!getDatePickerText().isEmpty() && !getTimePickerText().isEmpty()) {
+            DateTimeFormat dtf = DateTimeFormat.getFormat(ScreenConstants.DateFormat +
+                    " " +
+                    ScreenConstants.TimeFormat);
+            Date date = null;
+            date =  dtf.parse(getDatePickerText() + " " + getTimePickerText());
+            br.setRideStartTime(date.getTime());
+        }
         return br;
     }
 

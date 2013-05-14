@@ -34,8 +34,7 @@ public interface ClientFactory<DisplayType> {
 
     public String getStoredValue(String value);
 
-    public void validateValidUser();
-
+    public void refreshUserAccount();
 
     public void setPlaceHistoryMapper(AppPlaceHistoryMapper historyHandler);
     public AppPlaceHistoryMapper getPlaceHistoryMapper();

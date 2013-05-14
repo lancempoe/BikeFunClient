@@ -65,11 +65,13 @@ public class CreateScreenActivity extends MGWTAbstractActivity implements Create
         final NewEventRequest.Builder request = new NewEventRequest.Builder(new NewEventRequest.Callback() {
             @Override
             public void onError() {
-                display.displayFailedToCreateRideMessage();
+                //display.displayFailedToCreateRideMessage();
+                //At this point the message has already been displayed to the user.
             }
 
             @Override
             public void onResponseReceived(BikeRide bikeRide) {
+                clientFactory.refreshUserAccount();
                 clientFactory.getPlaceController().goTo(new EventScreenPlace(bikeRide));
             }
         });

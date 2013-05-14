@@ -123,7 +123,7 @@ public final class SearchByParametersRequest {
         final RequestCallback requestCallback = new RequestCallback() {
             @Override
             public void onError(final Request request, final Throwable exception) {
-                Dialogs.alert("Error", "Unable to get by_proximity.", new Dialogs.AlertCallback() {
+                Dialogs.alert("Error", "Unable to get by_search.", new Dialogs.AlertCallback() {
                     @Override
                     public void onButtonPressed() {
                         callback.onError();
@@ -136,10 +136,8 @@ public final class SearchByParametersRequest {
                 final int statusCode = response.getStatusCode();
                 if ((statusCode < 200) || (statusCode >= 300)) {
                     final StringBuilder builder = new StringBuilder();
-                    builder.append("Unable to get by_proximity.");
-                    builder.append(" Status Code: ").append(statusCode);
-                    builder.append("; Status Text: ").append(response.getStatusText());
-                    Dialogs.alert("Error", builder.toString(), new Dialogs.AlertCallback() {
+                    builder.append(response.getText());
+                    Dialogs.alert("Notice: ", builder.toString(), new Dialogs.AlertCallback() {
                         @Override
                         public void onButtonPressed() {
                             callback.onError();

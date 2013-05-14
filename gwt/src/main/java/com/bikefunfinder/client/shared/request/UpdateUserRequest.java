@@ -113,10 +113,9 @@ public final class UpdateUserRequest {
                 final int statusCode = response.getStatusCode();
                 if ((statusCode < 200) || (statusCode >= 300)) {
                     final StringBuilder builder = new StringBuilder();
-                    builder.append("Unable to update user.");
-                    builder.append(" Status Code: ").append(statusCode);
-                    builder.append("; Status Text: ").append(response.getStatusText());
-                    Dialogs.alert("Error", builder.toString(), new Dialogs.AlertCallback() {
+                    builder.append("Unable to update user. ");
+                    builder.append(response.getText());
+                    Dialogs.alert("Notice: ", builder.toString(), new Dialogs.AlertCallback() {
                         @Override
                         public void onButtonPressed() {
                             callback.onError();

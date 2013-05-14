@@ -101,7 +101,7 @@ public class Utils {
                     " \"bikeRideName\": \"2: Two Days in the future\"," +
                     " \"rideStartTime\": "+startTimeMillies+"," +
                     " \"location\": "+locationJson+"," +
-                    " \"imagePath\": \"Images\\/BikeRides\\/defaultBikeRide.jpg\"," +
+                    //" \"imagePath\": \"Images\\/BikeRides\\/defaultBikeRide.jpg\"," +
                     " \"trackingAllowed\": \"true\"," +
                     " \"distanceFromClient\": \"3717.7103706379244\"," +
                     " \"currentlyTracking\": \"false\"," +

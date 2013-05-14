@@ -57,7 +57,6 @@ public final class SearchByTimeOfDayRequest {
     }
 
     private static final String URL = Settings.HOST + "FunService/rest/display/by_time_of_day/";
-    //private static final String URL = "";
 
     private final SearchByTimeOfDayRequest.Callback callback;
     private final BigDecimal latitude;
@@ -120,10 +119,8 @@ public final class SearchByTimeOfDayRequest {
                 final int statusCode = response.getStatusCode();
                 if ((statusCode < 200) || (statusCode >= 300)) {
                     final StringBuilder builder = new StringBuilder();
-                    builder.append("Unable to get by_time_of_day.");
-                    builder.append(" Status Code: ").append(statusCode);
-                    builder.append("; Status Text: ").append(response.getStatusText());
-                    Dialogs.alert("Error", builder.toString(), new Dialogs.AlertCallback() {
+                    builder.append(response.getText());
+                    Dialogs.alert("Notice: ", builder.toString(), new Dialogs.AlertCallback() {
                         @Override
                         public void onButtonPressed() {
                             callback.onError();

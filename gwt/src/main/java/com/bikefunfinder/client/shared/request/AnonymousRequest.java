@@ -121,11 +121,9 @@ public final class AnonymousRequest {
                 final int statusCode = response.getStatusCode();
                 if ((statusCode < 200) || (statusCode >= 300)) {
                     final StringBuilder builder = new StringBuilder();
-                    builder.append("Unable to get anonymous user.");
-                    builder.append(" Status Code: ").append(statusCode);
-                    builder.append("; Status Text: ").append(response.getStatusText());
-                    builder.append("; orly? ").append(response.getText());
-                    Dialogs.alert("Error", builder.toString(), new Dialogs.AlertCallback() {
+                    builder.append("Unable to get anonymous user. ");
+                    builder.append(response.getText());
+                    Dialogs.alert("Notice: ", builder.toString(), new Dialogs.AlertCallback() {
                         @Override
                         public void onButtonPressed() {
                             callback.onError();

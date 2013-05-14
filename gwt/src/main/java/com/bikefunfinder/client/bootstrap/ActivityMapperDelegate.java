@@ -28,6 +28,7 @@ public class ActivityMapperDelegate implements ActivityMapper {
 
     public ActivityMapperDelegate(ClientFactory clientFactory) {
         this.clientFactory = clientFactory;
+        this.clientFactory.refreshUserAccount();
     }
 
     @Override

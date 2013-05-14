@@ -35,10 +35,10 @@
             <g:VerticalPanel width="100%">
                 <g:HorizontalPanel width="100%">
                     <g:cell horizontalAlignment="ALIGN_LEFT">
-                        <mgwt:Button ui:field="hereAndNowButton" text="Here &amp; now"/>
+                        <mgwt:Button ui:field="hereAndNowButton" text="Here &amp; Now"/>
                     </g:cell>
                     <g:cell horizontalAlignment="ALIGN_RIGHT">
-                        <mgwt:Button ui:field="timeAndDayButton" text="Time &amp; day"/>
+                        <mgwt:Button ui:field="timeAndDayButton" text="Time &amp; Day"/>
                     </g:cell>
                 </g:HorizontalPanel>
             </g:VerticalPanel>

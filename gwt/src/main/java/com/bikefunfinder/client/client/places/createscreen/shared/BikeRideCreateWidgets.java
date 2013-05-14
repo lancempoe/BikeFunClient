@@ -43,5 +43,6 @@ public class BikeRideCreateWidgets {
         startDate.setText("");
         startTime.setText("");
         details.setText("");
+        details.setVisibleLines(5);
     }
 }

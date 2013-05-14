@@ -83,7 +83,6 @@ public class CreateScreenDisplayGwtImpl  extends Composite implements CreateScre
     protected void onSubmitRidePressed(TapEvent event) {
         if(presenter != null) {
             BikeRide br = BikeRideCreateUtils.createBikeRideFromState(bikeDisplayWidgets);
-
             presenter.onFormSelected(br);
         }
     }

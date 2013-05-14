@@ -9,7 +9,11 @@ package com.bikefunfinder.client.shared.constants;
  */
 public class Settings {
 
-    //Local: Localhost
+    //public static String HOST = "http://localhost:8080/"; //Local: Localhost
+    //Be sure to turn on your local mongo db and tomcat prior to running.
+
     //Test: ??
+
     public static String HOST = "http://www.bikefunfinder.com/";
+
 }

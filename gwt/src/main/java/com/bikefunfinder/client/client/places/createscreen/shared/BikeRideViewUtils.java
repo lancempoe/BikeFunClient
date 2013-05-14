@@ -25,7 +25,6 @@ public class BikeRideViewUtils {
     //todo: wtf man, this be a mess.. made for the sake.. of SCIENCE! haha no, I just did some bullshit.
     public static
         <U extends BikeRideCreateWidgets>
-
         WidgetList buildWidgetListWithLabels(final String peopleTracking,
                                              final String someoneIsTracking,
                                              final String bikeRideNames,
@@ -37,6 +36,10 @@ public class BikeRideViewUtils {
                                              final String rideDetails,
                                              final U u) {
         WidgetList newWidgetList = new WidgetList();
+
+        //User should never enter data in manually.
+        u.startDate.setReadOnly(true);
+        u.startTime.setReadOnly(true);
 
         boolean isView = u instanceof BikeRideViewWidgets;
         if(isView) {

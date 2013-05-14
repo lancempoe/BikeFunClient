@@ -44,4 +44,6 @@ public class ScreenConstants {
     public static final Double PORTLAND_LONGITUDE = -122.6762084960938;
 
     public static final NumberFormat DISTANCE_FORMAT = NumberFormat.getFormat(".##");
+
+    public static final String RegularExpression_City = "^((?!,).)+(?=,)";
 }

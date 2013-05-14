@@ -65,7 +65,10 @@ public class HomeScreenActivity extends MGWTAbstractActivity implements HomeScre
         }
 
         //Get City
-        if (root != null && root.getClosestLocation() != null)  {
+        if (root != null &&
+            root.getBikeRides() != null &&
+            root.getBikeRides().length() > 0 &&
+            root.getClosestLocation() != null)  {
             MatchResult matcher = buildMatcher(root.getClosestLocation().getFormattedAddress());
             boolean matchFound = (matcher != null); // equivalent to regExp.test(inputStr);
             if (matchFound) {
@@ -75,7 +78,7 @@ public class HomeScreenActivity extends MGWTAbstractActivity implements HomeScre
                     root.getClosestLocation().getFormattedAddress() != null) {
                     display.display("Unknown City");
                 } else {
-                    display.display("Sorry, No Rides");
+                    display.display("Search Results");
                 }
             }
         }  else {
@@ -84,7 +87,7 @@ public class HomeScreenActivity extends MGWTAbstractActivity implements HomeScre
     }
 
     private MatchResult buildMatcher(String formattedAddress) {
-        RegExp regExp = RegExp.compile("^(.*),");
+        RegExp regExp = RegExp.compile(ScreenConstants.RegularExpression_City);
         return regExp.exec(formattedAddress);
     }
 
@@ -97,7 +100,6 @@ public class HomeScreenActivity extends MGWTAbstractActivity implements HomeScre
 
     @Override
     public void onNewButton() {
-        clientFactory.validateValidUser();
         clientFactory.getPlaceController().goTo(new CreateScreenPlace());
     }
 
@@ -108,6 +110,7 @@ public class HomeScreenActivity extends MGWTAbstractActivity implements HomeScre
 
     @Override
     public void onLoginButton() {
+        clientFactory.refreshUserAccount(); //Changes will not be visible until next view.
 
         //Set the logged in user details
         if (clientFactory.getStoredValue(DBKeys.USER) != null) {

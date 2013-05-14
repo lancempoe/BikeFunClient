@@ -32,6 +32,10 @@ public class Query extends JavaScriptObject {
 		return this.rideLeaderId;
     }-*/;
 
+    public final native void setRideLeaderId(String rideLeaderId) /*-{
+		this.rideLeaderId = rideLeaderId;
+    }-*/;
+
     public final native void setQuery(String query) /*-{
         this.query = query;
     }-*/;

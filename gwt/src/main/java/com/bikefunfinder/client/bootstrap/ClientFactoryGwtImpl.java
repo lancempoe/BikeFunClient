@@ -159,7 +159,7 @@ public class ClientFactoryGwtImpl implements ClientFactory {
     }
 
     @Override
-    public void validateValidUser() {
+    public void refreshUserAccount() {
 
         Storage storageInterface = this.storageInterface.getStorageInterfaceMyBeNull();
         if(storageInterface==null) {
@@ -167,16 +167,20 @@ public class ClientFactoryGwtImpl implements ClientFactory {
         } else {
             String jsonText = storageInterface.getItem(DBKeys.USER);
             if(jsonText!=null && !jsonText.isEmpty()) {
+                //TODO WE NEED TO VALIDATE THAT THE USER IS STILL LOGGED IN PRIOR TO SENDING BACK, IF NOT SEND BACK ANONYMOUSUSER
                 User user = Utils.castJsonTxtToJSOObject(jsonText);
             }  else {
                 jsonText = storageInterface.getItem(DBKeys.ANONYMOUS_USER);
                 if(jsonText==null || jsonText.isEmpty()) {
                     final Date now = new Date();
                     createAnonymousAccount(storageInterface,
-                            Long.toString(now.getTime()),
-                            phoneGap.getDevice().getUuid());
+                        Long.toString(now.getTime()),
+                        phoneGap.getDevice().getUuid());
                 } else {
                     AnonymousUser anonymousUser = Utils.castJsonTxtToJSOObject(jsonText);
+                    createAnonymousAccount(storageInterface,
+                        anonymousUser.getDeviceAccount().getKey(),
+                        anonymousUser.getDeviceAccount().getDeviceUUID());
                 }
             }
         }
@@ -193,7 +197,6 @@ public class ClientFactoryGwtImpl implements ClientFactory {
             public void onResponseReceived(AnonymousUser anonymousUser) {
                 final String jsonText = JSODescriber.toJSON(anonymousUser);
                 storageInterface.setItem(DBKeys.ANONYMOUS_USER, jsonText);
-
             }
         };
         AnonymousRequest.Builder request = new AnonymousRequest.Builder(callback);

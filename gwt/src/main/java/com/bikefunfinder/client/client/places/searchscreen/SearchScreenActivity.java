@@ -63,7 +63,7 @@ public class SearchScreenActivity extends MGWTAbstractActivity implements Search
         final SearchByParametersRequest.Builder request = new SearchByParametersRequest.Builder(new SearchByParametersRequest.Callback() {
             @Override
             public void onError() {
-                Window.alert("Oops, your BFF will be back shortly.");
+                //At this point the message has already been displayed to the user.
             }
 
             @Override
@@ -73,9 +73,9 @@ public class SearchScreenActivity extends MGWTAbstractActivity implements Search
         });
 
         //Clear out defaults
-        if (ScreenConstants.TargetAudienceLabel.equals(query.getTargetAudience()))
+        if (ScreenConstants.TargetAudienceLabel.equals(query.getTargetAudience())) {
             query.setTargetAudience("");
-
+        }
         request.query(query);
 
         DeviceTools.getPhoneGeoLoc(clientFactory, new NonPhoneGapGeolocationCallback() {

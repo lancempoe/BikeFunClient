@@ -20,6 +20,8 @@ import java.util.ArrayList;
 public class ProfileScreenActivity extends MGWTAbstractActivity implements ProfileScreenDisplay.Presenter {
 
     private final ClientFactory<ProfileScreenDisplay> clientFactory;
+    private String userName = "";
+    private String userId = "";
 
     @Override
     public void start(AcceptsOneWidget panel, EventBus eventBus) {
@@ -30,22 +32,21 @@ public class ProfileScreenActivity extends MGWTAbstractActivity implements Profi
 
     public ProfileScreenActivity(ClientFactory clientFactory, User user) {
         this.clientFactory = clientFactory;
-        setupDisplay(user);
+        ProfileScreenDisplay display = this.clientFactory.getDisplay(this);
+        setUserDisplayElements(user.getId(), user.getUserName());
+        display.display(user);
     }
 
     public ProfileScreenActivity(ClientFactory clientFactory, AnonymousUser anonymousUser) {
         this.clientFactory = clientFactory;
-        setupDisplay(anonymousUser);
-    }
-
-    private void setupDisplay(User user) {
-        ProfileScreenDisplay display = clientFactory.getDisplay(this);
-        display.display(user);
-    }
-
-    private void setupDisplay(AnonymousUser anonymousUser) {
-        ProfileScreenDisplay display = clientFactory.getDisplay(this);
+        ProfileScreenDisplay display = this.clientFactory.getDisplay(this);
+        setUserDisplayElements(anonymousUser.getId(), anonymousUser.getUserName());
         display.display(anonymousUser);
+    }
+
+    private void setUserDisplayElements(String id, String name) {
+        this.userId = id;
+        this.userName = name;
     }
 
     @Override
@@ -81,7 +82,7 @@ public class ProfileScreenActivity extends MGWTAbstractActivity implements Profi
             }
         };
         SearchByTimeOfDayForProfileRequest.Builder request = new SearchByTimeOfDayForProfileRequest.Builder(callback);
-        request.latitude(geoLoc).longitude(geoLoc).send();
+        request.latitude(geoLoc).longitude(geoLoc).rideLeaderId(userId).send();
     }
 
 //    private InAppBrowserDisplay display;
