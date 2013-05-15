@@ -1,12 +1,18 @@
 package com.bikefunfinder.client.client.places.gmap;
 
+import com.bikefunfinder.client.bootstrap.db.DBKeys;
 import com.bikefunfinder.client.client.places.eventscreen.EventScreenPlace;
 import com.bikefunfinder.client.shared.constants.ScreenConstants;
 import com.bikefunfinder.client.shared.model.BikeRide;
+import com.bikefunfinder.client.shared.model.BikeRideStorage;
 import com.bikefunfinder.client.shared.model.GeoLoc;
 import com.bikefunfinder.client.shared.model.Root;
 import com.bikefunfinder.client.shared.model.helper.Extractor;
+import com.bikefunfinder.client.shared.model.json.Utils;
+import com.bikefunfinder.client.shared.model.printer.JSODescriber;
 import com.bikefunfinder.client.shared.request.SearchByProximityRequest;
+import com.google.gwt.core.client.JavaScriptObject;
+import com.google.gwt.core.client.JsArray;
 import com.google.gwt.core.shared.GWT;
 import com.google.gwt.http.client.UrlBuilder;
 import com.google.gwt.user.client.Window;
@@ -46,6 +52,10 @@ public class GMapActivity extends NavBaseActivity implements GMapDisplay.Present
         geoMapView.setPresenter(this);
         panel.setWidget(geoMapView);
 
+        //reset the stored state
+        BikeRide emptyBikeRideStorage = GWT.create(BikeRide.class);
+        clientFactory.setStoredValue(DBKeys.BIKE_RIDE_STORAGE, JSODescriber.toJSON(emptyBikeRideStorage));
+
         startWatching();  //naughty! ?? or maybenot =D
     }
 
@@ -55,7 +65,6 @@ public class GMapActivity extends NavBaseActivity implements GMapDisplay.Present
         options.setTimeout(10000);
         options.setMaximumAge(1000);
         final GeolocationCallback geolocationCallback = new GeolocationCallback() {
-            Integer count = 0;
 
             @Override
             public void onSuccess(final Position position) {
@@ -63,13 +72,9 @@ public class GMapActivity extends NavBaseActivity implements GMapDisplay.Present
                     final Coordinates coordinates = position.getCoordinates();
                     final double latitude = coordinates.getLatitude();
                     final double longitude = coordinates.getLongitude();
-                    final double altitude = coordinates.getAltitude();
                     final double accuracy = coordinates.getAccuracy();
-                    final double altitudeAccuracy = coordinates.getAltitudeAccuracy();
-                    final double heading = coordinates.getHeading();
-                    final double speed = coordinates.getSpeed();
 
-                    setView(++count, latitude, longitude, altitude, accuracy, altitudeAccuracy, heading, speed);
+                    setView(latitude, longitude, accuracy);
                 }
             }
 
@@ -107,8 +112,7 @@ public class GMapActivity extends NavBaseActivity implements GMapDisplay.Present
         gMapView.refresh();
     }
 
-    private void setView(final int count, final double latitude, final double longitude, final double altitude,
-                         final double accuracy, final double altitudeAccuracy, final double heading, final double speed) {
+    private void setView(final double latitude, final double longitude, final double accuracy) {
         final GMapDisplay geoMapView = clientFactory.getDisplay(this);
         fireRequestForHereAndNow(geoMapView, latitude, longitude, accuracy);
     }
@@ -189,6 +193,26 @@ public class GMapActivity extends NavBaseActivity implements GMapDisplay.Present
             return "";
         }
 
+//        final String storedValueString = clientFactory.getStoredValue(DBKeys.BIKE_RIDE_STORAGE);
+//        BikeRideStorage bikeRideStorage;
+//        if(storedValueString==null || storedValueString.isEmpty()) {
+//            bikeRideStorage = GWT.create(BikeRideStorage.class);
+//            Window.alert("newb");
+//        } else {
+//            bikeRideStorage = Utils.castJsonTxtToJSOObject(storedValueString);
+//            Window.alert("oldb");
+//        }
+//
+//        if(bikeRideStorage==null) {
+//            JsArray<BikeRide> jsArray = JavaScriptObject.createArray().cast();
+//            bikeRideStorage.setBikeRides(jsArray);
+//        }
+//
+//        Window.alert("size1:"+bikeRideStorage.getBikeRides().length());
+//        bikeRideStorage.getBikeRides().push(bikeRide);
+//        Window.alert("size2:"+bikeRideStorage.getBikeRides().length());
+
+        clientFactory.setStoredValue(DBKeys.BIKE_RIDE_STORAGE, JSODescriber.toJSON(bikeRide));
         String hashToken = clientFactory.getPlaceHistoryMapper().getToken(new EventScreenPlace(bikeRide));
         UrlBuilder urlBuilder = Window.Location.createUrlBuilder().setHash(hashToken);
         return urlBuilder.buildString();

@@ -17,6 +17,7 @@ public interface ClientFactory<DisplayType> {
     public PlaceController getPlaceController();
     public EventBus getEventBus();
 
+    public void setPhoneGap(PhoneGap phoneGap);
     public DisplayType getDisplay(MGWTAbstractActivity activity);
 /*
     public CreateScreenDisplay getCreateScreenDisplay();
@@ -33,6 +34,8 @@ public interface ClientFactory<DisplayType> {
     */
 
     public String getStoredValue(String value);
+    public boolean setStoredValue(String key, String value);
+
 
     public void refreshUserAccount();
 

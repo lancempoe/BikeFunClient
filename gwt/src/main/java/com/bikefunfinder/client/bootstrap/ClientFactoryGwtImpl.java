@@ -37,7 +37,7 @@ import java.util.Date;
 
 public class ClientFactoryGwtImpl implements ClientFactory {
 
-    private final PhoneGap phoneGap;
+    private PhoneGap phoneGap;
     private final LocalStorageWrapper storageInterface;
     private SimpleEventBus eventBus;
     private PlaceController placeController;
@@ -49,11 +49,14 @@ public class ClientFactoryGwtImpl implements ClientFactory {
     private GMapDisplay hereAndNowDisplay;
     private AppPlaceHistoryMapper historyHandler;
 
-    public ClientFactoryGwtImpl(PhoneGap phoneGap) {
-        this.phoneGap = phoneGap;
+    public ClientFactoryGwtImpl() {
         this.storageInterface = new LocalStorageWrapper();
         this.eventBus = new SimpleEventBus();
         this.placeController = new PlaceController(eventBus);
+    }
+
+    public void setPhoneGap(PhoneGap phoneGap) {
+        this.phoneGap = phoneGap;
     }
 
     @Override
@@ -157,6 +160,22 @@ public class ClientFactoryGwtImpl implements ClientFactory {
         }
         return jsonText;
     }
+
+
+
+    @Override
+    public boolean setStoredValue(String dbKey, String value) {
+
+        Storage storageInterface = this.storageInterface.getStorageInterfaceMyBeNull();
+        if(storageInterface==null) {
+            Window.alert("Storage interface is not supported (null)");
+            return false;
+        } else {
+            storageInterface.setItem(dbKey, value);
+        }
+        return true;
+    }
+
 
     @Override
     public void refreshUserAccount() {

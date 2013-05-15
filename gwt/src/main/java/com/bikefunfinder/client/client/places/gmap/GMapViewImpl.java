@@ -3,13 +3,13 @@ package com.bikefunfinder.client.client.places.gmap;
 import com.bikefunfinder.client.client.places.homescreen.HomeScreenDisplay;
 import com.bikefunfinder.client.shared.model.BikeRide;
 import com.bikefunfinder.client.shared.model.GeoLoc;
+import com.google.gwt.core.client.JsArray;
+import com.google.gwt.dom.client.Node;
 import com.google.gwt.safehtml.shared.SafeHtml;
+import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.Timer;
-import com.google.gwt.user.client.ui.Anchor;
-import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.HTML;
-import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.user.client.ui.*;
 import com.google.maps.gwt.client.*;
 import com.google.maps.gwt.client.GoogleMap.CenterChangedHandler;
 import com.google.maps.gwt.client.GoogleMap.DragEndHandler;
@@ -35,6 +35,7 @@ import java.util.List;
 public class GMapViewImpl implements GMapDisplay {
     private static final double DEFAULT_ZOOM = 16;
     private static final int RESUME_AUTO_PAN_AND_ZOOM_DELAY_MILLIS = 10000;
+    private static final double metersInAMile = 1609.34;
 
     private final LayoutPanel main;
     private final HeaderButton  backButton;
@@ -136,6 +137,31 @@ public class GMapViewImpl implements GMapDisplay {
             BicyclingLayer bicyclingLayer = BicyclingLayer.create();
             bicyclingLayer.setMap(map);
 
+
+
+Button trackRide = new Button();
+trackRide.setText("TrackRide");
+
+FlowPanel widget = new FlowPanel();
+final HTML titleText = new HTML("Ride Controls");
+widget.add(titleText);
+widget.add(trackRide);
+
+//copied from a turd who doesn't know how to set styles
+DOM.setStyleAttribute(widget.getElement(), "background", "white");
+DOM.setStyleAttribute(widget.getElement(), "padding", "5px");
+DOM.setStyleAttribute(widget.getElement(), "margin", "3px");
+DOM.setStyleAttribute(widget.getElement(), "border", "3px solid #FF0000");
+DOM.setStyleAttribute(titleText.getElement(), "color", "black");
+MVCArray<Node> array = MVCArray.create();
+array.push(widget.getElement());
+map.getControls().set((int) ControlPosition.RIGHT_CENTER.getValue(), array);
+
+
+
+
+
+
             map.addCenterChangedListener(new CenterChangedHandler() {
                 @Override
                 public void handle() {
@@ -174,20 +200,20 @@ public class GMapViewImpl implements GMapDisplay {
             }
         }
 
-//        if (circle == null) {
-//            final CircleOptions circleOptions = createCircleOptions(map, center, accuracy);
-//            circle = Circle.create(circleOptions);
-//        } else {
-//            circle.setCenter(center);
-//            circle.setRadius(accuracy);
-//        }
-//
-//        circle.addClickListener(new Circle.ClickHandler() {
-//            @Override
-//            public void handle(MouseEvent event) {
-//                //Window.alert("It's a ME! " );
-//            }
-//        });
+        if (circle == null) {
+            final CircleOptions circleOptions = createCircleOptions(map, center, metersInAMile*2);
+            circle = Circle.create(circleOptions);
+        } else {
+            circle.setCenter(center);
+            circle.setRadius(accuracy);
+        }
+
+        circle.addClickListener(new Circle.ClickHandler() {
+            @Override
+            public void handle(MouseEvent event) {
+                //Window.alert("It's a ME! " );
+            }
+        });
 
         if (myBicycleMarker == null)
         {

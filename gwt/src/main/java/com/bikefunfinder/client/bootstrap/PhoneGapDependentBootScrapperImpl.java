@@ -1,11 +1,13 @@
 package com.bikefunfinder.client.bootstrap;
 
+import com.bikefunfinder.client.Injector;
 import com.bikefunfinder.client.client.places.homescreen.HomeScreenPlace;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.place.shared.PlaceHistoryHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.RootPanel;
+import com.google.inject.Inject;
 import com.googlecode.gwtphonegap.client.PhoneGap;
 import com.googlecode.mgwt.ui.client.MGWT;
 import com.googlecode.mgwt.ui.client.MGWTSettings;
@@ -22,8 +24,10 @@ import java.util.List;
  */
 public class PhoneGapDependentBootScrapperImpl extends PhoneGapDependentBootScrapper {
 
-    public PhoneGapDependentBootScrapperImpl(PhoneGap phoneGapApi) {
+    Injector injector;
+    public PhoneGapDependentBootScrapperImpl(PhoneGap phoneGapApi, Injector injector) {
         super(phoneGapApi);
+        this.injector = injector;
     }
 
     public void phoneGapInitFailure() {
@@ -31,8 +35,13 @@ public class PhoneGapDependentBootScrapperImpl extends PhoneGapDependentBootScra
 
     }
 
+
+    ClientFactory clientFactory;
+
     protected void phoneGapAvailable() {
-        final ClientFactoryGwtImpl clientFactory = new ClientFactoryGwtImpl(phoneGapApi);
+        injector.getSimpleWidget().setPhoneGap(phoneGapApi);
+        clientFactory = injector.getSimpleWidget();
+
         buildDisplay(clientFactory);
 
         MGWTSettings settings = MgwtSettingsFactory.buildMgwtSettings();
@@ -45,7 +54,7 @@ public class PhoneGapDependentBootScrapperImpl extends PhoneGapDependentBootScra
         historyHandler.handleCurrentHistory();
     }
 
-    private PlaceHistoryHandler createHistoryMapper(final ClientFactoryGwtImpl clientFactory) {
+    private PlaceHistoryHandler createHistoryMapper(final ClientFactory clientFactory) {
         AppPlaceHistoryMapper historyMapper = GWT.create(AppPlaceHistoryMapper.class);
         final PlaceHistoryHandler historyHandler = new PlaceHistoryHandler(historyMapper);
 

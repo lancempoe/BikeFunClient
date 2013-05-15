@@ -5,6 +5,8 @@
     <inherits name="com.google.gwt.user.User"/>
     <inherits name="gwtquery.plugins.Ui" />
     <inherits name="com.googlecode.gwtphonegap.showcase.ShowCase"/>
+    <inherits name="com.google.gwt.inject.Inject"/>
+
 
     <add-linker name="xsiframe"/>
 
