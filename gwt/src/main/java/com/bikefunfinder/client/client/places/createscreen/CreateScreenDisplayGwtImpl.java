@@ -75,7 +75,7 @@ public class CreateScreenDisplayGwtImpl  extends Composite implements CreateScre
 
     @Override
     public void display(String userName) {
-        this.userName.setText("Create Ride by: " + userName);
+        this.userName.setText(userName);
     }
 
     @Override

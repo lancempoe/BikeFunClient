@@ -139,6 +139,14 @@ public final class NewEventRequest {
                         }
                     });
                 } else {
+                    final StringBuilder builder = new StringBuilder();
+                    builder.append("Successfully Created Event!");
+                    Dialogs.alert("Notice: ", builder.toString(), new Dialogs.AlertCallback() {
+                        @Override
+                        public void onButtonPressed() {
+                            callback.onError();
+                        }
+                    });
                     BikeRide bikeRide = Utils.castJsonTxtToJSOObject(response.getText());
                     callback.onResponseReceived(bikeRide);
                 }

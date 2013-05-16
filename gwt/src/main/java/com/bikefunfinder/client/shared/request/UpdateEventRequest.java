@@ -66,7 +66,7 @@ public final class UpdateEventRequest {
         }
     }
 
-    private static final String URL = Settings.HOST + "FunService/rest/bikerides/update ";
+    private static final String URL = Settings.HOST + "FunService/rest/bikerides/update";
 
     private final UpdateEventRequest.Callback callback;
     private final Root root;

@@ -43,7 +43,7 @@ public class ScreenConstants {
     public static final Double PORTLAND_LATITUDE = 45.52345275878906;
     public static final Double PORTLAND_LONGITUDE = -122.6762084960938;
 
-    public static final NumberFormat DISTANCE_FORMAT = NumberFormat.getFormat(".##");
+    public static final NumberFormat DISTANCE_FORMAT = NumberFormat.getFormat("#.##");
 
     public static final String RegularExpression_City = "^((?!,).)+(?=,)";
 }

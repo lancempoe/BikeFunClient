@@ -47,17 +47,11 @@ public interface HomeScreenDisplay extends IsWidget {
 
     public class Content {
         private final BikeRide bikeRide;
-        private final String rideName;
         private final String timeDisplay;
         private final String distance;
 
         public Content(BikeRide bikeRide) {
             this.bikeRide = bikeRide;
-            if(bikeRide.getBikeRideName()!=null) {
-                this.rideName = bikeRide.getBikeRideName();
-            } else {
-                this.rideName = "";
-            }
 
             if(bikeRide.getDistanceFromClient()!=null) {
                 this.distance = ScreenConstants.DISTANCE_FORMAT.format(
@@ -69,11 +63,6 @@ public interface HomeScreenDisplay extends IsWidget {
 
             JsDateWrapper bikeRideDate = bikeRide.createJsDateWrapperRideStartTime();
             this.timeDisplay = bikeRideDate.toString(ScreenConstants.TimeFormatPrintPretty);
-        }
-
-
-        public String getRideName() {
-            return rideName;
         }
 
         public String getTimeDisplay() {
@@ -90,13 +79,17 @@ public interface HomeScreenDisplay extends IsWidget {
 
         public SafeHtml getShortDescription() {
             SafeHtmlBuilder safeHtmlBuilder = new SafeHtmlBuilder();
-            if(this.getRideName()!=null && !this.getRideName().isEmpty()) {
-                safeHtmlBuilder.appendEscaped(this.getRideName());
-            }
-            safeHtmlBuilder.appendHtmlConstant(", ");
 
             if(this.getTimeDisplay()!=null && !this.getTimeDisplay().isEmpty()) {
                 safeHtmlBuilder.appendEscaped(this.getTimeDisplay());
+            }
+            safeHtmlBuilder.appendHtmlConstant(", ");
+
+            safeHtmlBuilder.appendEscaped(this.bikeRide.getTargetAudience());
+            safeHtmlBuilder.appendHtmlConstant(", ");
+
+            if(this.bikeRide.getBikeRideName() !=null && !this.bikeRide.getBikeRideName().isEmpty()) {
+                safeHtmlBuilder.appendEscaped(this.bikeRide.getBikeRideName());
             }
             safeHtmlBuilder.appendHtmlConstant(", ");
 

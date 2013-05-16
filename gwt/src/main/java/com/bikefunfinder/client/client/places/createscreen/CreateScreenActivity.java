@@ -33,8 +33,11 @@ public class CreateScreenActivity extends MGWTAbstractActivity implements Create
 
         final CreateScreenDisplay display = clientFactory.getDisplay(this);
         if (bikeRide != null) {
+            clientFactory.getDisplay(this).display("Updating Ride with: " + getUserName());
             displaySubmitButton = false; //typeIsUpdate
             display.display(bikeRide);
+        } else {
+            clientFactory.getDisplay(this).display("Creating Ride with: " + getUserName());
         }
 
         display.displaySubmitOrUpdateButton(displaySubmitButton);
@@ -120,8 +123,6 @@ public class CreateScreenActivity extends MGWTAbstractActivity implements Create
     public void onUpdateSelected(final Root root) {
         final CreateScreenDisplay display = clientFactory.getDisplay(this);
 
-        Window.alert("root: " + root.getBikeRides().get(0).getJSON());
-
         final UpdateEventRequest.Builder request = new UpdateEventRequest.Builder(new UpdateEventRequest.Callback() {
             @Override
             public void onError() {
@@ -145,13 +146,11 @@ public class CreateScreenActivity extends MGWTAbstractActivity implements Create
         DeviceTools.getPhoneGeoLoc(clientFactory, new NonPhoneGapGeolocationCallback() {
             @Override
             public void onSuccess(GeoLoc geoLoc) {
-                Window.alert("Bike ride ID: " + root.getBikeRides().get(0).getId());
                 request.latitude(geoLoc).longitude(geoLoc).send();
             }
 
             @Override
             public void onFailure(GeoLoc geoLoc) {
-                Window.alert("Bike ride ID: " + root.getBikeRides().get(0).getId());
                 request.latitude(geoLoc).longitude(geoLoc).send();
             }
         });

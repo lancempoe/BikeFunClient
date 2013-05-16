@@ -5,6 +5,7 @@ package com.bikefunfinder.client.shared.model;
  */
 
 import com.google.gwt.core.client.JavaScriptObject;
+import com.google.gwt.json.client.JSONObject;
 
 public class ClosestLocation extends JavaScriptObject {
 
@@ -37,4 +38,9 @@ public class ClosestLocation extends JavaScriptObject {
     public final native String getFormattedAddress() /*-{
 		return this.formattedAddress;
     }-*/;
+
+    public final String getJSON()
+    {
+        return new JSONObject(this).toString();
+    }
 }

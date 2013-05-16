@@ -165,7 +165,7 @@ public class HomeScreenActivity extends MGWTAbstractActivity implements HomeScre
             @Override
             public void onFailure(GeoLoc geoLoc) {
                 fireRequestForTimeOfDay(display, geoLoc, callback);
-                callback.onError();
+                callback.onResponseReceived();
             }
         });
 

@@ -8,6 +8,7 @@ import com.bikefunfinder.client.shared.model.printer.JsDateWrapper;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.core.client.JsArray;
 import com.google.gwt.i18n.client.DateTimeFormat;
+import com.google.gwt.json.client.JSONObject;
 
 import java.util.Date;
 
@@ -113,6 +114,11 @@ public class User extends JavaScriptObject {
     public final native void setTotalHostedBikeRideCount(int totalHostedBikeRideCount) /*-{
         this.totalHostedBikeRideCount = totalHostedBikeRideCount;
     }-*/;
+
+    public final String getJSON()
+    {
+        return new JSONObject(this).toString();
+    }
 
 //    public String id;
 //    public OAuth oAuth;

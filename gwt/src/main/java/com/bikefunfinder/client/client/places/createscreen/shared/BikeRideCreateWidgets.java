@@ -14,7 +14,7 @@ import com.googlecode.mgwt.ui.client.widget.MTextArea;
 import com.googlecode.mgwt.ui.client.widget.MTextBox;
 
 public class BikeRideCreateWidgets {
-    public final MTextBox bikeRideId = new MTextBox();
+    public final MTextBox bikeRideId = new MTextBox(); //This is not used on the page... hidden field with values.. replace with injection code in time.
     public final MTextBox bikeRideName = new MTextBox();
     public final MTextBox rideLeaderName = new MTextBox();
     public final MTextBox locationAddress = new MTextBox();
@@ -69,11 +69,11 @@ public class BikeRideCreateWidgets {
         locationAddress.setText("");
         locationCity.setText("");
         locationState.setText("");
-        trackingAllowed.setValue(false);
+        trackingAllowed.setValue(true);
         targetAudience.setSelectedIndex(0);
-        startDate.setText("");
-        startTime.setText("");
-        details.setText("");
+        startDate.setValue("");
+        startTime.setValue("");
+        details.setValue("");
         details.setVisibleLines(5);
         bikeRideId.setText("");
     }
