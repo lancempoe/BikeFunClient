@@ -30,7 +30,6 @@ public class GeolocationActivity extends NavBaseActivity implements Presenter {
     private GeolocationWatcher watcher;
 
     public GeolocationActivity(ClientFactory clientFactory) {
-        super(clientFactory);
 
         this.display = null;//clientFactory.getGeolocationDisplay();
         this.phoneGap = clientFactory.getPhoneGap();

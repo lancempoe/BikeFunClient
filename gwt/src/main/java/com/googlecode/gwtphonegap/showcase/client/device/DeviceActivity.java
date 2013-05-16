@@ -25,8 +25,6 @@ public class DeviceActivity extends NavBaseActivity implements DeviceDisplay.Pre
     private final PhoneGap phoneGap;
 
     public DeviceActivity(ClientFactory clientFactory) {
-        super(clientFactory);
-
         this.display = null;//clientFactory.getDeviceDisplay();
         this.phoneGap = clientFactory.getPhoneGap();
 

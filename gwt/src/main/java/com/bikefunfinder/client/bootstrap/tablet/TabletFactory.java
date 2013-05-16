@@ -3,6 +3,7 @@ package com.bikefunfinder.client.bootstrap.tablet;
 import com.bikefunfinder.client.bootstrap.ActivityMapperDelegate;
 import com.bikefunfinder.client.bootstrap.AnimationMapperDelegate;
 import com.bikefunfinder.client.bootstrap.ClientFactory;
+import com.bikefunfinder.client.gin.Injector;
 import com.google.gwt.activity.shared.ActivityMapper;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.ui.IsWidget;
@@ -25,20 +26,21 @@ import java.util.List;
  * To change this template use File | Settings | File Templates.
  */
 public class TabletFactory {
-    public static List<IsWidget> createTabletDisplay(ClientFactory clientFactory) {
+    public static List<IsWidget> createTabletDisplay() {
         List<IsWidget> interfaceElements = new ArrayList<IsWidget>();
 
         SimplePanel navContainer = new SimplePanel();
         navContainer.getElement().setId("nav");
         navContainer.getElement().addClassName("landscapeonly");
         AnimatableDisplay navDisplay = GWT.create(AnimatableDisplay.class);
+        ClientFactory clientFactory = Injector.INSTANCE.getClientFactory();
 
         final TabletPortraitOverlay tabletPortraitOverlay = new TabletPortraitOverlay();
 
         new OrientationRegionHandler(navContainer, tabletPortraitOverlay, navDisplay);
         new MasterRegionHandler(clientFactory.getEventBus(), "nav", tabletPortraitOverlay);
 
-        ActivityMapper navActivityMapper = new TabletNavActivityMapper(new ActivityMapperDelegate(clientFactory));
+        ActivityMapper navActivityMapper = new TabletNavActivityMapper(new ActivityMapperDelegate());
 
         AnimationMapper navAnimationMapper = new TabletNavAnimationMapper();
 
@@ -54,7 +56,7 @@ public class TabletFactory {
         mainContainer.getElement().setId("main");
         AnimatableDisplay mainDisplay = GWT.create(AnimatableDisplay.class);
 
-        TabletMainActivityMapper tabletMainActivityMapper = new TabletMainActivityMapper(new ActivityMapperDelegate(clientFactory));
+        TabletMainActivityMapper tabletMainActivityMapper = new TabletMainActivityMapper(new ActivityMapperDelegate());
 
         AnimationMapper tabletMainAnimationMapper = new TabletMainAnimationMapper(new AnimationMapperDelegate());
 

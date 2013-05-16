@@ -17,7 +17,7 @@ import java.util.List;
  * To change this template use File | Settings | File Templates.
  */
 public class RootUiFactory {
-    public static List<IsWidget> getUserInterfaceRootWidgets(ClientFactory clientFactory) {
+    public static List<IsWidget> getUserInterfaceRootWidgets() {
         StyleInjector.inject(AppBundle.INSTANCE.css().getText());
 
         List<IsWidget> elementsToAdd;
@@ -27,9 +27,9 @@ public class RootUiFactory {
             // @media
             StyleInjector.inject(AppBundle.INSTANCE.css().getText());
 
-            elementsToAdd = TabletFactory.createTabletDisplay(clientFactory);
+            elementsToAdd = TabletFactory.createTabletDisplay();
         } else {
-            elementsToAdd = PhoneFactory.createPhoneDisplay(clientFactory);
+            elementsToAdd = PhoneFactory.createPhoneDisplay();
         }
         return elementsToAdd;
     }

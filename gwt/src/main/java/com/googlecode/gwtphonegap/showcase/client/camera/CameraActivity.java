@@ -28,8 +28,6 @@ public class CameraActivity extends NavBaseActivity implements CameraDisplay.Pre
     private final ClientFactory clientFactory;
 
     public CameraActivity(ClientFactory clientFactory) {
-        super(clientFactory);
-
         this.clientFactory = clientFactory;
         this.phoneGap = clientFactory.getPhoneGap();
 

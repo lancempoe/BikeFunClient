@@ -18,8 +18,6 @@ public class MediaActivity extends NavBaseActivity implements MediaDisplay.Prese
     private final PhoneGap phoneGap;
 
     public MediaActivity(ClientFactory clientFactory) {
-        super(clientFactory);
-
         this.display = null;//clientFactory.getMediaDisplay();
         this.phoneGap = clientFactory.getPhoneGap();
 

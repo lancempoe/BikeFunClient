@@ -26,8 +26,6 @@ public class NotificationActivity extends NavBaseActivity implements Notificatio
     private final PhoneGap phoneGap;
 
     public NotificationActivity(ClientFactory clientFactory) {
-        super(clientFactory);
-
         this.display = null;//clientFactory.getNotificationDisplay();
         this.phoneGap = clientFactory.getPhoneGap();
 

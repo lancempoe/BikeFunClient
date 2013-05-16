@@ -1,13 +1,12 @@
 package com.bikefunfinder.client.bootstrap;
 
-import com.bikefunfinder.client.Injector;
+import com.bikefunfinder.client.gin.Injector;
 import com.bikefunfinder.client.client.places.homescreen.HomeScreenPlace;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.place.shared.PlaceHistoryHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.RootPanel;
-import com.google.inject.Inject;
 import com.googlecode.gwtphonegap.client.PhoneGap;
 import com.googlecode.mgwt.ui.client.MGWT;
 import com.googlecode.mgwt.ui.client.MGWTSettings;
@@ -24,10 +23,8 @@ import java.util.List;
  */
 public class PhoneGapDependentBootScrapperImpl extends PhoneGapDependentBootScrapper {
 
-    Injector injector;
-    public PhoneGapDependentBootScrapperImpl(PhoneGap phoneGapApi, Injector injector) {
+    public PhoneGapDependentBootScrapperImpl(PhoneGap phoneGapApi) {
         super(phoneGapApi);
-        this.injector = injector;
     }
 
     public void phoneGapInitFailure() {
@@ -39,8 +36,8 @@ public class PhoneGapDependentBootScrapperImpl extends PhoneGapDependentBootScra
     ClientFactory clientFactory;
 
     protected void phoneGapAvailable() {
-        injector.getSimpleWidget().setPhoneGap(phoneGapApi);
-        clientFactory = injector.getSimpleWidget();
+        Injector.INSTANCE.getClientFactory().setPhoneGap(phoneGapApi);
+        clientFactory = Injector.INSTANCE.getClientFactory();
 
         buildDisplay(clientFactory);
 
@@ -68,7 +65,7 @@ public class PhoneGapDependentBootScrapperImpl extends PhoneGapDependentBootScra
     }
 
     private void buildDisplay(ClientFactory clientFactory) {
-        List<IsWidget> elementsToAdd = RootUiFactory.getUserInterfaceRootWidgets(clientFactory);
+        List<IsWidget> elementsToAdd = RootUiFactory.getUserInterfaceRootWidgets();
         for (IsWidget widget : elementsToAdd) {
             RootPanel.get().add(widget);
         }

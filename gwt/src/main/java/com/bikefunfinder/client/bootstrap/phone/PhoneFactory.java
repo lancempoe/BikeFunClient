@@ -3,6 +3,7 @@ package com.bikefunfinder.client.bootstrap.phone;
 import com.bikefunfinder.client.bootstrap.ActivityMapperDelegate;
 import com.bikefunfinder.client.bootstrap.AnimationMapperDelegate;
 import com.bikefunfinder.client.bootstrap.ClientFactory;
+import com.bikefunfinder.client.gin.Injector;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.googlecode.mgwt.mvp.client.AnimatableDisplay;
@@ -19,18 +20,17 @@ import java.util.List;
  * To change this template use File | Settings | File Templates.
  */
 public class PhoneFactory {
-    public static List<IsWidget> createPhoneDisplay(ClientFactory clientFactory) {
+    public static List<IsWidget> createPhoneDisplay() {
         AnimatableDisplay display = GWT.create(AnimatableDisplay.class);
 
-        PhoneActivityMapper appActivityMapper = new PhoneActivityMapper(new ActivityMapperDelegate(clientFactory));
+        PhoneActivityMapper appActivityMapper = new PhoneActivityMapper(new ActivityMapperDelegate());
 
         PhoneAnimationMapper appAnimationMapper = new PhoneAnimationMapper(new AnimationMapperDelegate());
 
         AnimatingActivityManager activityManager =
             new AnimatingActivityManager(appActivityMapper,
                                          appAnimationMapper,
-                                         clientFactory
-                    .getEventBus());
+                    Injector.INSTANCE.getClientFactory().getEventBus());
 
         activityManager.setDisplay(display);
 

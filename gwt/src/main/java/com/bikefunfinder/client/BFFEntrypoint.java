@@ -7,6 +7,7 @@ package com.bikefunfinder.client;
 
 import com.bikefunfinder.client.bootstrap.PhoneGapDependentBootScrapper;
 import com.bikefunfinder.client.bootstrap.PhoneGapDependentBootScrapperImpl;
+import com.bikefunfinder.client.gin.Injector;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.bikefunfinder.client.bootstrap.UncaughtExceptionHandlerFactory;
@@ -25,10 +26,8 @@ public class BFFEntrypoint implements EntryPoint {
         GWT.UncaughtExceptionHandler uncaughtExceptionHandler = UncaughtExceptionHandlerFactory.createApplicationUncaughtExceptionHandler(log);
         GWT.setUncaughtExceptionHandler(uncaughtExceptionHandler);
 
-        Injector injector = GWT.create(Injector.class);
-
         PhoneGap phoneGapApi = GWT.create(PhoneGap.class);
-        PhoneGapDependentBootScrapper applicationBootStrapper = new PhoneGapDependentBootScrapperImpl(phoneGapApi, injector);
+        PhoneGapDependentBootScrapper applicationBootStrapper = new PhoneGapDependentBootScrapperImpl(phoneGapApi);
         phoneGapApi.addHandler((PhoneGapAvailableHandler) applicationBootStrapper);
         phoneGapApi.addHandler((PhoneGapTimeoutHandler) applicationBootStrapper);
         phoneGapApi.initializePhoneGap();

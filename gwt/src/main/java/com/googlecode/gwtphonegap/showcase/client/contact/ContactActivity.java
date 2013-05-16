@@ -22,8 +22,6 @@ public class ContactActivity extends NavBaseActivity implements ContactDisplay.P
     private final ContactDisplay display;
 
     public ContactActivity(ClientFactory clientFactory) {
-        super(clientFactory);
-
         this.display = null;//clientFactory.getContactDisplay();
         this.phoneGap = clientFactory.getPhoneGap();
 

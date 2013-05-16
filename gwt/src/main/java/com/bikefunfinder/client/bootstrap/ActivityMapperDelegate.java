@@ -14,6 +14,7 @@ import com.bikefunfinder.client.client.places.profilescreen.ProfileScreenActivit
 import com.bikefunfinder.client.client.places.profilescreen.ProfileScreenPlace;
 import com.bikefunfinder.client.client.places.searchscreen.SearchScreenActivity;
 import com.bikefunfinder.client.client.places.searchscreen.SearchScreenPlace;
+import com.bikefunfinder.client.gin.Injector;
 import com.google.gwt.activity.shared.Activity;
 import com.google.gwt.activity.shared.ActivityMapper;
 import com.google.gwt.place.shared.Place;
@@ -26,8 +27,8 @@ public class ActivityMapperDelegate implements ActivityMapper {
     private static Place lastSeen;
     private static Activity lastActivity;
 
-    public ActivityMapperDelegate(ClientFactory clientFactory) {
-        this.clientFactory = clientFactory;
+    public ActivityMapperDelegate() {
+        this.clientFactory = Injector.INSTANCE.getClientFactory();
         this.clientFactory.refreshUserAccount();
     }
 
@@ -37,7 +38,7 @@ public class ActivityMapperDelegate implements ActivityMapper {
             return lastActivity;
         }
 
-        lastSeen=place;
+        lastSeen = place;
 
         if(place instanceof CreateScreenPlace) {
             lastActivity = new CreateScreenActivity(clientFactory);
@@ -54,7 +55,7 @@ public class ActivityMapperDelegate implements ActivityMapper {
         } else if(place instanceof SearchScreenPlace) {
             lastActivity =  new SearchScreenActivity(clientFactory, ((SearchScreenPlace) place).getQuery());
         } else if(place instanceof GMapPlace) {
-            lastActivity =  new GMapActivity(clientFactory);
+            lastActivity =  new GMapActivity();
         }
 
         return lastActivity;

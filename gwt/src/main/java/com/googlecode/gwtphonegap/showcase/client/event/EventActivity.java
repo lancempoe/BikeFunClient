@@ -17,7 +17,6 @@ public class EventActivity extends NavBaseActivity implements EventDisplay.Prese
     private final EventDisplay display;
 
     public EventActivity(ClientFactory clientFactory) {
-        super(clientFactory);
 
         this.display = null;//clientFactory.getEventDisplay();
         this.phoneGap = clientFactory.getPhoneGap();

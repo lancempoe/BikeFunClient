@@ -1,18 +1,14 @@
 package com.bikefunfinder.client.client.places.gmap;
 
-import com.bikefunfinder.client.bootstrap.db.DBKeys;
 import com.bikefunfinder.client.client.places.eventscreen.EventScreenPlace;
+import com.bikefunfinder.client.gin.Injector;
+import com.bikefunfinder.client.gin.RamObjectCache;
 import com.bikefunfinder.client.shared.constants.ScreenConstants;
 import com.bikefunfinder.client.shared.model.BikeRide;
-import com.bikefunfinder.client.shared.model.BikeRideStorage;
 import com.bikefunfinder.client.shared.model.GeoLoc;
 import com.bikefunfinder.client.shared.model.Root;
 import com.bikefunfinder.client.shared.model.helper.Extractor;
-import com.bikefunfinder.client.shared.model.json.Utils;
-import com.bikefunfinder.client.shared.model.printer.JSODescriber;
 import com.bikefunfinder.client.shared.request.SearchByProximityRequest;
-import com.google.gwt.core.client.JavaScriptObject;
-import com.google.gwt.core.client.JsArray;
 import com.google.gwt.core.shared.GWT;
 import com.google.gwt.http.client.UrlBuilder;
 import com.google.gwt.user.client.Window;
@@ -33,17 +29,19 @@ import java.util.List;
  * To change this template use File | Settings | File Templates.
  */
 public class GMapActivity extends NavBaseActivity implements GMapDisplay.Presenter {
+    private final Injector injector = Injector.INSTANCE;
     private final ClientFactory<GMapDisplay> clientFactory;
 
     private final Geolocation geolocation;
     private GeolocationWatcher watcher = null;
     private List<BikeRide> currentList;
     private final GMapActivity itsAMeMario = this;
+    private final RamObjectCache ramObjectCache;
 
-    public GMapActivity(final ClientFactory clientFactory) {
-        super(clientFactory);
-        this.clientFactory = clientFactory;
-        geolocation = clientFactory.getPhoneGap().getGeolocation();
+    public GMapActivity() {
+        this.ramObjectCache = injector.getRamObjectCache();
+        this.clientFactory = injector.getClientFactory();
+        this.geolocation = clientFactory.getPhoneGap().getGeolocation();
     }
 
     @Override
@@ -51,10 +49,6 @@ public class GMapActivity extends NavBaseActivity implements GMapDisplay.Present
         final GMapDisplay geoMapView = clientFactory.getDisplay(this);
         geoMapView.setPresenter(this);
         panel.setWidget(geoMapView);
-
-        //reset the stored state
-        BikeRide emptyBikeRideStorage = GWT.create(BikeRide.class);
-        clientFactory.setStoredValue(DBKeys.BIKE_RIDE_STORAGE, JSODescriber.toJSON(emptyBikeRideStorage));
 
         startWatching();  //naughty! ?? or maybenot =D
     }
@@ -147,6 +141,8 @@ public class GMapActivity extends NavBaseActivity implements GMapDisplay.Present
                         currentList,
                         city);
                 display.refresh();
+
+                ramObjectCache.setHereAndNowBikeRideCache(currentList);
             }
 
             private String getCityNameFromRoot(Root root) {
@@ -193,26 +189,6 @@ public class GMapActivity extends NavBaseActivity implements GMapDisplay.Present
             return "";
         }
 
-//        final String storedValueString = clientFactory.getStoredValue(DBKeys.BIKE_RIDE_STORAGE);
-//        BikeRideStorage bikeRideStorage;
-//        if(storedValueString==null || storedValueString.isEmpty()) {
-//            bikeRideStorage = GWT.create(BikeRideStorage.class);
-//            Window.alert("newb");
-//        } else {
-//            bikeRideStorage = Utils.castJsonTxtToJSOObject(storedValueString);
-//            Window.alert("oldb");
-//        }
-//
-//        if(bikeRideStorage==null) {
-//            JsArray<BikeRide> jsArray = JavaScriptObject.createArray().cast();
-//            bikeRideStorage.setBikeRides(jsArray);
-//        }
-//
-//        Window.alert("size1:"+bikeRideStorage.getBikeRides().length());
-//        bikeRideStorage.getBikeRides().push(bikeRide);
-//        Window.alert("size2:"+bikeRideStorage.getBikeRides().length());
-
-        clientFactory.setStoredValue(DBKeys.BIKE_RIDE_STORAGE, JSODescriber.toJSON(bikeRide));
         String hashToken = clientFactory.getPlaceHistoryMapper().getToken(new EventScreenPlace(bikeRide));
         UrlBuilder urlBuilder = Window.Location.createUrlBuilder().setHash(hashToken);
         return urlBuilder.buildString();

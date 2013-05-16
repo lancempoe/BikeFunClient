@@ -17,7 +17,7 @@ public class CompassActivity extends NavBaseActivity implements Presenter {
     private CompassWatcher watcher;
 
     public CompassActivity(ClientFactory clientFactory) {
-        super(clientFactory);
+
 
         this.display = null;//clientFactory.getCompassDisplay();
         this.phoneGap = clientFactory.getPhoneGap();
