@@ -7,24 +7,29 @@ package com.bikefunfinder.client.client.places.eventscreen;
 import com.bikefunfinder.client.bootstrap.ClientFactory;
 import com.bikefunfinder.client.bootstrap.db.DBKeys;
 import com.bikefunfinder.client.client.places.createscreen.CreateScreenDisplay;
+import com.bikefunfinder.client.client.places.gmap.GMapPlace;
 import com.bikefunfinder.client.client.places.createscreen.CreateScreenPlace;
 import com.bikefunfinder.client.client.places.homescreen.HomeScreenPlace;
+import com.bikefunfinder.client.gin.Injector;
 import com.bikefunfinder.client.shared.model.AnonymousUser;
 import com.bikefunfinder.client.shared.model.BikeRide;
 import com.bikefunfinder.client.shared.model.Tracking;
 import com.bikefunfinder.client.shared.model.User;
 import com.bikefunfinder.client.shared.model.json.Utils;
 import com.google.gwt.core.client.JsArray;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.web.bindery.event.shared.EventBus;
 import com.googlecode.mgwt.mvp.client.MGWTAbstractActivity;
 
 public class EventScreenActivity extends MGWTAbstractActivity implements EventScreenDisplay.Presenter {
 
-private final ClientFactory<EventScreenDisplay> clientFactory;
+private final ClientFactory<EventScreenDisplay> clientFactory = Injector.INSTANCE.getClientFactory();
     private String userName = "";
     private String userId = "";
     private BikeRide bikeRide;
+
+    boolean cameFromGmap;
 
     @Override
     public void start(AcceptsOneWidget panel, EventBus eventBus) {
@@ -33,11 +38,11 @@ private final ClientFactory<EventScreenDisplay> clientFactory;
         panel.setWidget(display);
     }
 
-    public EventScreenActivity(ClientFactory clientFactory, BikeRide bikeRide) {
-        this.clientFactory = clientFactory;
+    public EventScreenActivity(BikeRide bikeRide, boolean cameFromGmap) {
+        this.cameFromGmap = cameFromGmap;
         this.bikeRide = bikeRide;
         final EventScreenDisplay display = this.clientFactory.getDisplay(this);
-        setUserNameFields(clientFactory);
+        setUserNameFields();
         display.resetState();
         setupDisplay(this.bikeRide);
         if (this.bikeRide.getRideLeaderId().equals(userId)) {
@@ -47,7 +52,7 @@ private final ClientFactory<EventScreenDisplay> clientFactory;
         }
     }
 
-    private void setUserNameFields(ClientFactory<CreateScreenDisplay> clientFactory) {
+    private void setUserNameFields() {
         //Set the logged in user details
         if (clientFactory.getStoredValue(DBKeys.USER) != null) {
             User user = Utils.castJsonTxtToJSOObject(clientFactory.getStoredValue(DBKeys.USER));
@@ -85,6 +90,11 @@ private final ClientFactory<EventScreenDisplay> clientFactory;
 
     @Override
     public void backButtonSelected() {
+        if(cameFromGmap) {
+            clientFactory.getPlaceController().goTo(new GMapPlace(""));
+            return;
+        }
+
         clientFactory.getPlaceController().goTo(new HomeScreenPlace());
     }
 

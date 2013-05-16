@@ -13,17 +13,29 @@ import com.google.gwt.place.shared.PlaceTokenizer;
 
 public class EventScreenPlace extends Place {
     final BikeRide bikeRide;
+    final boolean wasConstructedById;
 
     public EventScreenPlace(BikeRide bikeRide) {
+        this.wasConstructedById = false;
+        this.bikeRide = bikeRide;
+    }
+
+    private EventScreenPlace(BikeRide bikeRide, boolean wasConstructedById) {
+        this.wasConstructedById = wasConstructedById;
         this.bikeRide = bikeRide;
     }
 
     public EventScreenPlace() {
         this.bikeRide = null;
+        wasConstructedById = false;
     }
 
     public BikeRide getBikeRide() {
         return bikeRide;
+    }
+
+    public boolean getWasConstructedById() {
+        return wasConstructedById;
     }
 
     public static class Tokenizer implements PlaceTokenizer<EventScreenPlace> {
@@ -35,7 +47,7 @@ public class EventScreenPlace extends Place {
 
             for(BikeRide bikeRide : ramObjectCache.getHereAndNowBikeRideCache()) {
                 if(bikeRide.getId()==token) {
-                    return new EventScreenPlace(bikeRide);
+                    return new EventScreenPlace(bikeRide, true);
                 }
             }
 

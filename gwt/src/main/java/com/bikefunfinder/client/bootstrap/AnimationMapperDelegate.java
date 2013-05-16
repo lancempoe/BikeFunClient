@@ -31,6 +31,8 @@ public class AnimationMapperDelegate implements AnimationMapper {
             return Animation.POP_REVERSE;
         } else if (oldPlace instanceof CreateScreenPlace && newPlace instanceof EventScreenPlace) {
             return Animation.FADE;
+        }  else if (oldPlace instanceof EventScreenPlace && newPlace instanceof GMapPlace) {
+            return Animation.SLIDE;
         }
 
         //Search Page
@@ -66,6 +68,8 @@ public class AnimationMapperDelegate implements AnimationMapper {
         if (oldPlace instanceof HomeScreenPlace && newPlace instanceof GMapPlace) {
             return Animation.SLIDE;
         } else if (oldPlace instanceof GMapPlace && newPlace instanceof HomeScreenPlace) {
+            return Animation.SLIDE_REVERSE;
+        } else if (oldPlace instanceof GMapPlace && newPlace instanceof EventScreenPlace) {
             return Animation.SLIDE_REVERSE;
         }
 
