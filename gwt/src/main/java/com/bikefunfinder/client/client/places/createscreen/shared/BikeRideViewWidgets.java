@@ -6,6 +6,7 @@ package com.bikefunfinder.client.client.places.createscreen.shared;
 
 import com.bikefunfinder.client.shared.constants.ScreenConstants;
 import com.bikefunfinder.client.shared.model.BikeRide;
+import com.bikefunfinder.client.shared.widgets.WidgetHelper;
 import com.googlecode.mgwt.ui.client.widget.MTextBox;
 import com.googlecode.mgwt.ui.client.widget.base.MValueBoxBase;
 
@@ -14,6 +15,7 @@ public class BikeRideViewWidgets extends BikeRideCreateWidgets {
     public final MTextBox currentlyTracking = new MTextBox();
     public final MTextBox formattedAddress = new MTextBox();
     public final MTextBox distanceFromClient = new MTextBox();
+    public final MTextBox startDateAndTime = new MTextBox();
 
 
     public BikeRideViewWidgets(boolean readOnly) {
@@ -25,7 +27,7 @@ public class BikeRideViewWidgets extends BikeRideCreateWidgets {
         targetAudience.setEnabled(readOnly);
         formattedAddress.setReadOnly(readOnly);
         distanceFromClient.setReadOnly(readOnly);
-        startTime.setReadOnly(readOnly);
+        startDateAndTime.setReadOnly(readOnly);
         details.setReadOnly(readOnly);
         details.setVisibleLines(5);
     }
@@ -33,19 +35,19 @@ public class BikeRideViewWidgets extends BikeRideCreateWidgets {
     public void setWidgetsFrom(BikeRide bikeRide) {
         if(bikeRide==null) return; // failSafe but ugly;
 
-        setSafeText(totalPeopleTrackingCount, String.valueOf(bikeRide.getTotalPeopleTrackingCount()));
+        WidgetHelper.setSafeText(totalPeopleTrackingCount, String.valueOf(bikeRide.getTotalPeopleTrackingCount()));
 
         if(bikeRide.isCurrentlyTracking()!=null &&
            !bikeRide.isCurrentlyTracking().isEmpty() &&
            bikeRide.getCurrentTrackings().equals("True")) {
-            setSafeText(currentlyTracking, "Yes");
+            WidgetHelper.setSafeText(currentlyTracking, "Yes");
         } else {
-            setSafeText(currentlyTracking, "No");
+            WidgetHelper.setSafeText(currentlyTracking, "No");
         }
 
         //setSafeText(rideImage, bikeRide.getImagePath());
-        setSafeText(bikeRideName, bikeRide.getBikeRideName());
-        setSafeText(rideLeaderName, bikeRide.getRideLeaderName());
+        WidgetHelper.setSafeText(bikeRideName, bikeRide.getBikeRideName());
+        WidgetHelper.setSafeText(rideLeaderName, bikeRide.getRideLeaderName());
 
         int targetAudienceOrderCount = 0;
         for (ScreenConstants.TargetAudience target : ScreenConstants.TargetAudience.values()) {
@@ -59,7 +61,7 @@ public class BikeRideViewWidgets extends BikeRideCreateWidgets {
         }
 
         if(bikeRide.getLocation()!=null) {
-            setSafeText(formattedAddress, bikeRide.getLocation().getFormattedAddress());
+            WidgetHelper.setSafeText(formattedAddress, bikeRide.getLocation().getFormattedAddress());
         }
 
         String distanceFromClientString = "";
@@ -69,31 +71,19 @@ public class BikeRideViewWidgets extends BikeRideCreateWidgets {
         }
 
         if(distanceFromClient!=null) {
-            setSafeText(distanceFromClient, distanceFromClientString + " Miles");
+            WidgetHelper.setSafeText(distanceFromClient, distanceFromClientString + " Miles");
         }
 
         if(bikeRide.createJsDateWrapperRideStartTime()!=null) {
             final String timeText = bikeRide.createJsDateWrapperRideStartTime().toString(ScreenConstants.DateFormatPrintPretty) +
                                     " at " +
                                     bikeRide.createJsDateWrapperRideStartTime().toString(ScreenConstants.TimeFormatPrintPretty);
-            setSafeText(startTime, timeText);
+            WidgetHelper.setSafeText(startDateAndTime, timeText);
         } else {
-            setSafeText(startTime, " ");
+            WidgetHelper.setSafeText(startDateAndTime, " ");
         }
 
-        setSafeValue(details, bikeRide.getDetails());
-    }
-
-    private static void setSafeText(MValueBoxBase widget, String text) {
-        if(text!=null && !text.isEmpty()) {
-            widget.setText(text);
-        }
-    }
-
-    private static void setSafeValue(MValueBoxBase widget, String text) {
-        if(text!=null && !text.isEmpty()) {
-            widget.setValue(text);
-        }
+        WidgetHelper.setSafeValue(details, bikeRide.getDetails());
     }
 
     public void resetState() {
@@ -102,5 +92,6 @@ public class BikeRideViewWidgets extends BikeRideCreateWidgets {
         currentlyTracking.setText("No");
         formattedAddress.setText("");
         distanceFromClient.setText("");
+        startDateAndTime.setText("");
     }
 }

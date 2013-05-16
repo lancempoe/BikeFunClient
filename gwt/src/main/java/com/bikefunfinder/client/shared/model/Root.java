@@ -16,4 +16,16 @@ public class Root extends JavaScriptObject {
     public final native User getUser() /*-{ return this.User; }-*/;
     public final native AnonymousUser getAnonymousUser() /*-{ return this.AnonymousUser; }-*/;
 
+    public final native void setBikeRides(JsArray<BikeRide> BikeRides) /*-{
+        this.BikeRides = BikeRides;
+    }-*/;
+
+    public final native void setAnonymousUser(AnonymousUser AnonymousUser) /*-{
+        this.AnonymousUser = AnonymousUser;
+    }-*/;
+
+    public final native void setUser(User User) /*-{
+        this.User = User;
+    }-*/;
+
 }

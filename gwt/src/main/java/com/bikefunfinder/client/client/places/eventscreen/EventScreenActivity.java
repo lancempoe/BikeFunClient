@@ -7,6 +7,7 @@ package com.bikefunfinder.client.client.places.eventscreen;
 import com.bikefunfinder.client.bootstrap.ClientFactory;
 import com.bikefunfinder.client.bootstrap.db.DBKeys;
 import com.bikefunfinder.client.client.places.createscreen.CreateScreenDisplay;
+import com.bikefunfinder.client.client.places.createscreen.CreateScreenPlace;
 import com.bikefunfinder.client.client.places.homescreen.HomeScreenPlace;
 import com.bikefunfinder.client.shared.model.AnonymousUser;
 import com.bikefunfinder.client.shared.model.BikeRide;
@@ -23,6 +24,7 @@ public class EventScreenActivity extends MGWTAbstractActivity implements EventSc
 private final ClientFactory<EventScreenDisplay> clientFactory;
     private String userName = "";
     private String userId = "";
+    private BikeRide bikeRide;
 
     @Override
     public void start(AcceptsOneWidget panel, EventBus eventBus) {
@@ -33,11 +35,12 @@ private final ClientFactory<EventScreenDisplay> clientFactory;
 
     public EventScreenActivity(ClientFactory clientFactory, BikeRide bikeRide) {
         this.clientFactory = clientFactory;
+        this.bikeRide = bikeRide;
         final EventScreenDisplay display = this.clientFactory.getDisplay(this);
         setUserNameFields(clientFactory);
         display.resetState();
-        setupDisplay(bikeRide);
-        if (bikeRide.getRideLeaderId().equals(userId)) {
+        setupDisplay(this.bikeRide);
+        if (this.bikeRide.getRideLeaderId().equals(userId)) {
             display.displayEdit(true);
         } else {
             display.displayEdit(false);
@@ -92,7 +95,7 @@ private final ClientFactory<EventScreenDisplay> clientFactory;
 
     @Override
     public void editRideButtonSelected() {
-        //TODO clientFactory.getPlaceController().goTo(new HomeScreenPlace());
+        clientFactory.getPlaceController().goTo(new CreateScreenPlace(this.bikeRide));
     }
 
 

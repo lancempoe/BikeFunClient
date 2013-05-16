@@ -5,12 +5,16 @@ package com.bikefunfinder.client.client.places.createscreen.shared;
  */
 
 import com.bikefunfinder.client.shared.constants.ScreenConstants;
+import com.bikefunfinder.client.shared.model.BikeRide;
+import com.bikefunfinder.client.shared.widgets.WidgetHelper;
+import com.google.gwt.user.client.Window;
 import com.googlecode.mgwt.ui.client.widget.MCheckBox;
 import com.googlecode.mgwt.ui.client.widget.MListBox;
 import com.googlecode.mgwt.ui.client.widget.MTextArea;
 import com.googlecode.mgwt.ui.client.widget.MTextBox;
 
 public class BikeRideCreateWidgets {
+    public final MTextBox bikeRideId = new MTextBox();
     public final MTextBox bikeRideName = new MTextBox();
     public final MTextBox rideLeaderName = new MTextBox();
     public final MTextBox locationAddress = new MTextBox();
@@ -23,12 +27,39 @@ public class BikeRideCreateWidgets {
     public final MTextArea details = new MTextArea();
 
     public BikeRideCreateWidgets() {
-        for(ScreenConstants.TargetAudience enumVal: ScreenConstants.TargetAudience.values()) {
-            targetAudience.addItem(enumVal.getDisplayName());
+        for(ScreenConstants.TargetAudience target: ScreenConstants.TargetAudience.values()) {
+            targetAudience.addItem(target.getDisplayName());
         }
 
         startTime.getElement().setId("timepicker");
         startDate.getElement().setId("datepicker");
+
+    }
+
+    public void setWidgetsFrom(BikeRide bikeRide) {
+        if(bikeRide==null) return; // failSafe but ugly;
+
+        WidgetHelper.setSafeText(bikeRideName, bikeRide.getBikeRideName());
+
+        int targetAudienceOrderCount = 0;
+        for (ScreenConstants.TargetAudience target : ScreenConstants.TargetAudience.values()) {
+            if (target.getDisplayName().equals(bikeRide.getTargetAudience())) {
+                targetAudienceOrderCount = target.getOrderCount();
+                break;
+            }
+        }
+        if(bikeRide.getTargetAudience()!=null && !bikeRide.getTargetAudience().isEmpty()) {
+            this.targetAudience.setSelectedIndex(targetAudienceOrderCount);
+        }
+
+        WidgetHelper.setSafeValue(trackingAllowed, bikeRide.isTrackingAllowed());
+        WidgetHelper.setSafeText(locationAddress, bikeRide.getLocation().getStreetAddress());
+        WidgetHelper.setSafeText(locationCity, bikeRide.getLocation().getCity());
+        WidgetHelper.setSafeText(locationState, bikeRide.getLocation().getState());
+        WidgetHelper.setSafeValue(startDate, bikeRide.createJsDateWrapperRideStartTime().toString(ScreenConstants.DateFormat));
+        WidgetHelper.setSafeValue(startTime, bikeRide.createJsDateWrapperRideStartTime().toString(ScreenConstants.TimeFormat));
+        WidgetHelper.setSafeValue(details, bikeRide.getDetails());
+        WidgetHelper.setSafeText(bikeRideId, bikeRide.getId());
 
     }
 
@@ -44,5 +75,6 @@ public class BikeRideCreateWidgets {
         startTime.setText("");
         details.setText("");
         details.setVisibleLines(5);
+        bikeRideId.setText("");
     }
 }

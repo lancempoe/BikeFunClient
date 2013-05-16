@@ -5,6 +5,7 @@ package com.bikefunfinder.client.client.places.createscreen;
  */
 
 import com.bikefunfinder.client.shared.model.BikeRide;
+import com.bikefunfinder.client.shared.model.Root;
 import com.google.gwt.user.client.ui.IsWidget;
 
 public interface CreateScreenDisplay extends IsWidget {
@@ -16,6 +17,7 @@ public interface CreateScreenDisplay extends IsWidget {
     public void displayFailedToCreateRideMessage();
     public void display(BikeRide bikeRide);
     public void display(String userName);
+    public void displaySubmitOrUpdateButton(boolean displaySubmitButton);
 
     /**
      * This is the contract for what the activity can provide
@@ -23,7 +25,8 @@ public interface CreateScreenDisplay extends IsWidget {
     public void setPresenter(Presenter presenter);
 
     public interface Presenter {
-        public void onFormSelected(BikeRide br);
+        public void onCreateSelected(BikeRide br);
+        public void onUpdateSelected(Root root);
         public void backButtonSelected();
         public void onTimeSelected();
     }

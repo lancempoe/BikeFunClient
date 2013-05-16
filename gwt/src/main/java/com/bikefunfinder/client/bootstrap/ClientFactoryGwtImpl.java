@@ -85,11 +85,9 @@ public class ClientFactoryGwtImpl implements ClientFactory {
             return getHomeScreenDisplay();
         } else if(activity instanceof ProfileScreenActivity) {
             return getProfileScreenDisplay();
-        }  else if(activity instanceof SearchScreenActivity) {
+        } else if(activity instanceof SearchScreenActivity) {
             return getSearchScreenDisplay();
-        }  else if(activity instanceof EventScreenActivity ) {
-            return getEventScreenDisplay();
-        }  else if(activity instanceof GMapActivity) {
+        } else if(activity instanceof GMapActivity) {
             return getHereAndNowDisplay();
         }
 

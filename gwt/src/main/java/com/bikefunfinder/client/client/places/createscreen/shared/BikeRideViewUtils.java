@@ -41,28 +41,26 @@ public class BikeRideViewUtils {
         u.startDate.setReadOnly(true);
         u.startTime.setReadOnly(true);
 
+        newWidgetList.add(buildFormWidget(bikeRideNames, u.bikeRideName));
+        newWidgetList.add(buildFormWidget(targetAudience, u.targetAudience));
+
         boolean isView = u instanceof BikeRideViewWidgets;
         if(isView) {
+            newWidgetList.add(buildFormWidget(startingAddress1, ((BikeRideViewWidgets)u).formattedAddress));
+            newWidgetList.add(buildFormWidget("Event Date:", ((BikeRideViewWidgets)u).startDateAndTime));
+            newWidgetList.add(buildFormWidget(distanceFromTheStart, ((BikeRideViewWidgets)u).distanceFromClient));
+            newWidgetList.add(buildFormWidget(rideLeaderName, u.rideLeaderName));
             newWidgetList.add(buildFormWidget(peopleTracking, ((BikeRideViewWidgets)u).totalPeopleTrackingCount));
             newWidgetList.add(buildFormWidget(someoneIsTracking, ((BikeRideViewWidgets)u).currentlyTracking));
         } else {
             newWidgetList.add(buildFormWidget("Tracking allowed", u.trackingAllowed));
-        }
-
-        newWidgetList.add(buildFormWidget(bikeRideNames, u.bikeRideName));
-        newWidgetList.add(buildFormWidget(targetAudience, u.targetAudience));
-
-        if(isView) {
-            newWidgetList.add(buildFormWidget(rideLeaderName, u.rideLeaderName));
-            newWidgetList.add(buildFormWidget(startingAddress1, ((BikeRideViewWidgets)u).formattedAddress));
-            newWidgetList.add(buildFormWidget(distanceFromTheStart, ((BikeRideViewWidgets)u).distanceFromClient));
-        } else {
             newWidgetList.add(buildFormWidget("Starting Address:", u.locationAddress));
             newWidgetList.add(buildFormWidget("Starting City:", u.locationCity));
             newWidgetList.add(buildFormWidget("Starting State:", u.locationState));
             newWidgetList.add(buildFormWidget("Starting Date:", u.startDate));
             newWidgetList.add(buildFormWidget(startTime, u.startTime));
         }
+
         newWidgetList.add(buildFormWidget(rideDetails, u.details));
         return newWidgetList;
     }
@@ -75,7 +73,7 @@ public class BikeRideViewUtils {
         "Ride Leader Name:",
         "Target Audience:",
         "Starting Address:",
-        "Distance from the Start:",
+        "Distance from the Event:",
         "Start Time:",
         "Ride Details:", viewWidgets);
 

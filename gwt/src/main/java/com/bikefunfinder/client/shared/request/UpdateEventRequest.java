@@ -9,11 +9,15 @@ package com.bikefunfinder.client.shared.request;
 
 import com.bikefunfinder.client.shared.model.BikeRide;
 import com.bikefunfinder.client.shared.constants.Settings;
+import com.bikefunfinder.client.shared.model.GeoLoc;
 import com.bikefunfinder.client.shared.model.Root;
 import com.bikefunfinder.client.shared.model.json.Utils;
 import com.bikefunfinder.client.shared.model.printer.JSODescriber;
 import com.google.gwt.http.client.*;
+import com.google.gwt.user.client.Window;
 import com.googlecode.mgwt.ui.client.dialog.Dialogs;
+
+import java.math.BigDecimal;
 
 public final class UpdateEventRequest {
     public interface Callback {
@@ -24,12 +28,13 @@ public final class UpdateEventRequest {
     public static final class Builder {
         private UpdateEventRequest.Callback callback;
         private Root root;
+        private BigDecimal longitude;
+        private BigDecimal latitude;
 
         public Builder(final UpdateEventRequest.Callback callback) {
             if (callback == null) {
                 throw new NullPointerException();
             }
-
             this.callback = callback;
         }
 
@@ -37,7 +42,6 @@ public final class UpdateEventRequest {
             if (callback == null) {
                 throw new NullPointerException();
             }
-
             this.callback = callback;
             return this;
         }
@@ -46,12 +50,28 @@ public final class UpdateEventRequest {
             this.root = root;
             return this;
         }
+
+        public Builder latitude(final GeoLoc geoLoc) {
+            this.latitude = new BigDecimal(geoLoc.getLatitude());
+            return this;
+        }
+
+        public Builder longitude(final GeoLoc geoLoc) {
+            this.longitude = new BigDecimal(geoLoc.getLongitude());
+            return this;
+        }
+
+        public UpdateEventRequest send() {
+            return new UpdateEventRequest(this);
+        }
     }
 
     private static final String URL = Settings.HOST + "FunService/rest/bikerides/update ";
 
     private final UpdateEventRequest.Callback callback;
     private final Root root;
+    private final BigDecimal latitude;
+    private final BigDecimal longitude;
     private final Request request;
 
     public void cancel() {
@@ -65,6 +85,8 @@ public final class UpdateEventRequest {
     private UpdateEventRequest(final Builder builder) {
         callback = builder.callback;
         root = builder.root;
+        latitude = builder.latitude;
+        longitude = builder.longitude;
         request = send();
     }
 
@@ -73,9 +95,8 @@ public final class UpdateEventRequest {
 
         final RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST, getUrlWithQuery());
         try {
-            final String jsonText = JSODescriber.toJSON(root);
-            //Window.alert(jsonText); //if yer wanting some debuggerz
             requestBuilder.setHeader("Content-Type", "application/json");
+            final String jsonText = JSODescriber.toJSON(root);
             request = requestBuilder.sendRequest(jsonText, getRequestCallback());
         } catch (final RequestException e) {
             e.printStackTrace();
@@ -87,6 +108,10 @@ public final class UpdateEventRequest {
     private String getUrlWithQuery() {
         final StringBuilder builder = new StringBuilder();
         builder.append(URL);
+        builder.append("/geoloc=");
+        builder.append(latitude);
+        builder.append(",");
+        builder.append(longitude);
 
         return builder.toString();
     }
@@ -109,7 +134,6 @@ public final class UpdateEventRequest {
                 final int statusCode = response.getStatusCode();
                 if ((statusCode < 200) || (statusCode >= 300)) {
                     final StringBuilder builder = new StringBuilder();
-                    builder.append("Unable to update bike ride. ");
                     builder.append(response.getText());
                     Dialogs.alert("Notice: ", builder.toString(), new Dialogs.AlertCallback() {
                         @Override

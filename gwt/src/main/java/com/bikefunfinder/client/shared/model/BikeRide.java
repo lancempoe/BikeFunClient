@@ -14,11 +14,13 @@ public class BikeRide extends JavaScriptObject {
 
     protected BikeRide() {}
 
+    public final native String setId(String id) /*-{
+		this.id = id;
+    }-*/;
 
     public final native String getId() /*-{
 		return this.id;
     }-*/;
-
 
     public final native String getBikeRideName() /*-{
         return this.bikeRideName;

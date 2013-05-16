@@ -9,6 +9,7 @@ import com.bikefunfinder.client.shared.constants.ScreenConstants;
 import com.bikefunfinder.client.shared.model.AnonymousUser;
 import com.bikefunfinder.client.shared.model.BikeRide;
 import com.bikefunfinder.client.shared.model.User;
+import com.bikefunfinder.client.shared.widgets.WidgetHelper;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -68,22 +69,16 @@ public class ProfileScreenDisplayGwtImpl extends Composite implements ProfileScr
         if(anonymousUser==null) return; // failSafe but ugly;
 
         //setSafeText(rideImage, bikeRide.getImagePath());
-        setSafeText(userName, anonymousUser.getUserName());
-        setSafeText(totalHostedBikeRideCount, String.valueOf(anonymousUser.getTotalHostedBikeRideCount()));
+        WidgetHelper.setSafeText(userName, anonymousUser.getUserName());
+        WidgetHelper.setSafeText(totalHostedBikeRideCount, String.valueOf(anonymousUser.getTotalHostedBikeRideCount()));
 
         if(anonymousUser.createJsDateWrapperJoinedTimeStamp()!=null) {
             final String timeText = anonymousUser.createJsDateWrapperJoinedTimeStamp().toString(ScreenConstants.DateFormatPrintPretty) +
                                     " at " +
                                     anonymousUser.createJsDateWrapperJoinedTimeStamp().toString(ScreenConstants.TimeFormatPrintPretty);
-            setSafeText(joinedTimeStamp, timeText);
+            WidgetHelper.setSafeText(joinedTimeStamp, timeText);
         } else {
-            setSafeText(joinedTimeStamp, " ");
-        }
-    }
-
-    private static void setSafeText(MValueBoxBase widget, String text) {
-        if(text!=null && !text.isEmpty()) {
-            widget.setText(text);
+            WidgetHelper.setSafeText(joinedTimeStamp, " ");
         }
     }
 
