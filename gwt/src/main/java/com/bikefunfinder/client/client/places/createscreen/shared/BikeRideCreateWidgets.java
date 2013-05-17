@@ -70,8 +70,12 @@ public class BikeRideCreateWidgets {
         locationState.setText("");
         trackingAllowed.setValue(true);
         targetAudience.setSelectedIndex(0);
-        startDate.getElement().setInnerText(""); //Due to the way this is set
-        startTime.getElement().setInnerText(""); //Due to the way this is set
+        startDate.setText("");
+        startDate.setValue("");
+        //startDate.getElement().setInnerText(""); //Due to the way this is set
+        startTime.setText("");
+        startTime.setValue("");
+        //startTime.getElement().setInnerText(""); //Due to the way this is set
         details.setValue("");
         details.setVisibleLines(5);
         bikeRideId.setText("");
