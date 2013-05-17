@@ -6,6 +6,7 @@ package com.bikefunfinder.client.client.places.createscreen.shared;
 
 import com.bikefunfinder.client.shared.constants.ScreenConstants;
 import com.bikefunfinder.client.shared.model.BikeRide;
+import com.bikefunfinder.client.shared.widgets.MobiInputBox;
 import com.bikefunfinder.client.shared.widgets.WidgetHelper;
 import com.google.gwt.user.client.Window;
 import com.googlecode.mgwt.ui.client.widget.MCheckBox;
@@ -22,17 +23,14 @@ public class BikeRideCreateWidgets {
     public final MTextBox locationState = new MTextBox();
     public final MCheckBox trackingAllowed = new MCheckBox();
     public final MListBox targetAudience = new MListBox();
-    public final MTextBox startDate = new MTextBox();
-    public final MTextBox startTime = new MTextBox();
+    public final MobiInputBox startDate = new MobiInputBox("datepicker");
+    public final MobiInputBox startTime = new MobiInputBox("timepicker");
     public final MTextArea details = new MTextArea();
 
     public BikeRideCreateWidgets() {
         for(ScreenConstants.TargetAudience target: ScreenConstants.TargetAudience.values()) {
             targetAudience.addItem(target.getDisplayName());
         }
-
-        startTime.getElement().setId("timepicker");
-        startDate.getElement().setId("datepicker");
     }
 
     public void setWidgetsFrom(BikeRide bikeRide) {

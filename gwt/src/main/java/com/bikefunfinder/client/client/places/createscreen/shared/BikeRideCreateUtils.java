@@ -9,6 +9,7 @@ import com.bikefunfinder.client.shared.model.BikeRide;
 import com.bikefunfinder.client.shared.model.Location;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.i18n.shared.DateTimeFormat;
+import com.google.gwt.user.client.Window;
 
 import java.util.Date;
 
@@ -29,14 +30,15 @@ public class BikeRideCreateUtils {
         br.setDetails(rideCreateWidgets.details.getValue());
         br.setTrackingAllowed(rideCreateWidgets.trackingAllowed.getValue());
 
-        if (!getDatePickerText().isEmpty() && !getTimePickerText().isEmpty()) {
+        if (!rideCreateWidgets.startDate.getText().isEmpty() &&
+            !rideCreateWidgets.startDate.getText().isEmpty()) {
             DateTimeFormat dtf = DateTimeFormat.getFormat(ScreenConstants.DateFormat +
                     " " +
                     ScreenConstants.TimeFormat);
-            Date date = null;
-            date =  dtf.parse(getDatePickerText() + " " + getTimePickerText());
+            Date date = dtf.parse(rideCreateWidgets.startDate.getText() + " " +
+                                  rideCreateWidgets.startTime.getText());
             br.setRideStartTime(date.getTime());
-        }
+    }
         return br;
     }
 
