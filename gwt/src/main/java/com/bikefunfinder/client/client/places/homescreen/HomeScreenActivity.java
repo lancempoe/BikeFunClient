@@ -148,7 +148,7 @@ public class HomeScreenActivity extends MGWTAbstractActivity implements HomeScre
 
     @Override
     public void onHereAndNowButton() {
-        clientFactory.getPlaceController().goTo(new GMapPlace("bookMark"));
+        clientFactory.getPlaceController().goTo(new GMapPlace("Here & Now"));
     }
 
     @Override

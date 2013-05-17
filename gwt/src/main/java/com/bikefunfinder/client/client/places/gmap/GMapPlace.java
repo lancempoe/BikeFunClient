@@ -1,5 +1,6 @@
 package com.bikefunfinder.client.client.places.gmap;
 
+import com.bikefunfinder.client.shared.model.BikeRide;
 import com.google.gwt.place.shared.Place;
 import com.google.gwt.place.shared.PlaceTokenizer;
 
@@ -11,6 +12,8 @@ import com.google.gwt.place.shared.PlaceTokenizer;
  * To change this template use File | Settings | File Templates.
  */
 public class GMapPlace  extends Place {
+    final BikeRide bikeRide;
+
     public static final class Tokenizer implements PlaceTokenizer<GMapPlace> {
         @Override
         public GMapPlace getPlace(final String token) {
@@ -30,9 +33,19 @@ public class GMapPlace  extends Place {
 
     public GMapPlace(final String pageName) {
         this.pageName = pageName;
+        this.bikeRide = null;
+    }
+
+    public GMapPlace(final String pageName, BikeRide bikeRide) {
+        this.pageName = pageName;
+        this.bikeRide = bikeRide;
     }
 
     public String getPageName() {
         return pageName;
+    }
+
+    public BikeRide getBikeRide() {
+        return bikeRide;
     }
 }

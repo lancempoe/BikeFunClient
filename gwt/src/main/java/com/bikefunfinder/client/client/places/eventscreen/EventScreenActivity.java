@@ -91,7 +91,7 @@ private final ClientFactory<EventScreenDisplay> clientFactory = Injector.INSTANC
     @Override
     public void backButtonSelected() {
         if(cameFromGmap) {
-            clientFactory.getPlaceController().goTo(new GMapPlace(""));
+            clientFactory.getPlaceController().goTo(new GMapPlace("Here & Now"));
             return;
         }
 
@@ -100,7 +100,7 @@ private final ClientFactory<EventScreenDisplay> clientFactory = Injector.INSTANC
 
     @Override
     public void eventRideMapButtonSelected() {
-        //TODO clientFactory.getPlaceController().goTo(new HomeScreenPlace());
+        clientFactory.getPlaceController().goTo(new GMapPlace(this.bikeRide.getBikeRideName(), this.bikeRide));
     }
 
     @Override

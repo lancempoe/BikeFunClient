@@ -57,7 +57,8 @@ public class ActivityMapperDelegate implements ActivityMapper {
         } else if(place instanceof SearchScreenPlace) {
             lastActivity =  new SearchScreenActivity(clientFactory, ((SearchScreenPlace) place).getQuery());
         } else if(place instanceof GMapPlace) {
-            lastActivity =  new GMapActivity();
+            lastActivity =  new GMapActivity(((GMapPlace)place).getPageName(),
+                                             ((GMapPlace)place).getBikeRide());
         }
 
         return lastActivity;
