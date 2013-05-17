@@ -39,8 +39,7 @@ public class AnonymousUser extends JavaScriptObject {
     }-*/;
 
     public final JsDateWrapper createJsDateWrapperJoinedTimeStamp() {
-        JsDateWrapper bd = JsDateWrapper.create(getJoinedTimeStamp());
-        return bd;
+        return new JsDateWrapper(getJoinedTimeStamp());
     }
 
     public final native boolean getReadTipsForRideLeaders() /*-{

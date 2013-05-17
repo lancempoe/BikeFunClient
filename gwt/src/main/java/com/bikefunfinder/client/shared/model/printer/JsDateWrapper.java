@@ -17,16 +17,10 @@ public class JsDateWrapper implements Comparable<JsDateWrapper> {
     JsDate jsDate;
     XDate xDate;
 
-    public JsDateWrapper(double time)
-    {
+    public JsDateWrapper(double time) {
         xDate = GWT.create(XDate.class);
         xDate.setNewXDate(time);
         jsDate = JsDate.create(time);
-    }
-
-    public static JsDateWrapper create(double time)
-    {
-        return new JsDateWrapper(time);
     }
 
     @Override
@@ -39,25 +33,21 @@ public class JsDateWrapper implements Comparable<JsDateWrapper> {
         {
             return 1;
         }
-        else
-        {
-            return -1;
-        }
+
+        return -1;
     }
 
-    public double getTime()
+    public double getTimeZeroIfNull()
     {
-        if(jsDate == null)
-        {
-            return 0;
+        if(null != jsDate ) {
+            return jsDate.getTime();
         }
-        return jsDate.getTime();
+        return 0;
     }
 
 
-    public final JsDate getJsDate()
-    {
-        return JsDate.create(getTime());
+    public final JsDate getJsDate() {
+        return JsDate.create(getTimeZeroIfNull());
     }
 
     public final boolean isSameDay(JsDateWrapper date)
@@ -69,8 +59,7 @@ public class JsDateWrapper implements Comparable<JsDateWrapper> {
                 date1.getFullYear() == date2.getFullYear();
     }
 
-    public String toString(String format)
-    {
+    public String toString(String format) {
         return xDate.toString(format);
     }
 }

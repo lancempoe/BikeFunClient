@@ -53,8 +53,8 @@ public class BikeRideCreateWidgets {
         WidgetHelper.setSafeText(locationAddress, bikeRide.getLocation().getStreetAddress());
         WidgetHelper.setSafeText(locationCity, bikeRide.getLocation().getCity());
         WidgetHelper.setSafeText(locationState, bikeRide.getLocation().getState());
-        WidgetHelper.setSafeValue(startDate, bikeRide.createJsDateWrapperRideStartTime().toString(ScreenConstants.DateFormat));
-        WidgetHelper.setSafeValue(startTime, bikeRide.createJsDateWrapperRideStartTime().toString(ScreenConstants.TimeFormat));
+        WidgetHelper.setSafeValue(startDate, bikeRide.createJsDateWrapperRideStartTime().toString(ScreenConstants.xJSDateOnlyDateFormat));
+        WidgetHelper.setSafeValue(startTime, bikeRide.createJsDateWrapperRideStartTime().toString(ScreenConstants.xJSDateOnlyTimeFormat));
         WidgetHelper.setSafeValue(details, bikeRide.getDetails());
         WidgetHelper.setSafeText(bikeRideId, bikeRide.getId());
 

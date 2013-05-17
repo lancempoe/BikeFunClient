@@ -35,10 +35,15 @@ public class ScreenConstants {
         }
     }
 
-    public static final String DateFormat = "mm/dd/yyyy";
-    public static final String TimeFormat = "h:mm a";
+    private static final String DateFormat = "MM/dd/yyyy";
+    private static final String TimeFormat = "hh:mm a";
+    public static final String DateAndTimeCombined = ScreenConstants.DateFormat + " " + ScreenConstants.TimeFormat;
+
+    public static final String xJSDateOnlyTimeFormat = "hh:mm TT";
+    public static final String xJSDateOnlyDateFormat = "MM/dd/yyyy";
+
     public static final String DateFormatPrintPretty = "dddd, MMMM dd, yyyy";
-    public static final String TimeFormatPrintPretty = "h:mm tt";
+    public static final String TimeFormatPrintPretty = "hh:mm TT";
 
     public static final Double PORTLAND_LATITUDE = 45.52345275878906;
     public static final Double PORTLAND_LONGITUDE = -122.6762084960938;

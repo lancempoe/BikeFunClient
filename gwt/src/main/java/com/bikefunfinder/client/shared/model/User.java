@@ -78,8 +78,7 @@ public class User extends JavaScriptObject {
     }-*/;
 
     public final JsDateWrapper createJsDateWrapperJoinedTimeStamp() {
-        JsDateWrapper bd = JsDateWrapper.create(getJoinedTimeStamp());
-        return bd;
+        return new JsDateWrapper(getJoinedTimeStamp());
     }
 
     public final native boolean getReadTipsForRideLeaders() /*-{
@@ -103,8 +102,7 @@ public class User extends JavaScriptObject {
     }-*/;
 
     public final JsDateWrapper createJsDateWrapperLatestActiveTime() {
-        JsDateWrapper bd = JsDateWrapper.create(getLatestActiveTime());
-        return bd;
+        return new JsDateWrapper(getLatestActiveTime());
     }
 
     public final native int getTotalHostedBikeRideCount() /*-{

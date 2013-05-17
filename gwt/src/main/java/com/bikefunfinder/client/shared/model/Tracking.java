@@ -31,8 +31,7 @@ public class Tracking extends JavaScriptObject {
     }-*/;
 
     public final JsDateWrapper createJsDateWrapperTrackingStartTime() {
-        JsDateWrapper bd = JsDateWrapper.create(getTrackingTime());
-        return bd;
+        return new JsDateWrapper(getTrackingTime());
     }
 
     public final native String getTrackingUserId() /*-{

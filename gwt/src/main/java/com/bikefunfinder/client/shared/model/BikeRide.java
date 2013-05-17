@@ -59,9 +59,9 @@ public class BikeRide extends JavaScriptObject {
     }-*/;
 
     public final JsDateWrapper createJsDateWrapperRideStartTime() {
-        JsDateWrapper bd = JsDateWrapper.create(getRideStartTime());
-        return bd;
+        return new JsDateWrapper(getRideStartTime());
     }
+
     public final void setRideStartTime(Long time) {
        setRideStartTime(time.toString());
     }

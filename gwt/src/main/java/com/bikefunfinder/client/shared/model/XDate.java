@@ -25,21 +25,21 @@ public class XDate extends JavaScriptObject implements Comparable<XDate> {
     }-*/;
 
     private final native int compareTo(Double rideStartTime) /*-{
-        if(this.xDate.getTime() == rideStartTime)
+        if(this.xDate.getTimeZeroIfNull() == rideStartTime)
         {
             return 0;
         }
-        if(this.xDate.getTime() > rideStartTime)
+        if(this.xDate.getTimeZeroIfNull() > rideStartTime)
         {
             return 1;
         }
-        if(this.xDate.getTime() < rideStartTime)
+        if(this.xDate.getTimeZeroIfNull() < rideStartTime)
         {
             return -1;
         }
     }-*/;
     public final native Double getTime() /*-{
-        return this.xDate.getTime();
+        return this.xDate.getTimeZeroIfNull();
     }-*/;
 
     public final native String toString(String xDateFormat) /*-{
