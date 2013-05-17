@@ -9,18 +9,18 @@ import com.google.gwt.core.client.JavaScriptObject;
 public class GeoLoc extends JavaScriptObject {
     protected GeoLoc() {}
 
-    public final native String getLongitude() /*-{
+    public final native double getLongitude() /*-{
         return this.longitude;
     }-*/;
-    public final native void setLongitude(String longitude) /*-{
+    public final native void setLongitude(double longitude) /*-{
         this.longitude = longitude;
     }-*/;
 
-    public final native String getLatitude() /*-{
+    public final native double getLatitude() /*-{
         return this.latitude;
     }-*/;
 
-    public final native void setLatitude(String latitude) /*-{
+    public final native void setLatitude(double latitude) /*-{
         this.latitude = latitude;
     }-*/;
 

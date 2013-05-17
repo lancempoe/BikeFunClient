@@ -124,7 +124,6 @@ public class CreateScreenActivity extends MGWTAbstractActivity implements Create
 
     @Override
     public void onUpdateSelected(final Root root) {
-        final CreateScreenDisplay display = clientFactory.getDisplay(this);
 
         final UpdateEventRequest.Builder request = new UpdateEventRequest.Builder(new UpdateEventRequest.Callback() {
             @Override
@@ -216,8 +215,4 @@ public class CreateScreenActivity extends MGWTAbstractActivity implements Create
     public void onTimeSelected() {
 
     }
-
-    native void showTimeModal() /*-{
-        //$('#timepicker').mobiscroll('show');
-    }-*/;
 }

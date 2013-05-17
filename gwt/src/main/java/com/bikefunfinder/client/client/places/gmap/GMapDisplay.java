@@ -16,6 +16,8 @@ import java.util.List;
  */
 public interface GMapDisplay extends IsWidget {
     public void setPresenter(Presenter presenter);
+    public void display(BikeRide bikeRide);
+    public void displayPageName(String pageName);
 
     public interface Presenter {
         public void onBackButtonPressed();
@@ -29,6 +31,10 @@ public interface GMapDisplay extends IsWidget {
     void setMapInfo(GeoLoc phonesGpsLoc,
                     double accuracy,
                     List<BikeRide> list,
+                    String cityNameText);
+
+    void setMapInfo(GeoLoc geoLoc,
+                    BikeRide bikeRide,
                     String cityNameText);
 
 }

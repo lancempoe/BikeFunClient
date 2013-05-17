@@ -21,8 +21,8 @@ public abstract class NonPhoneGapGeolocationCallback implements GeolocationCallb
     public void onSuccess(final Position position) {
         GeoLoc geoLoc = GWT.create(GeoLoc.class);
         final Coordinates coordinates = position.getCoordinates();
-        geoLoc.setLatitude(Double.toString(coordinates.getLatitude()));
-        geoLoc.setLongitude(Double.toString(coordinates.getLongitude()));
+        geoLoc.setLatitude(coordinates.getLatitude());
+        geoLoc.setLongitude(coordinates.getLongitude());
         onSuccess(geoLoc);
     }
 
@@ -30,8 +30,8 @@ public abstract class NonPhoneGapGeolocationCallback implements GeolocationCallb
     public void onFailure(final PositionError error) {
         GeoLoc geoLoc = GWT.create(GeoLoc.class);
         Window.alert("Failed to get GeoLocation.  Using Portland as default.");
-        geoLoc.setLatitude(Double.toString(ScreenConstants.PORTLAND_LATITUDE));
-        geoLoc.setLongitude(Double.toString(ScreenConstants.PORTLAND_LONGITUDE));
+        geoLoc.setLatitude(ScreenConstants.PORTLAND_LATITUDE);
+        geoLoc.setLongitude(ScreenConstants.PORTLAND_LONGITUDE);
         onFailure(geoLoc);
     }
 
