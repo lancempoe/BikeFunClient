@@ -27,6 +27,10 @@ public class RootJSOWrapper implements DescribeableAsString<Root> {
     }
 
     private String decomposeBikeRidesIntoJsonString(JsArray<BikeRide> bikeRides) {
+        if(bikeRides==null) {
+            return "null";
+        }
+
         final StringBuilder arraySB = new StringBuilder();
         final int numBikeRides = bikeRides.length();
         for(int index=0; index< numBikeRides; index++) {

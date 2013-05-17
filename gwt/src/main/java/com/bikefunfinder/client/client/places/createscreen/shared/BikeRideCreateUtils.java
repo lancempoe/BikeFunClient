@@ -25,6 +25,15 @@ public class BikeRideCreateUtils {
 
     private static BikeRide createBikeRideObjectFromInputs(BikeRideCreateWidgets rideCreateWidgets) {
         BikeRide br = GWT.create(BikeRide.class);
+
+        if(null != rideCreateWidgets.bikeRideId &&
+           null != rideCreateWidgets.bikeRideId.getText() &&
+           !rideCreateWidgets.bikeRideId.getText().isEmpty()) {
+
+            br.setId(rideCreateWidgets.bikeRideId.getText());
+        }
+
+
         br.setBikeRideName(rideCreateWidgets.bikeRideName.getText());
         br.setTargetAudience(rideCreateWidgets.targetAudience.getValue(rideCreateWidgets.targetAudience.getSelectedIndex()));
         br.setLocation(createLocationFrom(rideCreateWidgets));

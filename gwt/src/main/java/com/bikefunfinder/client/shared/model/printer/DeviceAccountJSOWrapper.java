@@ -9,9 +9,12 @@ import com.bikefunfinder.client.shared.model.DeviceAccount;
 public class DeviceAccountJSOWrapper implements DescribeableAsString<DeviceAccount> {
     @Override
     public final String describeAsString(DeviceAccount jsoObject) {
+        final String deviceUUID = (jsoObject==null) ? "null" : jsoObject.getDeviceUUID();
+        final String key = (jsoObject==null) ? "null" : jsoObject.getKey();
+
         return "DeviceAccount(" +
-                    "deviceUUID:" + jsoObject.getDeviceUUID() + "," +
-                    "key:" + jsoObject.getKey() + "," +
+                    "deviceUUID:" + deviceUUID + "," +
+                    "key:" + key + "," +
                 ")";
     }
 }

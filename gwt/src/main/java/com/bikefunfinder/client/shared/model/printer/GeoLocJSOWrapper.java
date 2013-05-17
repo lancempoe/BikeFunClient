@@ -9,8 +9,11 @@ import com.bikefunfinder.client.shared.model.GeoLoc;
 class GeoLocJSOWrapper implements DescribeableAsString<GeoLoc> {
     @Override
     public final String describeAsString(GeoLoc jsoObject) {
-        return "GeoLoc(lat="+jsoObject.getLatitude() + ", " +
-                      "long=" + jsoObject.getLongitude()+")";
+        final String latitude = (jsoObject==null) ? "null" : jsoObject.getLatitude();
+        final String longitude = (jsoObject==null) ? "null" : jsoObject.getLongitude();
+
+        return "GeoLoc(lat="+ latitude + ", " +
+                      "long=" + longitude +")";
 
     }
 }

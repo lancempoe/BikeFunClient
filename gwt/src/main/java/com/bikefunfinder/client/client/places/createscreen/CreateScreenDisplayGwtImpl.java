@@ -108,7 +108,7 @@ public class CreateScreenDisplayGwtImpl  extends Composite implements CreateScre
     protected void onUpdateRidePressed(TapEvent event) {
         if(presenter != null) {
             BikeRide bikeRide = BikeRideCreateUtils.createBikeRideFromState(bikeDisplayWidgets);
-            bikeRide.setId(bikeDisplayWidgets.bikeRideId.getText());
+
             Root root = GWT.create(Root.class);
             JsArray<BikeRide> bikeRides = JsArray.createArray().cast();
             bikeRides.push(bikeRide);

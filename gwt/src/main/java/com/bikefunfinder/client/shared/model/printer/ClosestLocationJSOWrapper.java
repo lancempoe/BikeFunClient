@@ -10,14 +10,21 @@ public class ClosestLocationJSOWrapper implements DescribeableAsString<ClosestLo
     @Override
     public final String describeAsString(ClosestLocation jsoObject) {
 
+        final String id = (jsoObject==null) ? "null" :jsoObject.getId();
+        final String city = (jsoObject==null) ? "null" :jsoObject.getCity();
+        final String state = (jsoObject==null) ? "null" :jsoObject.getState();
+        final String geoLocationJson = (jsoObject==null) ? "null" :JSODescriber.describe(jsoObject.getGeoLoc());
+        final String longitude = (jsoObject==null) ? "null" :jsoObject.getLongitude();
+        final String latitude = (jsoObject==null) ? "null" :jsoObject.getLatitude();
+        final String formattedAddress = (jsoObject==null) ? "null" :jsoObject.getFormattedAddress();
         return "ClosestLocation(" +
-                    "Id"+jsoObject.getId()+"," +
-                    "City"+jsoObject.getCity()+"," +
-                    "State"+jsoObject.getState()+"," +
-                    "GeoLoc"+JSODescriber.describe(jsoObject.getGeoLoc())+"," +
-                    "longitude"+jsoObject.getLongitude()+"," +
-                    "latitude"+jsoObject.getLatitude()+"," +
-                    "formattedAddress"+jsoObject.getFormattedAddress()+"," +
+                    "Id"+ id +"," +
+                    "City"+ city +"," +
+                    "State"+ state +"," +
+                    "GeoLoc"+ geoLocationJson +"," +
+                    "longitude"+ longitude +"," +
+                    "latitude"+ latitude +"," +
+                    "formattedAddress"+ formattedAddress +"," +
                 ")";
     }
 }
