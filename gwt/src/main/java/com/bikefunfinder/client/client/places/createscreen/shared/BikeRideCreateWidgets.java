@@ -33,7 +33,6 @@ public class BikeRideCreateWidgets {
 
         startTime.getElement().setId("timepicker");
         startDate.getElement().setId("datepicker");
-
     }
 
     public void setWidgetsFrom(BikeRide bikeRide) {
@@ -71,8 +70,8 @@ public class BikeRideCreateWidgets {
         locationState.setText("");
         trackingAllowed.setValue(true);
         targetAudience.setSelectedIndex(0);
-        startDate.setValue("");
-        startTime.setValue("");
+        startDate.getElement().setInnerText(""); //Due to the way this is set
+        startTime.getElement().setInnerText(""); //Due to the way this is set
         details.setValue("");
         details.setVisibleLines(5);
         bikeRideId.setText("");

@@ -12,6 +12,8 @@ import com.bikefunfinder.client.shared.model.Root;
 import com.bikefunfinder.client.shared.model.printer.JSODescriber;
 import com.bikefunfinder.client.shared.constants.Settings;
 import com.google.gwt.http.client.*;
+import com.googlecode.mgwt.ui.client.dialog.ConfirmDialog;
+import com.googlecode.mgwt.ui.client.dialog.ConfirmDialog.*;
 import com.googlecode.mgwt.ui.client.dialog.Dialogs;
 
 public final class DeleteEventRequest {
@@ -46,7 +48,6 @@ public final class DeleteEventRequest {
             return this;
         }
 
-
         public DeleteEventRequest send() {
             return new DeleteEventRequest(this);
         }
@@ -77,12 +78,13 @@ public final class DeleteEventRequest {
 
         final RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST, getUrlWithQuery());
         try {
-            request = requestBuilder.sendRequest(null, getRequestCallback());
 
             final String jsonText = JSODescriber.toJSON(root);
             //Window.alert(jsonText); //if yer wanting some debuggerz
             requestBuilder.setHeader("Content-Type", "application/json");
+
             request = requestBuilder.sendRequest(jsonText, getRequestCallback());
+
         } catch (final RequestException e) {
             e.printStackTrace();
         }
@@ -123,6 +125,12 @@ public final class DeleteEventRequest {
                         }
                     });
                 } else {
+                    Dialogs.alert("Notice: ", "Successfully Deleted Event!", new Dialogs.AlertCallback() {
+                        @Override
+                        public void onButtonPressed() {
+                            //Nothing needs to happen... simply notify the user.
+                        }
+                    });
                     callback.onResponseReceived();
                 }
             }

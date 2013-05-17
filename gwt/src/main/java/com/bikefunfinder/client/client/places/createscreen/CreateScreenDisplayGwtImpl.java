@@ -9,13 +9,11 @@ import com.bikefunfinder.client.client.places.createscreen.shared.BikeRideCreate
 import com.bikefunfinder.client.client.places.createscreen.shared.BikeRideViewUtils;
 import com.bikefunfinder.client.shared.model.BikeRide;
 import com.bikefunfinder.client.shared.model.Root;
-import com.bikefunfinder.client.shared.model.printer.JSODescriber;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JsArray;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Widget;
@@ -38,6 +36,9 @@ public class CreateScreenDisplayGwtImpl  extends Composite implements CreateScre
 
     @UiField
     Button updateRideButton;
+
+    @UiField
+    Button deleteRideButton;
 
     @UiField(provided = true)
     WidgetList widgetList;
@@ -79,9 +80,10 @@ public class CreateScreenDisplayGwtImpl  extends Composite implements CreateScre
     }
 
     @Override
-    public void displaySubmitOrUpdateButton(boolean displaySubmitButton) {
-            createRideButton.setVisible(displaySubmitButton);
-            updateRideButton.setVisible(!displaySubmitButton);
+    public void setVisibilityOfButtons(boolean existingEvent) {
+        createRideButton.setVisible(!existingEvent);
+        updateRideButton.setVisible(existingEvent);
+        deleteRideButton.setVisible(existingEvent);
     }
 
     @Override
@@ -112,6 +114,15 @@ public class CreateScreenDisplayGwtImpl  extends Composite implements CreateScre
             bikeRides.push(bikeRide);
             root.setBikeRides(bikeRides);
             presenter.onUpdateSelected(root);
+        }
+    }
+
+    @UiHandler("deleteRideButton")
+    protected void onDeleteRidePressed(TapEvent event) {
+        if(presenter != null) {
+            BikeRide bikeRide = BikeRideCreateUtils.createBikeRideFromState(bikeDisplayWidgets);
+            bikeRide.setId(bikeDisplayWidgets.bikeRideId.getText());
+            presenter.onDeleteSelected(bikeRide);
         }
     }
 

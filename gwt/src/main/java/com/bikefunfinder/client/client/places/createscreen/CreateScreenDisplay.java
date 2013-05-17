@@ -17,7 +17,7 @@ public interface CreateScreenDisplay extends IsWidget {
     public void displayFailedToCreateRideMessage();
     public void display(BikeRide bikeRide);
     public void display(String userName);
-    public void displaySubmitOrUpdateButton(boolean displaySubmitButton);
+    public void setVisibilityOfButtons(boolean existingEvent);
 
     /**
      * This is the contract for what the activity can provide
@@ -27,6 +27,7 @@ public interface CreateScreenDisplay extends IsWidget {
     public interface Presenter {
         public void onCreateSelected(BikeRide br);
         public void onUpdateSelected(Root root);
+        public void onDeleteSelected(BikeRide bikeRide);
         public void backButtonSelected();
         public void onTimeSelected();
     }

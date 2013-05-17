@@ -12,19 +12,22 @@ import com.bikefunfinder.client.shared.Tools.DeviceTools;
 import com.bikefunfinder.client.shared.Tools.NonPhoneGapGeolocationCallback;
 import com.bikefunfinder.client.shared.model.*;
 import com.bikefunfinder.client.shared.model.json.Utils;
-import com.bikefunfinder.client.shared.model.printer.JSODescriber;
+import com.bikefunfinder.client.shared.request.DeleteEventRequest;
 import com.bikefunfinder.client.shared.request.NewEventRequest;
 import com.bikefunfinder.client.shared.request.UpdateEventRequest;
-import com.google.gwt.user.client.Window;
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.core.client.JsArray;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.web.bindery.event.shared.EventBus;
 import com.googlecode.mgwt.mvp.client.MGWTAbstractActivity;
+import com.googlecode.mgwt.ui.client.dialog.ConfirmDialog;
+import com.googlecode.mgwt.ui.client.dialog.Dialogs;
 
 public class CreateScreenActivity extends MGWTAbstractActivity implements CreateScreenDisplay.Presenter {
     private final ClientFactory<CreateScreenDisplay> clientFactory;
     private AnonymousUser anonymousUser;
     private User user;
-    private boolean displaySubmitButton = true;
+    private boolean existingEvent = false;
 
     public CreateScreenActivity(ClientFactory<CreateScreenDisplay> clientFactory, BikeRide bikeRide) {
         this.clientFactory = clientFactory;
@@ -34,13 +37,13 @@ public class CreateScreenActivity extends MGWTAbstractActivity implements Create
         final CreateScreenDisplay display = clientFactory.getDisplay(this);
         if (bikeRide != null) {
             clientFactory.getDisplay(this).display("Updating Ride with: " + getUserName());
-            displaySubmitButton = false; //typeIsUpdate
+            existingEvent = true; //typeIsUpdate
             display.display(bikeRide);
         } else {
             clientFactory.getDisplay(this).display("Creating Ride with: " + getUserName());
         }
 
-        display.displaySubmitOrUpdateButton(displaySubmitButton);
+        display.setVisibilityOfButtons(existingEvent);
     }
 
     private String getUserName() {
@@ -79,7 +82,7 @@ public class CreateScreenActivity extends MGWTAbstractActivity implements Create
     public void start(AcceptsOneWidget panel, EventBus eventBus) {
         final CreateScreenDisplay display = clientFactory.getDisplay(this);
         display.setPresenter(this);
-        if (displaySubmitButton) { display.resetState(); }
+        if (!existingEvent) { display.resetState(); }
         panel.setWidget(display);
     }
 
@@ -155,6 +158,53 @@ public class CreateScreenActivity extends MGWTAbstractActivity implements Create
             }
         });
 
+    }
+
+    @Override
+    public void onDeleteSelected(final BikeRide bikeRide) {
+        Dialogs.confirm("Warning:", "Are you sure you want to delete this event?", new ConfirmDialog.ConfirmCallback() {
+            @Override
+            public void onOk() {
+                DeleteEvent(bikeRide);
+            }
+
+            @Override
+            public void onCancel() {
+                //Ignore.  The user choose to not delete.
+            }
+        });
+    }
+
+    private void DeleteEvent(BikeRide bikeRide) {
+        final DeleteEventRequest.Builder request = new DeleteEventRequest.Builder(new DeleteEventRequest.Callback() {
+            @Override
+            public void onError() {
+                //At this point the message has already been displayed to the user.
+            }
+
+            @Override
+            public void onResponseReceived() {
+                clientFactory.refreshUserAccount();
+                clientFactory.getPlaceController().goTo(new HomeScreenPlace());
+            }
+        });
+
+        request.root(BuildRoot(bikeRide));
+        request.send();
+    }
+
+    private Root BuildRoot(BikeRide bikeRide) {
+        Root root = GWT.create(Root.class);
+        JsArray<BikeRide> bikeRides = JsArray.createArray().cast();
+        bikeRides.push(bikeRide);
+        root.setBikeRides(bikeRides);
+
+        if (user != null) {
+            root.setUser(user);
+        } else {
+            root.setAnonymousUser(anonymousUser);
+        }
+        return root;
     }
 
     @Override
