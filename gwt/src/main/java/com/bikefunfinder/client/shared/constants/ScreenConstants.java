@@ -43,7 +43,7 @@ public class ScreenConstants {
     public static final String xJSDateOnlyDateFormat = "MM/dd/yyyy";
 
     public static final String DateFormatPrintPretty = "dddd, MMMM dd, yyyy";
-    public static final String TimeFormatPrintPretty = "hh:mm TT";
+
 
     public static final Double PORTLAND_LATITUDE = 45.52345275878906;
     public static final Double PORTLAND_LONGITUDE = -122.6762084960938;

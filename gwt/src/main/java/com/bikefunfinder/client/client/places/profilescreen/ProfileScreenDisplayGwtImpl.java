@@ -4,24 +4,20 @@ package com.bikefunfinder.client.client.places.profilescreen;
  * @created 4/5/13 4:22 PM
  */
 
-import com.bikefunfinder.client.client.places.eventscreen.EventScreenDisplay;
 import com.bikefunfinder.client.shared.constants.ScreenConstants;
 import com.bikefunfinder.client.shared.model.AnonymousUser;
-import com.bikefunfinder.client.shared.model.BikeRide;
 import com.bikefunfinder.client.shared.model.User;
 import com.bikefunfinder.client.shared.widgets.WidgetHelper;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
 import com.googlecode.mgwt.dom.client.event.tap.TapEvent;
 import com.googlecode.mgwt.ui.client.widget.FormListEntry;
 import com.googlecode.mgwt.ui.client.widget.MTextBox;
 import com.googlecode.mgwt.ui.client.widget.WidgetList;
-import com.googlecode.mgwt.ui.client.widget.base.MValueBoxBase;
 
 public class ProfileScreenDisplayGwtImpl extends Composite implements ProfileScreenDisplay {
 
@@ -75,7 +71,7 @@ public class ProfileScreenDisplayGwtImpl extends Composite implements ProfileScr
         if(anonymousUser.createJsDateWrapperJoinedTimeStamp()!=null) {
             final String timeText = anonymousUser.createJsDateWrapperJoinedTimeStamp().toString(ScreenConstants.DateFormatPrintPretty) +
                                     " at " +
-                                    anonymousUser.createJsDateWrapperJoinedTimeStamp().toString(ScreenConstants.TimeFormatPrintPretty);
+                                    anonymousUser.createJsDateWrapperJoinedTimeStamp().toString(ScreenConstants.xJSDateOnlyTimeFormat);
             WidgetHelper.setSafeText(joinedTimeStamp, timeText);
         } else {
             WidgetHelper.setSafeText(joinedTimeStamp, " ");

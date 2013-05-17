@@ -6,7 +6,6 @@ import com.bikefunfinder.client.shared.model.printer.JsDateWrapper;
 import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.user.client.ui.IsWidget;
-import com.googlecode.mgwt.ui.client.widget.GroupingCellList.CellGroup;
 
 import java.util.List;
 
@@ -62,7 +61,7 @@ public interface HomeScreenDisplay extends IsWidget {
             }
 
             JsDateWrapper bikeRideDate = bikeRide.createJsDateWrapperRideStartTime();
-            this.timeDisplay = bikeRideDate.toString(ScreenConstants.TimeFormatPrintPretty);
+            this.timeDisplay = bikeRideDate.toString(ScreenConstants.xJSDateOnlyTimeFormat);
         }
 
         public String getTimeDisplay() {

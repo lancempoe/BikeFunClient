@@ -8,7 +8,6 @@ import com.bikefunfinder.client.shared.constants.ScreenConstants;
 import com.bikefunfinder.client.shared.model.BikeRide;
 import com.bikefunfinder.client.shared.widgets.WidgetHelper;
 import com.googlecode.mgwt.ui.client.widget.MTextBox;
-import com.googlecode.mgwt.ui.client.widget.base.MValueBoxBase;
 
 public class BikeRideViewWidgets extends BikeRideCreateWidgets {
     public final MTextBox totalPeopleTrackingCount = new MTextBox();
@@ -77,7 +76,7 @@ public class BikeRideViewWidgets extends BikeRideCreateWidgets {
         if(bikeRide.createJsDateWrapperRideStartTime()!=null) {
             final String timeText = bikeRide.createJsDateWrapperRideStartTime().toString(ScreenConstants.DateFormatPrintPretty) +
                                     " at " +
-                                    bikeRide.createJsDateWrapperRideStartTime().toString(ScreenConstants.TimeFormatPrintPretty);
+                                    bikeRide.createJsDateWrapperRideStartTime().toString(ScreenConstants.xJSDateOnlyTimeFormat);
             WidgetHelper.setSafeText(startDateAndTime, timeText);
         } else {
             WidgetHelper.setSafeText(startDateAndTime, " ");
