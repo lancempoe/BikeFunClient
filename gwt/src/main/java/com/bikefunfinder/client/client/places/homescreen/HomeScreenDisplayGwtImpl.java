@@ -1,11 +1,7 @@
 package com.bikefunfinder.client.client.places.homescreen;
 
-import com.bikefunfinder.client.bootstrap.db.DBKeys;
 import com.bikefunfinder.client.shared.constants.ScreenConstants;
-import com.bikefunfinder.client.shared.model.AnonymousUser;
 import com.bikefunfinder.client.shared.model.BikeRide;
-import com.bikefunfinder.client.shared.model.User;
-import com.bikefunfinder.client.shared.model.json.Utils;
 import com.bikefunfinder.client.shared.model.printer.JsDateWrapper;
 import com.bikefunfinder.client.shared.widgets.HeaderListWithPullPanel;
 import com.bikefunfinder.client.shared.widgets.PullGroupPanel;
@@ -14,7 +10,6 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JsDate;
 import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
-import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -27,7 +22,6 @@ import com.googlecode.mgwt.dom.client.event.tap.TapEvent;
 import com.googlecode.mgwt.ui.client.MGWTStyle;
 import com.googlecode.mgwt.ui.client.widget.*;
 import com.googlecode.mgwt.ui.client.widget.base.ButtonBase;
-import com.googlecode.mgwt.ui.client.widget.base.PullArrowHeader;
 import com.googlecode.mgwt.ui.client.widget.base.PullPanel;
 import com.googlecode.mgwt.ui.client.widget.tabbar.TabBarButton;
 import com.googlecode.mgwt.ui.client.widget.GroupingCellList.CellGroup;
@@ -121,7 +115,7 @@ public class HomeScreenDisplayGwtImpl extends Composite implements HomeScreenDis
         pp.render(buildList(list));
 
         if(!wasAdjusted) {
-            wasAdjusted = adjustSizeForShits();
+            wasAdjusted = adjustPullPanelSize();
         }
 
     }
@@ -247,7 +241,7 @@ public class HomeScreenDisplayGwtImpl extends Composite implements HomeScreenDis
         pullArrowHeader.asWidget().setVisible(false); // is managed by the pull process .. this mess could be nicer.. but needs love
     }
 
-    private boolean adjustSizeForShits() {
+    private boolean adjustPullPanelSize() {
         if(headerListWidget==null || !headerListWidget.isAttached()) {
             return false;
         }
