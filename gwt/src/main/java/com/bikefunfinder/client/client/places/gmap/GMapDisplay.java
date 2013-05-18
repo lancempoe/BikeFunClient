@@ -29,7 +29,6 @@ public interface GMapDisplay extends IsWidget {
     public void refresh();
 
     void setMapInfo(GeoLoc phonesGpsLoc,
-                    double accuracy,
                     List<BikeRide> list,
                     String cityNameText);
 

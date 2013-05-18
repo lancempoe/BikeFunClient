@@ -3,12 +3,7 @@ package com.bikefunfinder.client.client.places.gmap;
 import com.bikefunfinder.client.client.places.homescreen.HomeScreenDisplay;
 import com.bikefunfinder.client.shared.model.BikeRide;
 import com.bikefunfinder.client.shared.model.GeoLoc;
-import com.bikefunfinder.client.shared.model.Tracking;
-import com.google.gwt.core.client.JsArray;
-import com.google.gwt.dom.client.Node;
 import com.google.gwt.safehtml.shared.SafeHtml;
-import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.*;
@@ -36,10 +31,11 @@ import java.util.List;
  * To change this template use File | Settings | File Templates.
  */
 public class GMapViewImpl implements GMapDisplay {
-    private static final double DEFAULT_ZOOM = 16;
-    private static final double EVENT_ZOOM = 30;
+    private static final double HERE_AND_NOW_ZOOM = 13;
+    private static final double EVENT_ZOOM = 18;
     private static final int RESUME_AUTO_PAN_AND_ZOOM_DELAY_MILLIS = 10000;
-    private static final double metersInAMile = 1609.34;
+    private static final double METERS_IN_A_MILE = 1609.34;
+    private static final int HEAR_AND_NOW_RADIUS = 3;
 
     private final LayoutPanel main;
     private final HeaderButton  backButton;
@@ -101,7 +97,6 @@ public class GMapViewImpl implements GMapDisplay {
             @Override
             public void run() {
                 isRecentUserActivity = false;
-
 //                map.panTo(center);
 //                map.setZoom(zoom);
             }
@@ -147,11 +142,11 @@ public class GMapViewImpl implements GMapDisplay {
 
 
     @Override
-    public void setMapInfo(final GeoLoc phonesGeoLoc, final double accuracy,
+    public void setMapInfo(final GeoLoc phonesGeoLoc,
                            List<BikeRide> list,
                            String cityNameText) {
         center = LatLng.create(phonesGeoLoc.getLatitude(), phonesGeoLoc.getLongitude());
-        zoom = DEFAULT_ZOOM;
+        zoom = HERE_AND_NOW_ZOOM;
 
         if (map == null) {
             final MapOptions mapOptions = createMapOptions(center, zoom);
@@ -159,26 +154,6 @@ public class GMapViewImpl implements GMapDisplay {
 
             BicyclingLayer bicyclingLayer = BicyclingLayer.create();
             bicyclingLayer.setMap(map);
-
-
-
-            //Button trackRide = new Button();
-            //trackRide.setText("TrackRide");
-            //
-            //FlowPanel widget = new FlowPanel();
-            //final HTML titleText = new HTML("Ride Controls");
-            //widget.add(titleText);
-            //widget.add(trackRide);
-            //
-            ////copied from a turd who doesn't know how to set styles
-            //DOM.setStyleAttribute(widget.getElement(), "background", "white");
-            //DOM.setStyleAttribute(widget.getElement(), "padding", "5px");
-            //DOM.setStyleAttribute(widget.getElement(), "margin", "3px");
-            //DOM.setStyleAttribute(widget.getElement(), "border", "3px solid #FF0000");
-            //DOM.setStyleAttribute(titleText.getElement(), "color", "black");
-            //MVCArray<Node> array = MVCArray.create();
-            //array.push(widget.getElement());
-            //map.getControls().set((int) ControlPosition.RIGHT_CENTER.getValue(), array);
 
             map.addCenterChangedListener(new CenterChangedHandler() {
                 @Override
@@ -219,11 +194,11 @@ public class GMapViewImpl implements GMapDisplay {
         }
 
         if (circle == null) {
-            final CircleOptions circleOptions = createCircleOptions(map, center, metersInAMile*2);
+            final CircleOptions circleOptions = createCircleOptions(map, center, METERS_IN_A_MILE *HEAR_AND_NOW_RADIUS);
             circle = Circle.create(circleOptions);
         } else {
             circle.setCenter(center);
-            circle.setRadius(accuracy);
+            circle.setRadius(METERS_IN_A_MILE *HEAR_AND_NOW_RADIUS);
         }
 
         circle.addClickListener(new Circle.ClickHandler() {
@@ -233,6 +208,7 @@ public class GMapViewImpl implements GMapDisplay {
             }
         });
 
+        //TODO WHAT IS THIS DOING?
         if (myBicycleMarker == null)
         {
             final MarkerOptions markerOptions = createMarkerOptions(map, center);
@@ -251,7 +227,6 @@ public class GMapViewImpl implements GMapDisplay {
         }
 
         for(final BikeRide bikeRide: list) {
-
             AddAsMarker(bikeRide.getLocation().getGeoLoc(), bikeRide);
         }
 
@@ -314,6 +289,7 @@ public class GMapViewImpl implements GMapDisplay {
             }
         }
 
+        //TODO WHAT IS THIS DOING?
         if (myBicycleMarker == null)
         {
             final MarkerOptions markerOptions = createMarkerOptions(map, center);
@@ -330,6 +306,9 @@ public class GMapViewImpl implements GMapDisplay {
             myBicycleMarker.setPosition(center);
             myBicycleMarker.setVisible(true);
         }
+
+        //Client Location
+        AddAsMarker(geoLoc, null);
 
         //Starting location
         AddAsMarker(bikeRide.getLocation().getGeoLoc(), bikeRide);

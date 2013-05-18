@@ -8,25 +8,20 @@ import com.bikefunfinder.client.client.places.gmap.GMapPlace;
 import com.bikefunfinder.client.client.places.profilescreen.ProfileScreenPlace;
 import com.bikefunfinder.client.client.places.searchscreen.SearchScreenPlace;
 import com.bikefunfinder.client.shared.Tools.DeviceTools;
-import com.bikefunfinder.client.shared.Tools.NonPhoneGapGeolocationCallback;
+import com.bikefunfinder.client.shared.Tools.NonPhoneGapGeoLocCallback;
 import com.bikefunfinder.client.shared.constants.ScreenConstants;
 import com.bikefunfinder.client.shared.model.*;
 import com.bikefunfinder.client.shared.model.Root;
 import com.bikefunfinder.client.shared.model.helper.Extractor;
 import com.bikefunfinder.client.shared.model.json.Utils;
-import com.bikefunfinder.client.shared.model.printer.JsDateWrapper;
 import com.bikefunfinder.client.shared.request.SearchByTimeOfDayRequest;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.web.bindery.event.shared.EventBus;
-import com.googlecode.gwtphonegap.client.geolocation.*;
 import com.googlecode.mgwt.mvp.client.MGWTAbstractActivity;
-import com.bikefunfinder.client.client.places.homescreen.HomeScreenDisplay.*;
-import com.googlecode.mgwt.ui.client.widget.GroupingCellList.CellGroup;
-import com.googlecode.mgwt.ui.client.widget.GroupingCellList.StandardCellGroup;
 
 import java.util.ArrayList;
-import java.util.List;
+
 import com.google.gwt.regexp.shared.*;
 
 /**
@@ -132,7 +127,7 @@ public class HomeScreenActivity extends MGWTAbstractActivity implements HomeScre
     public void onTimeAndDayButton() {
         final HomeScreenDisplay display = clientFactory.getDisplay(this);
 
-        DeviceTools.getPhoneGeoLoc(clientFactory, new NonPhoneGapGeolocationCallback() {
+        DeviceTools.getPhoneGeoLoc(clientFactory, new NonPhoneGapGeoLocCallback() {
             @Override
             public void onSuccess(GeoLoc geoLoc) {
                 fireRequestForTimeOfDay(display, geoLoc, noOpNotifyTimeAndDayCallback);
@@ -155,7 +150,7 @@ public class HomeScreenActivity extends MGWTAbstractActivity implements HomeScre
     public void refreshTimeAndDayReq(final NotifyTimeAndDayCallback callback) {
         final HomeScreenDisplay display = clientFactory.getDisplay(this);
 
-        DeviceTools.getPhoneGeoLoc(clientFactory, new NonPhoneGapGeolocationCallback() {
+        DeviceTools.getPhoneGeoLoc(clientFactory, new NonPhoneGapGeoLocCallback() {
             @Override
             public void onSuccess(GeoLoc geoLoc) {
                 fireRequestForTimeOfDay(display, geoLoc, callback);

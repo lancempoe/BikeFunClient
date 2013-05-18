@@ -8,6 +8,7 @@ package com.bikefunfinder.client.shared.request;
  * To change this template use File | Settings | File Templates.
  */
 
+import com.bikefunfinder.client.shared.model.GeoLoc;
 import com.bikefunfinder.client.shared.model.Root;
 import com.bikefunfinder.client.shared.constants.Settings;
 import com.bikefunfinder.client.shared.model.json.Utils;
@@ -45,13 +46,13 @@ public final class SearchByProximityRequest {
             return this;
         }
 
-        public Builder latitude(final double latitude) {
-            this.latitude = new BigDecimal(latitude);
+        public Builder latitude(final GeoLoc geoLoc) {
+            this.latitude = new BigDecimal(geoLoc.getLatitude());
             return this;
         }
 
-        public Builder longitude(final double longitude) {
-            this.longitude = new BigDecimal(longitude);
+        public Builder longitude(final GeoLoc geoLoc) {
+            this.longitude = new BigDecimal(geoLoc.getLongitude());
             return this;
         }
 

@@ -7,15 +7,13 @@ package com.bikefunfinder.client.client.places.profilescreen;
 import com.bikefunfinder.client.bootstrap.ClientFactory;
 import com.bikefunfinder.client.client.places.homescreen.HomeScreenPlace;
 import com.bikefunfinder.client.shared.Tools.DeviceTools;
-import com.bikefunfinder.client.shared.Tools.NonPhoneGapGeolocationCallback;
+import com.bikefunfinder.client.shared.Tools.NonPhoneGapGeoLocCallback;
 import com.bikefunfinder.client.shared.model.*;
 import com.bikefunfinder.client.shared.request.SearchByTimeOfDayForProfileRequest;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.web.bindery.event.shared.EventBus;
 import com.googlecode.mgwt.mvp.client.MGWTAbstractActivity;
-
-import java.util.ArrayList;
 
 public class ProfileScreenActivity extends MGWTAbstractActivity implements ProfileScreenDisplay.Presenter {
 
@@ -56,7 +54,7 @@ public class ProfileScreenActivity extends MGWTAbstractActivity implements Profi
 
     @Override
     public void onShowMyRidesButton() {
-        DeviceTools.getPhoneGeoLoc(clientFactory, new NonPhoneGapGeolocationCallback() {
+        DeviceTools.getPhoneGeoLoc(clientFactory, new NonPhoneGapGeoLocCallback() {
             @Override
             public void onSuccess(GeoLoc geoLoc) {
                 fireRequestForsearchByTimeOfDayForProfile(geoLoc);

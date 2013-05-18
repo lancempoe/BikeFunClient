@@ -9,7 +9,7 @@ import com.bikefunfinder.client.bootstrap.db.DBKeys;
 import com.bikefunfinder.client.client.places.eventscreen.EventScreenPlace;
 import com.bikefunfinder.client.client.places.homescreen.HomeScreenPlace;
 import com.bikefunfinder.client.shared.Tools.DeviceTools;
-import com.bikefunfinder.client.shared.Tools.NonPhoneGapGeolocationCallback;
+import com.bikefunfinder.client.shared.Tools.NonPhoneGapGeoLocCallback;
 import com.bikefunfinder.client.shared.model.*;
 import com.bikefunfinder.client.shared.model.json.Utils;
 import com.bikefunfinder.client.shared.request.DeleteEventRequest;
@@ -109,7 +109,7 @@ public class CreateScreenActivity extends MGWTAbstractActivity implements Create
 
         request.bikeRide(br);
 
-        DeviceTools.getPhoneGeoLoc(clientFactory, new NonPhoneGapGeolocationCallback() {
+        DeviceTools.getPhoneGeoLoc(clientFactory, new NonPhoneGapGeoLocCallback() {
             @Override
             public void onSuccess(GeoLoc geoLoc) {
                 request.latitude(geoLoc).longitude(geoLoc).send();
@@ -145,7 +145,7 @@ public class CreateScreenActivity extends MGWTAbstractActivity implements Create
         }
         request.root(root);
 
-        DeviceTools.getPhoneGeoLoc(clientFactory, new NonPhoneGapGeolocationCallback() {
+        DeviceTools.getPhoneGeoLoc(clientFactory, new NonPhoneGapGeoLocCallback() {
             @Override
             public void onSuccess(GeoLoc geoLoc) {
                 request.latitude(geoLoc).longitude(geoLoc).send();

@@ -1,11 +1,6 @@
 package com.bikefunfinder.client.shared.Tools;
 
 import com.bikefunfinder.client.bootstrap.ClientFactory;
-import com.bikefunfinder.client.client.places.homescreen.HomeScreenDisplay;
-import com.bikefunfinder.client.shared.constants.ScreenConstants;
-import com.bikefunfinder.client.shared.model.GeoLoc;
-import com.google.gwt.core.client.GWT;
-import com.google.gwt.user.client.Window;
 import com.googlecode.gwtphonegap.client.geolocation.*;
 
 /**
@@ -18,7 +13,7 @@ import com.googlecode.gwtphonegap.client.geolocation.*;
 public class DeviceTools {
 
     public static void getPhoneGeoLoc(ClientFactory clientFactory,
-                                        NonPhoneGapGeolocationCallback callback) {
+                                        NonPhoneGapGeoLocCallback callback) {
 
         final GeolocationOptions options = new GeolocationOptions();
         options.setEnableHighAccuracy(true);
