@@ -9,7 +9,6 @@ import com.bikefunfinder.client.shared.model.BikeRide;
 import com.bikefunfinder.client.shared.model.Location;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.i18n.shared.DateTimeFormat;
-import com.google.gwt.user.client.Window;
 
 import java.util.Date;
 
@@ -47,7 +46,7 @@ public class BikeRideCreateUtils {
                     rideCreateWidgets.startDate.getText() + " " +
                     rideCreateWidgets.startTime.getText();
 
-            DateTimeFormat dtf = DateTimeFormat.getFormat(ScreenConstants.DateAndTimeCombined);
+            DateTimeFormat dtf = DateTimeFormat.getFormat(ScreenConstants.gwtDateAndTimeCombined);
             Date date = dtf.parse(combinedDateTimeText);
 
             br.setRideStartTime(date.getTime());

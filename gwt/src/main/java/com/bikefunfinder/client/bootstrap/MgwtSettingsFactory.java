@@ -1,5 +1,6 @@
 package com.bikefunfinder.client.bootstrap;
 
+import com.bikefunfinder.client.shared.constants.ScreenConstants;
 import com.googlecode.mgwt.ui.client.MGWTSettings;
 
 /**
@@ -19,7 +20,7 @@ public class MgwtSettingsFactory {
     private static MGWTSettings buildMgwtSettings(MGWTSettings.ViewPort viewPort) {
         MGWTSettings settings = new MGWTSettings();
         settings.setViewPort(viewPort);
-        settings.setIconUrl("logo.png");
+        settings.setIconUrl(ScreenConstants.TargetIcon.LOGO.getDisplayName());
         settings.setAddGlosToIcon(true);
         settings.setFullscreen(true);
         settings.setPreventScrolling(true);

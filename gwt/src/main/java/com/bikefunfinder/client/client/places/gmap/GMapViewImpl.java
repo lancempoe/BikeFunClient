@@ -1,6 +1,7 @@
 package com.bikefunfinder.client.client.places.gmap;
 
 import com.bikefunfinder.client.client.places.homescreen.HomeScreenDisplay;
+import com.bikefunfinder.client.shared.constants.ScreenConstants;
 import com.bikefunfinder.client.shared.model.BikeRide;
 import com.bikefunfinder.client.shared.model.GeoLoc;
 import com.google.gwt.safehtml.shared.SafeHtml;
@@ -31,8 +32,8 @@ import java.util.List;
  * To change this template use File | Settings | File Templates.
  */
 public class GMapViewImpl implements GMapDisplay {
-    private static final double HERE_AND_NOW_ZOOM = 13;
-    private static final double EVENT_ZOOM = 18;
+    private static final double HERE_AND_NOW_ZOOM = 12;
+    private static final double EVENT_ZOOM = 17;
     private static final int RESUME_AUTO_PAN_AND_ZOOM_DELAY_MILLIS = 10000;
     private static final double METERS_IN_A_MILE = 1609.34;
     private static final int HEAR_AND_NOW_RADIUS = 3;
@@ -44,10 +45,10 @@ public class GMapViewImpl implements GMapDisplay {
 
     private GoogleMap map;
     private Circle circle;
-    private List<Marker> bikeRides = new ArrayList<Marker>();
+    private List<Marker> markers = new ArrayList<Marker>();  //TODO WHY SAVE THEM?  NEVER REUSED.
     private Polygon polygon;
     private Polyline polyline;
-    private Marker myBicycleMarker;
+//    private Marker myBicycleMarker;
 
     private LatLng center;
     private double zoom;
@@ -142,10 +143,10 @@ public class GMapViewImpl implements GMapDisplay {
 
 
     @Override
-    public void setMapInfo(final GeoLoc phonesGeoLoc,
+    public void setMapInfo(final GeoLoc phoneGeoLoc,
                            List<BikeRide> list,
                            String cityNameText) {
-        center = LatLng.create(phonesGeoLoc.getLatitude(), phonesGeoLoc.getLongitude());
+        center = LatLng.create(phoneGeoLoc.getLatitude(), phoneGeoLoc.getLongitude());
         zoom = HERE_AND_NOW_ZOOM;
 
         if (map == null) {
@@ -201,33 +202,40 @@ public class GMapViewImpl implements GMapDisplay {
             circle.setRadius(METERS_IN_A_MILE *HEAR_AND_NOW_RADIUS);
         }
 
-        circle.addClickListener(new Circle.ClickHandler() {
-            @Override
-            public void handle(MouseEvent event) {
-                //Window.alert("It's a ME! " );
-            }
-        });
+        circle.clearClickListeners();
+        circle.clearMouseOverListeners();
 
-        //TODO WHAT IS THIS DOING?
-        if (myBicycleMarker == null)
-        {
-            final MarkerOptions markerOptions = createMarkerOptions(map, center);
-            myBicycleMarker = Marker.create(markerOptions);
-            myBicycleMarker.addClickListener(new Marker.ClickHandler() {
-                @Override
-                public void handle(MouseEvent event) {
-                    HTML meWidget = new HTML("It's a me, mario!");
-                    meWidget.getElement().getStyle().setColor("black");
-                    drawInfoWindow(myBicycleMarker, meWidget.getElement(), event);
-                }
-            });
-        } else {
-            myBicycleMarker.setPosition(center);
-            myBicycleMarker.setVisible(true);
-        }
+//        circle.addClickListener(new Circle.ClickHandler() {
+//            @Override
+//            public void handle(MouseEvent event) {
+//                //Window.alert("It's a ME! " );
+//            }
+//        });
 
+//        //TODO WHAT IS THIS DOING?
+//        if (myBicycleMarker == null)
+//        {
+//            final MarkerOptions markerOptions = createMarkerOptions(map, center, ScreenConstants.TargetIcon.CLIENT);
+//            myBicycleMarker = Marker.create(markerOptions);
+//            myBicycleMarker.addClickListener(new Marker.ClickHandler() {
+//                @Override
+//                public void handle(MouseEvent event) {
+//                    HTML meWidget = new HTML("It's a me, mario!");
+//                    meWidget.getElement().getStyle().setColor("black");
+//                    drawInfoWindow(myBicycleMarker, meWidget.getElement(), event);
+//                }
+//            });
+//        } else {
+//            myBicycleMarker.setPosition(center);
+//            myBicycleMarker.setVisible(true);
+//        }
+
+        //Phone Location
+        AddAsMarker(phoneGeoLoc, null, ScreenConstants.TargetIcon.CLIENT);
+
+        //Event Locations.
         for(final BikeRide bikeRide: list) {
-            AddAsMarker(bikeRide.getLocation().getGeoLoc(), bikeRide);
+            AddAsMarker(bikeRide.getLocation().getGeoLoc(), bikeRide, ScreenConstants.TargetIcon.EVENT);
         }
 
 //        if (polyline == null) {
@@ -239,9 +247,10 @@ public class GMapViewImpl implements GMapDisplay {
     }
 
     @Override
-    public void setMapInfo(GeoLoc geoLoc, BikeRide bikeRide, String cityNameText) {
+    public void setMapInfo(GeoLoc phoneGeoLoc, BikeRide bikeRide, String cityNameText) {
 
-        center = LatLng.create(geoLoc.getLatitude(), geoLoc.getLongitude());
+        center = LatLng.create(bikeRide.getLocation().getGeoLoc().getLatitude(),
+                               bikeRide.getLocation().getGeoLoc().getLongitude());
         zoom = EVENT_ZOOM;
 
         if (map == null) {
@@ -289,49 +298,52 @@ public class GMapViewImpl implements GMapDisplay {
             }
         }
 
-        //TODO WHAT IS THIS DOING?
-        if (myBicycleMarker == null)
-        {
-            final MarkerOptions markerOptions = createMarkerOptions(map, center);
-            myBicycleMarker = Marker.create(markerOptions);
-            myBicycleMarker.addClickListener(new Marker.ClickHandler() {
-                @Override
-                public void handle(MouseEvent event) {
-                    HTML meWidget = new HTML("It's a me, mario!");
-                    meWidget.getElement().getStyle().setColor("black");
-                    drawInfoWindow(myBicycleMarker, meWidget.getElement(), event);
-                }
-            });
-        } else {
-            myBicycleMarker.setPosition(center);
-            myBicycleMarker.setVisible(true);
+        if (circle != null) {
+            circle.setRadius(0);
         }
+//        //TODO WHAT IS THIS DOING?
+//        if (myBicycleMarker == null)
+//        {
+//            final MarkerOptions markerOptions = createMarkerOptions(map, center, ScreenConstants.TargetIcon.CLIENT);
+//            myBicycleMarker = Marker.create(markerOptions);
+//            myBicycleMarker.addClickListener(new Marker.ClickHandler() {
+//                @Override
+//                public void handle(MouseEvent event) {
+//                    HTML meWidget = new HTML("It's a me, mario!");
+//                    meWidget.getElement().getStyle().setColor("black");
+//                    drawInfoWindow(myBicycleMarker, meWidget.getElement(), event);
+//                }
+//            });
+//        } else {
+//            myBicycleMarker.setPosition(center);
+//            myBicycleMarker.setVisible(true);
+//        }
 
-        //Client Location
-        AddAsMarker(geoLoc, null);
+        //Phone Location
+        AddAsMarker(phoneGeoLoc, null, ScreenConstants.TargetIcon.CLIENT);
 
         //Starting location
-        AddAsMarker(bikeRide.getLocation().getGeoLoc(), bikeRide);
+        AddAsMarker(bikeRide.getLocation().getGeoLoc(), bikeRide, ScreenConstants.TargetIcon.EVENT);
 
         //Ride leader
         if (bikeRide.getRideLeaderTracking() != null && bikeRide.getRideLeaderTracking().getId() != null)   {
-            AddAsMarker(bikeRide.getRideLeaderTracking().getGeoLoc(), null);
+            AddAsMarker(bikeRide.getRideLeaderTracking().getGeoLoc(), null, ScreenConstants.TargetIcon.LEADER);
         }
 
         //Every other tracker
         if (bikeRide.getCurrentTrackings() != null && bikeRide.getCurrentTrackings().length() > 0) {
             for (int i = 0; i < bikeRide.getCurrentTrackings().length(); i++) {
-                AddAsMarker(bikeRide.getCurrentTrackings().get(i).getGeoLoc(), null);
+                AddAsMarker(bikeRide.getCurrentTrackings().get(i).getGeoLoc(), null, ScreenConstants.TargetIcon.TRACKER);
             }
         }
     }
 
-    private void AddAsMarker(GeoLoc geoLoc, final BikeRide bikeRide) {
+    private void AddAsMarker(GeoLoc geoLoc, final BikeRide bikeRide, ScreenConstants.TargetIcon icon) {
         final Double convertedLat = geoLoc.getLatitude();
         final Double convertedLong = geoLoc.getLongitude();
 
         final LatLng bikeRideLoc = LatLng.create(convertedLat, convertedLong);
-        final MarkerOptions markerOptions = createMarkerOptions(map, bikeRideLoc);
+        final MarkerOptions markerOptions = createMarkerOptions(map, bikeRideLoc, icon);
         final Marker bikeRideMarker = Marker.create(markerOptions);
 
         if(bikeRide==null) {
@@ -343,7 +355,7 @@ public class GMapViewImpl implements GMapDisplay {
             });
         }
 
-        bikeRides.add(bikeRideMarker);
+        markers.add(bikeRideMarker);
     }
 
     private static MapOptions createMapOptions(final LatLng center, final double zoom) {
@@ -371,11 +383,11 @@ public class GMapViewImpl implements GMapDisplay {
         return circleOptions;
     }
 
-    private static MarkerOptions createMarkerOptions(final GoogleMap map, final LatLng center)
+    private static MarkerOptions createMarkerOptions(final GoogleMap map, final LatLng center, ScreenConstants.TargetIcon icon)
     {
         final MarkerOptions markerOptions = MarkerOptions.create();
         markerOptions.setMap(map);
-        MarkerImage markerImage = MarkerImage.create("icons/rideIcon28.png");
+        MarkerImage markerImage = MarkerImage.create("icons/" + icon.getDisplayName());
         markerOptions.setIcon(markerImage);
         markerOptions.setPosition(center);
         return markerOptions;

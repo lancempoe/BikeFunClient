@@ -29,7 +29,7 @@ public abstract class NonPhoneGapGeoLocCallback implements GeolocationCallback {
     @Override
     public void onFailure(final PositionError error) {
         GeoLoc geoLoc = GWT.create(GeoLoc.class);
-        Window.alert("Failed to get GeoLocation.  Using Portland as default."); //TODO MAYBE MOVE THIS OUT SO THAT YOU ONLY NOTIFY THE FIRST TIME.
+        Window.alert("Failed to get GeoLocation.  Using Portland as default."); //TODO MAYBE MOVE THIS OUT SO THAT CLIENT ONLY NOTIFY THE FIRST TIME.
         geoLoc.setLatitude(ScreenConstants.PORTLAND_LATITUDE);
         geoLoc.setLongitude(ScreenConstants.PORTLAND_LONGITUDE);
         onFailure(geoLoc);

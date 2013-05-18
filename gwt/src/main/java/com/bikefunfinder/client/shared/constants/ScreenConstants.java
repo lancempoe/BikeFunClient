@@ -35,9 +35,26 @@ public class ScreenConstants {
         }
     }
 
+    public static enum TargetIcon {
+        CLIENT("eventClient.png"),
+        EVENT("event.png"),
+        LEADER("eventLeader.png"),
+        LOGO("logo.png"),
+        TRACKER("eventTracker.png");
+
+        private final String displayName;
+        TargetIcon(String displayName) {
+            this.displayName = displayName;
+        }
+
+        public String getDisplayName() {
+            return displayName;
+        }
+    }
+
     private static final String DateFormat = "MM/dd/yyyy";
     private static final String TimeFormat = "hh:mm a";
-    public static final String DateAndTimeCombined = ScreenConstants.DateFormat + " " + ScreenConstants.TimeFormat;
+    public static final String gwtDateAndTimeCombined = ScreenConstants.DateFormat + " " + ScreenConstants.TimeFormat;
 
     public static final String xJSDateOnlyTimeFormat = "hh:mm TT";
     public static final String xJSDateOnlyDateFormat = "MM/dd/yyyy";
