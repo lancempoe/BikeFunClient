@@ -120,7 +120,7 @@ public class PullGroupPanel<G, T> extends Composite implements HasRefresh {
                     } else {
                         if (y <= header.getStateSwitchPosition() && headerState != PullState.NORMAL) {
                             headerState = PullState.NORMAL;
-                            scrollPanel.setMinScrollY(-header.getHeight());
+                            scrollPanel.setMinScrollY(0);
 
                             if (headerPullhandler != null)
                                 headerPullhandler.onPullStateChanged(header, headerState);
