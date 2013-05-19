@@ -116,6 +116,7 @@ public class HomeScreenDisplayGwtImpl extends Composite implements HomeScreenDis
 
         if(!wasAdjusted) {
             wasAdjusted = adjustPullPanelSize();
+            pp.refresh();
         }
 
     }
