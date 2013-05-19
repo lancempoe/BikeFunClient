@@ -59,10 +59,10 @@ public class PullGroupPanel<G, T> extends Composite implements HasRefresh {
     public void setupScrollPanel() {
 
         scrollPanel = groupingCellList.getScrollPanel();
-        if(scrollPanel==null) Window.alert("Oh noes it's null");
+        if(scrollPanel==null) Window.alert("Oh noes it's null:setupScrollPanel");
 
         if(!scrollPanel.isAttached()) {
-            Window.alert("Oh noes it's not attached");
+            Window.alert("Oh noes it's not attached:setupScrollPanel");
             return;
         }
 
@@ -202,7 +202,7 @@ public class PullGroupPanel<G, T> extends Composite implements HasRefresh {
         this.header = header;
         if (this.header != null) {
             main.insert(this.header, 0);
-            scrollPanel.setOffSetY(this.header.getHeight());
+            scrollPanel.setOffSetY(0);
         } else {
             scrollPanel.setOffSetY(0);
         }
