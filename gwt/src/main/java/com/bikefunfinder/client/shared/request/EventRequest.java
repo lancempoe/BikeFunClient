@@ -10,6 +10,7 @@ package com.bikefunfinder.client.shared.request;
 
 import com.bikefunfinder.client.shared.model.BikeRide;
 import com.bikefunfinder.client.shared.constants.Settings;
+import com.bikefunfinder.client.shared.model.GeoLoc;
 import com.bikefunfinder.client.shared.model.Query;
 import com.bikefunfinder.client.shared.model.json.Utils;
 import com.google.gwt.http.client.*;
@@ -50,13 +51,13 @@ public final class EventRequest {
             this.id = id;
             return this;
         }
-        public Builder latitude(final double latitude) {
-            this.latitude = new BigDecimal(latitude);
+        public Builder latitude(final GeoLoc geoLoc) {
+            this.latitude = new BigDecimal(geoLoc.getLatitude());
             return this;
         }
 
-        public Builder longitude(final double longitude) {
-            this.longitude = new BigDecimal(longitude);
+        public Builder longitude(final GeoLoc geoLoc) {
+            this.longitude = new BigDecimal(geoLoc.getLongitude());
             return this;
         }
 

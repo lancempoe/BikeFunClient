@@ -23,7 +23,7 @@ public interface GMapDisplay extends IsWidget {
     public void resetForEvent(GeoLoc centerGeoLoc);
 
     public interface Presenter {
-        public void onBackButtonPressed();
+        public void backButtonSelected();
         public void moreRideDetilsScreenRequested(BikeRide bikeRide);
         public String provideTokenHrefFor(BikeRide bikeRide);
     }

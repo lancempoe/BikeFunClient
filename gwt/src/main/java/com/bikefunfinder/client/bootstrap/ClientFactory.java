@@ -5,6 +5,8 @@ import com.bikefunfinder.client.client.places.eventscreen.EventScreenDisplay;
 import com.bikefunfinder.client.client.places.homescreen.HomeScreenDisplay;
 import com.bikefunfinder.client.client.places.profilescreen.ProfileScreenDisplay;
 import com.bikefunfinder.client.client.places.searchscreen.SearchScreenDisplay;
+import com.bikefunfinder.client.shared.model.BikeRide;
+import com.bikefunfinder.client.shared.model.GeoLoc;
 import com.google.gwt.place.shared.PlaceController;
 import com.google.gwt.place.shared.PlaceHistoryHandler;
 import com.google.web.bindery.event.shared.EventBus;
@@ -38,6 +40,8 @@ public interface ClientFactory<DisplayType> {
 
 
     public void refreshUserAccount();
+    public void saveCurrentBikeRide(final BikeRide bikeRide);
+    public void saveCurrentPhoneGeoLoc(GeoLoc phoneGeoLoc);
 
     public void setPlaceHistoryMapper(AppPlaceHistoryMapper historyHandler);
     public AppPlaceHistoryMapper getPlaceHistoryMapper();

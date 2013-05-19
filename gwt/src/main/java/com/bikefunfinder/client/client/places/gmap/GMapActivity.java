@@ -1,7 +1,9 @@
 package com.bikefunfinder.client.client.places.gmap;
 
 import com.bikefunfinder.client.bootstrap.ClientFactory;
+import com.bikefunfinder.client.bootstrap.db.DBKeys;
 import com.bikefunfinder.client.client.places.eventscreen.EventScreenPlace;
+import com.bikefunfinder.client.client.places.homescreen.HomeScreenPlace;
 import com.bikefunfinder.client.gin.Injector;
 import com.bikefunfinder.client.gin.RamObjectCache;
 import com.bikefunfinder.client.shared.Tools.DeviceTools;
@@ -10,7 +12,10 @@ import com.bikefunfinder.client.shared.constants.ScreenConstants;
 import com.bikefunfinder.client.shared.model.BikeRide;
 import com.bikefunfinder.client.shared.model.GeoLoc;
 import com.bikefunfinder.client.shared.model.Root;
+import com.bikefunfinder.client.shared.model.User;
 import com.bikefunfinder.client.shared.model.helper.Extractor;
+import com.bikefunfinder.client.shared.model.json.Utils;
+import com.bikefunfinder.client.shared.request.EventRequest;
 import com.bikefunfinder.client.shared.request.SearchByProximityRequest;
 import com.google.gwt.http.client.UrlBuilder;
 import com.google.gwt.user.client.Timer;
@@ -36,6 +41,8 @@ import java.util.List;
 public class GMapActivity extends NavBaseActivity implements GMapDisplay.Presenter {
     private final Injector injector = Injector.INSTANCE;
     private final ClientFactory<GMapDisplay> clientFactory;
+    private static Timer timer;
+    private int calledTimes = 0;
 
     private final Geolocation geolocation; //TODO WHAT IS THIS??? NEEDS TO BE CLEANED UP.. CAUSING TWO CALLS.
     private GeolocationWatcher watcher = null;  //TODO WHAT IS THIS??? NEEDS TO BE CLEANED UP.. CAUSING TWO CALLS.
@@ -44,6 +51,7 @@ public class GMapActivity extends NavBaseActivity implements GMapDisplay.Present
     private List<BikeRide> currentList;
     private BikeRide bikeRide;
     private String pageName;
+    private GeoLoc phoneGeoLoc;
 
     public GMapActivity(String pageName, BikeRide bikeRide) {
         this.ramObjectCache = injector.getRamObjectCache();
@@ -51,8 +59,28 @@ public class GMapActivity extends NavBaseActivity implements GMapDisplay.Present
         this.geolocation = clientFactory.getPhoneGap().getGeolocation();  //TODO WHY HAVE THIS AND THE CALL DOWN BELOW???
         this.bikeRide = bikeRide;
         this.pageName = pageName;
-        setupDisplay(this.bikeRide);
+        savePhoneGeoLoc();
+        setupDisplay(); //this.bikeRide);
         setupDisplayPageName(this.pageName);
+    }
+
+    private void savePhoneGeoLoc() {
+        final NonPhoneGapGeoLocCallback callback = new NonPhoneGapGeoLocCallback() {
+            @Override
+            public void onSuccess(GeoLoc phoneGeoLoc) {
+                //Save current GeoLoc so that we have it available everywhere in the activity.  Can't simply assign class var.
+                clientFactory.saveCurrentPhoneGeoLoc(phoneGeoLoc);
+            }
+
+            @Override
+            public void onFailure(GeoLoc phoneGeoLoc) {
+                //Save current GeoLoc so that we have it available everywhere in the activity.  Can't simply assign class var.
+                clientFactory.saveCurrentPhoneGeoLoc(phoneGeoLoc);
+            }
+        };
+        DeviceTools.getPhoneGeoLoc(clientFactory, callback);
+
+        this.phoneGeoLoc = Utils.castJsonTxtToJSOObject(clientFactory.getStoredValue(DBKeys.PHONE_GEOLOC));
     }
 
     @Override
@@ -62,28 +90,33 @@ public class GMapActivity extends NavBaseActivity implements GMapDisplay.Present
         panel.setWidget(display);
     }
 
-    private void setupDisplay(BikeRide bikeRide) {
+    private void setupDisplay() {
 
-        startWatching(bikeRide);
+        startWatching(); //bikeRide);
 
         //This is close.  it does refresh but stop when you leave the page.  I'll fix that soon and then bring back.
-//        Timer t = new Timer() {
-//            public void run() {
-//                refreshScreen();
-//            }
-//        };
-//
-//        // Schedule the timer to run once in 5 minutes.
-//        t.scheduleRepeating(ScreenConstants.SCREEN_REFRESH_RATE_IN_SECONDS*1000);
+        timer = new Timer() {
+            public void run() {
+                refreshScreen();
+            }
+        };
+
+        // Schedule the timer to run once in x seconds.
+        timer.scheduleRepeating(ScreenConstants.SCREEN_REFRESH_RATE_IN_SECONDS * 1000);
     }
 
     private void refreshScreen() {
+
+        //Updated location of the client.
+        savePhoneGeoLoc();
+
+        //Update the bikeRide
         if (bikeRide != null) {
-            //TODO CALL SERVICE AND GET UPDATED BIKERIDE WITH TRACKING DETAILS.
+            updatedBikeRide(this.phoneGeoLoc);
             Window.alert("refreshing bike ride..");
         }
-        Window.alert("sending to screen.");
-        startWatching(bikeRide);
+
+        startWatching(); //bikeRide);
     }
 
     private void setupDisplayPageName(String pageName) {
@@ -91,28 +124,16 @@ public class GMapActivity extends NavBaseActivity implements GMapDisplay.Present
         display.displayPageName(pageName);
     }
 
-    private void startWatching(final BikeRide bikeRide) {
+    private void startWatching() { //final BikeRide bikeRide) {
+        setMapView(this.phoneGeoLoc);
 
-        final NonPhoneGapGeoLocCallback callback = new NonPhoneGapGeoLocCallback() {
-            @Override
-            public void onSuccess(GeoLoc phoneGeoLoc) {
-                setMapView(phoneGeoLoc);
-            }
-
-            @Override
-            public void onFailure(GeoLoc phoneGeoLoc) {
-                setMapView(phoneGeoLoc);
-            }
-        };
-        DeviceTools.getPhoneGeoLoc(clientFactory, callback);
-
-        if (bikeRide == null) {
-            final GeolocationOptions options = new GeolocationOptions();
-            options.setEnableHighAccuracy(true);
-            options.setTimeout(10000);
-            options.setMaximumAge(1000);
-            watchPosition(options, callback);
-        }
+//        if (bikeRide == null) {
+//            final GeolocationOptions options = new GeolocationOptions();
+//            options.setEnableHighAccuracy(true);
+//            options.setTimeout(10000);
+//            options.setMaximumAge(1000);
+//            watchPosition(options, callback);
+//        }
     }
 
     /**
@@ -121,9 +142,9 @@ public class GMapActivity extends NavBaseActivity implements GMapDisplay.Present
      */
     private void setMapView(GeoLoc phoneGeoLoc) {
         if (bikeRide == null) { //Here & now Map
-            if (watcher != null) {
+//            if (watcher != null) {
                 setHereAndNowView(phoneGeoLoc); //Here & now Map
-            }
+//            }
         } else { //Event Map
             clearWatch();
             if (false) { //Tracking    ??? NOT SURE WHAT TO DO YET.
@@ -171,7 +192,6 @@ public class GMapActivity extends NavBaseActivity implements GMapDisplay.Present
     }
 
 
-    private int calledTimes = 0;
     private void fireRequestForHereAndNow(final GMapDisplay display, final GeoLoc phoneGeoLoc) {
 
         SearchByProximityRequest.Callback callback = new SearchByProximityRequest.Callback() {
@@ -195,23 +215,42 @@ public class GMapActivity extends NavBaseActivity implements GMapDisplay.Present
         };
         SearchByProximityRequest.Builder request = new SearchByProximityRequest.Builder(callback);
 
-//        if(calledTimes == 0) {
-//            request.latitude(phoneGeoLoc).longitude(phoneGeoLoc).sendAndDebug();
-//            calledTimes++;
-//        } else {
-            request.latitude(phoneGeoLoc).longitude(phoneGeoLoc).send();
-            calledTimes++;
-//        }
+        request.latitude(phoneGeoLoc).longitude(phoneGeoLoc).send();
+    }
 
-        if(calledTimes>100) {
-            calledTimes=0;
+    private void updatedBikeRide(final GeoLoc phoneGeoLoc) {
+
+        EventRequest.Callback callback = new EventRequest.Callback() {
+            @Override
+            public void onError() {
+                //Unable to refresh... leave screen as is.
+            }
+
+            @Override
+            public void onResponseReceived(BikeRide bikeRide) {
+                clientFactory.saveCurrentBikeRide(bikeRide);
+            }
+
+        };
+        EventRequest.Builder request = new EventRequest.Builder(callback);
+        request.id(this.bikeRide.getId()).latitude(phoneGeoLoc).longitude(phoneGeoLoc).send();
+
+        //Update the event.
+        if (clientFactory.getStoredValue(DBKeys.BIKE_RIDE) != null) {
+            this.bikeRide = Utils.castJsonTxtToJSOObject(clientFactory.getStoredValue(DBKeys.BIKE_RIDE));
         }
-
     }
 
     @Override
     public void moreRideDetilsScreenRequested(BikeRide bikeRide) {
+        timer.cancel();
         clientFactory.getPlaceController().goTo(new EventScreenPlace(bikeRide));
+    }
+
+    @Override
+    public void backButtonSelected() {
+        timer.cancel();
+        clientFactory.getPlaceController().goTo(new HomeScreenPlace());
     }
 
     @Override

@@ -8,7 +8,6 @@ import com.bikefunfinder.client.shared.model.GeoLoc;
 import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.Timer;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.*;
 import com.googlecode.mgwt.ui.client.widget.Button;
 import com.google.maps.gwt.client.*;
@@ -85,7 +84,7 @@ public class GMapViewImpl implements GMapDisplay {
         backButton.addTapHandler(new TapHandler() {
             @Override
             public void onTap(final TapEvent tapEvent) {
-                oBackButtonPressed(tapEvent);
+                backButtonSelected(tapEvent);
             }
         });
         this.headerPanel.setLeftWidget(backButton);
@@ -132,9 +131,9 @@ public class GMapViewImpl implements GMapDisplay {
         this.headerPanel.setCenter(pageName);
     }
 
-    protected void oBackButtonPressed(TapEvent event) {
+    protected void backButtonSelected(TapEvent event) {
         if (presenter != null) {
-            presenter.onBackButtonPressed();
+            presenter.backButtonSelected();
         }
     }
 

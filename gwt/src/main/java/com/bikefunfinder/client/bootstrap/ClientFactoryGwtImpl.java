@@ -18,6 +18,7 @@ import com.bikefunfinder.client.client.places.searchscreen.SearchScreenDisplay;
 import com.bikefunfinder.client.client.places.searchscreen.SearchScreenDisplayGwtImpl;
 import com.bikefunfinder.client.shared.model.AnonymousUser;
 import com.bikefunfinder.client.shared.model.BikeRide;
+import com.bikefunfinder.client.shared.model.GeoLoc;
 import com.bikefunfinder.client.shared.model.User;
 import com.bikefunfinder.client.shared.model.json.Utils;
 import com.bikefunfinder.client.shared.model.printer.JSODescriber;
@@ -173,6 +174,19 @@ public class ClientFactoryGwtImpl implements ClientFactory {
         return true;
     }
 
+    @Override
+    public void saveCurrentBikeRide(final BikeRide bikeRide) {
+        Storage storageInterface = this.storageInterface.getStorageInterfaceMyBeNull();
+        final String jsonText = JSODescriber.toJSON(bikeRide);
+        storageInterface.setItem(DBKeys.BIKE_RIDE, jsonText);
+    }
+
+    @Override
+    public void saveCurrentPhoneGeoLoc(final GeoLoc phoneGeoLoc) {
+        Storage storageInterface = this.storageInterface.getStorageInterfaceMyBeNull();
+        final String jsonText = JSODescriber.toJSON(phoneGeoLoc);
+        storageInterface.setItem(DBKeys.PHONE_GEOLOC, jsonText);
+    }
 
     @Override
     public void refreshUserAccount() {
@@ -217,12 +231,6 @@ public class ClientFactoryGwtImpl implements ClientFactory {
         };
         AnonymousRequest.Builder request = new AnonymousRequest.Builder(callback);
         request.key(key).uuid(uuid).send();
-    }
-
-    private String buildBikeRideJsonTxt() {
-        BikeRide brTest = GWT.create(BikeRide.class);
-        brTest.setBikeRideName("TestingLocalStorage");
-        return JSODescriber.toJSON(brTest);
     }
 
     private String buildUserJsonTxt() {
