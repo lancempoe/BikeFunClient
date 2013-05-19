@@ -107,15 +107,7 @@ public class HomeScreenActivity extends MGWTAbstractActivity implements HomeScre
     public void onLoginButton() {
         clientFactory.refreshUserAccount(); //Changes will not be visible until next view.
 
-        //Set the logged in user details
-        if (clientFactory.getStoredValue(DBKeys.USER) != null) {
-            User user = Utils.castJsonTxtToJSOObject(clientFactory.getStoredValue(DBKeys.USER));
-            clientFactory.getPlaceController().goTo(new ProfileScreenPlace(user));
-        }
-        else if (clientFactory.getStoredValue(DBKeys.ANONYMOUS_USER) != null) {
-            AnonymousUser anonymousUser = Utils.castJsonTxtToJSOObject(clientFactory.getStoredValue(DBKeys.ANONYMOUS_USER));
-            clientFactory.getPlaceController().goTo(new ProfileScreenPlace(anonymousUser));
-        }
+        clientFactory.getPlaceController().goTo(new ProfileScreenPlace());
     }
 
     @Override
