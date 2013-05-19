@@ -16,6 +16,6 @@ public class Settings {
     //public static String HOST = "???";
 
     //PRD:
-    public static String HOST = "http://www.bikefunfinder.com/";
+    public static String HOST = "http://service.bikefunfinder.com/";
 
 }
