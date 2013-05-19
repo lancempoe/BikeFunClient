@@ -12,7 +12,8 @@ import com.google.gwt.place.shared.PlaceTokenizer;
  * To change this template use File | Settings | File Templates.
  */
 public class GMapPlace  extends Place {
-    final BikeRide bikeRide;
+    private final BikeRide bikeRide;
+    private final String pageName;
 
     public static final class Tokenizer implements PlaceTokenizer<GMapPlace> {
         @Override
@@ -28,8 +29,6 @@ public class GMapPlace  extends Place {
             return builder.toString();
         }
     }
-
-    private final String pageName;
 
     public GMapPlace(final String pageName) {
         this.pageName = pageName;

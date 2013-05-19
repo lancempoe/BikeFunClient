@@ -52,6 +52,11 @@ public class ScreenConstants {
         }
     }
 
+    public static enum MapScreenType {
+        HERE_AND_NOW,
+        EVENT;
+    }
+
     private static final String DateFormat = "MM/dd/yyyy";
     private static final String TimeFormat = "hh:mm a";
     public static final String gwtDateAndTimeCombined = ScreenConstants.DateFormat + " " + ScreenConstants.TimeFormat;

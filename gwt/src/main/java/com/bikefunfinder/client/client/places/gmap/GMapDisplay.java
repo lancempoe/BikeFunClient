@@ -15,9 +15,12 @@ import java.util.List;
  * To change this template use File | Settings | File Templates.
  */
 public interface GMapDisplay extends IsWidget {
+
     public void setPresenter(Presenter presenter);
     public void display(BikeRide bikeRide);
     public void displayPageName(String pageName);
+    public void resetForHereAndNow(GeoLoc centerGeoLoc);
+    public void resetForEvent(GeoLoc centerGeoLoc);
 
     public interface Presenter {
         public void onBackButtonPressed();
@@ -25,16 +28,8 @@ public interface GMapDisplay extends IsWidget {
         public String provideTokenHrefFor(BikeRide bikeRide);
     }
 
-    public void clearMapInfo();
-    public void refresh();
-
-    void setMapInfo(GeoLoc phonesGpsLoc,
-                    List<BikeRide> list,
-                    String cityNameText);
-
-    void setMapInfo(GeoLoc geoLoc,
-                    BikeRide bikeRide,
-                    String cityNameText);
+    void setMapInfo(GeoLoc phoneGpsLoc, List<BikeRide> list);
+    void setMapInfo(GeoLoc phoneGpsLoc, BikeRide bikeRide);
 
 }
 

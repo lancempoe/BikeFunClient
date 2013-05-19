@@ -30,7 +30,7 @@ public interface ClientFactory<DisplayType> {
 
     public SearchScreenDisplay getSearchScreenDisplay();
 
-    public GMapDisplay getHereAndNowDisplay();
+    public GMapDisplay getGMapDisplay();
     */
 
     public String getStoredValue(String value);

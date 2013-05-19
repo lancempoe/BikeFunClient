@@ -11,7 +11,6 @@ import com.bikefunfinder.client.shared.model.GeoLoc;
 import com.bikefunfinder.client.shared.model.Root;
 import com.bikefunfinder.client.shared.model.helper.Extractor;
 import com.bikefunfinder.client.shared.request.SearchByProximityRequest;
-import com.google.gwt.core.shared.GWT;
 import com.google.gwt.http.client.UrlBuilder;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
@@ -56,9 +55,9 @@ public class GMapActivity extends NavBaseActivity implements GMapDisplay.Present
 
     @Override
     public void start(final AcceptsOneWidget panel, final EventBus eventBus) {
-        final GMapDisplay geoMapView = clientFactory.getDisplay(this);
-        geoMapView.setPresenter(this);
-        panel.setWidget(geoMapView);
+        final GMapDisplay display = clientFactory.getDisplay(this);
+        display.setPresenter(this);
+        panel.setWidget(display);
     }
 
     private void setupDisplay(BikeRide bikeRide) {
@@ -72,47 +71,47 @@ public class GMapActivity extends NavBaseActivity implements GMapDisplay.Present
 
     private void startWatching(final BikeRide bikeRide) {
 
-        final GeolocationOptions options = new GeolocationOptions();
-        options.setEnableHighAccuracy(true);
-        options.setTimeout(10000);
-        options.setMaximumAge(1000);
-
         final NonPhoneGapGeoLocCallback callback = new NonPhoneGapGeoLocCallback() {
             @Override
-            public void onSuccess(GeoLoc geoLoc) {
-                setMapView(geoLoc);
+            public void onSuccess(GeoLoc phoneGeoLoc) {
+                setMapView(phoneGeoLoc);
             }
 
             @Override
-            public void onFailure(GeoLoc geoLoc) {
-                setMapView(geoLoc);
+            public void onFailure(GeoLoc phoneGeoLoc) {
+                setMapView(phoneGeoLoc);
             }
         };
         DeviceTools.getPhoneGeoLoc(clientFactory, callback);
 
         if (bikeRide == null) {
+            final GeolocationOptions options = new GeolocationOptions();
+            options.setEnableHighAccuracy(true);
+            options.setTimeout(10000);
+            options.setMaximumAge(1000);
             watchPosition(options, callback);
         }
     }
 
     /**
      * Set the map to view the correct geo location as well as setting all date points as well.
-     * @param geoLoc
+     * @param phoneGeoLoc
      */
-    private void setMapView(GeoLoc geoLoc) {
+    private void setMapView(GeoLoc phoneGeoLoc) {
         if (bikeRide == null) { //Here & now Map
             if (watcher != null) {
-                setView(geoLoc); //Here & now Map
+                setHereAndNowView(phoneGeoLoc); //Here & now Map
             }
         } else { //Event Map
-            if (watcher != null) { //Tracking
-                setView(geoLoc);
+            clearWatch();
+            if (false) { //Tracking    ??? NOT SURE WHAT TO DO YET.
+                setTrackView(phoneGeoLoc);
             } else if (bikeRide.getRideLeaderTracking() != null && bikeRide.getRideLeaderTracking().getId() != null) { //Following Event
-                setView(bikeRide.getRideLeaderTracking().getGeoLoc(), geoLoc);
+                setEventView(phoneGeoLoc, bikeRide.getRideLeaderTracking().getGeoLoc());
             } else if (bikeRide.getCurrentTrackings() != null && bikeRide.getCurrentTrackings().length() > 0) { //Following Event
-                setView(bikeRide.getCurrentTrackings().get(0).getGeoLoc(), geoLoc);
+                setEventView(phoneGeoLoc, bikeRide.getCurrentTrackings().get(0).getGeoLoc());
             }  else { //Following Event
-                setView(bikeRide.getLocation().getGeoLoc(), geoLoc);
+                setEventView(phoneGeoLoc, bikeRide.getLocation().getGeoLoc());
             }
         }
     }
@@ -129,84 +128,56 @@ public class GMapActivity extends NavBaseActivity implements GMapDisplay.Present
         watcher = geolocation.watchPosition(options, callback);
     }
 
-    private void clearView() {
-        final GMapDisplay gMapView = clientFactory.getDisplay(this);
-
-        gMapView.clearMapInfo();
-        gMapView.refresh();
-    }
-
-    private void setView(final GeoLoc viewGeoLoc, final GeoLoc clientGeoLoc) {
+    private void setTrackView(final GeoLoc phoneGeoLoc) {
         final GMapDisplay display = clientFactory.getDisplay(this);
+        display.resetForEvent(phoneGeoLoc);
         display.display(bikeRide);
-
-        String city = bikeRide.getLocation().getCity();
-
-        display.setMapInfo(clientGeoLoc, bikeRide, city);
-        display.refresh();
+        display.setMapInfo(phoneGeoLoc, bikeRide);
     }
 
-    private void setView(final GeoLoc geoLoc) {
-        final GMapDisplay geoMapView = clientFactory.getDisplay(this);
-        fireRequestForHereAndNow(geoMapView, geoLoc);
+    private void setEventView(final GeoLoc phoneGeoLoc, final GeoLoc eventGeoLoc) {
+        final GMapDisplay display = clientFactory.getDisplay(this);
+        display.resetForEvent(eventGeoLoc);
+        display.display(bikeRide);
+        display.setMapInfo(phoneGeoLoc, bikeRide);
+    }
+
+    private void setHereAndNowView(final GeoLoc phoneGeoLoc) {
+        final GMapDisplay display = clientFactory.getDisplay(this);
+        display.resetForHereAndNow(phoneGeoLoc);
+        fireRequestForHereAndNow(display, phoneGeoLoc);
     }
 
 
     private int calledTimes = 0;
-    private void fireRequestForHereAndNow(final GMapDisplay display, final GeoLoc geoLoc) {
+    private void fireRequestForHereAndNow(final GMapDisplay display, final GeoLoc phoneGeoLoc) {
 
         SearchByProximityRequest.Callback callback = new SearchByProximityRequest.Callback() {
             @Override
             public void onError() {
                 Window.alert("Oops, your BFF will be back shortly.");
-                GeoLoc phonesGeoLoc = GWT.create(GeoLoc.class);
-                phonesGeoLoc.setLatitude(geoLoc.getLatitude());
-                phonesGeoLoc.setLongitude(geoLoc.getLongitude());
-                display.setMapInfo(phonesGeoLoc,
-                        new ArrayList<BikeRide>(),
-                        "City Unknown");
-                display.refresh();
+                display.displayPageName("Sorry, No Rides");
+                display.setMapInfo(phoneGeoLoc, new ArrayList<BikeRide>());
             }
 
             @Override
             public void onResponseReceived(Root root) {
                 currentList =  Extractor.getBikeRidesFrom(root);
-                final String city = getCityNameFromRoot(root);
-                GeoLoc phonesGeoLoc = GWT.create(GeoLoc.class);
-                phonesGeoLoc.setLatitude(geoLoc.getLatitude());
-                phonesGeoLoc.setLongitude(geoLoc.getLongitude());
-                display.setMapInfo(phonesGeoLoc,
-                        currentList,
-                        city);
-                display.refresh();
+                if (currentList == null || currentList.size() == 0) {
+                    display.displayPageName("Sorry, No Rides");
+                }
 
+                display.setMapInfo(phoneGeoLoc,currentList);
                 ramObjectCache.setHereAndNowBikeRideCache(currentList);
-            }
-
-            private String getCityNameFromRoot(Root root) {
-                if(root == null) {
-                    return "Sorry, No Rides";
-                }
-
-                if(root.getClosestLocation()==null) {
-                    return "Unknown City";
-                }
-
-                String cityName = root.getClosestLocation().getCity();
-                if(cityName==null || cityName.isEmpty()) {
-                    return "Unknown City";
-                }
-
-                return cityName;
             }
         };
         SearchByProximityRequest.Builder request = new SearchByProximityRequest.Builder(callback);
 
         if(calledTimes == 0) {
-            request.latitude(geoLoc).longitude(geoLoc).sendAndDebug();
+            request.latitude(phoneGeoLoc).longitude(phoneGeoLoc).sendAndDebug();
             calledTimes++;
         } else {
-            request.latitude(geoLoc).longitude(geoLoc).send();
+            request.latitude(phoneGeoLoc).longitude(phoneGeoLoc).send();
             calledTimes++;
         }
 

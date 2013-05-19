@@ -24,7 +24,6 @@ import com.bikefunfinder.client.shared.model.printer.JSODescriber;
 import com.bikefunfinder.client.shared.request.AnonymousRequest;
 import com.google.gwt.core.shared.GWT;
 import com.google.gwt.place.shared.PlaceController;
-import com.google.gwt.place.shared.PlaceHistoryHandler;
 import com.google.gwt.user.client.Window;
 import com.google.web.bindery.event.shared.EventBus;
 import com.google.web.bindery.event.shared.SimpleEventBus;
@@ -46,7 +45,7 @@ public class ClientFactoryGwtImpl implements ClientFactory {
     private ProfileScreenDisplay profileScreenDisplay;
     private SearchScreenDisplay searchScreenDisplay;
     private EventScreenDisplay eventScreenDisplay;
-    private GMapDisplay hereAndNowDisplay;
+    private GMapDisplay gMapDisplay;
     private AppPlaceHistoryMapper historyHandler;
 
     public ClientFactoryGwtImpl() {
@@ -88,7 +87,7 @@ public class ClientFactoryGwtImpl implements ClientFactory {
         } else if(activity instanceof SearchScreenActivity) {
             return getSearchScreenDisplay();
         } else if(activity instanceof GMapActivity) {
-            return getHereAndNowDisplay();
+            return getGMapDisplay();
         }
 
         throw new RuntimeException("No fair! We need a real activity");
@@ -134,11 +133,11 @@ public class ClientFactoryGwtImpl implements ClientFactory {
     }
 
 
-    public GMapDisplay getHereAndNowDisplay() {
-        if (hereAndNowDisplay == null) {
-            hereAndNowDisplay = new GMapViewImpl();
+    public GMapDisplay getGMapDisplay() {
+        if (gMapDisplay == null) {
+            gMapDisplay = new GMapViewImpl();
         }
-        return hereAndNowDisplay;
+        return gMapDisplay;
     }
 
     /**
