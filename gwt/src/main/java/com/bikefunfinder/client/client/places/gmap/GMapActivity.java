@@ -6,12 +6,14 @@ import com.bikefunfinder.client.gin.Injector;
 import com.bikefunfinder.client.gin.RamObjectCache;
 import com.bikefunfinder.client.shared.Tools.DeviceTools;
 import com.bikefunfinder.client.shared.Tools.NonPhoneGapGeoLocCallback;
+import com.bikefunfinder.client.shared.constants.ScreenConstants;
 import com.bikefunfinder.client.shared.model.BikeRide;
 import com.bikefunfinder.client.shared.model.GeoLoc;
 import com.bikefunfinder.client.shared.model.Root;
 import com.bikefunfinder.client.shared.model.helper.Extractor;
 import com.bikefunfinder.client.shared.request.SearchByProximityRequest;
 import com.google.gwt.http.client.UrlBuilder;
+import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.web.bindery.event.shared.EventBus;
@@ -35,9 +37,9 @@ public class GMapActivity extends NavBaseActivity implements GMapDisplay.Present
     private final Injector injector = Injector.INSTANCE;
     private final ClientFactory<GMapDisplay> clientFactory;
 
-    private final Geolocation geolocation;
-    private GeolocationWatcher watcher = null;
-    private final GMapActivity itsAMeMario = this;
+    private final Geolocation geolocation; //TODO WHAT IS THIS??? NEEDS TO BE CLEANED UP.. CAUSING TWO CALLS.
+    private GeolocationWatcher watcher = null;  //TODO WHAT IS THIS??? NEEDS TO BE CLEANED UP.. CAUSING TWO CALLS.
+    private final GMapActivity itsAMeMario = this;  //TODO WHAT IS THIS??? NEEDS TO BE CLEANED UP
     private final RamObjectCache ramObjectCache;
     private List<BikeRide> currentList;
     private BikeRide bikeRide;
@@ -61,6 +63,26 @@ public class GMapActivity extends NavBaseActivity implements GMapDisplay.Present
     }
 
     private void setupDisplay(BikeRide bikeRide) {
+
+        startWatching(bikeRide);
+
+        //This is close.  it does refresh but stop when you leave the page.  I'll fix that soon and then bring back.
+//        Timer t = new Timer() {
+//            public void run() {
+//                refreshScreen();
+//            }
+//        };
+//
+//        // Schedule the timer to run once in 5 minutes.
+//        t.scheduleRepeating(ScreenConstants.SCREEN_REFRESH_RATE_IN_SECONDS*1000);
+    }
+
+    private void refreshScreen() {
+        if (bikeRide != null) {
+            //TODO CALL SERVICE AND GET UPDATED BIKERIDE WITH TRACKING DETAILS.
+            Window.alert("refreshing bike ride..");
+        }
+        Window.alert("sending to screen.");
         startWatching(bikeRide);
     }
 
@@ -173,13 +195,13 @@ public class GMapActivity extends NavBaseActivity implements GMapDisplay.Present
         };
         SearchByProximityRequest.Builder request = new SearchByProximityRequest.Builder(callback);
 
-        if(calledTimes == 0) {
-            request.latitude(phoneGeoLoc).longitude(phoneGeoLoc).sendAndDebug();
-            calledTimes++;
-        } else {
+//        if(calledTimes == 0) {
+//            request.latitude(phoneGeoLoc).longitude(phoneGeoLoc).sendAndDebug();
+//            calledTimes++;
+//        } else {
             request.latitude(phoneGeoLoc).longitude(phoneGeoLoc).send();
             calledTimes++;
-        }
+//        }
 
         if(calledTimes>100) {
             calledTimes=0;

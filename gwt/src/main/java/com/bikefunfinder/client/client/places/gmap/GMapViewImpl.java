@@ -57,7 +57,7 @@ public class GMapViewImpl implements GMapDisplay {
     private List<Marker> markers = new ArrayList<Marker>();  //TODO WHY SAVE THEM?  NEVER REUSED.
     private Polygon polygon; //TODO WHAT IS THIS?
     private Polyline polyline;  //TODO WHAT IS THIS?
-//    private Marker myBicycleMarker;  //TODO WHAT IS THIS?
+    private Marker myBicycleMarker;  //TODO WHAT IS THIS?
 
     private Presenter presenter;
 
@@ -188,14 +188,30 @@ public class GMapViewImpl implements GMapDisplay {
             circle.setRadius(METERS_IN_A_MILE * HEAR_AND_NOW_RADIUS);
         }
 
-//        circle.addClickListener(new Circle.ClickHandler() {
-//            @Override
-//            public void handle(MouseEvent event) {
-//                //Window.alert("It's a ME! " );
-//            }
-//        });
+        //Phone Location
+        AddAsMarker(map, phoneGpsLoc, null, ScreenConstants.TargetIcon.CLIENT);
 
-//        //TODO WHAT IS THIS DOING?
+        //Event Locations.
+        for(final BikeRide bikeRide: list) {
+            AddAsMarker(map, bikeRide.getLocation().getGeoLoc(), bikeRide, ScreenConstants.TargetIcon.EVENT);
+        }
+
+        //Reset the check
+        resetMap = false;
+    }
+
+    @Override
+    public void setMapInfo(GeoLoc phoneGpsLoc, BikeRide bikeRide) {
+
+        //Build the view of the map
+        if (map == null || resetMap) {
+            buildMap();
+        } else {
+            map.panTo(center);
+            map.setZoom(zoom);
+        }
+
+        //        //TODO WHAT IS THIS DOING?
 //        if (myBicycleMarker == null)
 //        {
 //            final MarkerOptions markerOptions = createMarkerOptions(map, center, ScreenConstants.TargetIcon.CLIENT);
@@ -213,35 +229,12 @@ public class GMapViewImpl implements GMapDisplay {
 //            myBicycleMarker.setVisible(true);
 //        }
 
-        //Phone Location
-        AddAsMarker(map, phoneGpsLoc, null, ScreenConstants.TargetIcon.CLIENT);
-
-        //Event Locations.
-        for(final BikeRide bikeRide: list) {
-            AddAsMarker(map, bikeRide.getLocation().getGeoLoc(), bikeRide, ScreenConstants.TargetIcon.EVENT);
-        }
-
-//        if (polyline == null) {
+        //        if (polyline == null) {
 //            final PolylineOptions polylineOptions = createPolylineOptions(map, center);
 //            polyline = Polyline.create(polylineOptions);
 //        } else {
 //            polyline.getPath().push(center);
 //        }
-
-        //Reset the check
-        resetMap = false;
-    }
-
-    @Override
-    public void setMapInfo(GeoLoc phoneGpsLoc, BikeRide bikeRide) {
-
-        //Build the view of the map
-        if (map == null || resetMap) {
-            buildMap();
-        } else {
-            map.panTo(center);
-            map.setZoom(zoom);
-        }
 
         //Phone Location
         AddAsMarker(map, phoneGpsLoc, null, ScreenConstants.TargetIcon.CLIENT);
