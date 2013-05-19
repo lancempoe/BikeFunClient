@@ -173,12 +173,14 @@ public class HomeScreenDisplayGwtImpl extends Composite implements HomeScreenDis
         Header header  = null;
         ArrayList<Content> contentList = new ArrayList<Content>();
         JsDateWrapper priorDate = null;
+        String tableQuickLink = ""; //An empty sting will allow the quick link to function without having to see it.
         for (BikeRide bikeRide : bikeRides) {
 
             JsDateWrapper bikeRideDate = bikeRide.createJsDateWrapperRideStartTime();
             if (priorDate == null || !priorDate.isSameDay(bikeRideDate)) {
                 if (header != null && contentList.size() > 0) {
-                    CellGroup<Header, Content> cellGroup = new GroupingCellList.StandardCellGroup<Header, Content>(header.getName(), header, contentList);
+                    //tableQuickLink is the value in the right quick link bar.  To place the header value simply place "header.getName()"
+                    CellGroup<Header, Content> cellGroup = new GroupingCellList.StandardCellGroup<Header, Content>(tableQuickLink, header, contentList);
                     list.add(cellGroup);
                 }
                 priorDate = bikeRideDate;
@@ -194,7 +196,8 @@ public class HomeScreenDisplayGwtImpl extends Composite implements HomeScreenDis
 
         //add the final item
         if (header != null && contentList.size() > 0) {
-            CellGroup<Header, Content> cellGroup = new GroupingCellList.StandardCellGroup<Header, Content>(header.getName(), header, contentList);
+            //tableQuickLink is the value in the right quick link bar.  To place the header value simply place "header.getName()"
+            CellGroup<Header, Content> cellGroup = new GroupingCellList.StandardCellGroup<Header, Content>(tableQuickLink, header, contentList);
             list.add(cellGroup);
         }
 
