@@ -37,11 +37,7 @@ public interface ClientFactory<DisplayType> {
 
     public String getStoredValue(String value);
     public boolean setStoredValue(String key, String value);
-
-
     public void refreshUserAccount();
-    public void saveCurrentBikeRide(final BikeRide bikeRide);
-    public void saveCurrentPhoneGeoLoc(GeoLoc phoneGeoLoc);
 
     public void setPlaceHistoryMapper(AppPlaceHistoryMapper historyHandler);
     public AppPlaceHistoryMapper getPlaceHistoryMapper();

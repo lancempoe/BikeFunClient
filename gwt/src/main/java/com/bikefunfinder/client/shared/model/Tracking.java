@@ -42,4 +42,33 @@ public class Tracking extends JavaScriptObject {
         return this.trackingUserName;
     }-*/;
 
+    ///Setting details.
+
+    public final native void setBikeRideId(String bikeRideId) /*-{
+        this.bikeRideId = bikeRideId;
+    }-*/;
+
+    public final void setTrackingTime(Long time) {
+        setTrackingTime(time.toString());
+    }
+
+    public final native void setTrackingTime(String time) /*-{
+        this.trackingTime = time;
+    }-*/;
+
+    public final native void setGeoLoc(GeoLoc geoLoc) /*-{
+        this.geoLoc = geoLoc;
+    }-*/;
+
+    public final native void setTrackingUserId(String trackingUserId) /*-{
+        this.trackingUserId = trackingUserId;
+    }-*/;
+
+    public final native void setTrackingUserName(String trackingUserName) /*-{
+        this.trackingUserName = trackingUserName;
+    }-*/;
+
+
+
+
 }

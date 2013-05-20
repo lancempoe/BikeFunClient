@@ -13,9 +13,9 @@ public class Settings {
     //public static String HOST = "http://localhost:8080/";
 
     //Test:
-    //public static String HOST = "???";
+    public static String HOST = "http://24.21.204.4/";
 
     //PRD:
-    public static String HOST = "http://www.bikefunfinder.com/";
+    //public static String HOST = "http://www.service.bikefunfinder.com/";
 
 }

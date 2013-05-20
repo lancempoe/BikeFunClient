@@ -1,13 +1,19 @@
 package com.bikefunfinder.client.client.places.gmap;
 
+import com.bikefunfinder.client.client.places.createscreen.shared.BikeRideCreateUtils;
 import com.bikefunfinder.client.client.places.homescreen.HomeScreenDisplay;
 import com.bikefunfinder.client.shared.constants.ScreenConstants;
 import com.bikefunfinder.client.shared.constants.ScreenConstants.MapScreenType;
 import com.bikefunfinder.client.shared.model.BikeRide;
 import com.bikefunfinder.client.shared.model.GeoLoc;
+import com.bikefunfinder.client.shared.model.Root;
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.core.client.JsArray;
 import com.google.gwt.safehtml.shared.SafeHtml;
+import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.Timer;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.*;
 import com.googlecode.mgwt.ui.client.widget.Button;
 import com.google.maps.gwt.client.*;
@@ -38,6 +44,8 @@ public class GMapViewImpl implements GMapDisplay {
     private static final int RESUME_AUTO_PAN_AND_ZOOM_DELAY_MILLIS = 10000;
     private static final double METERS_IN_A_MILE = 1609.34;
     private static final int HEAR_AND_NOW_RADIUS = 3;
+    private static final String START_TRACKING = "Start Tracking";
+    private static final String STOP_TRACKING = "Stop Tracking";
 
 
     private final LayoutPanel main;
@@ -52,8 +60,9 @@ public class GMapViewImpl implements GMapDisplay {
     private boolean isRecentUserActivity = false;
     private MapScreenType priorMapScreenType;
     private boolean resetMap = true;
+    private boolean tracking = false;
 
-    private List<Marker> markers = new ArrayList<Marker>();  //TODO WHY SAVE THEM?  NEVER REUSED.
+    private List<InfoWindow> inforWindows = new ArrayList<InfoWindow>();
     private Polygon polygon; //TODO WHAT IS THIS?
     private Polyline polyline;  //TODO WHAT IS THIS?
     private Marker myBicycleMarker;  //TODO WHAT IS THIS?
@@ -91,6 +100,12 @@ public class GMapViewImpl implements GMapDisplay {
 
         //Build the tracking button
         trackingRideButton = new Button();
+        trackingRideButton.addTapHandler(new TapHandler() {
+            @Override
+            public void onTap(TapEvent tapEvent) {
+                onUpdateRidePressed(tapEvent);
+            }
+        });
         trackingRideButton.setWidth("100%");
         trackingRideButton.setVisible(false);
         main.add(trackingRideButton);
@@ -131,6 +146,20 @@ public class GMapViewImpl implements GMapDisplay {
         this.headerPanel.setCenter(pageName);
     }
 
+    private void onUpdateRidePressed(TapEvent event) {
+        tracking = !tracking;
+
+        if (tracking) {
+            this.trackingRideButton.setText(STOP_TRACKING);
+
+        } else {
+            this.trackingRideButton.setText(START_TRACKING);
+        }
+        if (presenter != null) {
+            presenter.trackingRideButtonSelected(tracking);
+        }
+    }
+
     protected void backButtonSelected(TapEvent event) {
         if (presenter != null) {
             presenter.backButtonSelected();
@@ -157,7 +186,7 @@ public class GMapViewImpl implements GMapDisplay {
             priorMapScreenType = MapScreenType.EVENT;
         }
         this.trackingRideButton.setVisible(true);
-        this.trackingRideButton.setText("Start Tracking");
+        this.trackingRideButton.setText(START_TRACKING);
         center = LatLng.create(centerGeoLoc.getLatitude(), centerGeoLoc.getLongitude());
         zoom = EVENT_ZOOM;
         if (circle != null) {
@@ -188,11 +217,11 @@ public class GMapViewImpl implements GMapDisplay {
         }
 
         //Phone Location
-        AddAsMarker(map, phoneGpsLoc, null, ScreenConstants.TargetIcon.CLIENT);
+        AddAsMarker(phoneGpsLoc, null, ScreenConstants.TargetIcon.CLIENT);
 
         //Event Locations.
         for(final BikeRide bikeRide: list) {
-            AddAsMarker(map, bikeRide.getLocation().getGeoLoc(), bikeRide, ScreenConstants.TargetIcon.EVENT);
+            AddAsMarker(bikeRide.getLocation().getGeoLoc(), bikeRide, ScreenConstants.TargetIcon.EVENT);
         }
 
         //Reset the check
@@ -210,46 +239,31 @@ public class GMapViewImpl implements GMapDisplay {
             map.setZoom(zoom);
         }
 
-        //        //TODO WHAT IS THIS DOING?
-//        if (myBicycleMarker == null)
-//        {
-//            final MarkerOptions markerOptions = createMarkerOptions(map, center, ScreenConstants.TargetIcon.CLIENT);
-//            myBicycleMarker = Marker.create(markerOptions);
-//            myBicycleMarker.addClickListener(new Marker.ClickHandler() {
-//                @Override
-//                public void handle(MouseEvent event) {
-//                    HTML meWidget = new HTML("It's a me, mario!");
-//                    meWidget.getElement().getStyle().setColor("black");
-//                    drawInfoWindow(myBicycleMarker, meWidget.getElement(), event);
-//                }
-//            });
-//        } else {
-//            myBicycleMarker.setPosition(center);
-//            myBicycleMarker.setVisible(true);
-//        }
-
-        //        if (polyline == null) {
-//            final PolylineOptions polylineOptions = createPolylineOptions(map, center);
-//            polyline = Polyline.create(polylineOptions);
-//        } else {
-//            polyline.getPath().push(center);
-//        }
+        if (tracking) {
+            //Draw on the users screen.
+//            if (polyline == null) {
+//                final PolylineOptions polylineOptions = createPolylineOptions(map, center);
+//                polyline = Polyline.create(polylineOptions);
+//            } else {
+//                polyline.getPath().push(center);
+//            }
+        }
 
         //Phone Location
-        AddAsMarker(map, phoneGpsLoc, null, ScreenConstants.TargetIcon.CLIENT);
+        AddAsMarker(phoneGpsLoc, null, ScreenConstants.TargetIcon.CLIENT);
 
         //Starting location
-        AddAsMarker(map, bikeRide.getLocation().getGeoLoc(), bikeRide, ScreenConstants.TargetIcon.EVENT);
+        AddAsMarker(bikeRide.getLocation().getGeoLoc(), bikeRide, ScreenConstants.TargetIcon.EVENT);
 
         //Ride leader
         if (bikeRide.getRideLeaderTracking() != null && bikeRide.getRideLeaderTracking().getId() != null)   {
-            AddAsMarker(map, bikeRide.getRideLeaderTracking().getGeoLoc(), null, ScreenConstants.TargetIcon.LEADER);
+            AddAsMarker(bikeRide.getRideLeaderTracking().getGeoLoc(), null, ScreenConstants.TargetIcon.LEADER);
         }
 
         //Every other tracker
         if (bikeRide.getCurrentTrackings() != null && bikeRide.getCurrentTrackings().length() > 0) {
             for (int i = 0; i < bikeRide.getCurrentTrackings().length(); i++) {
-                AddAsMarker(map, bikeRide.getCurrentTrackings().get(i).getGeoLoc(), null, ScreenConstants.TargetIcon.TRACKER);
+                AddAsMarker(bikeRide.getCurrentTrackings().get(i).getGeoLoc(), null, ScreenConstants.TargetIcon.TRACKER);
             }
         }
 
@@ -297,24 +311,26 @@ public class GMapViewImpl implements GMapDisplay {
         });
     }
 
-    private void AddAsMarker(GoogleMap myMap, GeoLoc geoLoc, final BikeRide bikeRide, ScreenConstants.TargetIcon icon) {
+    private void AddAsMarker(GeoLoc geoLoc, final BikeRide bikeRide, ScreenConstants.TargetIcon icon) {
         final Double convertedLat = geoLoc.getLatitude();
         final Double convertedLong = geoLoc.getLongitude();
 
         final LatLng bikeRideLoc = LatLng.create(convertedLat, convertedLong);
-        final MarkerOptions markerOptions = createMarkerOptions(myMap, bikeRideLoc, icon);
+        final MarkerOptions markerOptions = createMarkerOptions(this.map, bikeRideLoc, icon);
         final Marker bikeRideMarker = Marker.create(markerOptions);
 
         if(ScreenConstants.TargetIcon.EVENT.equals(icon)) {
             bikeRideMarker.addClickListener(new Marker.ClickHandler() {
                 @Override
                 public void handle(MouseEvent event) {
+                    for (InfoWindow infoWindow : inforWindows) {
+                        infoWindow.close();
+                    }
                     drawInfoWindow(bikeRideMarker, bikeRide, event);
                 }
             });
         }
 
-//        markers.add(bikeRideMarker);
     }
 
     private static MapOptions createMapOptions(final LatLng center, final double zoom) {
@@ -385,11 +401,8 @@ public class GMapViewImpl implements GMapDisplay {
         InfoWindowOptions options = InfoWindowOptions.create();
         options.setContent(content);
         InfoWindow iw = InfoWindow.create(options);
+        inforWindows.add(iw);
         iw.open(map, marker);
-
-        // If you want to clear widgets, Use options.clear() to remove the widgets
-        // from map
-        // options.clear();
     }
 
 

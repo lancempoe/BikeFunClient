@@ -175,20 +175,6 @@ public class ClientFactoryGwtImpl implements ClientFactory {
     }
 
     @Override
-    public void saveCurrentBikeRide(final BikeRide bikeRide) {
-        Storage storageInterface = this.storageInterface.getStorageInterfaceMyBeNull();
-        final String jsonText = JSODescriber.toJSON(bikeRide);
-        storageInterface.setItem(DBKeys.BIKE_RIDE, jsonText);
-    }
-
-    @Override
-    public void saveCurrentPhoneGeoLoc(final GeoLoc phoneGeoLoc) {
-        Storage storageInterface = this.storageInterface.getStorageInterfaceMyBeNull();
-        final String jsonText = JSODescriber.toJSON(phoneGeoLoc);
-        storageInterface.setItem(DBKeys.PHONE_GEOLOC, jsonText);
-    }
-
-    @Override
     public void refreshUserAccount() {
 
         Storage storageInterface = this.storageInterface.getStorageInterfaceMyBeNull();

@@ -9,14 +9,13 @@ import com.bikefunfinder.client.gin.RamObjectCache;
 import com.bikefunfinder.client.shared.Tools.DeviceTools;
 import com.bikefunfinder.client.shared.Tools.NonPhoneGapGeoLocCallback;
 import com.bikefunfinder.client.shared.constants.ScreenConstants;
-import com.bikefunfinder.client.shared.model.BikeRide;
-import com.bikefunfinder.client.shared.model.GeoLoc;
-import com.bikefunfinder.client.shared.model.Root;
-import com.bikefunfinder.client.shared.model.User;
+import com.bikefunfinder.client.shared.model.*;
 import com.bikefunfinder.client.shared.model.helper.Extractor;
 import com.bikefunfinder.client.shared.model.json.Utils;
 import com.bikefunfinder.client.shared.request.EventRequest;
+import com.bikefunfinder.client.shared.request.NewTrackRequest;
 import com.bikefunfinder.client.shared.request.SearchByProximityRequest;
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.http.client.UrlBuilder;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
@@ -29,6 +28,7 @@ import com.googlecode.gwtphonegap.client.geolocation.GeolocationWatcher;
 import com.googlecode.gwtphonegap.showcase.client.NavBaseActivity;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -46,41 +46,51 @@ public class GMapActivity extends NavBaseActivity implements GMapDisplay.Present
 
     private final Geolocation geolocation; //TODO WHAT IS THIS??? NEEDS TO BE CLEANED UP.. CAUSING TWO CALLS.
     private GeolocationWatcher watcher = null;  //TODO WHAT IS THIS??? NEEDS TO BE CLEANED UP.. CAUSING TWO CALLS.
-    private final GMapActivity itsAMeMario = this;  //TODO WHAT IS THIS??? NEEDS TO BE CLEANED UP
     private final RamObjectCache ramObjectCache;
-    private List<BikeRide> currentList;
-    private BikeRide bikeRide;
+    private String userId;
+    private String userName;
     private String pageName;
-    private GeoLoc phoneGeoLoc;
+    private boolean tracking;
+    private int refreshCount = 0;
 
     public GMapActivity(String pageName, BikeRide bikeRide) {
-        this.ramObjectCache = injector.getRamObjectCache();
         this.clientFactory = injector.getClientFactory();
+        this.ramObjectCache = injector.getRamObjectCache();
+        ramObjectCache.setCurrentBikeRide(bikeRide);
         this.geolocation = clientFactory.getPhoneGap().getGeolocation();  //TODO WHY HAVE THIS AND THE CALL DOWN BELOW???
-        this.bikeRide = bikeRide;
         this.pageName = pageName;
-        savePhoneGeoLoc();
-        setupDisplay(); //this.bikeRide);
+        setUserOrAnonymousUser();
         setupDisplayPageName(this.pageName);
+        refreshScreen();
     }
 
-    private void savePhoneGeoLoc() {
-        final NonPhoneGapGeoLocCallback callback = new NonPhoneGapGeoLocCallback() {
+    private void setUserOrAnonymousUser() {
+        //Set the logged in user details
+        if (clientFactory.getStoredValue(DBKeys.USER) != null) {
+            User user = Utils.castJsonTxtToJSOObject(clientFactory.getStoredValue(DBKeys.USER));
+            this.userId = user.getId();
+            this.userName = user.getUserName();
+        }
+        else if (clientFactory.getStoredValue(DBKeys.ANONYMOUS_USER) != null) {
+            AnonymousUser anonymousUser = Utils.castJsonTxtToJSOObject(clientFactory.getStoredValue(DBKeys.ANONYMOUS_USER));
+            this.userId = anonymousUser.getId();
+            this.userName = anonymousUser.getUserName();
+        }
+    }
+    private void refreshScreen() {
+        DeviceTools.getPhoneGeoLoc(clientFactory, new NonPhoneGapGeoLocCallback() {
             @Override
             public void onSuccess(GeoLoc phoneGeoLoc) {
-                //Save current GeoLoc so that we have it available everywhere in the activity.  Can't simply assign class var.
-                clientFactory.saveCurrentPhoneGeoLoc(phoneGeoLoc);
+                ramObjectCache.setCurrentPhoneGeoLoc(phoneGeoLoc);
+                postSavePhoneGeoLoc();
             }
 
             @Override
             public void onFailure(GeoLoc phoneGeoLoc) {
-                //Save current GeoLoc so that we have it available everywhere in the activity.  Can't simply assign class var.
-                clientFactory.saveCurrentPhoneGeoLoc(phoneGeoLoc);
+                ramObjectCache.setCurrentPhoneGeoLoc(phoneGeoLoc);
+                postSavePhoneGeoLoc();
             }
-        };
-        DeviceTools.getPhoneGeoLoc(clientFactory, callback);
-
-        this.phoneGeoLoc = Utils.castJsonTxtToJSOObject(clientFactory.getStoredValue(DBKeys.PHONE_GEOLOC));
+        });
     }
 
     @Override
@@ -90,33 +100,59 @@ public class GMapActivity extends NavBaseActivity implements GMapDisplay.Present
         panel.setWidget(display);
     }
 
-    private void setupDisplay() {
+    private void postSavePhoneGeoLoc() {
+        if (refreshCount == 0) {
+            startWatching();
 
-        startWatching(); //bikeRide);
+            //This is close.  it does refresh but stop when you leave the page.  I'll fix that soon and then bring back.
+            timer = new Timer() {
+                public void run() {
+                    refreshScreen();
+                }
+            };
 
-        //This is close.  it does refresh but stop when you leave the page.  I'll fix that soon and then bring back.
-        timer = new Timer() {
-            public void run() {
-                refreshScreen();
+            // Schedule the timer to run once in x seconds.
+            timer.scheduleRepeating(ScreenConstants.SCREEN_REFRESH_RATE_IN_SECONDS * 1000);
+            refreshCount++;
+        } else {
+            //Update the bikeRide
+            if (ramObjectCache.getCurrentBikeRide() != null) {
+                updatedBikeRide(ramObjectCache.getCurrentPhoneGeoLoc());
             }
-        };
+            if (tracking) {
+                pingClientTrack();
+            }
 
-        // Schedule the timer to run once in x seconds.
-        timer.scheduleRepeating(ScreenConstants.SCREEN_REFRESH_RATE_IN_SECONDS * 1000);
+            startWatching();
+            refreshCount++;
+        }
     }
 
-    private void refreshScreen() {
+    private void pingClientTrack() {
+        if (tracking) {
+            NewTrackRequest.Callback callback = new NewTrackRequest.Callback() {
+                @Override
+                public void onError() {
+                    //Unable to refresh... leave screen as is.
+                }
 
-        //Updated location of the client.
-        savePhoneGeoLoc();
+                @Override
+                public void onResponseReceived(Tracking tracking) {
+                    //Success!  Nothing more needed.
+                }
+            };
+            NewTrackRequest.Builder request = new NewTrackRequest.Builder(callback);
+            Date date = new Date();
 
-        //Update the bikeRide
-        if (bikeRide != null) {
-            updatedBikeRide(this.phoneGeoLoc);
-            Window.alert("refreshing bike ride..");
+            Tracking tracking = GWT.create(Tracking.class);
+            tracking.setBikeRideId(ramObjectCache.getCurrentBikeRide().getId());
+            tracking.setGeoLoc(ramObjectCache.getCurrentPhoneGeoLoc());
+            tracking.setTrackingTime(date.getTime());
+            tracking.setTrackingUserId(userId);
+            tracking.setTrackingUserName(userName);
+
+            request.tracking(tracking).send();
         }
-
-        startWatching(); //bikeRide);
     }
 
     private void setupDisplayPageName(String pageName) {
@@ -125,7 +161,7 @@ public class GMapActivity extends NavBaseActivity implements GMapDisplay.Present
     }
 
     private void startWatching() { //final BikeRide bikeRide) {
-        setMapView(this.phoneGeoLoc);
+        setMapView(ramObjectCache.getCurrentPhoneGeoLoc());
 
 //        if (bikeRide == null) {
 //            final GeolocationOptions options = new GeolocationOptions();
@@ -141,20 +177,20 @@ public class GMapActivity extends NavBaseActivity implements GMapDisplay.Present
      * @param phoneGeoLoc
      */
     private void setMapView(GeoLoc phoneGeoLoc) {
-        if (bikeRide == null) { //Here & now Map
+        if (ramObjectCache.getCurrentBikeRide() == null) { //Here & now Map
 //            if (watcher != null) {
                 setHereAndNowView(phoneGeoLoc); //Here & now Map
 //            }
         } else { //Event Map
             clearWatch();
-            if (false) { //Tracking    ??? NOT SURE WHAT TO DO YET.
+            if (tracking) { //Tracking
                 setTrackView(phoneGeoLoc);
-            } else if (bikeRide.getRideLeaderTracking() != null && bikeRide.getRideLeaderTracking().getId() != null) { //Following Event
-                setEventView(phoneGeoLoc, bikeRide.getRideLeaderTracking().getGeoLoc());
-            } else if (bikeRide.getCurrentTrackings() != null && bikeRide.getCurrentTrackings().length() > 0) { //Following Event
-                setEventView(phoneGeoLoc, bikeRide.getCurrentTrackings().get(0).getGeoLoc());
+            } else if (ramObjectCache.getCurrentBikeRide().getRideLeaderTracking() != null && ramObjectCache.getCurrentBikeRide().getRideLeaderTracking().getId() != null) { //Following Event
+                setEventView(phoneGeoLoc, ramObjectCache.getCurrentBikeRide().getRideLeaderTracking().getGeoLoc());
+            } else if (ramObjectCache.getCurrentBikeRide().getCurrentTrackings() != null && ramObjectCache.getCurrentBikeRide().getCurrentTrackings().length() > 0) { //Following Event
+                setEventView(phoneGeoLoc, ramObjectCache.getCurrentBikeRide().getCurrentTrackings().get(0).getGeoLoc());
             }  else { //Following Event
-                setEventView(phoneGeoLoc, bikeRide.getLocation().getGeoLoc());
+                setEventView(phoneGeoLoc, ramObjectCache.getCurrentBikeRide().getLocation().getGeoLoc());
             }
         }
     }
@@ -174,15 +210,15 @@ public class GMapActivity extends NavBaseActivity implements GMapDisplay.Present
     private void setTrackView(final GeoLoc phoneGeoLoc) {
         final GMapDisplay display = clientFactory.getDisplay(this);
         display.resetForEvent(phoneGeoLoc);
-        display.display(bikeRide);
-        display.setMapInfo(phoneGeoLoc, bikeRide);
+        display.display(ramObjectCache.getCurrentBikeRide());
+        display.setMapInfo(phoneGeoLoc, ramObjectCache.getCurrentBikeRide());
     }
 
     private void setEventView(final GeoLoc phoneGeoLoc, final GeoLoc eventGeoLoc) {
         final GMapDisplay display = clientFactory.getDisplay(this);
         display.resetForEvent(eventGeoLoc);
-        display.display(bikeRide);
-        display.setMapInfo(phoneGeoLoc, bikeRide);
+        display.display(ramObjectCache.getCurrentBikeRide());
+        display.setMapInfo(phoneGeoLoc, ramObjectCache.getCurrentBikeRide());
     }
 
     private void setHereAndNowView(final GeoLoc phoneGeoLoc) {
@@ -197,20 +233,18 @@ public class GMapActivity extends NavBaseActivity implements GMapDisplay.Present
         SearchByProximityRequest.Callback callback = new SearchByProximityRequest.Callback() {
             @Override
             public void onError() {
-                Window.alert("Oops, your BFF will be back shortly.");
                 display.displayPageName("Sorry, No Rides");
                 display.setMapInfo(phoneGeoLoc, new ArrayList<BikeRide>());
             }
 
             @Override
             public void onResponseReceived(Root root) {
-                currentList =  Extractor.getBikeRidesFrom(root);
-                if (currentList == null || currentList.size() == 0) {
+                ramObjectCache.setHereAndNowBikeRideCache(Extractor.getBikeRidesFrom(root));
+                if (ramObjectCache.getHereAndNowBikeRideCache().size() == 0) {
                     display.displayPageName("Sorry, No Rides");
                 }
 
-                display.setMapInfo(phoneGeoLoc,currentList);
-                ramObjectCache.setHereAndNowBikeRideCache(currentList);
+                display.setMapInfo(phoneGeoLoc,ramObjectCache.getHereAndNowBikeRideCache());
             }
         };
         SearchByProximityRequest.Builder request = new SearchByProximityRequest.Builder(callback);
@@ -228,23 +262,24 @@ public class GMapActivity extends NavBaseActivity implements GMapDisplay.Present
 
             @Override
             public void onResponseReceived(BikeRide bikeRide) {
-                clientFactory.saveCurrentBikeRide(bikeRide);
+                ramObjectCache.setCurrentBikeRide(bikeRide);
             }
 
         };
         EventRequest.Builder request = new EventRequest.Builder(callback);
-        request.id(this.bikeRide.getId()).latitude(phoneGeoLoc).longitude(phoneGeoLoc).send();
-
-        //Update the event.
-        if (clientFactory.getStoredValue(DBKeys.BIKE_RIDE) != null) {
-            this.bikeRide = Utils.castJsonTxtToJSOObject(clientFactory.getStoredValue(DBKeys.BIKE_RIDE));
-        }
+        request.id(ramObjectCache.getCurrentBikeRide().getId()).latitude(phoneGeoLoc).longitude(phoneGeoLoc).send();
     }
 
     @Override
     public void moreRideDetilsScreenRequested(BikeRide bikeRide) {
         timer.cancel();
         clientFactory.getPlaceController().goTo(new EventScreenPlace(bikeRide));
+    }
+
+    @Override
+    public void trackingRideButtonSelected(boolean tracking) {
+        this.tracking = tracking;
+        refreshScreen();
     }
 
     @Override

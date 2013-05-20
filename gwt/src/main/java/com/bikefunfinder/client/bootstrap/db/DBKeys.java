@@ -12,7 +12,4 @@ public class DBKeys {
     public static final String ANONYMOUS_USER = "anonymous_user";
     public static final String USER = "user";
     public static final String PRIOR_SEARCH = "prior_search";
-    public static final String BIKE_RIDE = "bike_ride";
-    public static final String PHONE_GEOLOC = "phone_geoloc";
-
 }

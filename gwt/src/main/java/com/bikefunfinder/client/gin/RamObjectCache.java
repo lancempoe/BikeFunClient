@@ -5,12 +5,17 @@ package com.bikefunfinder.client.gin;
  */
 
 import com.bikefunfinder.client.shared.model.BikeRide;
+import com.bikefunfinder.client.shared.model.GeoLoc;
 
 import java.util.List;
 
 public interface RamObjectCache {
-    List<BikeRide> getHereAndNowBikeRideCache();
-    void setHereAndNowBikeRideCache(List<BikeRide> bikeRides);
+    public List<BikeRide> getHereAndNowBikeRideCache();
+    public void setHereAndNowBikeRideCache(List<BikeRide> bikeRides);
 
+    public BikeRide getCurrentBikeRide();
+    public void setCurrentBikeRide(BikeRide bikeRide);
 
+    public GeoLoc getCurrentPhoneGeoLoc();
+    public void setCurrentPhoneGeoLoc(GeoLoc phoneGeoLoc);
 }

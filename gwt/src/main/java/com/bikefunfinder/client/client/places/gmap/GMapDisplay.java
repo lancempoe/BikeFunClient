@@ -25,6 +25,7 @@ public interface GMapDisplay extends IsWidget {
     public interface Presenter {
         public void backButtonSelected();
         public void moreRideDetilsScreenRequested(BikeRide bikeRide);
+        public void trackingRideButtonSelected(boolean tracking);
         public String provideTokenHrefFor(BikeRide bikeRide);
     }
 

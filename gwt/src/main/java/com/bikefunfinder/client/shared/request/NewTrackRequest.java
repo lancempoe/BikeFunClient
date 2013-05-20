@@ -38,7 +38,7 @@ public final class NewTrackRequest {
             return this;
         }
 
-        public Builder bikeRide(final Tracking tracking) {
+        public Builder tracking(final Tracking tracking) {
             this.tracking = tracking;
             return this;
         }
