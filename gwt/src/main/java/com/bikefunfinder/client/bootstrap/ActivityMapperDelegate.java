@@ -46,7 +46,7 @@ public class ActivityMapperDelegate implements ActivityMapper {
             lastActivity = new EventScreenActivity(((EventScreenPlace) place).getBikeRide(),
                                                    ((EventScreenPlace) place).getWasConstructedById());
         } else if(place instanceof HomeScreenPlace) {
-            lastActivity =  new HomeScreenActivity(clientFactory, ((HomeScreenPlace) place).getRoot());
+            lastActivity =  new HomeScreenActivity(((HomeScreenPlace) place).getRoot(), ((HomeScreenPlace) place).getUsage());
         } else if(place instanceof ProfileScreenPlace) {
             if (((ProfileScreenPlace) place).getUser() != null) {
                 lastActivity =  new ProfileScreenActivity(clientFactory, ((ProfileScreenPlace) place).getUser());

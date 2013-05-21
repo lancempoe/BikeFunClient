@@ -71,7 +71,7 @@ public class ProfileScreenActivity extends MGWTAbstractActivity implements Profi
         SearchByTimeOfDayForProfileRequest.Callback callback = new SearchByTimeOfDayForProfileRequest.Callback() {
             @Override
             public void onResponseReceived(Root root) {
-                clientFactory.getPlaceController().goTo(new HomeScreenPlace(root));
+                clientFactory.getPlaceController().goTo(new HomeScreenPlace(root, HomeScreenPlace.UsageEnum.ShowMyRides));
             }
 
             @Override

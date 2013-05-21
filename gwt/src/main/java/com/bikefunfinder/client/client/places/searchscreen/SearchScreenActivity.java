@@ -60,7 +60,7 @@ public class SearchScreenActivity extends MGWTAbstractActivity implements Search
 
             @Override
             public void onResponseReceived(Root root) {
-                clientFactory.getPlaceController().goTo(new HomeScreenPlace(root));
+                clientFactory.getPlaceController().goTo(new HomeScreenPlace(root, HomeScreenPlace.UsageEnum.FilterRides));
             }
         });
 

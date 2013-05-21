@@ -7,6 +7,7 @@ import com.bikefunfinder.client.client.places.eventscreen.EventScreenPlace;
 import com.bikefunfinder.client.client.places.gmap.GMapPlace;
 import com.bikefunfinder.client.client.places.profilescreen.ProfileScreenPlace;
 import com.bikefunfinder.client.client.places.searchscreen.SearchScreenPlace;
+import com.bikefunfinder.client.gin.Injector;
 import com.bikefunfinder.client.shared.Tools.DeviceTools;
 import com.bikefunfinder.client.shared.Tools.NonPhoneGapGeoLocCallback;
 import com.bikefunfinder.client.shared.constants.ScreenConstants;
@@ -29,15 +30,16 @@ import com.google.gwt.regexp.shared.*;
  * @created 4/5/13 3:59 PM
  */
 public class HomeScreenActivity extends MGWTAbstractActivity implements HomeScreenDisplay.Presenter {
-    private final ClientFactory<HomeScreenDisplay> clientFactory;
+    private final ClientFactory<HomeScreenDisplay> clientFactory = Injector.INSTANCE.getClientFactory();
+    private final HomeScreenPlace.UsageEnum usageEnum;
 
     final NotifyTimeAndDayCallback noOpNotifyTimeAndDayCallback = new NotifyTimeAndDayCallback() {
         @Override public void onError() { } // noOp
         @Override public void onResponseReceived() { } // noOp
     };
 
-    public HomeScreenActivity(ClientFactory<HomeScreenDisplay> clientFactory, Root root) {
-        this.clientFactory = clientFactory;
+    public HomeScreenActivity(Root root, HomeScreenPlace.UsageEnum usageEnum) {
+        this.usageEnum = usageEnum;
 
         if(root == null ) {
             //save one and use a few times?
@@ -127,6 +129,12 @@ public class HomeScreenActivity extends MGWTAbstractActivity implements HomeScre
     public void onTimeAndDayButton() {
         final HomeScreenDisplay display = clientFactory.getDisplay(this);
 
+        if(HomeScreenPlace.UsageEnum.ShowMyRides == usageEnum ||
+           HomeScreenPlace.UsageEnum.FilterRides == usageEnum) {
+            // we dont do stuff in this way
+            return;
+        }
+
         DeviceTools.getPhoneGeoLoc(clientFactory, new NonPhoneGapGeoLocCallback() {
             @Override
             public void onSuccess(GeoLoc geoLoc) {
@@ -148,6 +156,13 @@ public class HomeScreenActivity extends MGWTAbstractActivity implements HomeScre
 
     @Override
     public void refreshTimeAndDayReq(final NotifyTimeAndDayCallback callback) {
+        if(HomeScreenPlace.UsageEnum.ShowMyRides == usageEnum ||
+           HomeScreenPlace.UsageEnum.FilterRides == usageEnum) {
+            // we dont do stuff in this way
+            callback.onResponseReceived(); // tell the caller everything is happy
+            return;
+        }
+
         final HomeScreenDisplay display = clientFactory.getDisplay(this);
 
         DeviceTools.getPhoneGeoLoc(clientFactory, new NonPhoneGapGeoLocCallback() {
@@ -170,6 +185,14 @@ public class HomeScreenActivity extends MGWTAbstractActivity implements HomeScre
             final HomeScreenDisplay display,
             final GeoLoc geoLoc,
             final NotifyTimeAndDayCallback notifyTimeAndDayCallback) {
+
+        if(HomeScreenPlace.UsageEnum.ShowMyRides == usageEnum ||
+           HomeScreenPlace.UsageEnum.FilterRides == usageEnum) {
+            // we dont do stuff in this way
+            notifyTimeAndDayCallback.onResponseReceived(); // tell the caller everything is happy
+            return;
+        }
+
         SearchByTimeOfDayRequest.Callback callback = new SearchByTimeOfDayRequest.Callback() {
             @Override
             public void onResponseReceived(Root root) {

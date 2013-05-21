@@ -7,17 +7,31 @@ import com.google.gwt.place.shared.PlaceTokenizer;
 public class HomeScreenPlace extends Place {
 
     private final Root root;
+    private final UsageEnum usage;
 
     public HomeScreenPlace() {
-        root = null;
+        this(null, UsageEnum.Default);
     }
 
     public HomeScreenPlace(Root root) {
+        this(root, UsageEnum.Default);
+    }
+
+    public HomeScreenPlace(Root root, UsageEnum usage) {
         this.root = root;
+        this.usage = usage;
     }
 
     public Root getRoot() {
         return root;
+    }
+
+    public UsageEnum getUsage() {
+        return usage;
+    }
+
+    public enum UsageEnum {
+        Default, ShowMyRides, FilterRides
     }
 
     public static class Tokenizer implements PlaceTokenizer<HomeScreenPlace> {
