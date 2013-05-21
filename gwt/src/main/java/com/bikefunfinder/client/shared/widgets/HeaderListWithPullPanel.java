@@ -27,8 +27,8 @@ import com.googlecode.mgwt.ui.client.MGWTStyle;
 import com.googlecode.mgwt.ui.client.theme.base.GroupingList;
 import com.googlecode.mgwt.ui.client.theme.base.ListCss;
 import com.googlecode.mgwt.ui.client.util.CssUtil;
-//import com.googlecode.mgwt.ui.client.widget.GroupingCellList;
-//import com.googlecode.mgwt.ui.client.widget.GroupingCellList.CellGroup;
+import com.googlecode.mgwt.ui.client.widget.GroupingCellList;
+import com.googlecode.mgwt.ui.client.widget.GroupingCellList.CellGroup;
 import com.googlecode.mgwt.ui.client.widget.HeaderList;
 import com.googlecode.mgwt.ui.client.widget.LayoutPanel;
 import com.googlecode.mgwt.ui.client.widget.ScrollPanel;
@@ -124,14 +124,14 @@ public class HeaderListWithPullPanel<G, T> extends Composite {
             return addHandler(handler, SelectionEvent.getType());
         }
 
-        public void render(List<ChasingBug.CellGroup<G, T>> list) {
+        public void render(List<CellGroup<G, T>> list) {
 
             mapping.clear();
             StringBuffer buffer = new StringBuffer();
 
             renderedEntries = 0;
             int target = 0;
-            for (ChasingBug.CellGroup<?, ?> cellGroup : list) {
+            for (CellGroup<?, ?> cellGroup : list) {
                 buffer.append("<li>" + cellGroup.getKey() + "</li>");
 
                 mapping.put(renderedEntries, target);
@@ -173,13 +173,13 @@ public class HeaderListWithPullPanel<G, T> extends Composite {
     private LightArrayInt pagesY;
 
     private int currentPage;
-    private final ChasingBug<G, T> cellList;
+    private final GroupingCellList<G, T> cellList;
 
     private boolean needReset = false;
 
     private int lastPage = -1;
     private SelectionBar<G, T> selectionBar;
-    private List<ChasingBug.CellGroup<G, T>> list;
+    private List<CellGroup<G, T>> list;
 
     private boolean headerVisible = true;
 
@@ -189,7 +189,7 @@ public class HeaderListWithPullPanel<G, T> extends Composite {
      * @param cellList the cell list that renders its children inside this
      *            widget.
      */
-    public HeaderListWithPullPanel(ChasingBug<G, T> cellList) {
+    public HeaderListWithPullPanel(GroupingCellList<G, T> cellList) {
         this(cellList, MGWTStyle.getTheme().getMGWTClientBundle().getGroupingList());
     }
 
@@ -200,7 +200,7 @@ public class HeaderListWithPullPanel<G, T> extends Composite {
      *            widget
      * @param css the css to use
      */
-    public HeaderListWithPullPanel(ChasingBug<G, T> cellList, GroupingList css) {
+    public HeaderListWithPullPanel(GroupingCellList<G, T> cellList, GroupingList css) {
 //        super(cellList, css);
         this.cellList = cellList;
 
@@ -275,9 +275,9 @@ public class HeaderListWithPullPanel<G, T> extends Composite {
      * @param list the models to render
      */
 
-    public void render(List<ChasingBug.CellGroup<G, T>> list) {
+    public void render(List<CellGroup<G, T>> list) {
         this.list = list;
-        //selectionBar.render(list);
+        selectionBar.render(list);
         cellList.renderGroup(list);
 
         scrollPanel.refresh();
