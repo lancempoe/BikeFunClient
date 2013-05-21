@@ -30,6 +30,8 @@ import com.googlecode.mgwt.ui.client.widget.LayoutPanel;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Created with IntelliJ IDEA.
@@ -105,6 +107,7 @@ public class GMapViewImpl implements GMapDisplay {
         trackingRideButton.addTapHandler(new TapHandler() {
             @Override
             public void onTap(TapEvent tapEvent) {
+                Logger.getLogger("").log(Level.WARNING, "track pressed and setting to : " + !tracking);
                 onUpdateRidePressed(tapEvent);
             }
         });
@@ -155,13 +158,7 @@ public class GMapViewImpl implements GMapDisplay {
 
     private void onUpdateRidePressed(TapEvent event) {
         tracking = !tracking;
-
-        if (tracking) {
-            this.trackingRideButton.setText(STOP_TRACKING);
-
-        } else {
-            this.trackingRideButton.setText(START_TRACKING);
-        }
+        setTrackingButtonText();
         if (presenter != null) {
             presenter.trackingRideButtonSelected(tracking);
         }
@@ -205,11 +202,20 @@ public class GMapViewImpl implements GMapDisplay {
         }
 
         this.trackingRideButton.setVisible(true);
-        this.trackingRideButton.setText(START_TRACKING);
+        setTrackingButtonText();
+
         center = LatLng.create(centerGeoLoc.getLatitude(), centerGeoLoc.getLongitude());
         zoom = EVENT_ZOOM;
         if (circle != null) {
             circle.setVisible(false);
+        }
+    }
+
+    private void setTrackingButtonText() {
+        if (tracking) {
+            this.trackingRideButton.setText(STOP_TRACKING);
+        } else {
+            this.trackingRideButton.setText(START_TRACKING);
         }
     }
 
@@ -260,12 +266,12 @@ public class GMapViewImpl implements GMapDisplay {
 
         if (tracking) {
             //Draw on the users screen.
-//            if (polyline == null) {
-//                final PolylineOptions polylineOptions = createPolylineOptions(map, center);
-//                polyline = Polyline.create(polylineOptions);
-//            } else {
-//                polyline.getPath().push(center);
-//            }
+            if (polyline == null) {
+                final PolylineOptions polylineOptions = createPolylineOptions(map, center);
+                polyline = Polyline.create(polylineOptions);
+            } else {
+                polyline.getPath().push(center);
+            }
         }
 
 

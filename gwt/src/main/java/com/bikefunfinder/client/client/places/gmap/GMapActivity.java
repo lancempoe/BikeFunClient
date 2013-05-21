@@ -115,14 +115,6 @@ public class GMapActivity extends NavBaseActivity implements GMapDisplay.Present
             timer.scheduleRepeating(ScreenConstants.SCREEN_REFRESH_RATE_IN_SECONDS * 1000);
             refreshCount++;
         } else {
-            //Update the bikeRide
-            if (ramObjectCache.getCurrentBikeRide() != null) {
-                updatedBikeRide(ramObjectCache.getCurrentPhoneGeoLoc());
-            }
-            if (tracking) {
-                pingClientTrack();
-            }
-
             startWatching();
             refreshCount++;
         }
@@ -166,6 +158,14 @@ public class GMapActivity extends NavBaseActivity implements GMapDisplay.Present
     }
 
     private void startWatching() { //final BikeRide bikeRide) {
+        //Update the bikeRide
+        if (ramObjectCache.getCurrentBikeRide() != null) {
+            updatedBikeRide(ramObjectCache.getCurrentPhoneGeoLoc());
+            if (tracking) {
+                pingClientTrack();
+            }
+        }
+
         setMapView(ramObjectCache.getCurrentPhoneGeoLoc());
 
 //        if (bikeRide == null) {
