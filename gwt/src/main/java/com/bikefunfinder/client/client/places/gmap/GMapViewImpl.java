@@ -9,6 +9,7 @@ import com.bikefunfinder.client.shared.model.GeoLoc;
 import com.bikefunfinder.client.shared.model.Root;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JsArray;
+import com.google.gwt.core.client.JsDate;
 import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.Element;
@@ -144,6 +145,11 @@ public class GMapViewImpl implements GMapDisplay {
     @Override
     public void display(BikeRide bikeRide) {
         this.bikeRide = bikeRide;
+        if(allowTracking()) {
+            trackingRideButton.setVisible(true);
+        } else {
+            trackingRideButton.setVisible(false);
+        }
     }
 
     @Override
@@ -452,5 +458,25 @@ public class GMapViewImpl implements GMapDisplay {
         fp.add(link);
 
         return fp.getElement();
+    }
+
+    private boolean allowTracking()
+    {
+        if(this.bikeRide.isTrackingAllowed() || userId.equals(this.bikeRide.getRideLeaderId())) {
+            JsDate currentTime = JsDate.create();
+            if(currentTime.getTime() + ScreenConstants.MinimumTimeBeforeTrackingAllowed < this.bikeRide.getRideStartTime())
+            {
+                //Nope! Too Early
+                return false;
+            } else if(currentTime.getTime() - ScreenConstants.MaximumTimeAfterTrackingAllowed > this.bikeRide.getRideStartTime()) {
+                //Nope! Too late
+                return false;
+            } else {
+                return true;
+            }
+        } else {
+            //Nope! Not Allowed
+            return false;
+        }
     }
 }

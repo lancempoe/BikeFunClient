@@ -75,4 +75,8 @@ public class ScreenConstants {
     public static final NumberFormat DISTANCE_FORMAT = NumberFormat.getFormat("#.##");
 
     public static final String RegularExpression_City = "^((?!,).)+(?=,)";
+
+    public static final double MinimumTimeBeforeTrackingAllowed = 1800000; //30 minutes
+
+    public static final double MaximumTimeAfterTrackingAllowed = 86400000;  //24 hours
 }
