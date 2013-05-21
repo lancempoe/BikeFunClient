@@ -63,6 +63,7 @@ public class GMapViewImpl implements GMapDisplay {
     private boolean tracking = false;
 
     private List<InfoWindow> inforWindows = new ArrayList<InfoWindow>();
+    private List<Marker> markers = new ArrayList<Marker>();
     private Polygon polygon; //TODO WHAT IS THIS?
     private Polyline polyline;  //TODO WHAT IS THIS?
     private Marker myBicycleMarker;  //TODO WHAT IS THIS?
@@ -172,6 +173,12 @@ public class GMapViewImpl implements GMapDisplay {
             resetMap = true;
             priorMapScreenType = MapScreenType.HERE_AND_NOW;
         }
+
+        //Clear out the markers
+        for (Marker marker : markers) {
+            marker.setMap((GoogleMap)null);
+        }
+
         trackingRideButton.setVisible(false);
         center = LatLng.create(centerGeoLoc.getLatitude(), centerGeoLoc.getLongitude());
         zoom = HERE_AND_NOW_ZOOM;
@@ -185,6 +192,12 @@ public class GMapViewImpl implements GMapDisplay {
             resetMap = true;
             priorMapScreenType = MapScreenType.EVENT;
         }
+
+        //Clear out the markers
+        for (Marker marker : markers) {
+            marker.setMap((GoogleMap)null);
+        }
+
         this.trackingRideButton.setVisible(true);
         this.trackingRideButton.setText(START_TRACKING);
         center = LatLng.create(centerGeoLoc.getLatitude(), centerGeoLoc.getLongitude());
@@ -318,6 +331,8 @@ public class GMapViewImpl implements GMapDisplay {
         final LatLng bikeRideLoc = LatLng.create(convertedLat, convertedLong);
         final MarkerOptions markerOptions = createMarkerOptions(this.map, bikeRideLoc, icon);
         final Marker bikeRideMarker = Marker.create(markerOptions);
+
+        markers.add(bikeRideMarker);
 
         if(ScreenConstants.TargetIcon.EVENT.equals(icon)) {
             bikeRideMarker.addClickListener(new Marker.ClickHandler() {
