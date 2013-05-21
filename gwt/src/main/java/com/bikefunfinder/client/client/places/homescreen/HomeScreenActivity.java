@@ -129,12 +129,6 @@ public class HomeScreenActivity extends MGWTAbstractActivity implements HomeScre
     public void onTimeAndDayButton() {
         final HomeScreenDisplay display = clientFactory.getDisplay(this);
 
-        if(HomeScreenPlace.UsageEnum.ShowMyRides == usageEnum ||
-           HomeScreenPlace.UsageEnum.FilterRides == usageEnum) {
-            // we dont do stuff in this way
-            return;
-        }
-
         DeviceTools.getPhoneGeoLoc(clientFactory, new NonPhoneGapGeoLocCallback() {
             @Override
             public void onSuccess(GeoLoc geoLoc) {
@@ -181,17 +175,11 @@ public class HomeScreenActivity extends MGWTAbstractActivity implements HomeScre
 
     }
 
+
     private void fireRequestForTimeOfDay(
             final HomeScreenDisplay display,
             final GeoLoc geoLoc,
             final NotifyTimeAndDayCallback notifyTimeAndDayCallback) {
-
-        if(HomeScreenPlace.UsageEnum.ShowMyRides == usageEnum ||
-           HomeScreenPlace.UsageEnum.FilterRides == usageEnum) {
-            // we dont do stuff in this way
-            notifyTimeAndDayCallback.onResponseReceived(); // tell the caller everything is happy
-            return;
-        }
 
         SearchByTimeOfDayRequest.Callback callback = new SearchByTimeOfDayRequest.Callback() {
             @Override
