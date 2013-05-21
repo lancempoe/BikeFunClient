@@ -13,6 +13,7 @@ import com.google.gwt.place.shared.Place;
 import com.googlecode.mgwt.mvp.client.Animation;
 import com.googlecode.mgwt.mvp.client.AnimationMapper;
 import com.bikefunfinder.client.client.places.gmap.*;
+import com.googlecode.mgwt.ui.client.MGWT;
 
 public class AnimationMapperDelegate implements AnimationMapper {
 
@@ -37,23 +38,47 @@ public class AnimationMapperDelegate implements AnimationMapper {
 
         //Search Page
         if (oldPlace instanceof HomeScreenPlace && newPlace instanceof SearchScreenPlace) {
+            if(MGWT.getOsDetection().isAndroid()) {
+                return Animation.SWAP;
+            }
             return Animation.FLIP;
         } else if (oldPlace instanceof EventScreenPlace && newPlace instanceof SearchScreenPlace) {
+            if(MGWT.getOsDetection().isAndroid()) {
+                return Animation.SWAP;
+            }
             return Animation.FLIP;
         } else if (oldPlace instanceof SearchScreenPlace && newPlace instanceof HomeScreenPlace) {
+            if(MGWT.getOsDetection().isAndroid()) {
+                return Animation.SWAP_REVERSE;
+            }
             return Animation.FLIP_REVERSE;
         }  else if (oldPlace instanceof SearchScreenPlace && newPlace instanceof EventScreenPlace) {
+            if(MGWT.getOsDetection().isAndroid()) {
+                return Animation.SWAP_REVERSE;
+            }
             return Animation.FLIP_REVERSE;
         }
 
         //Profile Page.
         if (oldPlace instanceof HomeScreenPlace && newPlace instanceof ProfileScreenPlace) {
+            if(MGWT.getOsDetection().isAndroid()) {
+                return Animation.SLIDE_UP;
+            }
             return Animation.FLIP;
         } else if (oldPlace instanceof EventScreenPlace && newPlace instanceof ProfileScreenPlace) {
+            if(MGWT.getOsDetection().isAndroid()) {
+                return Animation.SLIDE_UP;
+            }
             return Animation.FLIP;
         } else if (oldPlace instanceof ProfileScreenPlace && newPlace instanceof HomeScreenPlace) {
+            if(MGWT.getOsDetection().isAndroid()) {
+                return Animation.SLIDE_UP_REVERSE;
+            }
             return Animation.FLIP_REVERSE;
         }  else if (oldPlace instanceof ProfileScreenPlace && newPlace instanceof EventScreenPlace) {
+            if(MGWT.getOsDetection().isAndroid()) {
+                return Animation.SLIDE_UP_REVERSE;
+            }
             return Animation.FLIP_REVERSE;
         }
 
