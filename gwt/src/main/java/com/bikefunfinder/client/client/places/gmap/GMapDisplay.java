@@ -18,6 +18,7 @@ public interface GMapDisplay extends IsWidget {
 
     public void setPresenter(Presenter presenter);
     public void display(BikeRide bikeRide);
+    public void setUserId(String userId);
     public void displayPageName(String pageName);
     public void resetForHereAndNow(GeoLoc centerGeoLoc);
     public void resetForEvent(GeoLoc centerGeoLoc);
