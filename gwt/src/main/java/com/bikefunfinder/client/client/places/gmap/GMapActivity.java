@@ -29,7 +29,6 @@ import com.googlecode.gwtphonegap.showcase.client.NavBaseActivity;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -60,7 +59,8 @@ public class GMapActivity extends NavBaseActivity implements GMapDisplay.Present
         this.geolocation = clientFactory.getPhoneGap().getGeolocation();  //TODO WHY HAVE THIS AND THE CALL DOWN BELOW???
         this.pageName = pageName;
         setUserOrAnonymousUser();
-        setupDisplayPageName(this.pageName);
+        setUserId(this.userId);
+        setDisplayPageName(this.pageName);
         refreshScreen();
     }
 
@@ -155,7 +155,12 @@ public class GMapActivity extends NavBaseActivity implements GMapDisplay.Present
         }
     }
 
-    private void setupDisplayPageName(String pageName) {
+    private void setUserId(String userId) {
+        GMapDisplay display = clientFactory.getDisplay(this);
+        display.setUserId(userId);
+    }
+
+    private void setDisplayPageName(String pageName) {
         GMapDisplay display = clientFactory.getDisplay(this);
         display.displayPageName(pageName);
     }

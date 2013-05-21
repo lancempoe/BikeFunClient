@@ -71,6 +71,7 @@ public class GMapViewImpl implements GMapDisplay {
     private Presenter presenter;
 
     BikeRide bikeRide;
+    private String userId;
     HeaderPanel headerPanel;
     Button trackingRideButton;
 
@@ -140,6 +141,11 @@ public class GMapViewImpl implements GMapDisplay {
     @Override
     public void display(BikeRide bikeRide) {
         this.bikeRide = bikeRide;
+    }
+
+    @Override
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     @Override
@@ -262,15 +268,20 @@ public class GMapViewImpl implements GMapDisplay {
 //            }
         }
 
-        //Phone Location
-        AddAsMarker(phoneGpsLoc, null, ScreenConstants.TargetIcon.CLIENT);
 
         //Starting location
         AddAsMarker(bikeRide.getLocation().getGeoLoc(), bikeRide, ScreenConstants.TargetIcon.EVENT);
 
         //Ride leader
+        String rideLeaderTrackingUserId = "";
         if (bikeRide.getRideLeaderTracking() != null && bikeRide.getRideLeaderTracking().getId() != null)   {
             AddAsMarker(bikeRide.getRideLeaderTracking().getGeoLoc(), null, ScreenConstants.TargetIcon.LEADER);
+            rideLeaderTrackingUserId = bikeRide.getRideLeaderTracking().getTrackingUserId();
+        }
+
+        //Phone Location (only print if not the ride leader)
+        if (!this.userId.equals(rideLeaderTrackingUserId)) {
+            AddAsMarker(phoneGpsLoc, null, ScreenConstants.TargetIcon.CLIENT);
         }
 
         //Every other tracker

@@ -5,6 +5,7 @@ function setupDatePicker() {
         theme: 'android-ics light',
         display: 'modal',
         controls: ['calendar'],
+        layout: 'liquid',
         onSelect: function(valueText,inst){
             $('#datepicker').text(valueText);
         }
