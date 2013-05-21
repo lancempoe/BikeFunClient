@@ -282,6 +282,17 @@ public class HeaderListWithPullPanel<G, T> extends Composite {
 
         scrollPanel.refresh();
 
+        
+        if(list.size()>0) {
+        	// this is a hard faught bug fix. Essentially,
+        	//when the list is re-rendered, as it is being done now,
+        	//the moving header must change. If it does not match the first element
+        	//of the list will fight with the header when pulled down and it looks bad.
+            movingHeader.setHTML(cellList.renderGroupHeader(list.get(0).getGroup()));
+        } else {
+	        movingHeader.setHTML("");
+        }
+
     }
 
     private void updateCurrentPage(int y) {
