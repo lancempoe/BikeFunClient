@@ -285,7 +285,7 @@ public class HomeScreenDisplayGwtImpl extends Composite implements HomeScreenDis
         if(adjustedHeight<=0) {
             return false;
         }
-        headerListWidget.setPixelSize(headerListWidget.getOffsetWidth(), adjustedHeight);
+        headerListWidget.setHeight(adjustedHeight + "px");
         return true;
     }
 }
