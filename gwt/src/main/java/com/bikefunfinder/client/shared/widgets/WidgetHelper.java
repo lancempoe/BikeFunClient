@@ -1,5 +1,8 @@
 package com.bikefunfinder.client.shared.widgets;
 
+import com.google.gwt.user.client.ui.CheckBox;
+import com.google.gwt.user.client.ui.HasText;
+import com.google.gwt.user.client.ui.HasValue;
 import com.googlecode.mgwt.ui.client.widget.MCheckBox;
 import com.googlecode.mgwt.ui.client.widget.base.MValueBoxBase;
 
@@ -12,13 +15,13 @@ import com.googlecode.mgwt.ui.client.widget.base.MValueBoxBase;
  */
 public class WidgetHelper {
 
-    public static void setSafeText(MValueBoxBase widget, String text) {
+    public static void setSafeText(HasText widget, String text) {
         if(text!=null && !text.isEmpty()) {
             widget.setText(text);
         }
     }
 
-    public static void setSafeValue(MValueBoxBase widget, String text) {
+    public static void setSafeValue(HasValue widget, String text) {
         if(text!=null && !text.isEmpty()) {
             widget.setValue(text);
         }

@@ -10,6 +10,8 @@ import com.bikefunfinder.client.shared.model.Root;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JsArray;
 import com.google.gwt.core.client.JsDate;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.DOM;
@@ -456,13 +458,18 @@ public class GMapViewImpl implements GMapDisplay {
         htmlWidget.getElement().getStyle().setColor("black");
         fp.add(htmlWidget);
 
-
-
-        Anchor link = new Anchor("(more information)",
-                presenter.provideTokenHrefFor(bikeRide),
-                "_self");
+        //Anchor link = new Anchor("(more information)", presenter.provideTokenHrefFor(bikeRide));
+        HTML link = new HTML("(more information)");
+        link.addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                presenter.moreRideDetilsScreenRequested(bikeRide);
+            }
+        });
         link.getElement().getStyle().setColor("black");
         fp.add(link);
+
+
         
         /*
         Button testButton = new Button();

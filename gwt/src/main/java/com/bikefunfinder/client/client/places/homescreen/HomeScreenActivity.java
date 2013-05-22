@@ -16,6 +16,8 @@ import com.bikefunfinder.client.shared.model.Root;
 import com.bikefunfinder.client.shared.model.helper.Extractor;
 import com.bikefunfinder.client.shared.model.json.Utils;
 import com.bikefunfinder.client.shared.request.SearchByTimeOfDayRequest;
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.core.client.RunAsyncCallback;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.web.bindery.event.shared.EventBus;

@@ -22,16 +22,13 @@
                 <g:HTML styleName="{style.positioningForName}">Advanced Search</g:HTML>
             </mgwt:right>
         </mgwt:HeaderPanel>
-
-        <mgwt:ScrollPanel scrollingEnabledX="false">
-            <g:FormPanel ui:field="form">
-                <g:HTMLPanel ui:field="formContents">
+            <g:FormPanel >
+                <g:HTMLPanel >
 
                     <g:FlowPanel ui:field="widgetList" />
-                    <mgwt:Button ui:field="searchRide" width="100%" text="Search"/>
+                    <mgwt:Button ui:field="searchRide" text="Search"/>
 
                 </g:HTMLPanel>
             </g:FormPanel>
-        </mgwt:ScrollPanel>
     </mgwt:LayoutPanel>
 </ui:UiBinder>

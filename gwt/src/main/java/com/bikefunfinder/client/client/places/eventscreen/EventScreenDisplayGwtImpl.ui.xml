@@ -22,13 +22,13 @@
             </mgwt:right>
         </mgwt:HeaderPanel>
 
-        <mgwt:ScrollPanel scrollingEnabledX="false">
+        <mgwt:ScrollPanel>
             <g:FormPanel ui:field="form">
                 <g:HTMLPanel ui:field="formContents">
 
-                    <mgwt:Button ui:field="eventRideMapButton" width="100%" text="Show Map"/>
+                    <mgwt:Button ui:field="eventRideMapButton" text="Show Map"/>
                     <mgwt:WidgetList ui:field="widgetList" />
-                    <mgwt:Button ui:field="editRideButton" width="100%" text="Edit Ride"/>
+                    <mgwt:Button ui:field="editRideButton" text="Edit Ride"/>
                     <g:HTML ui:field="currentTrackings" styleName="{style.positioningForName}"/>
 
                 </g:HTMLPanel>
