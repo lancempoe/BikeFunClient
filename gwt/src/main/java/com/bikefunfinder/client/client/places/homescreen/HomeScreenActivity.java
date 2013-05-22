@@ -138,6 +138,8 @@ public class HomeScreenActivity extends MGWTAbstractActivity implements HomeScre
 
             @Override
             public void onFailure(GeoLoc geoLoc) {
+                //TODO Show Error?  Defaulting location
+                Window.alert("Your GPS location is currently unavailable, we will show you results for Portland Oregon.");
                 fireRequestForTimeOfDay(display, geoLoc, noOpNotifyTimeAndDayCallback);
             }
         });
@@ -168,6 +170,8 @@ public class HomeScreenActivity extends MGWTAbstractActivity implements HomeScre
 
             @Override
             public void onFailure(GeoLoc geoLoc) {
+                //TODO Show Error?  Defaulting location
+                Window.alert("Your GPS location is currently unavailable, we will show you results for Portland Oregon.");
                 fireRequestForTimeOfDay(display, geoLoc, callback);
                 callback.onResponseReceived();
             }

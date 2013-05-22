@@ -56,12 +56,13 @@ public class GMapActivity extends NavBaseActivity implements GMapDisplay.Present
         this.clientFactory = injector.getClientFactory();
         this.ramObjectCache = injector.getRamObjectCache();
         ramObjectCache.setCurrentBikeRide(bikeRide);
-        this.geolocation = clientFactory.getPhoneGap().getGeolocation();  //TODO WHY HAVE THIS AND THE CALL DOWN BELOW???
+        this.geolocation = clientFactory.getPhoneGap().getGeolocation();  //Init GeoLoc Obj, not a request from device.
         this.pageName = pageName;
         setUserOrAnonymousUser();
         setUserId(this.userId);
         setDisplayPageName(this.pageName);
-        refreshScreen();
+        //Required GeoLoc even for viewing a bikeride, otherwise maps does not load
+        refreshScreen(true);
     }
 
     private void setUserOrAnonymousUser() {
@@ -77,7 +78,7 @@ public class GMapActivity extends NavBaseActivity implements GMapDisplay.Present
             this.userName = anonymousUser.getUserName();
         }
     }
-    private void refreshScreen() {
+    private void refreshScreen(final boolean requireGeoLocation) {
         DeviceTools.getPhoneGeoLoc(clientFactory, new NonPhoneGapGeoLocCallback() {
             @Override
             public void onSuccess(GeoLoc phoneGeoLoc) {
@@ -87,8 +88,13 @@ public class GMapActivity extends NavBaseActivity implements GMapDisplay.Present
 
             @Override
             public void onFailure(GeoLoc phoneGeoLoc) {
-                ramObjectCache.setCurrentPhoneGeoLoc(phoneGeoLoc);
-                postSavePhoneGeoLoc();
+                //Todo signal user that Location has not been found yet, without an alert window.
+                if(requireGeoLocation) {
+                    Window.alert("Your GPS location is currently unavailable, we will show you results for Portland Oregon.");
+                    ramObjectCache.setCurrentPhoneGeoLoc(phoneGeoLoc);
+                    postSavePhoneGeoLoc();
+                }
+                //Else: Do nothing!  We don't have a location
             }
         });
     }
@@ -107,7 +113,7 @@ public class GMapActivity extends NavBaseActivity implements GMapDisplay.Present
             //This is close.  it does refresh but stop when you leave the page.  I'll fix that soon and then bring back.
             timer = new Timer() {
                 public void run() {
-                    refreshScreen();
+                    refreshScreen(false);
                 }
             };
 
@@ -284,7 +290,7 @@ public class GMapActivity extends NavBaseActivity implements GMapDisplay.Present
     @Override
     public void trackingRideButtonSelected(boolean tracking) {
         this.tracking = tracking;
-        refreshScreen();
+        refreshScreen(false);
     }
 
     @Override

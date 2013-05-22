@@ -62,6 +62,7 @@ public class ProfileScreenActivity extends MGWTAbstractActivity implements Profi
 
             @Override
             public void onFailure(GeoLoc geoLoc) {
+                //TODO Show Error?  Defaulting location
                 fireRequestForsearchByTimeOfDayForProfile(geoLoc);
             }
         });

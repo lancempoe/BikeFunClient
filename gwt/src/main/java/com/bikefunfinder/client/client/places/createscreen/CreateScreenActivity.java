@@ -117,6 +117,7 @@ public class CreateScreenActivity extends MGWTAbstractActivity implements Create
 
             @Override
             public void onFailure(GeoLoc geoLoc) {
+                //TODO Show Error?  Defaulting location
                 request.latitude(geoLoc).longitude(geoLoc).send();
             }
         });
@@ -153,6 +154,7 @@ public class CreateScreenActivity extends MGWTAbstractActivity implements Create
 
             @Override
             public void onFailure(GeoLoc geoLoc) {
+                //TODO Show Error?  Defaulting location
                 request.latitude(geoLoc).longitude(geoLoc).send();
             }
         });

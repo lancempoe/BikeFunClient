@@ -9,6 +9,9 @@ import com.googlecode.gwtphonegap.client.geolocation.GeolocationCallback;
 import com.googlecode.gwtphonegap.client.geolocation.Position;
 import com.googlecode.gwtphonegap.client.geolocation.PositionError;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  * Created with IntelliJ IDEA.
  * User: lancepoehler
@@ -29,7 +32,7 @@ public abstract class NonPhoneGapGeoLocCallback implements GeolocationCallback {
     @Override
     public void onFailure(final PositionError error) {
         GeoLoc geoLoc = GWT.create(GeoLoc.class);
-        Window.alert("Failed to get GeoLocation.  Using Portland as default."); //TODO MAYBE MOVE THIS OUT SO THAT CLIENT ONLY NOTIFY THE FIRST TIME.
+        Logger.getLogger("").log(Level.WARNING, "Could not get Geolocation from Device. " + error.getMessage());
         geoLoc.setLatitude(ScreenConstants.PORTLAND_LATITUDE);
         geoLoc.setLongitude(ScreenConstants.PORTLAND_LONGITUDE);
         onFailure(geoLoc);

@@ -78,6 +78,7 @@ public class SearchScreenActivity extends MGWTAbstractActivity implements Search
 
             @Override
             public void onFailure(GeoLoc geoLoc) {
+                //TODO Show Error?  Defaulting location
                 request.latitude(geoLoc).longitude(geoLoc).send();
             }
         });

@@ -68,8 +68,7 @@ public class GMapViewImpl implements GMapDisplay {
     private List<InfoWindow> inforWindows = new ArrayList<InfoWindow>();
     private List<Marker> markers = new ArrayList<Marker>();
     private Polygon polygon; //TODO WHAT IS THIS?
-    private Polyline polyline;  //TODO WHAT IS THIS?
-    private Marker myBicycleMarker;  //TODO WHAT IS THIS?
+    private Polyline polyline;
 
     private Presenter presenter;
 
@@ -219,8 +218,10 @@ public class GMapViewImpl implements GMapDisplay {
 
     private void setTrackingButtonText() {
         if (tracking) {
+            Logger.getLogger("").log(Level.WARNING, "StopTracking button text");
             this.trackingRideButton.setText(STOP_TRACKING);
         } else {
+            Logger.getLogger("").log(Level.WARNING, "StartTracking button text");
             this.trackingRideButton.setText(START_TRACKING);
         }
     }
