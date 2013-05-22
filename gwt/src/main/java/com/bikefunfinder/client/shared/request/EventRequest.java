@@ -29,6 +29,7 @@ public final class EventRequest {
         private String id;
         private BigDecimal longitude;
         private BigDecimal latitude;
+        private String clientId;
 
         public Builder(final EventRequest.Callback callback) {
             if (callback == null) {
@@ -46,7 +47,10 @@ public final class EventRequest {
             this.callback = callback;
             return this;
         }
-
+        public Builder clientId(final String clientId) {
+            this.clientId = clientId;
+            return this;
+        }
         public Builder id(final String id) {
             this.id = id;
             return this;
@@ -70,6 +74,7 @@ public final class EventRequest {
 
     private final EventRequest.Callback callback;
     private final String id;
+    private final String clientId;
     private final BigDecimal latitude;
     private final BigDecimal longitude;
     private final Request request;
@@ -85,6 +90,7 @@ public final class EventRequest {
     private EventRequest(final Builder builder) {
         callback = builder.callback;
         id = builder.id;
+        clientId = builder.clientId;
         latitude = builder.latitude;
         longitude = builder.longitude;
         request = send();
@@ -95,7 +101,7 @@ public final class EventRequest {
 
         final RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.GET, getUrlWithQuery());
         try {
-            request = requestBuilder.sendRequest(null, getRequestCallback());
+            request = requestBuilder.sendRequest(clientId, getRequestCallback());
         } catch (final RequestException e) {
             e.printStackTrace();
         }
