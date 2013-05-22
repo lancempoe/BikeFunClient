@@ -18,7 +18,10 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Widget;
+import com.googlecode.mgwt.dom.client.event.orientation.OrientationChangeEvent;
+import com.googlecode.mgwt.dom.client.event.orientation.OrientationChangeHandler;
 import com.googlecode.mgwt.dom.client.event.tap.TapEvent;
+import com.googlecode.mgwt.ui.client.MGWT;
 import com.googlecode.mgwt.ui.client.MGWTStyle;
 import com.googlecode.mgwt.ui.client.widget.*;
 import com.googlecode.mgwt.ui.client.widget.base.ButtonBase;
@@ -29,6 +32,7 @@ import com.googlecode.mgwt.ui.client.widget.celllist.Cell;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 
@@ -99,6 +103,24 @@ public class HomeScreenDisplayGwtImpl extends Composite implements HomeScreenDis
 
         pp = new PullGroupPanel<Header, Content>(new HeaderListWithPullPanel<Header, Content>(groupingCellList), presenter);
         headerListWidget.add(pp);
+
+        /*MGWT.addOrientationChangeHandler(new OrientationChangeHandler() {
+            @Override
+            public void onOrientationChanged(OrientationChangeEvent event) {
+                Window.alert(event.getOrientation().toString());
+                if(event.getOrientation()!=null &&
+                   event.getOrientation()== OrientationChangeEvent.ORIENTATION.PORTRAIT) {
+                    wasPortraitAdjusted = false;
+                    adjustPullPanelSizePortrait();
+                    return;
+                }
+
+                wasLandAdjusted = false;
+                adjustPullPanelSizeLandscape();
+
+            }
+        });*/
+
 
     }
 
@@ -203,6 +225,12 @@ public class HomeScreenDisplayGwtImpl extends Composite implements HomeScreenDis
         }
 
         return list;
+    }
+
+    private String makeAPrettyRepresentationOfTodaysDate() {
+        Date today = new Date();
+        JsDateWrapper todayJsDateWrapped = new JsDateWrapper(new Double(today.getTime()));
+        return todayJsDateWrapped.toString(ScreenConstants.DateFormatPrintPretty);
     }
 
     private static class ContentCell implements Cell<Content> {

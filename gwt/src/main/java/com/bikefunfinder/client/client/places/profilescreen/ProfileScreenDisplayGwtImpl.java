@@ -4,24 +4,20 @@ package com.bikefunfinder.client.client.places.profilescreen;
  * @created 4/5/13 4:22 PM
  */
 
-import com.bikefunfinder.client.client.places.eventscreen.EventScreenDisplay;
 import com.bikefunfinder.client.shared.constants.ScreenConstants;
 import com.bikefunfinder.client.shared.model.AnonymousUser;
-import com.bikefunfinder.client.shared.model.BikeRide;
 import com.bikefunfinder.client.shared.model.User;
-import com.bikefunfinder.client.shared.widgets.WidgetHelper;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.Widget;
 import com.googlecode.mgwt.dom.client.event.tap.TapEvent;
 import com.googlecode.mgwt.ui.client.widget.FormListEntry;
-import com.googlecode.mgwt.ui.client.widget.MTextBox;
 import com.googlecode.mgwt.ui.client.widget.WidgetList;
-import com.googlecode.mgwt.ui.client.widget.base.MValueBoxBase;
 
 public class ProfileScreenDisplayGwtImpl extends Composite implements ProfileScreenDisplay {
 
@@ -35,23 +31,24 @@ public class ProfileScreenDisplayGwtImpl extends Composite implements ProfileScr
     @UiField
     WidgetList widgetList;
 
-    MTextBox userName = new MTextBox();
-    MTextBox joinedTimeStamp = new MTextBox();
-    MTextBox totalHostedBikeRideCount = new MTextBox();
+    HTML userName = new HTML();
+    HTML joinedTimeStamp = new HTML();
+    HTML totalHostedBikeRideCount = new HTML();
 
     private static Widget buildFormWidget(String title, Widget widget) {
         FormListEntry formListEntry = new FormListEntry();
         formListEntry.setText(title);
         formListEntry.add(widget);
+
         return formListEntry;
     }
 
     public ProfileScreenDisplayGwtImpl() {
         initWidget(uiBinder.createAndBindUi(this));
 
-        userName.setReadOnly(true);
-        joinedTimeStamp.setReadOnly(true);
-        totalHostedBikeRideCount.setReadOnly(true);
+        userName.setWidth("100%");
+        joinedTimeStamp.setWidth("100%");
+        totalHostedBikeRideCount.setWidth("100%");
 
         widgetList.add(buildFormWidget("User Name:", userName));
         widgetList.add(buildFormWidget("Date Joined BFF:", joinedTimeStamp));
@@ -69,17 +66,18 @@ public class ProfileScreenDisplayGwtImpl extends Composite implements ProfileScr
         if(anonymousUser==null) return; // failSafe but ugly;
 
         //setSafeText(rideImage, bikeRide.getImagePath());
-        WidgetHelper.setSafeText(userName, anonymousUser.getUserName());
-        WidgetHelper.setSafeText(totalHostedBikeRideCount, String.valueOf(anonymousUser.getTotalHostedBikeRideCount()));
+        userName.setText(anonymousUser.getUserName());
+        totalHostedBikeRideCount.setText(String.valueOf(anonymousUser.getTotalHostedBikeRideCount()));
+        joinedTimeStamp.setText(buildJoinedDate(anonymousUser));
+    }
 
+    private String buildJoinedDate(AnonymousUser anonymousUser) {
         if(anonymousUser.createJsDateWrapperJoinedTimeStamp()!=null) {
-            final String timeText = anonymousUser.createJsDateWrapperJoinedTimeStamp().toString(ScreenConstants.DateFormatPrintPretty) +
+            return anonymousUser.createJsDateWrapperJoinedTimeStamp().toString(ScreenConstants.DateFormatPrintPretty) +
                                     " at " +
                                     anonymousUser.createJsDateWrapperJoinedTimeStamp().toString(ScreenConstants.TimeFormatPrintPretty);
-            WidgetHelper.setSafeText(joinedTimeStamp, timeText);
-        } else {
-            WidgetHelper.setSafeText(joinedTimeStamp, " ");
         }
+        return "";
     }
 
     @Override

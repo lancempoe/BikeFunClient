@@ -11,6 +11,8 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.FormPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.googlecode.mgwt.dom.client.event.tap.TapEvent;
 import com.googlecode.mgwt.ui.client.widget.FormListEntry;
@@ -27,7 +29,8 @@ public class SearchScreenDisplayGwtImpl extends Composite implements SearchScree
 
     private Presenter presenter;
 
-    @UiField(provided = true) WidgetList widgetList;
+    @UiField(provided = true)
+    FlowPanel widgetList;
     FormListEntry formListEntry;
 
     MTextBox search = new MTextBox();
@@ -55,7 +58,7 @@ public class SearchScreenDisplayGwtImpl extends Composite implements SearchScree
     public SearchScreenDisplayGwtImpl() {
 
         //Build the form.
-        widgetList = new WidgetList();
+        widgetList = new FlowPanel();
 
         formListEntry = new FormListEntry();
         formListEntry.setText("Search:");

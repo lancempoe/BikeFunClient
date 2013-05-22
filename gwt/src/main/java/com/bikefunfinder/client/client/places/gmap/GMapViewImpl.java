@@ -12,6 +12,7 @@ import com.google.gwt.core.client.JsArray;
 import com.google.gwt.core.client.JsDate;
 import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.uibinder.client.UiHandler;
+import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
@@ -455,9 +456,28 @@ public class GMapViewImpl implements GMapDisplay {
         htmlWidget.getElement().getStyle().setColor("black");
         fp.add(htmlWidget);
 
-        Anchor link = new Anchor("(more information)", presenter.provideTokenHrefFor(bikeRide));
+
+
+        Anchor link = new Anchor("(more information)",
+                presenter.provideTokenHrefFor(bikeRide),
+                "_self");
         link.getElement().getStyle().setColor("black");
         fp.add(link);
+        
+        /*
+        Button testButton = new Button();
+
+        testButton.addTapHandler(new TapHandler() {
+            @Override
+            public void onTap(final TapEvent tapEvent) {
+                Window.alert("woohoo a button!");
+            }
+        });
+
+        testButton.setText("(more information)");
+        DOM.setStyleAttribute(testButton.getElement(), "color", "black");
+        fp.add(testButton);
+        */
 
         return fp.getElement();
     }
