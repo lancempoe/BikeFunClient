@@ -194,6 +194,7 @@ public class GMapActivity extends NavBaseActivity implements GMapDisplay.Present
 //            }
         } else { //Event Map
             clearWatch();
+
             if (tracking) { //Tracking
                 setTrackView(phoneGeoLoc);
             } else if (ramObjectCache.getCurrentBikeRide().getRideLeaderTracking() != null && ramObjectCache.getCurrentBikeRide().getRideLeaderTracking().getId() != null) { //Following Event
@@ -278,7 +279,7 @@ public class GMapActivity extends NavBaseActivity implements GMapDisplay.Present
 
         };
         EventRequest.Builder request = new EventRequest.Builder(callback);
-        request.id(ramObjectCache.getCurrentBikeRide().getId()).latitude(phoneGeoLoc).longitude(phoneGeoLoc).send();
+        request.clientId(userId).id(ramObjectCache.getCurrentBikeRide().getId()).latitude(phoneGeoLoc).longitude(phoneGeoLoc).send();
     }
 
     @Override
