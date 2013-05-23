@@ -26,6 +26,8 @@ import com.googlecode.gwtphonegap.client.geolocation.GeolocationCallback;
 import com.googlecode.gwtphonegap.client.geolocation.GeolocationOptions;
 import com.googlecode.gwtphonegap.client.geolocation.GeolocationWatcher;
 import com.googlecode.gwtphonegap.showcase.client.NavBaseActivity;
+import com.googlecode.mgwt.ui.client.dialog.ConfirmDialog;
+import com.googlecode.mgwt.ui.client.dialog.Dialogs;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -51,6 +53,8 @@ public class GMapActivity extends NavBaseActivity implements GMapDisplay.Present
     private String pageName;
     private boolean tracking;
     private int refreshCount = 0;
+    private boolean trackingWarningDisplayed = false;
+    private int geoFailCount = 0;
 
     public GMapActivity(String pageName, BikeRide bikeRide) {
         this.clientFactory = injector.getClientFactory();
@@ -62,7 +66,7 @@ public class GMapActivity extends NavBaseActivity implements GMapDisplay.Present
         setUserId(this.userId);
         setDisplayPageName(this.pageName);
         //Required GeoLoc even for viewing a bikeride, otherwise maps does not load
-        refreshScreen(true);
+        refreshScreen();
     }
 
     private void setUserOrAnonymousUser() {
@@ -78,23 +82,34 @@ public class GMapActivity extends NavBaseActivity implements GMapDisplay.Present
             this.userName = anonymousUser.getUserName();
         }
     }
-    private void refreshScreen(final boolean requireGeoLocation) {
+    private void refreshScreen() {
         DeviceTools.getPhoneGeoLoc(clientFactory, new NonPhoneGapGeoLocCallback() {
             @Override
             public void onSuccess(GeoLoc phoneGeoLoc) {
                 ramObjectCache.setCurrentPhoneGeoLoc(phoneGeoLoc);
+                geoFailCount = 0;
                 postSavePhoneGeoLoc();
             }
 
             @Override
             public void onFailure(GeoLoc phoneGeoLoc) {
-                //Todo signal user that Location has not been found yet, without an alert window.
-                if(requireGeoLocation) {
-                    Window.alert("Your GPS location is currently unavailable, we will show you results for Portland Oregon.");
+                if(!tracking) {
+                    Dialogs.alert("Warning", "Your GPS location is currently unavailable, we will show you results for Portland Oregon.", new Dialogs.AlertCallback() {
+                        @Override
+                        public void onButtonPressed() {
+                        }
+                    });
                     ramObjectCache.setCurrentPhoneGeoLoc(phoneGeoLoc);
                     postSavePhoneGeoLoc();
+                } else if (geoFailCount++ > 5) { //Allow fails up to 5 times.
+                    Dialogs.alert("Error", "Unable to obtain your GeoLocation.", new Dialogs.AlertCallback() {
+                        @Override
+                        public void onButtonPressed() {
+                            //Stop Tracking AND close the popup.
+                            backButtonSelected();
+                        }
+                    });
                 }
-                //Else: Do nothing!  We don't have a location
             }
         });
     }
@@ -106,6 +121,9 @@ public class GMapActivity extends NavBaseActivity implements GMapDisplay.Present
         panel.setWidget(display);
     }
 
+    /**
+     * Items that need to happen while on the map screen.  It can and should be cleaned up in version 2.
+     */
     private void postSavePhoneGeoLoc() {
         if (refreshCount == 0) {
             startWatching();
@@ -113,17 +131,54 @@ public class GMapActivity extends NavBaseActivity implements GMapDisplay.Present
             //This is close.  it does refresh but stop when you leave the page.  I'll fix that soon and then bring back.
             timer = new Timer() {
                 public void run() {
-                    refreshScreen(false);
+                    refreshScreen();
                 }
             };
 
             // Schedule the timer to run once in x seconds.
             timer.scheduleRepeating(ScreenConstants.SCREEN_REFRESH_RATE_IN_SECONDS * 1000);
             refreshCount++;
+        } else if (refreshCount*ScreenConstants.SCREEN_REFRESH_RATE_IN_SECONDS > ScreenConstants.TRACKING_WITHOUT_CONFORMATION_IN_SECONDS) {
+            Window.alert("over 1st limit");
+            if(!trackingWarningDisplayed) { //Display message if it is not already displayed.
+                Window.alert("Displaying message");
+                showTrackingWarning();
+            }
+
+            if (refreshCount*ScreenConstants.SCREEN_REFRESH_RATE_IN_SECONDS > ScreenConstants.MAX_TRACKING_WITHOUT_CONFORMATION_IN_SECONDS) {
+                Window.alert("stop tracking");
+
+                //Stop Tracking AND close the popup.
+                backButtonSelected();
+
+            } else { //Keep tracking
+                Window.alert("keep tracking");
+                startWatching();
+                refreshCount++;
+            }
+
         } else {
             startWatching();
             refreshCount++;
         }
+    }
+
+    private void showTrackingWarning() {
+        trackingWarningDisplayed = true;
+        Dialogs.confirm("Warning:", "Continue Tracking?", new ConfirmDialog.ConfirmCallback() {
+            @Override
+            public void onOk() {
+                refreshCount = 0;
+                trackingWarningDisplayed = false;
+            }
+
+            @Override
+            public void onCancel() {
+                trackingWarningDisplayed = false;
+                refreshCount = 0;
+                trackingRideButtonSelected(false);
+            }
+        });
     }
 
     private void pingClientTrack() {
@@ -173,14 +228,6 @@ public class GMapActivity extends NavBaseActivity implements GMapDisplay.Present
         }
 
         setMapView(ramObjectCache.getCurrentPhoneGeoLoc());
-
-//        if (bikeRide == null) {
-//            final GeolocationOptions options = new GeolocationOptions();
-//            options.setEnableHighAccuracy(true);
-//            options.setTimeout(10000);
-//            options.setMaximumAge(1000);
-//            watchPosition(options, callback);
-//        }
     }
 
     /**
@@ -189,9 +236,7 @@ public class GMapActivity extends NavBaseActivity implements GMapDisplay.Present
      */
     private void setMapView(GeoLoc phoneGeoLoc) {
         if (ramObjectCache.getCurrentBikeRide() == null) { //Here & now Map
-//            if (watcher != null) {
-                setHereAndNowView(phoneGeoLoc); //Here & now Map
-//            }
+            setHereAndNowView(phoneGeoLoc); //Here & now Map
         } else { //Event Map
             clearWatch();
 
@@ -291,7 +336,7 @@ public class GMapActivity extends NavBaseActivity implements GMapDisplay.Present
     @Override
     public void trackingRideButtonSelected(boolean tracking) {
         this.tracking = tracking;
-        refreshScreen(false);
+        refreshScreen();
     }
 
     @Override

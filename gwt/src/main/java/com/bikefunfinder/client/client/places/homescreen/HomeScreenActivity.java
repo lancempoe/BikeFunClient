@@ -26,6 +26,7 @@ import com.googlecode.mgwt.mvp.client.MGWTAbstractActivity;
 import java.util.ArrayList;
 
 import com.google.gwt.regexp.shared.*;
+import com.googlecode.mgwt.ui.client.dialog.Dialogs;
 
 /**
  * @author: tneuwerth
@@ -140,8 +141,11 @@ public class HomeScreenActivity extends MGWTAbstractActivity implements HomeScre
 
             @Override
             public void onFailure(GeoLoc geoLoc) {
-                //TODO Show Error?  Defaulting location
-                Window.alert("Your GPS location is currently unavailable, we will show you results for Portland Oregon.");
+                Dialogs.alert("Warning", "Your GPS location is currently unavailable, we will show you results for Portland Oregon.", new Dialogs.AlertCallback() {
+                    @Override
+                    public void onButtonPressed() {
+                    }
+                });
                 fireRequestForTimeOfDay(display, geoLoc, noOpNotifyTimeAndDayCallback);
             }
         });
@@ -172,8 +176,11 @@ public class HomeScreenActivity extends MGWTAbstractActivity implements HomeScre
 
             @Override
             public void onFailure(GeoLoc geoLoc) {
-                //TODO Show Error?  Defaulting location
-                Window.alert("Your GPS location is currently unavailable, we will show you results for Portland Oregon.");
+                Dialogs.alert("Warning", "Your GPS location is currently unavailable, we will show you results for Portland Oregon.", new Dialogs.AlertCallback() {
+                    @Override
+                    public void onButtonPressed() {
+                    }
+                });
                 fireRequestForTimeOfDay(display, geoLoc, callback);
                 callback.onResponseReceived();
             }
@@ -196,7 +203,6 @@ public class HomeScreenActivity extends MGWTAbstractActivity implements HomeScre
 
             @Override
             public void onError() {
-                Window.alert("Oops, your BFF will be back shortly.");
                 display.display(new ArrayList<BikeRide>());
                 display.display("City Unknown");
                 notifyTimeAndDayCallback.onError();

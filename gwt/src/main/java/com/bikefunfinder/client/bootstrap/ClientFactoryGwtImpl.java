@@ -206,7 +206,7 @@ public class ClientFactoryGwtImpl implements ClientFactory {
         AnonymousRequest.Callback callback = new AnonymousRequest.Callback() {
             @Override
             public void onError() {
-                Window.alert("Oops, your BFF will be back shortly (AnonymousRequest).");
+                //At this point the message has already been displayed to the user.
             }
 
             @Override

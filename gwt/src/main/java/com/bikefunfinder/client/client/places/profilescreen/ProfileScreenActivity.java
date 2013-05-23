@@ -14,6 +14,7 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.web.bindery.event.shared.EventBus;
 import com.googlecode.mgwt.mvp.client.MGWTAbstractActivity;
+import com.googlecode.mgwt.ui.client.dialog.Dialogs;
 
 public class ProfileScreenActivity extends MGWTAbstractActivity implements ProfileScreenDisplay.Presenter {
 
@@ -77,7 +78,11 @@ public class ProfileScreenActivity extends MGWTAbstractActivity implements Profi
 
             @Override
             public void onError() {
-                Window.alert("Oops, your BFF will be back shortly.");
+                Dialogs.alert("Warning", "Oops, your BFF will be back shortly.", new Dialogs.AlertCallback() {
+                    @Override
+                    public void onButtonPressed() {
+                    }
+                });
             }
         };
         SearchByTimeOfDayForProfileRequest.Builder request = new SearchByTimeOfDayForProfileRequest.Builder(callback);

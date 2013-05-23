@@ -11,7 +11,6 @@ package com.bikefunfinder.client.shared.request;
 import com.bikefunfinder.client.shared.model.BikeRide;
 import com.bikefunfinder.client.shared.constants.Settings;
 import com.bikefunfinder.client.shared.model.GeoLoc;
-import com.bikefunfinder.client.shared.model.Query;
 import com.bikefunfinder.client.shared.model.json.Utils;
 import com.google.gwt.http.client.*;
 import com.googlecode.mgwt.ui.client.dialog.Dialogs;
@@ -26,7 +25,7 @@ public final class EventRequest {
 
     public static final class Builder {
         private EventRequest.Callback callback;
-        private String id;
+        private String eventId;
         private BigDecimal longitude;
         private BigDecimal latitude;
         private String clientId;
@@ -51,8 +50,8 @@ public final class EventRequest {
             this.clientId = clientId;
             return this;
         }
-        public Builder id(final String id) {
-            this.id = id;
+        public Builder id(final String eventId) {
+            this.eventId = eventId;
             return this;
         }
         public Builder latitude(final GeoLoc geoLoc) {
@@ -73,7 +72,7 @@ public final class EventRequest {
     private static final String URL = Settings.HOST + "FunService/rest/bikerides/";
 
     private final EventRequest.Callback callback;
-    private final String id;
+    private final String eventId;
     private final String clientId;
     private final BigDecimal latitude;
     private final BigDecimal longitude;
@@ -89,7 +88,7 @@ public final class EventRequest {
 
     private EventRequest(final Builder builder) {
         callback = builder.callback;
-        id = builder.id;
+        eventId = builder.eventId;
         clientId = builder.clientId;
         latitude = builder.latitude;
         longitude = builder.longitude;
@@ -99,7 +98,7 @@ public final class EventRequest {
     private Request send() {
         Request request = null;
 
-        final RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.GET, getUrlWithQuery());
+        final RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST, getUrlWithQuery());
         try {
             request = requestBuilder.sendRequest(clientId, getRequestCallback());
         } catch (final RequestException e) {
@@ -112,7 +111,7 @@ public final class EventRequest {
     private String getUrlWithQuery() {
         final StringBuilder builder = new StringBuilder();
         builder.append(URL);
-        builder.append(id);
+        builder.append(eventId);
         builder.append("/geoloc=");
         builder.append(latitude);
         builder.append(",");

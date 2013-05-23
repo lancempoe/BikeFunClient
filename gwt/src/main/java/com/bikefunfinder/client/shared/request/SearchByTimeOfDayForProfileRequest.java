@@ -132,7 +132,7 @@ public final class SearchByTimeOfDayForProfileRequest {
                 if ((statusCode < 200) || (statusCode >= 300)) {
                     final StringBuilder builder = new StringBuilder();
                     builder.append(response.getText());
-                    Dialogs.alert("Notice: ", builder.toString(), new Dialogs.AlertCallback() {
+                    Dialogs.alert("Notice: ", "BFF is unavailable. " + builder.toString(), new Dialogs.AlertCallback() {
                         @Override
                         public void onButtonPressed() {
                             callback.onError();
