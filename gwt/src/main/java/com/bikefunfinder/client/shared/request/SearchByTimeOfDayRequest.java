@@ -119,6 +119,7 @@ public final class SearchByTimeOfDayRequest {
                 final int statusCode = response.getStatusCode();
                 if ((statusCode < 200) || (statusCode >= 300)) {
                     final StringBuilder builder = new StringBuilder();
+                    builder.append("BFF is unavailable. ");
                     builder.append(response.getText());
                     Dialogs.alert("Notice: ", builder.toString(), new Dialogs.AlertCallback() {
                         @Override

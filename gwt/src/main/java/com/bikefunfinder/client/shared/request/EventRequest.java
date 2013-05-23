@@ -98,7 +98,7 @@ public final class EventRequest {
     private Request send() {
         Request request = null;
 
-        final RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST, getUrlWithQuery());
+        final RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.GET, getUrlWithQuery());
         try {
             request = requestBuilder.sendRequest(clientId, getRequestCallback());
         } catch (final RequestException e) {

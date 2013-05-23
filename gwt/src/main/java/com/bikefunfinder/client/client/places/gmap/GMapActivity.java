@@ -51,9 +51,10 @@ public class GMapActivity extends NavBaseActivity implements GMapDisplay.Present
     private String userId;
     private String userName;
     private String pageName;
-    private boolean tracking;
-    private int refreshCount = 0;
-    private boolean trackingWarningDisplayed = false;
+    private boolean isTracking;
+    private boolean isFirstPostSavePhoneGeoLoc = true;
+    private int refreshTrackingCount = 0;
+    private ConfirmDialog.ConfirmCallback trackingWarning;
     private int geoFailCount = 0;
 
     public GMapActivity(String pageName, BikeRide bikeRide) {
@@ -93,7 +94,7 @@ public class GMapActivity extends NavBaseActivity implements GMapDisplay.Present
 
             @Override
             public void onFailure(GeoLoc phoneGeoLoc) {
-                if(!tracking) {
+                if(!isTracking) {
                     Dialogs.alert("Warning", "Your GPS location is currently unavailable, we will show you results for Portland Oregon.", new Dialogs.AlertCallback() {
                         @Override
                         public void onButtonPressed() {
@@ -125,7 +126,9 @@ public class GMapActivity extends NavBaseActivity implements GMapDisplay.Present
      * Items that need to happen while on the map screen.  It can and should be cleaned up in version 2.
      */
     private void postSavePhoneGeoLoc() {
-        if (refreshCount == 0) {
+
+        if (isFirstPostSavePhoneGeoLoc) {
+            isFirstPostSavePhoneGeoLoc = false;
             startWatching();
 
             //This is close.  it does refresh but stop when you leave the page.  I'll fix that soon and then bring back.
@@ -137,52 +140,52 @@ public class GMapActivity extends NavBaseActivity implements GMapDisplay.Present
 
             // Schedule the timer to run once in x seconds.
             timer.scheduleRepeating(ScreenConstants.SCREEN_REFRESH_RATE_IN_SECONDS * 1000);
-            refreshCount++;
-        } else if (refreshCount*ScreenConstants.SCREEN_REFRESH_RATE_IN_SECONDS > ScreenConstants.TRACKING_WITHOUT_CONFORMATION_IN_SECONDS) {
-            Window.alert("over 1st limit");
-            if(!trackingWarningDisplayed) { //Display message if it is not already displayed.
-                Window.alert("Displaying message");
-                showTrackingWarning();
-            }
+        } else if (isTracking) {
 
-            if (refreshCount*ScreenConstants.SCREEN_REFRESH_RATE_IN_SECONDS > ScreenConstants.MAX_TRACKING_WITHOUT_CONFORMATION_IN_SECONDS) {
-                Window.alert("stop tracking");
+            if (refreshTrackingCount *ScreenConstants.SCREEN_REFRESH_RATE_IN_SECONDS >= ScreenConstants.TRACKING_WITHOUT_CONFORMATION_IN_SECONDS) {
+                if(trackingWarning == null) { //Display message if it is not already displayed.
+                    showTrackingWarning();
+                }
 
-                //Stop Tracking AND close the popup.
-                backButtonSelected();
+                if (refreshTrackingCount *ScreenConstants.SCREEN_REFRESH_RATE_IN_SECONDS >= ScreenConstants.MAX_TRACKING_WITHOUT_CONFORMATION_IN_SECONDS) {
+                    //Stop Tracking AND close the popup.
+                    trackingWarning.onCancel();
+                    backButtonSelected(); //This is bad code... right?
 
-            } else { //Keep tracking
-                Window.alert("keep tracking");
+                } else { //Keep tracking
+                    startWatching();
+                }
+            } else {
                 startWatching();
-                refreshCount++;
             }
+            refreshTrackingCount++;
 
         } else {
             startWatching();
-            refreshCount++;
         }
     }
 
     private void showTrackingWarning() {
-        trackingWarningDisplayed = true;
-        Dialogs.confirm("Warning:", "Continue Tracking?", new ConfirmDialog.ConfirmCallback() {
+        trackingWarning = new ConfirmDialog.ConfirmCallback() {
             @Override
             public void onOk() {
-                refreshCount = 0;
-                trackingWarningDisplayed = false;
+                refreshTrackingCount = 0;
+                trackingWarning = null;
             }
 
             @Override
             public void onCancel() {
-                trackingWarningDisplayed = false;
-                refreshCount = 0;
-                trackingRideButtonSelected(false);
+                refreshTrackingCount = 0;
+                trackingRideButtonSelected(false); //This is also pretty bad code.
+                trackingWarning = null;
             }
-        });
+        };
+
+        Dialogs.confirm("Warning:", "Tracking is about to expire. Continue Tracking?", trackingWarning);
     }
 
     private void pingClientTrack() {
-        if (tracking) {
+        if (isTracking) {
             NewTrackRequest.Callback callback = new NewTrackRequest.Callback() {
                 @Override
                 public void onError() {
@@ -208,6 +211,11 @@ public class GMapActivity extends NavBaseActivity implements GMapDisplay.Present
         }
     }
 
+    private void setIsTrackingDisplay() {
+        GMapDisplay display = clientFactory.getDisplay(this);
+        display.setIsTracking(isTracking);
+    }
+
     private void setUserId(String userId) {
         GMapDisplay display = clientFactory.getDisplay(this);
         display.setUserId(userId);
@@ -222,7 +230,7 @@ public class GMapActivity extends NavBaseActivity implements GMapDisplay.Present
         //Update the bikeRide
         if (ramObjectCache.getCurrentBikeRide() != null) {
             updatedBikeRide(ramObjectCache.getCurrentPhoneGeoLoc());
-            if (tracking) {
+            if (isTracking) {
                 pingClientTrack();
             }
         }
@@ -240,7 +248,7 @@ public class GMapActivity extends NavBaseActivity implements GMapDisplay.Present
         } else { //Event Map
             clearWatch();
 
-            if (tracking) { //Tracking
+            if (isTracking) { //Tracking
                 setTrackView(phoneGeoLoc);
             } else if (ramObjectCache.getCurrentBikeRide().getRideLeaderTracking() != null && ramObjectCache.getCurrentBikeRide().getRideLeaderTracking().getId() != null) { //Following Event
                 setEventView(phoneGeoLoc, ramObjectCache.getCurrentBikeRide().getRideLeaderTracking().getGeoLoc());
@@ -334,14 +342,16 @@ public class GMapActivity extends NavBaseActivity implements GMapDisplay.Present
     }
 
     @Override
-    public void trackingRideButtonSelected(boolean tracking) {
-        this.tracking = tracking;
+    public void trackingRideButtonSelected(boolean isTracking) {
+        this.isTracking = isTracking;
+        setIsTrackingDisplay();  //And of course, bad code here as well.
         refreshScreen();
     }
 
     @Override
     public void backButtonSelected() {
         timer.cancel();
+        trackingWarning = null; //just in case the message is up.
         clientFactory.getPlaceController().goTo(new HomeScreenPlace());
     }
 
