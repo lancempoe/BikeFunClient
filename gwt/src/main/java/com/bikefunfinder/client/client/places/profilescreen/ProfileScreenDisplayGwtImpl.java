@@ -16,7 +16,9 @@ import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.Widget;
 import com.googlecode.mgwt.dom.client.event.tap.TapEvent;
+import com.googlecode.mgwt.ui.client.MGWT;
 import com.googlecode.mgwt.ui.client.widget.FormListEntry;
+import com.googlecode.mgwt.ui.client.widget.ScrollPanel;
 import com.googlecode.mgwt.ui.client.widget.WidgetList;
 
 public class ProfileScreenDisplayGwtImpl extends Composite implements ProfileScreenDisplay {
@@ -30,6 +32,9 @@ public class ProfileScreenDisplayGwtImpl extends Composite implements ProfileScr
 
     @UiField
     WidgetList widgetList;
+
+    @UiField
+    ScrollPanel scrollPanel;
 
     HTML userName = new HTML();
     HTML joinedTimeStamp = new HTML();
@@ -45,6 +50,8 @@ public class ProfileScreenDisplayGwtImpl extends Composite implements ProfileScr
 
     public ProfileScreenDisplayGwtImpl() {
         initWidget(uiBinder.createAndBindUi(this));
+
+        scrollPanel.setUsePos(MGWT.getOsDetection().isAndroid());
 
         userName.setWidth("100%");
         joinedTimeStamp.setWidth("100%");

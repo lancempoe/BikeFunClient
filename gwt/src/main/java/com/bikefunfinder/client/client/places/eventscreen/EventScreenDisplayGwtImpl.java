@@ -13,7 +13,9 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Widget;
 import com.googlecode.mgwt.dom.client.event.tap.TapEvent;
+import com.googlecode.mgwt.ui.client.MGWT;
 import com.googlecode.mgwt.ui.client.widget.Button;
+import com.googlecode.mgwt.ui.client.widget.ScrollPanel;
 import com.googlecode.mgwt.ui.client.widget.WidgetList;
 
 public class EventScreenDisplayGwtImpl extends Composite implements EventScreenDisplay {
@@ -30,6 +32,9 @@ public class EventScreenDisplayGwtImpl extends Composite implements EventScreenD
     Button editRideButton;
 
     @UiField
+    ScrollPanel scrollPanel;
+
+    @UiField
     HTML currentTrackings = new HTML();
 
     final BikeRideViewWidgets bikeDisplayWidgets = new BikeRideViewWidgets(true);
@@ -37,6 +42,7 @@ public class EventScreenDisplayGwtImpl extends Composite implements EventScreenD
     public EventScreenDisplayGwtImpl() {
         widgetList = BikeRideViewUtils.buildBikeViewWidgitList(bikeDisplayWidgets);
         initWidget(uiBinder.createAndBindUi(this));
+        scrollPanel.setUsePos(MGWT.getOsDetection().isAndroid());
     }
 
     @Override

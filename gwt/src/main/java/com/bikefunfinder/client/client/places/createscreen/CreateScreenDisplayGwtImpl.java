@@ -18,7 +18,9 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Widget;
 import com.googlecode.mgwt.dom.client.event.tap.TapEvent;
+import com.googlecode.mgwt.ui.client.MGWT;
 import com.googlecode.mgwt.ui.client.widget.Button;
+import com.googlecode.mgwt.ui.client.widget.ScrollPanel;
 import com.googlecode.mgwt.ui.client.widget.WidgetList;
 
 
@@ -30,6 +32,9 @@ public class CreateScreenDisplayGwtImpl  extends Composite implements CreateScre
 
     @UiField
     HTML userName;
+
+    @UiField
+    ScrollPanel scrollPanel;
 
     @UiField
     Button createRideButton;
@@ -48,6 +53,7 @@ public class CreateScreenDisplayGwtImpl  extends Composite implements CreateScre
     public CreateScreenDisplayGwtImpl() {
         widgetList = BikeRideViewUtils.buildBikeViewWidgitList(bikeDisplayWidgets);
         initWidget(uiBinder.createAndBindUi(this));
+        scrollPanel.setUsePos(MGWT.getOsDetection().isAndroid());
     }
 
     @Override

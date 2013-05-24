@@ -6,6 +6,7 @@ import java.util.Map;
 
 import com.bikefunfinder.client.client.places.homescreen.HomeRefreshPullHandler;
 import com.bikefunfinder.client.client.places.homescreen.HomeScreenDisplay;
+import com.google.gwt.core.shared.GWT;
 import com.google.gwt.dom.client.Document;
 import com.google.gwt.event.logical.shared.HasSelectionHandlers;
 import com.google.gwt.event.logical.shared.SelectionEvent;
@@ -53,7 +54,9 @@ import com.googlecode.mgwt.ui.client.widget.touch.TouchWidget;
  * @param <T> type of the children
  */
 public class HeaderListWithPullPanel<G, T> extends Composite {
-
+    static {
+        Resources.INSTANCE.css().ensureInjected();
+    }
 
     private static class SelectionBar<G, T> extends TouchWidget implements TouchHandler, HasSelectionHandlers<Integer> {
 
@@ -64,6 +67,8 @@ public class HeaderListWithPullPanel<G, T> extends Composite {
         public SelectionBar(GroupingList css) {
             this.css = css;
             setElement(Document.get().createULElement());
+            //getElement().addClassName(Resources.INSTANCE.css().colorYellow());
+
 
             addStyleName(css.selectionBar());
 
@@ -154,11 +159,9 @@ public class HeaderListWithPullPanel<G, T> extends Composite {
     private static class MovingHeader extends Widget {
 
         public MovingHeader(ListCss listCss, GroupingList css) {
-
             setElement(DOM.createDiv());
             addStyleName(listCss.listHeadElement());
             addStyleName(css.movingHeader());
-
         }
 
         public void setHTML(String string) {
@@ -203,6 +206,7 @@ public class HeaderListWithPullPanel<G, T> extends Composite {
     public HeaderListWithPullPanel(GroupingCellList<G, T> cellList, GroupingList css) {
 //        super(cellList, css);
         this.cellList = cellList;
+//        this.cellList.addStyleName(Resources.INSTANCE.css().colorGreen());
 
         css.ensureInjected();
         main = new LayoutPanel();
@@ -222,6 +226,9 @@ public class HeaderListWithPullPanel<G, T> extends Composite {
         scrollPanel.setSnapSelector(cellList.getHeaderSelector());
 
         scrollPanel.setShowScrollBarX(false);
+
+        scrollPanel.setUsePos(MGWT.getOsDetection().isAndroid());
+//        scrollPanel.addStyleName(Resources.INSTANCE.css().colorBlue());
 
         main.add(scrollPanel);
         movingHeader = new MovingHeader(cellList.getListCss(), css);

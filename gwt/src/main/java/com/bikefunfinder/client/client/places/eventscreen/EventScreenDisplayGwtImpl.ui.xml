@@ -22,8 +22,8 @@
             </mgwt:right>
         </mgwt:HeaderPanel>
 
-        <mgwt:ScrollPanel>
-            <g:FormPanel ui:field="form">
+        <mgwt:ScrollPanel ui:field="scrollPanel">
+            <g:FormPanel ui:field="form" width="100%">
                 <g:HTMLPanel ui:field="formContents">
 
                     <mgwt:Button ui:field="eventRideMapButton" text="Show Map"/>

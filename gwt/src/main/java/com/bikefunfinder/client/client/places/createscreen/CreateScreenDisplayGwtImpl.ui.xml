@@ -23,8 +23,8 @@
             </mgwt:right>
         </mgwt:HeaderPanel>
 
-
-            <g:FormPanel ui:field="form">
+        <mgwt:ScrollPanel ui:field="scrollPanel" >
+            <g:FormPanel ui:field="form" width="100%">
                 <g:HTMLPanel>
 
                     <mgwt:WidgetList ui:field="widgetList" />
@@ -34,6 +34,6 @@
 
                 </g:HTMLPanel>
             </g:FormPanel>
-
+        </mgwt:ScrollPanel>
     </mgwt:LayoutPanel>
 </ui:UiBinder>

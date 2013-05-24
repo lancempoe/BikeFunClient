@@ -13,7 +13,7 @@
         }
     </ui:style>
 
-    <mgwt:LayoutPanel>
+    <mgwt:LayoutPanel >
         <mgwt:HeaderPanel>
             <mgwt:left>
                 <mgwt:HeaderButton ui:field="backButton" backButton="true" text="Back" />
@@ -22,7 +22,9 @@
                 <g:HTML styleName="{style.positioningForName}">Advanced Search</g:HTML>
             </mgwt:right>
         </mgwt:HeaderPanel>
-            <g:FormPanel >
+
+        <mgwt:ScrollPanel ui:field="scrollPanel">
+            <g:FormPanel width="100%">
                 <g:HTMLPanel >
 
                     <g:FlowPanel ui:field="widgetList" />
@@ -30,5 +32,6 @@
 
                 </g:HTMLPanel>
             </g:FormPanel>
+        </mgwt:ScrollPanel>
     </mgwt:LayoutPanel>
 </ui:UiBinder>

@@ -15,10 +15,8 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.FormPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.googlecode.mgwt.dom.client.event.tap.TapEvent;
-import com.googlecode.mgwt.ui.client.widget.FormListEntry;
-import com.googlecode.mgwt.ui.client.widget.MListBox;
-import com.googlecode.mgwt.ui.client.widget.MTextBox;
-import com.googlecode.mgwt.ui.client.widget.WidgetList;
+import com.googlecode.mgwt.ui.client.MGWT;
+import com.googlecode.mgwt.ui.client.widget.*;
 
 public class SearchScreenDisplayGwtImpl extends Composite implements SearchScreenDisplay {
 
@@ -32,6 +30,9 @@ public class SearchScreenDisplayGwtImpl extends Composite implements SearchScree
     @UiField(provided = true)
     FlowPanel widgetList;
     FormListEntry formListEntry;
+
+    @UiField
+    ScrollPanel scrollPanel;
 
     MTextBox search = new MTextBox();
     MListBox targetAudience = new MListBox();
@@ -80,6 +81,8 @@ public class SearchScreenDisplayGwtImpl extends Composite implements SearchScree
         widgetList.add(formListEntry);
 
         initWidget(uiBinder.createAndBindUi(this));
+
+        scrollPanel.setUsePos(MGWT.getOsDetection().isAndroid());
     }
 
     @Override
