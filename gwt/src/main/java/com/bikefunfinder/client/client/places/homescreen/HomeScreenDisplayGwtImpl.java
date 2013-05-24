@@ -10,7 +10,11 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JsDate;
 import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
+import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.CssResource;
+import com.google.gwt.resources.client.ImageResource;
+import com.google.gwt.resources.client.impl.ImageResourcePrototype;
+import com.google.gwt.safehtml.shared.SafeUri;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
@@ -23,6 +27,7 @@ import com.googlecode.mgwt.dom.client.event.orientation.OrientationChangeHandler
 import com.googlecode.mgwt.dom.client.event.tap.TapEvent;
 import com.googlecode.mgwt.ui.client.MGWT;
 import com.googlecode.mgwt.ui.client.MGWTStyle;
+import com.googlecode.mgwt.ui.client.theme.base.TabBarCss;
 import com.googlecode.mgwt.ui.client.widget.*;
 import com.googlecode.mgwt.ui.client.widget.base.ButtonBase;
 import com.googlecode.mgwt.ui.client.widget.base.PullPanel;
@@ -34,6 +39,8 @@ import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 public class HomeScreenDisplayGwtImpl extends Composite implements HomeScreenDisplay {
@@ -83,9 +90,29 @@ public class HomeScreenDisplayGwtImpl extends Composite implements HomeScreenDis
 
 
     public HomeScreenDisplayGwtImpl() {
-        addButton = new TabBarButton(MGWTStyle.getTheme().getMGWTClientBundle().tabBarMostRecentImage());
-        searchButton = new TabBarButton(MGWTStyle.getTheme().getMGWTClientBundle().tabBarSearchImage());
-        loginButton = new TabBarButton(MGWTStyle.getTheme().getMGWTClientBundle().tabBarContactsImage());
+        ImageResource tabBarAddImage = new ImageResourcePrototype("addIcon", new SafeUri() {
+            @Override
+            public String asString() {
+                return "icons/addRideIcon.png";  //To change body of implemented methods use File | Settings | File Templates.
+            }
+        }, 0, 0, 45, 36, false , false);
+        ImageResource tabBarSearchImage = new ImageResourcePrototype("searchIcon", new SafeUri() {
+            @Override
+            public String asString() {
+                return "icons/searchRideIcon.png";  //To change body of implemented methods use File | Settings | File Templates.
+            }
+        }, 0, 0, 45, 36, false , false);
+        ImageResource tabBarContactsImage = new ImageResourcePrototype("userProfileIcon", new SafeUri() {
+            @Override
+            public String asString() {
+                return "icons/userProfileIcon.png";  //To change body of implemented methods use File | Settings | File Templates.
+            }
+        }, 0, 0, 45, 36, false , false);
+
+        addButton = new TabBarButton(tabBarAddImage);
+        searchButton = new TabBarButton(tabBarSearchImage);
+        loginButton = new TabBarButton(tabBarContactsImage);
+
 
         initWidget(uiBinder.createAndBindUi(this));
         
