@@ -4,6 +4,7 @@ package com.bikefunfinder.client.client.places.searchscreen;
  * @created 4/10/13 11:31 AM
  */
 
+import com.bikefunfinder.client.client.places.searchscreen.styles.Resources;
 import com.bikefunfinder.client.shared.constants.ScreenConstants;
 import com.bikefunfinder.client.shared.model.Query;
 import com.google.gwt.core.client.GWT;
@@ -19,6 +20,9 @@ import com.googlecode.mgwt.ui.client.MGWT;
 import com.googlecode.mgwt.ui.client.widget.*;
 
 public class SearchScreenDisplayGwtImpl extends Composite implements SearchScreenDisplay {
+    static {
+        Resources.INSTANCE.css().ensureInjected();
+    }
 
     private static OverviewDisplayGwtImplUiBinder uiBinder = GWT.create(OverviewDisplayGwtImplUiBinder.class);
 
@@ -60,6 +64,7 @@ public class SearchScreenDisplayGwtImpl extends Composite implements SearchScree
 
         //Build the form.
         widgetList = new FlowPanel();
+        widgetList.addStyleName(Resources.INSTANCE.css().searchScreenPadding());
 
         formListEntry = new FormListEntry();
         formListEntry.setText("Search:");
