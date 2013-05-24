@@ -100,7 +100,7 @@ public final class EventRequest {
 
         final RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.GET, getUrlWithQuery());
         try {
-            request = requestBuilder.sendRequest(clientId, getRequestCallback());
+            request = requestBuilder.sendRequest(null, getRequestCallback());
         } catch (final RequestException e) {
             e.printStackTrace();
         }
@@ -112,6 +112,8 @@ public final class EventRequest {
         final StringBuilder builder = new StringBuilder();
         builder.append(URL);
         builder.append(eventId);
+        builder.append(",");
+        builder.append(clientId);
         builder.append("/geoloc=");
         builder.append(latitude);
         builder.append(",");
