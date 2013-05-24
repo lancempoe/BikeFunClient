@@ -14,6 +14,7 @@ import com.bikefunfinder.client.bootstrap.UncaughtExceptionHandlerFactory;
 import com.googlecode.gwtphonegap.client.PhoneGap;
 import com.googlecode.gwtphonegap.client.PhoneGapAvailableHandler;
 import com.googlecode.gwtphonegap.client.PhoneGapTimeoutHandler;
+import com.googlecode.mgwt.ui.client.MGWTStyle;
 
 import java.util.logging.Logger;
 
@@ -31,5 +32,12 @@ public class BFFEntrypoint implements EntryPoint {
         phoneGapApi.addHandler((PhoneGapAvailableHandler) applicationBootStrapper);
         phoneGapApi.addHandler((PhoneGapTimeoutHandler) applicationBootStrapper);
         phoneGapApi.initializePhoneGap();
+
+
+        //this will create a link element at the end of head
+        MGWTStyle.getTheme().getMGWTClientBundle().getMainCss().ensureInjected();
+        //append your own css as last thing in the head
+        MGWTStyle.injectStyleSheet("css/styles.css");
+
     }
 }
