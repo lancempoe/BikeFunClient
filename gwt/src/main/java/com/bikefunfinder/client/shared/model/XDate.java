@@ -42,7 +42,7 @@ public class XDate extends JavaScriptObject implements Comparable<XDate> {
         return this.xDate.getTimeZeroIfNull();
     }-*/;
 
-    public final native String toString(String xDateFormat) /*-{
+    public final native String toString(String xDateFormat) throws Exception /*-{
         return this.xDate.toString(xDateFormat);
     }-*/;
 

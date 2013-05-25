@@ -8,6 +8,7 @@ import com.bikefunfinder.client.client.places.gmap.GMapPlace;
 import com.bikefunfinder.client.client.places.profilescreen.ProfileScreenPlace;
 import com.bikefunfinder.client.client.places.searchscreen.SearchScreenPlace;
 import com.bikefunfinder.client.gin.Injector;
+import com.bikefunfinder.client.gin.RamObjectCache;
 import com.bikefunfinder.client.shared.Tools.DeviceTools;
 import com.bikefunfinder.client.shared.Tools.NonPhoneGapGeoLocCallback;
 import com.bikefunfinder.client.shared.constants.ScreenConstants;
@@ -188,6 +189,7 @@ public class HomeScreenActivity extends MGWTAbstractActivity implements HomeScre
 
     }
 
+    final RamObjectCache ramObjectCache = Injector.INSTANCE.getRamObjectCache();
 
     private void fireRequestForTimeOfDay(
             final HomeScreenDisplay display,
@@ -197,6 +199,7 @@ public class HomeScreenActivity extends MGWTAbstractActivity implements HomeScre
         SearchByTimeOfDayRequest.Callback callback = new SearchByTimeOfDayRequest.Callback() {
             @Override
             public void onResponseReceived(Root root) {
+                ramObjectCache.setHereAndNowBikeRideCache(Extractor.getBikeRidesFrom(root));
                 setupDisplay(root);
                 notifyTimeAndDayCallback.onResponseReceived();
             }

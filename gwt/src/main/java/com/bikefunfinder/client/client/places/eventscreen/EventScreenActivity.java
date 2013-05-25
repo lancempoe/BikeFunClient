@@ -39,6 +39,11 @@ private final ClientFactory<EventScreenDisplay> clientFactory = Injector.INSTANC
     }
 
     public EventScreenActivity(BikeRide bikeRide, boolean cameFromGmap) {
+        if(bikeRide==null) {
+            clientFactory.getPlaceController().goTo(new HomeScreenPlace());
+            return;
+        }
+
         this.cameFromGmap = cameFromGmap;
         this.bikeRide = bikeRide;
         final EventScreenDisplay display = this.clientFactory.getDisplay(this);

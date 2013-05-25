@@ -113,7 +113,6 @@ public class HomeScreenDisplayGwtImpl extends Composite implements HomeScreenDis
         searchButton = new TabBarButton(tabBarSearchImage);
         loginButton = new TabBarButton(tabBarContactsImage);
 
-
         initWidget(uiBinder.createAndBindUi(this));
         
         timeAndDayButton.addStyleName(style.buttonTreatment());

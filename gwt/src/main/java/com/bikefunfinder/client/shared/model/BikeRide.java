@@ -133,8 +133,7 @@ public class BikeRide extends JavaScriptObject {
     	return this.currentTrackings;
     }-*/;
     
- 	public final String getJSON()
-    {
+ 	public final String getJSON() {
         return new JSONObject(this).toString();
     }
 

@@ -10,10 +10,13 @@ import com.google.gwt.core.client.GWT;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class RamObjectCacheImpl implements RamObjectCache {
+    private Logger log = Logger.getLogger(getClass().getName());
+
     private final List<BikeRide> bikeRideList = new ArrayList<BikeRide>();
-    private BikeRide currentBikeRide;
     private GeoLoc currentPhoneGeoLoc;
 
     @Override
@@ -23,18 +26,62 @@ public class RamObjectCacheImpl implements RamObjectCache {
 
     @Override
     public void setHereAndNowBikeRideCache(List<BikeRide> bikeRides) {
+        List<BikeRide> newBikeRideList = new ArrayList<BikeRide>();
+        List<String> incomingRideIds = new ArrayList<String>();
+
+        newBikeRideList.addAll(bikeRides);
+
+        for(BikeRide bikeRide: newBikeRideList) {
+            incomingRideIds.add(bikeRide.getId());
+        }
+
+        for(BikeRide bikeRide: bikeRideList) {
+            String bikeRideId = bikeRide.getId();
+            if(!incomingRideIds.contains(bikeRideId)) {
+                newBikeRideList.add(bikeRide);
+            }
+        }
         bikeRideList.clear();
-        bikeRideList.addAll(bikeRides);
+        bikeRideList.addAll(newBikeRideList);
     }
 
+    private String currentBikeRideId = null;
     @Override
     public BikeRide getCurrentBikeRide() {
-        return currentBikeRide;
+        if(currentBikeRideId == null) {
+            return null;
+        }
+
+        log.log(Level.ALL, "BikeRide list size" + bikeRideList.size() + ", " +
+                           "hunting for "+currentBikeRideId);
+        for(BikeRide bikeRide: bikeRideList) {
+            String bikeRideId = bikeRide.getId();
+            if(bikeRideId == currentBikeRideId) {
+                return bikeRide;
+            }
+        }
+        return null;
     }
 
     @Override
-    public void setCurrentBikeRide(BikeRide bikeRide) {
-        this.currentBikeRide = bikeRide;
+    public void setCurrentBikeRide(BikeRide newBikeRide) {
+        if(newBikeRide==null || newBikeRide.getId()==null) {
+            return;
+        }
+
+        List<BikeRide> newBikeRideList = new ArrayList<BikeRide>();
+        newBikeRideList.add(newBikeRide);
+        currentBikeRideId = newBikeRide.getId();
+
+        for(BikeRide bikeRide: bikeRideList) {
+            String bikeRideId = bikeRide.getId();
+            if(bikeRideId!=bikeRide.getId()) {
+                newBikeRideList.add(bikeRide);
+            }
+        }
+
+        bikeRideList.clear();
+        bikeRideList.addAll(newBikeRideList);
     }
 
     @Override

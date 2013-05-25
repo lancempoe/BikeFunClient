@@ -16,8 +16,7 @@ public class EventScreenPlace extends Place {
     final boolean wasConstructedById;
 
     public EventScreenPlace(BikeRide bikeRide) {
-        this.wasConstructedById = false;
-        this.bikeRide = bikeRide;
+        this(bikeRide, false);
     }
 
     private EventScreenPlace(BikeRide bikeRide, boolean wasConstructedById) {
@@ -26,8 +25,7 @@ public class EventScreenPlace extends Place {
     }
 
     public EventScreenPlace() {
-        this.bikeRide = null;
-        wasConstructedById = false;
+        this(null, false);
     }
 
     public BikeRide getBikeRide() {
@@ -51,9 +49,7 @@ public class EventScreenPlace extends Place {
                 }
             }
 
-            // actually here, we should call the service for the ride by id son.
-            BikeRide blankBikeRide = GWT.create(BikeRide.class);
-            return new EventScreenPlace(blankBikeRide);
+            return null;
         }
 
         @Override

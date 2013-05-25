@@ -60,6 +60,14 @@ public class JsDateWrapper implements Comparable<JsDateWrapper> {
     }
 
     public String toString(String format) {
-        return xDate.toString(format);
+        if(xDate!=null) {
+            try {
+                return xDate.toString(format);
+            } catch (Exception e) {
+                // bleh
+            }
+        }
+
+        return "";
     }
 }

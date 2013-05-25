@@ -6,9 +6,9 @@ package com.bikefunfinder.client.client.places.createscreen.shared;
 
 import com.bikefunfinder.client.shared.constants.ScreenConstants;
 import com.bikefunfinder.client.shared.model.BikeRide;
+import com.bikefunfinder.client.shared.model.printer.JsDateWrapper;
 import com.bikefunfinder.client.shared.widgets.WidgetHelper;
 import com.googlecode.mgwt.ui.client.widget.MTextBox;
-import com.googlecode.mgwt.ui.client.widget.base.MValueBoxBase;
 
 public class BikeRideViewWidgets extends BikeRideCreateWidgets {
     public final MTextBox totalPeopleTrackingCount = new MTextBox();
@@ -46,16 +46,24 @@ public class BikeRideViewWidgets extends BikeRideCreateWidgets {
         }
 
         //setSafeText(rideImage, bikeRide.getImagePath());
-        WidgetHelper.setSafeText(bikeRideName, bikeRide.getBikeRideName());
-        WidgetHelper.setSafeText(rideLeaderName, bikeRide.getRideLeaderName());
+        if(bikeRide.getBikeRideName()!=null) {
+            WidgetHelper.setSafeText(bikeRideName, bikeRide.getBikeRideName());
+        }
+
+        if(bikeRide.getRideLeaderName()!=null) {
+            WidgetHelper.setSafeText(rideLeaderName, bikeRide.getRideLeaderName());
+        }
 
         int targetAudienceOrderCount = 0;
-        for (ScreenConstants.TargetAudience target : ScreenConstants.TargetAudience.values()) {
-            if (target.getDisplayName().equals(bikeRide.getTargetAudience())) {
-                targetAudienceOrderCount = target.getOrderCount();
-                break;
+        if(bikeRide.getTargetAudience()!=null) {
+            for (ScreenConstants.TargetAudience target : ScreenConstants.TargetAudience.values()) {
+                if (target.getDisplayName().equals(bikeRide.getTargetAudience())) {
+                    targetAudienceOrderCount = target.getOrderCount();
+                    break;
+                }
             }
         }
+
         if(bikeRide.getTargetAudience()!=null && !bikeRide.getTargetAudience().isEmpty()) {
             this.targetAudience.setSelectedIndex(targetAudienceOrderCount);
         }
@@ -75,15 +83,27 @@ public class BikeRideViewWidgets extends BikeRideCreateWidgets {
         }
 
         if(bikeRide.createJsDateWrapperRideStartTime()!=null) {
-            final String timeText = bikeRide.createJsDateWrapperRideStartTime().toString(ScreenConstants.DateFormatPrintPretty) +
-                                    " at " +
-                                    bikeRide.createJsDateWrapperRideStartTime().toString(ScreenConstants.TimeFormatPrintPretty);
+            final String timeText = buildTimeString(bikeRide);
             WidgetHelper.setSafeText(startDateAndTime, timeText);
         } else {
             WidgetHelper.setSafeText(startDateAndTime, " ");
+
         }
 
         WidgetHelper.setSafeValue(details, bikeRide.getDetails());
+    }
+
+    private String buildTimeString(BikeRide bikeRide) {
+
+        if(bikeRide.createJsDateWrapperRideStartTime()!=null) {
+
+            JsDateWrapper a = bikeRide.createJsDateWrapperRideStartTime();
+            final String s1 = a.toString(ScreenConstants.DateFormatPrintPretty);
+            final String time = a.toString(ScreenConstants.TimeFormatPrintPretty);
+            return time + " at " + time;
+
+        }
+        return "";
     }
 
     public void resetState() {
