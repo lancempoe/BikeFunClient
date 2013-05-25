@@ -1,23 +1,16 @@
 package com.bikefunfinder.client.client.places.gmap;
 
-import com.bikefunfinder.client.client.places.createscreen.shared.BikeRideCreateUtils;
 import com.bikefunfinder.client.client.places.homescreen.HomeScreenDisplay;
 import com.bikefunfinder.client.shared.constants.ScreenConstants;
 import com.bikefunfinder.client.shared.constants.ScreenConstants.MapScreenType;
 import com.bikefunfinder.client.shared.model.BikeRide;
 import com.bikefunfinder.client.shared.model.GeoLoc;
-import com.bikefunfinder.client.shared.model.Root;
-import com.google.gwt.core.client.GWT;
-import com.google.gwt.core.client.JsArray;
 import com.google.gwt.core.client.JsDate;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.safehtml.shared.SafeHtml;
-import com.google.gwt.uibinder.client.UiHandler;
-import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.Timer;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.*;
 import com.googlecode.mgwt.ui.client.widget.Button;
 import com.google.maps.gwt.client.*;
@@ -49,7 +42,7 @@ public class GMapViewImpl implements GMapDisplay {
     private static final double EVENT_ZOOM = 17;
     private static final int RESUME_AUTO_PAN_AND_ZOOM_DELAY_MILLIS = 10000;
     private static final double METERS_IN_A_MILE = 1609.34;
-    private static final int HEAR_AND_NOW_RADIUS = 3;
+    private static final int HERE_AND_NOW_RADIUS = 3;
     private static final String START_TRACKING = "Start Tracking";
     private static final String STOP_TRACKING = "Stop Tracking";
 
@@ -70,7 +63,6 @@ public class GMapViewImpl implements GMapDisplay {
 
     private List<InfoWindow> inforWindows = new ArrayList<InfoWindow>();
     private List<Marker> markers = new ArrayList<Marker>();
-    private Polygon polygon; //TODO WHAT IS THIS?
     private Polyline polyline;
 
     private Presenter presenter;
@@ -250,11 +242,11 @@ public class GMapViewImpl implements GMapDisplay {
 
         //Draw the search radius circle
         if (circle == null || resetMap) {
-            final CircleOptions circleOptions = createCircleOptions(map, center, METERS_IN_A_MILE * HEAR_AND_NOW_RADIUS);
+            final CircleOptions circleOptions = createCircleOptions(map, center, METERS_IN_A_MILE * HERE_AND_NOW_RADIUS);
             circle = Circle.create(circleOptions);
         } else {
             circle.setCenter(center);
-            circle.setRadius(METERS_IN_A_MILE * HEAR_AND_NOW_RADIUS);
+            circle.setRadius(METERS_IN_A_MILE * HERE_AND_NOW_RADIUS);
         }
 
         //Phone Location
@@ -262,7 +254,20 @@ public class GMapViewImpl implements GMapDisplay {
 
         //Event Locations.
         for(final BikeRide bikeRide: list) {
-            AddAsMarker(bikeRide.getLocation().getGeoLoc(), bikeRide, ScreenConstants.TargetIcon.EVENT);
+
+            //If tracking then show the location of the ride leader or first track.
+            if (bikeRide.isCurrentlyTracking()) {
+                if (bikeRide.getRideLeaderTracking() != null &&
+                    bikeRide.getRideLeaderTracking().getGeoLoc() != null) {
+                    AddAsMarker(bikeRide.getRideLeaderTracking().getGeoLoc(), bikeRide, ScreenConstants.TargetIcon.EVENT);
+                } else {
+                    AddAsMarker(bikeRide.getCurrentTrackings().get(0).getGeoLoc(), bikeRide, ScreenConstants.TargetIcon.EVENT);
+                }
+
+            //If not tracking then show the start of the ride.
+            } else {
+                AddAsMarker(bikeRide.getLocation().getGeoLoc(), bikeRide, ScreenConstants.TargetIcon.EVENT);
+            }
         }
 
         //Reset the check

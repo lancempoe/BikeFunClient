@@ -12,6 +12,9 @@ public class Settings {
     //Local: Localhost: Be sure to turn on your local mongo db and tomcat prior to running.
     //public static String HOST = "http://localhost:8080/";
 
+    //Localhosted:
+    //public static String HOST = "http://10.0.0.4:8080/"
+
     //Test:
     //public static String HOST = "http://24.21.204.4/";
 

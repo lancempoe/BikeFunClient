@@ -117,7 +117,7 @@ public class BikeRide extends JavaScriptObject {
         this.distanceFromClient = distanceFromClient;
     }-*/;
 
-    public final native String isCurrentlyTracking() /*-{
+    public final native boolean isCurrentlyTracking() /*-{
         return this.currentlyTracking;
     }-*/;
 

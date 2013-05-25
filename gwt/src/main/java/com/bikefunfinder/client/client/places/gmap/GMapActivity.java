@@ -131,15 +131,16 @@ public class GMapActivity extends NavBaseActivity implements GMapDisplay.Present
             isFirstPostSavePhoneGeoLoc = false;
             startWatching();
 
-            //This is close.  it does refresh but stop when you leave the page.  I'll fix that soon and then bring back.
-            timer = new Timer() {
-                public void run() {
-                    refreshScreen();
-                }
-            };
+            if (ramObjectCache.getCurrentBikeRide() != null) { //Event page.
+                timer = new Timer() {
+                    public void run() {
+                        refreshScreen();
+                    }
+                };
 
-            // Schedule the timer to run once in x seconds.
-            timer.scheduleRepeating(ScreenConstants.SCREEN_REFRESH_RATE_IN_SECONDS * 1000);
+                // Schedule the timer to run once in x seconds.
+                timer.scheduleRepeating(ScreenConstants.SCREEN_REFRESH_RATE_IN_SECONDS * 1000);
+            }
         } else if (isTracking) {
 
             if (refreshTrackingCount *ScreenConstants.SCREEN_REFRESH_RATE_IN_SECONDS >= ScreenConstants.TRACKING_WITHOUT_CONFORMATION_IN_SECONDS) {
@@ -337,7 +338,7 @@ public class GMapActivity extends NavBaseActivity implements GMapDisplay.Present
 
     @Override
     public void moreRideDetilsScreenRequested(BikeRide bikeRide) {
-        timer.cancel();
+        if (timer != null) { timer.cancel(); }
         clientFactory.getPlaceController().goTo(new EventScreenPlace(bikeRide));
     }
 
@@ -350,7 +351,7 @@ public class GMapActivity extends NavBaseActivity implements GMapDisplay.Present
 
     @Override
     public void backButtonSelected() {
-        timer.cancel();
+        if (timer != null) { timer.cancel(); }
         trackingWarning = null; //just in case the message is up.
         clientFactory.getPlaceController().goTo(new HomeScreenPlace());
     }

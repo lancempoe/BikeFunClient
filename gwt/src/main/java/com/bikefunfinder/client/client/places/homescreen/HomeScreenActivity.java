@@ -36,6 +36,7 @@ import com.googlecode.mgwt.ui.client.dialog.Dialogs;
 public class HomeScreenActivity extends MGWTAbstractActivity implements HomeScreenDisplay.Presenter {
     private final ClientFactory<HomeScreenDisplay> clientFactory = Injector.INSTANCE.getClientFactory();
     private final HomeScreenPlace.UsageEnum usageEnum;
+    private int geoFailCount = 0;
 
     final NotifyTimeAndDayCallback noOpNotifyTimeAndDayCallback = new NotifyTimeAndDayCallback() {
         @Override public void onError() { } // noOp
@@ -132,12 +133,19 @@ public class HomeScreenActivity extends MGWTAbstractActivity implements HomeScre
 
             @Override
             public void onFailure(GeoLoc geoLoc) {
-                Dialogs.alert("Warning", "Your GPS location is currently unavailable, we will show you results for Portland Oregon.", new Dialogs.AlertCallback() {
-                    @Override
-                    public void onButtonPressed() {
-                    }
-                });
-                fireRequestForTimeOfDay(display, geoLoc, noOpNotifyTimeAndDayCallback);
+
+
+                if (geoFailCount++ < 3) { //Allow fails up to 3 times.
+                    onTimeAndDayButton(); //Try again.
+                } else {
+                    Dialogs.alert("Warning", "Your GPS location is currently unavailable, we will show you results for Portland Oregon.", new Dialogs.AlertCallback() {
+                        @Override
+                        public void onButtonPressed() {
+                        }
+                    });
+                    fireRequestForTimeOfDay(display, geoLoc, noOpNotifyTimeAndDayCallback);
+                }
+
             }
         });
     }

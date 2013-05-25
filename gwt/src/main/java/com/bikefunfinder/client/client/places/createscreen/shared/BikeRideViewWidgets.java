@@ -37,9 +37,7 @@ public class BikeRideViewWidgets extends BikeRideCreateWidgets {
 
         WidgetHelper.setSafeText(totalPeopleTrackingCount, String.valueOf(bikeRide.getTotalPeopleTrackingCount()));
 
-        if(bikeRide.isCurrentlyTracking()!=null &&
-           !bikeRide.isCurrentlyTracking().isEmpty() &&
-           bikeRide.getCurrentTrackings().equals("True")) {
+        if(bikeRide.isCurrentlyTracking()) {
             WidgetHelper.setSafeText(currentlyTracking, "Yes");
         } else {
             WidgetHelper.setSafeText(currentlyTracking, "No");
