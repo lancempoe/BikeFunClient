@@ -4,10 +4,10 @@ package com.bikefunfinder.client.client.places.createscreen;
  * @created 4/6/13 2:22 AM
  */
 
-import com.bikefunfinder.client.client.places.createscreen.shared.BikeRideCreateUtils;
-import com.bikefunfinder.client.client.places.createscreen.shared.BikeRideCreateWidgets;
-import com.bikefunfinder.client.client.places.createscreen.shared.BikeRideCreateWidgetsImpl;
-import com.bikefunfinder.client.client.places.createscreen.shared.BikeRideViewUtils;
+import com.bikefunfinder.client.client.places.createscreen.widgets.BikeRideCreateUtils;
+import com.bikefunfinder.client.client.places.createscreen.widgets.BikeRideCreateWidgets;
+import com.bikefunfinder.client.client.places.createscreen.widgets.BikeRideCreateWidgetsImpl;
+import com.bikefunfinder.client.client.places.eventscreen.widgets.BikeRideViewUtils;
 import com.bikefunfinder.client.shared.model.BikeRide;
 import com.bikefunfinder.client.shared.model.Root;
 import com.google.gwt.core.client.GWT;

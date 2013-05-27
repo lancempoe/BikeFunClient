@@ -4,7 +4,7 @@ package com.bikefunfinder.client.client.places.eventscreen.widgets;
  * @created 5/8/13 9:51 PM
  */
 
-import com.bikefunfinder.client.client.places.createscreen.shared.BikeRideCreateWidgets;
+import com.bikefunfinder.client.client.places.createscreen.widgets.BikeRideCreateWidgets;
 import com.bikefunfinder.client.shared.model.Tracking;
 import com.google.gwt.core.client.JsArray;
 import com.google.gwt.safehtml.shared.SafeHtml;

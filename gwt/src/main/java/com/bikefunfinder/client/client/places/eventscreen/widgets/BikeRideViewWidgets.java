@@ -4,7 +4,7 @@ package com.bikefunfinder.client.client.places.eventscreen.widgets;
  * @created 5/24/13 9:43 PM
  */
 
-import com.bikefunfinder.client.client.places.createscreen.shared.DisplaysBikeRideState;
+import com.bikefunfinder.client.client.places.createscreen.widgets.DisplaysBikeRideState;
 import com.google.gwt.user.client.ui.Label;
 
 public interface BikeRideViewWidgets extends DisplaysBikeRideState {

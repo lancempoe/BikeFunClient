@@ -1,8 +1,8 @@
 package com.bikefunfinder.client.client.places.eventscreen;
 
-import com.bikefunfinder.client.client.places.createscreen.shared.BikeRideViewUtils;
-import com.bikefunfinder.client.client.places.createscreen.shared.BikeRideViewWidgets;
-import com.bikefunfinder.client.client.places.createscreen.shared.BikeRideViewWidgetsImpl;
+import com.bikefunfinder.client.client.places.eventscreen.widgets.BikeRideViewUtils;
+import com.bikefunfinder.client.client.places.eventscreen.widgets.BikeRideViewWidgets;
+import com.bikefunfinder.client.client.places.eventscreen.widgets.BikeRideViewWidgetsImpl;
 import com.bikefunfinder.client.shared.model.BikeRide;
 import com.bikefunfinder.client.shared.model.Tracking;
 import com.google.gwt.core.client.GWT;
