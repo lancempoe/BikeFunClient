@@ -324,12 +324,20 @@ public class HeaderListWithPullPanel<G, T> extends Composite {
 
     private void updateHeaderPositionAndTitle(int y) {
         if(pagesY==null) return;
+        if(movingHeader==null) return;
+
         int headerHeight = movingHeader.getOffsetHeight();
 
         if (lastPage != currentPage) {
             lastPage = currentPage;
             int modelIndex = cellList.getMapping().get(currentPage);
-            movingHeader.setHTML(cellList.renderGroupHeader(list.get(modelIndex).getGroup()));
+            final CellGroup<G, T> gtCellGroup = list.get(modelIndex);
+            if(gtCellGroup!=null) {
+                final G group = gtCellGroup.getGroup();
+                if(group!=null) {
+                    movingHeader.setHTML(cellList.renderGroupHeader(group));
+                }
+            }
         }
 
         if (y > 0) {
