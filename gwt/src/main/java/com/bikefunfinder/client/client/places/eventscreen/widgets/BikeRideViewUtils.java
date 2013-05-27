@@ -56,8 +56,6 @@ public class BikeRideViewUtils {
         return formListEntry;
     }
 
-
-    //todo: wtf man, this be a mess.. made for the sake.. of SCIENCE! haha no, I just did some bullshit.
     public static
         WidgetList buildWidgetListWithLabels(final BikeRideCreateWidgets u) {
         WidgetList newWidgetList = new WidgetList();

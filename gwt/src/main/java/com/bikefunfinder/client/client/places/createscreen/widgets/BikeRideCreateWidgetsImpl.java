@@ -64,7 +64,7 @@ public class BikeRideCreateWidgetsImpl implements BikeRideCreateWidgets {
     }
 
     @Override
-    public ListBox getTargetAudience() {
+    public MListBox getTargetAudience() {
         return targetAudience;
     }
 

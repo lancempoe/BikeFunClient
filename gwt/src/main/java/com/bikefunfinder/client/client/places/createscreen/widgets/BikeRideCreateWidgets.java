@@ -6,6 +6,7 @@ package com.bikefunfinder.client.client.places.createscreen.widgets;
 
 import com.google.gwt.user.client.ui.*;
 import com.googlecode.mgwt.ui.client.widget.MCheckBox;
+import com.googlecode.mgwt.ui.client.widget.MListBox;
 import com.googlecode.mgwt.ui.client.widget.MTextArea;
 import com.googlecode.mgwt.ui.client.widget.MTextBox;
 
@@ -16,7 +17,7 @@ public interface BikeRideCreateWidgets extends DisplaysBikeRideState {
     public MTextBox getLocationCity();
     public MTextBox getLocationState();
     public MCheckBox getTrackingAllowed();
-    public ListBox getTargetAudience();
+    public MListBox getTargetAudience();
     public MTextBox getStartDate();
     public MTextBox getStartTime();
     public MTextArea getDetails();
