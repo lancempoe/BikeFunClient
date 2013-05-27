@@ -1,6 +1,7 @@
 package com.bikefunfinder.client.shared.request;
 
 import com.bikefunfinder.client.shared.constants.Settings;
+import com.bikefunfinder.client.shared.model.Tracking;
 import com.bikefunfinder.client.shared.model.User;
 import com.bikefunfinder.client.shared.model.json.Utils;
 import com.bikefunfinder.client.shared.model.printer.JSODescriber;
@@ -14,16 +15,12 @@ import com.googlecode.mgwt.ui.client.dialog.Dialogs;
  * Time: 7:36 PM
  */
 public final class NewUserRequest {
-    public interface Callback {
-        void onError();
-        void onResponseReceived(User user);
-    }
 
     public static final class Builder {
-        private NewUserRequest.Callback callback;
+        private ServiceCallback<User> callback;
         private User user;
 
-        public Builder(final NewUserRequest.Callback callback) {
+        public Builder(final ServiceCallback<User> callback) {
             if (callback == null) {
                 throw new NullPointerException();
             }
@@ -31,7 +28,7 @@ public final class NewUserRequest {
             this.callback = callback;
         }
 
-        public Builder callback(final NewUserRequest.Callback callback) {
+        public Builder callback(final ServiceCallback<User> callback) {
             if (callback == null) {
                 throw new NullPointerException();
             }
@@ -52,7 +49,7 @@ public final class NewUserRequest {
 
     private static final String URL = Settings.HOST + "FunService/rest/users";
 
-    private final NewUserRequest.Callback callback;
+    private final ServiceCallback<User> callback;
     private final User user;
     private final Request request;
 

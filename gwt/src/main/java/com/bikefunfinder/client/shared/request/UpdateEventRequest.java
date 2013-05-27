@@ -20,25 +20,21 @@ import com.googlecode.mgwt.ui.client.dialog.Dialogs;
 import java.math.BigDecimal;
 
 public final class UpdateEventRequest {
-    public interface Callback {
-        void onError();
-        void onResponseReceived(BikeRide bikeRide);
-    }
 
     public static final class Builder {
-        private UpdateEventRequest.Callback callback;
+        private ServiceCallback<BikeRide> callback;
         private Root root;
         private BigDecimal longitude;
         private BigDecimal latitude;
 
-        public Builder(final UpdateEventRequest.Callback callback) {
+        public Builder(final ServiceCallback<BikeRide> callback) {
             if (callback == null) {
                 throw new NullPointerException();
             }
             this.callback = callback;
         }
 
-        public Builder callback(final UpdateEventRequest.Callback callback) {
+        public Builder callback(final ServiceCallback<BikeRide> callback) {
             if (callback == null) {
                 throw new NullPointerException();
             }
@@ -68,7 +64,7 @@ public final class UpdateEventRequest {
 
     private static final String URL = Settings.HOST + "FunService/rest/bikerides/update";
 
-    private final UpdateEventRequest.Callback callback;
+    private final ServiceCallback<BikeRide> callback;
     private final Root root;
     private final BigDecimal latitude;
     private final BigDecimal longitude;

@@ -17,6 +17,7 @@ import com.bikefunfinder.client.shared.model.Root;
 import com.bikefunfinder.client.shared.model.helper.Extractor;
 import com.bikefunfinder.client.shared.model.json.Utils;
 import com.bikefunfinder.client.shared.request.SearchByTimeOfDayRequest;
+import com.bikefunfinder.client.shared.request.ServiceCallback;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.RunAsyncCallback;
 import com.google.gwt.user.client.Window;
@@ -194,7 +195,7 @@ public class HomeScreenActivity extends MGWTAbstractActivity implements HomeScre
             final GeoLoc geoLoc,
             final NotifyTimeAndDayCallback notifyTimeAndDayCallback) {
 
-        SearchByTimeOfDayRequest.Callback callback = new SearchByTimeOfDayRequest.Callback() {
+        ServiceCallback<Root> callback = new ServiceCallback<Root>() {
             @Override
             public void onResponseReceived(Root root) {
                 ramObjectCache.setHereAndNowBikeRideCache(Extractor.getBikeRidesFrom(root));

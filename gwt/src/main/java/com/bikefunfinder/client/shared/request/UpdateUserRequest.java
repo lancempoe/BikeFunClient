@@ -1,8 +1,8 @@
 package com.bikefunfinder.client.shared.request;
 
 
-import com.bikefunfinder.client.shared.model.User;
 import com.bikefunfinder.client.shared.constants.Settings;
+import com.bikefunfinder.client.shared.model.User;
 import com.bikefunfinder.client.shared.model.json.Utils;
 import com.bikefunfinder.client.shared.model.printer.JSODescriber;
 import com.google.gwt.http.client.*;
@@ -16,16 +16,12 @@ import com.googlecode.mgwt.ui.client.dialog.Dialogs;
  * To change this template use File | Settings | File Templates.
  */
 public final class UpdateUserRequest {
-    public interface Callback {
-        void onError();
-        void onResponseReceived(User user);
-    }
 
     public static final class Builder {
-        private UpdateUserRequest.Callback callback;
+        private ServiceCallback<User> callback;
         private User user;
 
-        public Builder(final UpdateUserRequest.Callback callback) {
+        public Builder(final ServiceCallback<User> callback) {
             if (callback == null) {
                 throw new NullPointerException();
             }
@@ -33,7 +29,7 @@ public final class UpdateUserRequest {
             this.callback = callback;
         }
 
-        public Builder callback(final UpdateUserRequest.Callback callback) {
+        public Builder callback(final ServiceCallback<User> callback) {
             if (callback == null) {
                 throw new NullPointerException();
             }
@@ -54,7 +50,7 @@ public final class UpdateUserRequest {
 
     private static final String URL = Settings.HOST + "FunService/rest/users/update ";
 
-    private final UpdateUserRequest.Callback callback;
+    private final ServiceCallback<User> callback;
     private final User user;
     private final Request request;
 

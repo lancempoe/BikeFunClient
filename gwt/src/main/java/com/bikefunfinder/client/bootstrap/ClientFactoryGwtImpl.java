@@ -23,12 +23,15 @@ import com.bikefunfinder.client.shared.model.User;
 import com.bikefunfinder.client.shared.model.json.Utils;
 import com.bikefunfinder.client.shared.model.printer.JSODescriber;
 import com.bikefunfinder.client.shared.request.AnonymousRequest;
+import com.bikefunfinder.client.shared.request.ServiceCallback;
 import com.google.gwt.core.shared.GWT;
 import com.google.gwt.place.shared.PlaceController;
 import com.google.gwt.user.client.Window;
 import com.google.web.bindery.event.shared.EventBus;
 import com.google.web.bindery.event.shared.SimpleEventBus;
 import com.googlecode.gwtphonegap.client.PhoneGap;
+import com.googlecode.gwtphonegap.client.event.OffLineEvent;
+import com.googlecode.gwtphonegap.client.event.OnlineEvent;
 import com.googlecode.mgwt.mvp.client.MGWTAbstractActivity;
 import com.googlecode.mgwt.storage.client.Storage;
 import com.bikefunfinder.client.client.places.gmap.*;
@@ -48,6 +51,7 @@ public class ClientFactoryGwtImpl implements ClientFactory {
     private EventScreenDisplay eventScreenDisplay;
     private GMapDisplay gMapDisplay;
     private AppPlaceHistoryMapper historyHandler;
+    private boolean isDiviceOnline = true;
 
     public ClientFactoryGwtImpl() {
         this.storageInterface = new LocalStorageWrapper();
@@ -92,6 +96,22 @@ public class ClientFactoryGwtImpl implements ClientFactory {
         }
 
         throw new RuntimeException("No fair! We need a real activity");
+    }
+
+    public void deviceNetworkStateChanged(OnlineEvent onlineEvent) {
+        Window.alert("Device is on the network!"+onlineEvent.toString());
+        isDiviceOnline = true;
+    }
+
+    public void deviceNetworkStateChanged(OffLineEvent offLineEvent) {
+        Window.alert("Device is offline!"+offLineEvent.toString());
+        isDiviceOnline = false;
+
+    }
+
+    @Override
+    public boolean isDeviceConnectedToNetwork() {
+        return isDiviceOnline;
     }
 
     public CreateScreenDisplay getCreateScreenDisplay() {
@@ -203,7 +223,7 @@ public class ClientFactoryGwtImpl implements ClientFactory {
     }
 
     private void createAnonymousAccount(final Storage storageInterface, final String key, final String uuid) {
-        AnonymousRequest.Callback callback = new AnonymousRequest.Callback() {
+        ServiceCallback<AnonymousUser> callback = new ServiceCallback<AnonymousUser>() {
             @Override
             public void onError() {
                 //At this point the message has already been displayed to the user.

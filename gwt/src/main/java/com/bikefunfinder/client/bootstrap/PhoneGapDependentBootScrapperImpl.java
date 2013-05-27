@@ -8,6 +8,7 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.googlecode.gwtphonegap.client.PhoneGap;
+import com.googlecode.gwtphonegap.client.event.*;
 import com.googlecode.mgwt.ui.client.MGWT;
 import com.googlecode.mgwt.ui.client.MGWTSettings;
 import com.googlecode.mgwt.ui.client.MGWTStyle;
@@ -32,14 +33,16 @@ public class PhoneGapDependentBootScrapperImpl extends PhoneGapDependentBootScra
 
     }
 
-
-    ClientFactory clientFactory;
+    private ClientFactory clientFactory;
 
     protected void phoneGapAvailable() {
         Injector.INSTANCE.getClientFactory().setPhoneGap(phoneGapApi);
         clientFactory = Injector.INSTANCE.getClientFactory();
 
         buildDisplay(clientFactory);
+
+        setOfflineHandlerIfAvailable();
+        setOnlineHandlerIfAvailable();
 
         MGWTSettings settings = MgwtSettingsFactory.buildMgwtSettings();
         MGWT.applySettings(settings);
@@ -50,6 +53,32 @@ public class PhoneGapDependentBootScrapperImpl extends PhoneGapDependentBootScra
         PlaceHistoryHandler historyHandler = createHistoryMapper(clientFactory);
         historyHandler.handleCurrentHistory();
     }
+
+    private void setOfflineHandlerIfAvailable() {
+        HasOfflineHandler hasOfflineHandler = phoneGapApi.getEvent().getOffLineHandler();
+        if(hasOfflineHandler!=null) {
+            hasOfflineHandler.addOfflineHandler(new OffLineHandler() {
+                @Override
+                public void onOffLine(OffLineEvent event) {
+                    clientFactory.deviceNetworkStateChanged(event);
+                }
+            });
+        }
+    }
+
+    private void setOnlineHandlerIfAvailable() {
+        HasOnlineHandler hasOnlineHandler = phoneGapApi.getEvent().getOnlineHandler();
+        if(hasOnlineHandler!=null) {
+            hasOnlineHandler.addOnlineHandler(new OnlineHandler() {
+                @Override
+                public void onOnlineEvent(OnlineEvent event) {
+                    clientFactory.deviceNetworkStateChanged(event);
+                }
+            });
+        }
+    }
+
+
 
     private PlaceHistoryHandler createHistoryMapper(final ClientFactory clientFactory) {
         AppPlaceHistoryMapper historyMapper = GWT.create(AppPlaceHistoryMapper.class);

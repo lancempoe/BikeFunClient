@@ -15,6 +15,7 @@ import com.bikefunfinder.client.shared.model.json.Utils;
 import com.bikefunfinder.client.shared.request.EventRequest;
 import com.bikefunfinder.client.shared.request.NewTrackRequest;
 import com.bikefunfinder.client.shared.request.SearchByProximityRequest;
+import com.bikefunfinder.client.shared.request.ServiceCallback;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.http.client.UrlBuilder;
 import com.google.gwt.user.client.Timer;
@@ -187,7 +188,7 @@ public class GMapActivity extends NavBaseActivity implements GMapDisplay.Present
 
     private void pingClientTrack() {
         if (isTracking) {
-            NewTrackRequest.Callback callback = new NewTrackRequest.Callback() {
+            ServiceCallback<Tracking> callback = new ServiceCallback<Tracking>() {
                 @Override
                 public void onError() {
                     //Unable to refresh... leave screen as is.
@@ -296,7 +297,7 @@ public class GMapActivity extends NavBaseActivity implements GMapDisplay.Present
 
     private void fireRequestForHereAndNow(final GMapDisplay display, final GeoLoc phoneGeoLoc) {
 
-        SearchByProximityRequest.Callback callback = new SearchByProximityRequest.Callback() {
+        ServiceCallback<Root> callback = new ServiceCallback<Root>() {
             @Override
             public void onError() {
                 display.displayPageName("Sorry, No Rides");
@@ -320,7 +321,7 @@ public class GMapActivity extends NavBaseActivity implements GMapDisplay.Present
 
     private void updatedBikeRide(final GeoLoc phoneGeoLoc) {
 
-        EventRequest.Callback callback = new EventRequest.Callback() {
+        ServiceCallback<BikeRide> callback = new ServiceCallback<BikeRide>() {
             @Override
             public void onError() {
                 //Unable to refresh... leave screen as is.

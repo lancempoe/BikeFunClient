@@ -15,17 +15,13 @@ import com.google.gwt.user.client.Window;
 import com.googlecode.mgwt.ui.client.dialog.Dialogs;
 
 public final class AnonymousRequest {
-    public interface Callback {
-        void onError();
-        void onResponseReceived(AnonymousUser anonymousUser);
-    }
 
     public static final class Builder {
-        private AnonymousRequest.Callback callback;
+        private ServiceCallback<AnonymousUser> callback;
         private String key;
         private String uuid;
 
-        public Builder(final AnonymousRequest.Callback callback) {
+        public Builder(final ServiceCallback<AnonymousUser> callback) {
             if (callback == null) {
                 throw new NullPointerException();
             }
@@ -33,7 +29,7 @@ public final class AnonymousRequest {
             this.callback = callback;
         }
 
-        public Builder callback(final AnonymousRequest.Callback callback) {
+        public Builder callback(final ServiceCallback<AnonymousUser> callback) {
             if (callback == null) {
                 throw new NullPointerException();
             }
@@ -58,7 +54,7 @@ public final class AnonymousRequest {
 
     private static final String URL = Settings.HOST + "FunService/rest/users/anonymous/";
 
-    private final AnonymousRequest.Callback callback;
+    private final ServiceCallback<AnonymousUser> callback;
     private final String key;
     private final String uuid;
     private final Request request;

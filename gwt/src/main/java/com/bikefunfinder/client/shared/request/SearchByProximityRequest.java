@@ -19,17 +19,13 @@ import com.googlecode.mgwt.ui.client.dialog.Dialogs;
 import java.math.BigDecimal;
 
 public final class SearchByProximityRequest {
-    public interface Callback {
-        void onError();
-        void onResponseReceived(Root root);
-    }
 
     public static final class Builder {
-        private SearchByProximityRequest.Callback callback;
+        private ServiceCallback<Root> callback;
         private BigDecimal longitude;
         private BigDecimal latitude;
 
-        public Builder(final SearchByProximityRequest.Callback callback) {
+        public Builder(final ServiceCallback<Root> callback) {
             if (callback == null) {
                 throw new NullPointerException();
             }
@@ -37,7 +33,7 @@ public final class SearchByProximityRequest {
             this.callback = callback;
         }
 
-        public Builder callback(final SearchByProximityRequest.Callback callback) {
+        public Builder callback(final ServiceCallback<Root> callback) {
             if (callback == null) {
                 throw new NullPointerException();
             }
@@ -67,7 +63,7 @@ public final class SearchByProximityRequest {
 
     private static final String URL = Settings.HOST + "FunService/rest/display/by_proximity/";
 
-    private final SearchByProximityRequest.Callback callback;
+    private final ServiceCallback<Root> callback;
     private final BigDecimal latitude;
     private final BigDecimal longitude;
     private final Request request;

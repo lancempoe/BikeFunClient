@@ -12,6 +12,8 @@ import com.google.gwt.place.shared.PlaceHistoryHandler;
 import com.google.web.bindery.event.shared.EventBus;
 import com.googlecode.gwtphonegap.client.PhoneGap;
 import com.bikefunfinder.client.client.places.gmap.*;
+import com.googlecode.gwtphonegap.client.event.OffLineEvent;
+import com.googlecode.gwtphonegap.client.event.OnlineEvent;
 import com.googlecode.mgwt.mvp.client.MGWTAbstractActivity;
 
 public interface ClientFactory<DisplayType> {
@@ -21,19 +23,10 @@ public interface ClientFactory<DisplayType> {
 
     public void setPhoneGap(PhoneGap phoneGap);
     public DisplayType getDisplay(MGWTAbstractActivity activity);
-/*
-    public CreateScreenDisplay getCreateScreenDisplay();
 
-    public HomeScreenDisplay getHomeScreenDisplay();
-
-    public ProfileScreenDisplay getProfileScreenDisplay();
-
-    public EventScreenDisplay getEventScreenDisplay();
-
-    public SearchScreenDisplay getSearchScreenDisplay();
-
-    public GMapDisplay getGMapDisplay();
-    */
+    public void deviceNetworkStateChanged(OnlineEvent onlineEvent);
+    public void deviceNetworkStateChanged(OffLineEvent offLineEvent);
+    public boolean isDeviceConnectedToNetwork();
 
     public String getStoredValue(String value);
     public boolean setStoredValue(String key, String value);

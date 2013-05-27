@@ -9,10 +9,7 @@ package com.bikefunfinder.client.shared.request;
  */
 
 import com.bikefunfinder.client.shared.constants.Settings;
-import com.bikefunfinder.client.shared.model.BikeRide;
-import com.bikefunfinder.client.shared.model.GeoLoc;
-import com.bikefunfinder.client.shared.model.Query;
-import com.bikefunfinder.client.shared.model.Root;
+import com.bikefunfinder.client.shared.model.*;
 import com.bikefunfinder.client.shared.model.json.Utils;
 import com.bikefunfinder.client.shared.model.printer.JSODescriber;
 import com.google.gwt.http.client.*;
@@ -21,18 +18,14 @@ import com.googlecode.mgwt.ui.client.dialog.Dialogs;
 import java.math.BigDecimal;
 
 public final class SearchByParametersRequest {
-    public interface Callback {
-        void onError();
-        void onResponseReceived(Root root);
-    }
 
     public static final class Builder {
-        private SearchByParametersRequest.Callback callback;
+        private ServiceCallback<Root> callback;
         private Query query;
         private BigDecimal longitude;
         private BigDecimal latitude;
 
-        public Builder(final SearchByParametersRequest.Callback callback) {
+        public Builder(final ServiceCallback<Root> callback) {
             if (callback == null) {
                 throw new NullPointerException();
             }
@@ -40,7 +33,7 @@ public final class SearchByParametersRequest {
             this.callback = callback;
         }
 
-        public Builder callback(final SearchByParametersRequest.Callback callback) {
+        public Builder callback(final ServiceCallback<Root> callback) {
             if (callback == null) {
                 throw new NullPointerException();
             }
@@ -71,7 +64,7 @@ public final class SearchByParametersRequest {
 
     private static final String URL = Settings.HOST + "FunService/rest/display/by_search/";
 
-    private final SearchByParametersRequest.Callback callback;
+    private final ServiceCallback<Root> callback;
     private final Query query;
     private final BigDecimal latitude;
     private final BigDecimal longitude;

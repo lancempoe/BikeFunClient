@@ -14,9 +14,7 @@ import com.bikefunfinder.client.shared.Tools.DeviceTools;
 import com.bikefunfinder.client.shared.Tools.NonPhoneGapGeoLocCallback;
 import com.bikefunfinder.client.shared.model.*;
 import com.bikefunfinder.client.shared.model.json.Utils;
-import com.bikefunfinder.client.shared.request.DeleteEventRequest;
-import com.bikefunfinder.client.shared.request.NewEventRequest;
-import com.bikefunfinder.client.shared.request.UpdateEventRequest;
+import com.bikefunfinder.client.shared.request.*;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JsArray;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
@@ -99,7 +97,7 @@ public class CreateScreenActivity extends MGWTAbstractActivity implements Create
             return ;
         }
 
-        final NewEventRequest.Builder request = new NewEventRequest.Builder(new NewEventRequest.Callback() {
+        final NewEventRequest.Builder request = new NewEventRequest.Builder(new ServiceCallback<BikeRide>() {
             @Override
             public void onError() {
                 //display.displayFailedToCreateRideMessage();
@@ -136,7 +134,7 @@ public class CreateScreenActivity extends MGWTAbstractActivity implements Create
     @Override
     public void onUpdateSelected(final Root root) {
 
-        final UpdateEventRequest.Builder request = new UpdateEventRequest.Builder(new UpdateEventRequest.Callback() {
+        final UpdateEventRequest.Builder request = new UpdateEventRequest.Builder(new ServiceCallback<BikeRide>() {
             @Override
             public void onError() {
                 //At this point the message has already been displayed to the user.
@@ -188,14 +186,14 @@ public class CreateScreenActivity extends MGWTAbstractActivity implements Create
     }
 
     private void DeleteEvent(final BikeRide bikeRide) {
-        final DeleteEventRequest.Builder request = new DeleteEventRequest.Builder(new DeleteEventRequest.Callback() {
+        final DeleteEventRequest.Builder request = new DeleteEventRequest.Builder(new ServiceCallback<NoOpResponseObject>() {
             @Override
             public void onError() {
                 //At this point the message has already been displayed to the user.
             }
 
             @Override
-            public void onResponseReceived() {
+            public void onResponseReceived(NoOpResponseObject noOpResponseObject) {
                 clientFactory.refreshUserAccount();
                 clientFactory.getPlaceController().goTo(new HomeScreenPlace());
                 ramObjectCache.deleteRide(bikeRide.getId());

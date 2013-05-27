@@ -10,6 +10,7 @@ import com.bikefunfinder.client.shared.Tools.DeviceTools;
 import com.bikefunfinder.client.shared.Tools.NonPhoneGapGeoLocCallback;
 import com.bikefunfinder.client.shared.model.*;
 import com.bikefunfinder.client.shared.request.SearchByTimeOfDayForProfileRequest;
+import com.bikefunfinder.client.shared.request.ServiceCallback;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.web.bindery.event.shared.EventBus;
@@ -70,7 +71,7 @@ public class ProfileScreenActivity extends MGWTAbstractActivity implements Profi
     }
 
     private void fireRequestForsearchByTimeOfDayForProfile(GeoLoc geoLoc) {
-        SearchByTimeOfDayForProfileRequest.Callback callback = new SearchByTimeOfDayForProfileRequest.Callback() {
+        ServiceCallback<Root> callback = new ServiceCallback<Root>() {
             @Override
             public void onResponseReceived(Root root) {
                 clientFactory.getPlaceController().goTo(new HomeScreenPlace(root, HomeScreenPlace.UsageEnum.ShowMyRides));

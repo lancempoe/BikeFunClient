@@ -15,18 +15,14 @@ import com.googlecode.mgwt.ui.client.dialog.Dialogs;
 import java.math.BigDecimal;
 
 public final class NewEventRequest {
-    public interface Callback {
-        void onError();
-        void onResponseReceived(BikeRide bikeRide);
-    }
 
     public static final class Builder {
-        private NewEventRequest.Callback callback;
+        private ServiceCallback<BikeRide> callback;
         private BikeRide bikeRide;
         private BigDecimal longitude;
         private BigDecimal latitude;
 
-        public Builder(final NewEventRequest.Callback callback) {
+        public Builder(final ServiceCallback<BikeRide> callback) {
             if (callback == null) {
                 throw new NullPointerException();
             }
@@ -34,7 +30,7 @@ public final class NewEventRequest {
             this.callback = callback;
         }
 
-        public Builder callback(final NewEventRequest.Callback callback) {
+        public Builder callback(final ServiceCallback<BikeRide> callback) {
             if (callback == null) {
                 throw new NullPointerException();
             }
@@ -65,7 +61,7 @@ public final class NewEventRequest {
 
     private static final String URL = Settings.HOST + "FunService/rest/bikerides/new";
 
-    private final NewEventRequest.Callback callback;
+    private final ServiceCallback<BikeRide> callback;
     private final BikeRide bikeRide;
     private final BigDecimal latitude;
     private final BigDecimal longitude;

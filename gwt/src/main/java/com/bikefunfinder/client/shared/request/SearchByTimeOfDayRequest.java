@@ -15,17 +15,13 @@ import com.googlecode.mgwt.ui.client.dialog.Dialogs;
 import java.math.BigDecimal;
 
 public final class SearchByTimeOfDayRequest {
-    public interface Callback {
-        void onError();
-        void onResponseReceived(Root root);
-    }
 
     public static final class Builder {
-        private SearchByTimeOfDayRequest.Callback callback;
+        private ServiceCallback<Root> callback;
         private BigDecimal longitude;
         private BigDecimal latitude;
 
-        public Builder(final SearchByTimeOfDayRequest.Callback callback) {
+        public Builder(final ServiceCallback<Root> callback) {
             if (callback == null) {
                 throw new NullPointerException();
             }
@@ -33,7 +29,7 @@ public final class SearchByTimeOfDayRequest {
             this.callback = callback;
         }
 
-        public Builder callback(final SearchByTimeOfDayRequest.Callback callback) {
+        public Builder callback(final ServiceCallback<Root> callback) {
             if (callback == null) {
                 throw new NullPointerException();
             }
@@ -58,7 +54,7 @@ public final class SearchByTimeOfDayRequest {
 
     private static final String URL = Settings.HOST + "FunService/rest/display/by_time_of_day/";
 
-    private final SearchByTimeOfDayRequest.Callback callback;
+    private final ServiceCallback<Root> callback;
     private final BigDecimal latitude;
     private final BigDecimal longitude;
     private final Request request;

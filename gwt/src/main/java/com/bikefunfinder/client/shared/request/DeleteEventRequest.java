@@ -8,6 +8,7 @@ package com.bikefunfinder.client.shared.request;
  * To change this template use File | Settings | File Templates.
  */
 
+import com.bikefunfinder.client.shared.model.AnonymousUser;
 import com.bikefunfinder.client.shared.model.Root;
 import com.bikefunfinder.client.shared.model.printer.JSODescriber;
 import com.bikefunfinder.client.shared.constants.Settings;
@@ -17,16 +18,12 @@ import com.googlecode.mgwt.ui.client.dialog.ConfirmDialog.*;
 import com.googlecode.mgwt.ui.client.dialog.Dialogs;
 
 public final class DeleteEventRequest {
-    public interface Callback {
-        void onError();
-        void onResponseReceived();
-    }
 
     public static final class Builder {
-        private DeleteEventRequest.Callback callback;
+        private ServiceCallback<NoOpResponseObject> callback;
         private Root root;
 
-        public Builder(final DeleteEventRequest.Callback callback) {
+        public Builder(final ServiceCallback<NoOpResponseObject> callback) {
             if (callback == null) {
                 throw new NullPointerException();
             }
@@ -34,7 +31,7 @@ public final class DeleteEventRequest {
             this.callback = callback;
         }
 
-        public Builder callback(final DeleteEventRequest.Callback callback) {
+        public Builder callback(final ServiceCallback<NoOpResponseObject> callback) {
             if (callback == null) {
                 throw new NullPointerException();
             }
@@ -55,7 +52,7 @@ public final class DeleteEventRequest {
 
     private static final String URL = Settings.HOST + "FunService/rest/bikerides/delete/";
 
-    private final DeleteEventRequest.Callback callback;
+    private final ServiceCallback<NoOpResponseObject> callback;
     private final Root root;
     private final Request request;
 
@@ -131,7 +128,7 @@ public final class DeleteEventRequest {
                             //Nothing needs to happen... simply notify the user.
                         }
                     });
-                    callback.onResponseReceived();
+                    callback.onResponseReceived(NoOpResponseObject.NO_OP_RESPONSE_OBJECT);
                 }
             }
         };

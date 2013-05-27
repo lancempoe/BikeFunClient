@@ -12,16 +12,12 @@ import com.google.gwt.http.client.*;
 import com.googlecode.mgwt.ui.client.dialog.Dialogs;
 
 public final class NewTrackRequest {
-    public interface Callback {
-        void onError();
-        void onResponseReceived(Tracking tracking);
-    }
 
     public static final class Builder {
-        private NewTrackRequest.Callback callback;
+        private ServiceCallback<Tracking> callback;
         private Tracking tracking;
 
-        public Builder(final NewTrackRequest.Callback callback) {
+        public Builder(final ServiceCallback<Tracking> callback) {
             if (callback == null) {
                 throw new NullPointerException();
             }
@@ -29,7 +25,7 @@ public final class NewTrackRequest {
             this.callback = callback;
         }
 
-        public Builder callback(final NewTrackRequest.Callback callback) {
+        public Builder callback(final ServiceCallback<Tracking> callback) {
             if (callback == null) {
                 throw new NullPointerException();
             }
@@ -50,7 +46,7 @@ public final class NewTrackRequest {
 
     private static final String URL = Settings.HOST + "FunService/rest/tracking/new ";
 
-    private final NewTrackRequest.Callback callback;
+    private final ServiceCallback<Tracking> callback;
     private final Tracking tracking;
     private final Request request;
 
