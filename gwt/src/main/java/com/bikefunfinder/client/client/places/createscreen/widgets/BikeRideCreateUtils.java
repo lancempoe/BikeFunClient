@@ -1,4 +1,4 @@
-package com.bikefunfinder.client.client.places.createscreen.shared;
+package com.bikefunfinder.client.client.places.createscreen.widgets;
 /*
  * @author: tneuwerth
  * @created 5/8/13 10:50 PM
@@ -25,26 +25,28 @@ public class BikeRideCreateUtils {
     private static BikeRide createBikeRideObjectFromInputs(BikeRideCreateWidgets rideCreateWidgets) {
         BikeRide br = GWT.create(BikeRide.class);
 
-        if(null != rideCreateWidgets.bikeRideId &&
-           null != rideCreateWidgets.bikeRideId.getText() &&
-           !rideCreateWidgets.bikeRideId.getText().isEmpty()) {
+        if(null != rideCreateWidgets.getBikeRideId()&&
+           null != rideCreateWidgets.getBikeRideId().getText() &&
+           !rideCreateWidgets.getBikeRideId().getText().isEmpty()) {
 
-            br.setId(rideCreateWidgets.bikeRideId.getText());
+            br.setId(rideCreateWidgets.getBikeRideId().getText());
         }
 
 
-        br.setBikeRideName(rideCreateWidgets.bikeRideName.getText());
-        br.setTargetAudience(rideCreateWidgets.targetAudience.getValue(rideCreateWidgets.targetAudience.getSelectedIndex()));
+        br.setBikeRideName(rideCreateWidgets.getBikeRideName().getText());
+        br.setTargetAudience(rideCreateWidgets.getTargetAudience().getValue(
+                rideCreateWidgets.getTargetAudience().getSelectedIndex())
+        );
         br.setLocation(createLocationFrom(rideCreateWidgets));
-        br.setDetails(rideCreateWidgets.details.getValue());
-        br.setTrackingAllowed(rideCreateWidgets.trackingAllowed.getValue());
+        br.setDetails(rideCreateWidgets.getDetails().getText());
+        br.setTrackingAllowed(rideCreateWidgets.getTrackingAllowed().getValue());
 
-        if (!rideCreateWidgets.startDate.getText().isEmpty() &&
-            !rideCreateWidgets.startTime.getText().isEmpty()) {
+        if (!rideCreateWidgets.getStartDate().getText().isEmpty() &&
+            !rideCreateWidgets.getStartTime().getText().isEmpty()) {
 
             final String combinedDateTimeText =
-                    rideCreateWidgets.startDate.getText() + " " +
-                    rideCreateWidgets.startTime.getText();
+                    rideCreateWidgets.getStartDate().getText() + " " +
+                    rideCreateWidgets.getStartTime().getText();
 
             DateTimeFormat dtf = DateTimeFormat.getFormat(ScreenConstants.gwtDateAndTimeCombined);
             Date date = dtf.parse(combinedDateTimeText);
@@ -56,9 +58,9 @@ public class BikeRideCreateUtils {
 
     private static Location createLocationFrom(BikeRideCreateWidgets rideCreateWidgets) {
         Location location = GWT.create(Location.class);
-        location.setCity(rideCreateWidgets.locationCity.getText());
-        location.setState(rideCreateWidgets.locationState.getText());
-        location.setStreetAddress(rideCreateWidgets.locationAddress.getText());
+        location.setCity(rideCreateWidgets.getLocationCity().getText());
+        location.setState(rideCreateWidgets.getLocationState().getText());
+        location.setStreetAddress(rideCreateWidgets.getLocationAddress().getText());
         return location;
     }
 

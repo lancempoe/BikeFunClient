@@ -2,6 +2,7 @@ package com.bikefunfinder.client.client.places.eventscreen;
 
 import com.bikefunfinder.client.client.places.createscreen.shared.BikeRideViewUtils;
 import com.bikefunfinder.client.client.places.createscreen.shared.BikeRideViewWidgets;
+import com.bikefunfinder.client.client.places.createscreen.shared.BikeRideViewWidgetsImpl;
 import com.bikefunfinder.client.shared.model.BikeRide;
 import com.bikefunfinder.client.shared.model.Tracking;
 import com.google.gwt.core.client.GWT;
@@ -37,7 +38,7 @@ public class EventScreenDisplayGwtImpl extends Composite implements EventScreenD
     @UiField
     HTML currentTrackings = new HTML();
 
-    final BikeRideViewWidgets bikeDisplayWidgets = new BikeRideViewWidgets(true);
+    final BikeRideViewWidgets bikeDisplayWidgets = new BikeRideViewWidgetsImpl();
 
     public EventScreenDisplayGwtImpl() {
         widgetList = BikeRideViewUtils.buildBikeViewWidgitList(bikeDisplayWidgets);
@@ -52,7 +53,7 @@ public class EventScreenDisplayGwtImpl extends Composite implements EventScreenD
 
     @Override
     public void display(BikeRide bikeRide) {
-        bikeDisplayWidgets.setWidgetsFrom(bikeRide);
+        bikeDisplayWidgets.setStateFrom(bikeRide);
     }
 
     @Override

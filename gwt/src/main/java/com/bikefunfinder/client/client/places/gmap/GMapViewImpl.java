@@ -106,7 +106,7 @@ public class GMapViewImpl implements GMapDisplay {
                 onUpdateRidePressed(tapEvent);
             }
         });
-        trackingRideButton.setWidth("100%");
+
         trackingRideButton.setVisible(false);
         main.add(trackingRideButton);
 

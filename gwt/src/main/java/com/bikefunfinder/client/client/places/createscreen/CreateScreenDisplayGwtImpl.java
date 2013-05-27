@@ -6,6 +6,7 @@ package com.bikefunfinder.client.client.places.createscreen;
 
 import com.bikefunfinder.client.client.places.createscreen.shared.BikeRideCreateUtils;
 import com.bikefunfinder.client.client.places.createscreen.shared.BikeRideCreateWidgets;
+import com.bikefunfinder.client.client.places.createscreen.shared.BikeRideCreateWidgetsImpl;
 import com.bikefunfinder.client.client.places.createscreen.shared.BikeRideViewUtils;
 import com.bikefunfinder.client.shared.model.BikeRide;
 import com.bikefunfinder.client.shared.model.Root;
@@ -48,7 +49,7 @@ public class CreateScreenDisplayGwtImpl  extends Composite implements CreateScre
     @UiField(provided = true)
     WidgetList widgetList;
 
-    final BikeRideCreateWidgets bikeDisplayWidgets = new BikeRideCreateWidgets();
+    final BikeRideCreateWidgets bikeDisplayWidgets = new BikeRideCreateWidgetsImpl();
 
     public CreateScreenDisplayGwtImpl() {
         widgetList = BikeRideViewUtils.buildBikeViewWidgitList(bikeDisplayWidgets);
@@ -77,7 +78,7 @@ public class CreateScreenDisplayGwtImpl  extends Composite implements CreateScre
 
     @Override
     public void display(BikeRide bikeRide) {
-        bikeDisplayWidgets.setWidgetsFrom(bikeRide);
+        bikeDisplayWidgets.setStateFrom(bikeRide);
     }
 
     @Override
@@ -127,7 +128,7 @@ public class CreateScreenDisplayGwtImpl  extends Composite implements CreateScre
     protected void onDeleteRidePressed(TapEvent event) {
         if(presenter != null) {
             BikeRide bikeRide = BikeRideCreateUtils.createBikeRideFromState(bikeDisplayWidgets);
-            bikeRide.setId(bikeDisplayWidgets.bikeRideId.getText());
+            bikeRide.setId(bikeDisplayWidgets.getBikeRideId().getText());
             presenter.onDeleteSelected(bikeRide);
         }
     }

@@ -8,6 +8,8 @@ import com.bikefunfinder.client.bootstrap.ClientFactory;
 import com.bikefunfinder.client.bootstrap.db.DBKeys;
 import com.bikefunfinder.client.client.places.eventscreen.EventScreenPlace;
 import com.bikefunfinder.client.client.places.homescreen.HomeScreenPlace;
+import com.bikefunfinder.client.gin.Injector;
+import com.bikefunfinder.client.gin.RamObjectCache;
 import com.bikefunfinder.client.shared.Tools.DeviceTools;
 import com.bikefunfinder.client.shared.Tools.NonPhoneGapGeoLocCallback;
 import com.bikefunfinder.client.shared.model.*;
@@ -24,10 +26,12 @@ import com.googlecode.mgwt.ui.client.dialog.ConfirmDialog;
 import com.googlecode.mgwt.ui.client.dialog.Dialogs;
 
 public class CreateScreenActivity extends MGWTAbstractActivity implements CreateScreenDisplay.Presenter {
+    private final RamObjectCache ramObjectCache = Injector.INSTANCE.getRamObjectCache();
     private final ClientFactory<CreateScreenDisplay> clientFactory;
     private AnonymousUser anonymousUser;
     private User user;
     private boolean existingEvent = false;
+    private boolean isSubmittingRide = false;
 
     public CreateScreenActivity(ClientFactory<CreateScreenDisplay> clientFactory, BikeRide bikeRide) {
         this.clientFactory = clientFactory;
@@ -88,13 +92,19 @@ public class CreateScreenActivity extends MGWTAbstractActivity implements Create
 
     @Override
     public void onCreateSelected(BikeRide br) {
-        final CreateScreenDisplay display = clientFactory.getDisplay(this);
+
+        if(!isSubmittingRide) {
+            isSubmittingRide = true;
+        } else {
+            return ;
+        }
 
         final NewEventRequest.Builder request = new NewEventRequest.Builder(new NewEventRequest.Callback() {
             @Override
             public void onError() {
                 //display.displayFailedToCreateRideMessage();
                 //At this point the message has already been displayed to the user.
+                isSubmittingRide = false;
             }
 
             @Override
@@ -136,6 +146,7 @@ public class CreateScreenActivity extends MGWTAbstractActivity implements Create
             public void onResponseReceived(BikeRide bikeRide) {
                 clientFactory.refreshUserAccount();
                 clientFactory.getPlaceController().goTo(new EventScreenPlace(bikeRide));
+                ramObjectCache.updateRide(bikeRide);
             }
         });
 
@@ -176,7 +187,7 @@ public class CreateScreenActivity extends MGWTAbstractActivity implements Create
         });
     }
 
-    private void DeleteEvent(BikeRide bikeRide) {
+    private void DeleteEvent(final BikeRide bikeRide) {
         final DeleteEventRequest.Builder request = new DeleteEventRequest.Builder(new DeleteEventRequest.Callback() {
             @Override
             public void onError() {
@@ -187,8 +198,10 @@ public class CreateScreenActivity extends MGWTAbstractActivity implements Create
             public void onResponseReceived() {
                 clientFactory.refreshUserAccount();
                 clientFactory.getPlaceController().goTo(new HomeScreenPlace());
+                ramObjectCache.deleteRide(bikeRide.getId());
             }
         });
+
 
         request.root(BuildRoot(bikeRide));
         request.send();

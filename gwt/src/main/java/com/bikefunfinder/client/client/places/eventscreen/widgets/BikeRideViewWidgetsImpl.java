@@ -1,4 +1,4 @@
-package com.bikefunfinder.client.client.places.createscreen.shared;
+package com.bikefunfinder.client.client.places.eventscreen.widgets;
 /*
  * @author: tneuwerth
  * @created 5/8/13 9:55 PM
@@ -8,31 +8,35 @@ import com.bikefunfinder.client.shared.constants.ScreenConstants;
 import com.bikefunfinder.client.shared.model.BikeRide;
 import com.bikefunfinder.client.shared.model.printer.JsDateWrapper;
 import com.bikefunfinder.client.shared.widgets.WidgetHelper;
-import com.googlecode.mgwt.ui.client.widget.MTextBox;
+import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.Label;
 
-public class BikeRideViewWidgets extends BikeRideCreateWidgets {
-    public final MTextBox totalPeopleTrackingCount = new MTextBox();
-    public final MTextBox currentlyTracking = new MTextBox();
-    public final MTextBox formattedAddress = new MTextBox();
-    public final MTextBox distanceFromClient = new MTextBox();
-    public final MTextBox startDateAndTime = new MTextBox();
+public class BikeRideViewWidgetsImpl implements BikeRideViewWidgets {
 
+    public final Label bikeRideName = new HTML();
+    public final Label rideLeaderName = new HTML();
+    public final Label targetAudience = new HTML();
+    public final Label details = new HTML();
+    public final Label totalPeopleTrackingCount = new HTML();
+    public final Label currentlyTracking = new HTML();
+    public final Label formattedAddress = new HTML();
+    public final Label distanceFromClient = new HTML();
+    public final Label startDateAndTime = new HTML();
 
-    public BikeRideViewWidgets(boolean readOnly) {
-        super();
-        totalPeopleTrackingCount.setReadOnly(readOnly);
-        currentlyTracking.setReadOnly(readOnly);
-        bikeRideName.setReadOnly(readOnly);
-        rideLeaderName.setReadOnly(readOnly);
-        targetAudience.setEnabled(readOnly);
-        formattedAddress.setReadOnly(readOnly);
-        distanceFromClient.setReadOnly(readOnly);
-        startDateAndTime.setReadOnly(readOnly);
-        details.setReadOnly(readOnly);
-        details.setVisibleLines(5);
+    public BikeRideViewWidgetsImpl() {
+        bikeRideName.setWidth("100%");
+        rideLeaderName.setWidth("100%");
+        targetAudience.setWidth("100%");
+        details.setWidth("100%");
+        totalPeopleTrackingCount.setWidth("100%");
+        currentlyTracking.setWidth("100%");
+        formattedAddress.setWidth("100%");
+        distanceFromClient.setWidth("100%");
+        startDateAndTime.setWidth("100%");
     }
 
-    public void setWidgetsFrom(BikeRide bikeRide) {
+    @Override
+    public void setStateFrom(BikeRide bikeRide) {
         if(bikeRide==null) return; // failSafe but ugly;
 
         WidgetHelper.setSafeText(totalPeopleTrackingCount, String.valueOf(bikeRide.getTotalPeopleTrackingCount()));
@@ -52,18 +56,13 @@ public class BikeRideViewWidgets extends BikeRideCreateWidgets {
             WidgetHelper.setSafeText(rideLeaderName, bikeRide.getRideLeaderName());
         }
 
-        int targetAudienceOrderCount = 0;
         if(bikeRide.getTargetAudience()!=null) {
             for (ScreenConstants.TargetAudience target : ScreenConstants.TargetAudience.values()) {
                 if (target.getDisplayName().equals(bikeRide.getTargetAudience())) {
-                    targetAudienceOrderCount = target.getOrderCount();
+                    targetAudience.setText(target.getDisplayName());
                     break;
                 }
             }
-        }
-
-        if(bikeRide.getTargetAudience()!=null && !bikeRide.getTargetAudience().isEmpty()) {
-            this.targetAudience.setSelectedIndex(targetAudienceOrderCount);
         }
 
         if(bikeRide.getLocation()!=null) {
@@ -104,12 +103,58 @@ public class BikeRideViewWidgets extends BikeRideCreateWidgets {
         return "";
     }
 
+    @Override
     public void resetState() {
-        super.resetState();
+
         totalPeopleTrackingCount.setText("");
         currentlyTracking.setText("No");
         formattedAddress.setText("");
         distanceFromClient.setText("");
         startDateAndTime.setText("");
+    }
+
+    @Override
+    public Label getTotalPeopleTrackingCount() {
+        return totalPeopleTrackingCount;
+    }
+
+    @Override
+    public Label getCurrentlyTracking() {
+        return currentlyTracking;
+    }
+
+    @Override
+    public Label getFormattedAddress() {
+        return formattedAddress;
+    }
+
+    @Override
+    public Label getDistanceFromClient() {
+        return distanceFromClient;
+    }
+
+    @Override
+    public Label getStartDateAndTime() {
+        return startDateAndTime;
+    }
+
+    @Override
+    public Label getBikeRideName() {
+        return bikeRideName;
+    }
+
+    @Override
+    public Label getRideLeaderName() {
+        return rideLeaderName;
+    }
+
+    @Override
+    public Label getTargetAudience() {
+        return targetAudience;
+    }
+
+    @Override
+    public Label getDetails() {
+        return details;
     }
 }

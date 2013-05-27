@@ -16,6 +16,9 @@ public interface RamObjectCache {
     public BikeRide getCurrentBikeRide();
     public void setCurrentBikeRide(BikeRide bikeRide);
 
+    public void updateRide(BikeRide bikeRide);
+    public void deleteRide(String bikeRideId);
+
     public GeoLoc getCurrentPhoneGeoLoc();
     public void setCurrentPhoneGeoLoc(GeoLoc phoneGeoLoc);
 }

@@ -69,13 +69,37 @@ public class RamObjectCacheImpl implements RamObjectCache {
             return;
         }
 
+        currentBikeRideId = newBikeRide.getId();
+
+        updateRide(newBikeRide);
+    }
+
+    @Override
+    public void updateRide(BikeRide newBikeRide) {
         List<BikeRide> newBikeRideList = new ArrayList<BikeRide>();
         newBikeRideList.add(newBikeRide);
-        currentBikeRideId = newBikeRide.getId();
 
         for(BikeRide bikeRide: bikeRideList) {
             String bikeRideId = bikeRide.getId();
             if(bikeRideId!=bikeRide.getId()) {
+                newBikeRideList.add(bikeRide);
+            }
+        }
+
+        bikeRideList.clear();
+        bikeRideList.addAll(newBikeRideList);
+    }
+
+    @Override
+    public void deleteRide(String rideIdToDelete) {
+        if(rideIdToDelete == null) {
+            return;
+        }
+
+        List<BikeRide> newBikeRideList = new ArrayList<BikeRide>();
+
+        for(BikeRide bikeRide: bikeRideList) {
+            if(rideIdToDelete!=bikeRide.getId()) {
                 newBikeRideList.add(bikeRide);
             }
         }

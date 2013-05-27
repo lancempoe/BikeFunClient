@@ -1,4 +1,4 @@
-package com.bikefunfinder.client.client.places.createscreen.shared;
+package com.bikefunfinder.client.client.places.createscreen.widgets;
 /*
  * @author: tneuwerth
  * @created 5/8/13 10:28 PM
@@ -8,13 +8,13 @@ import com.bikefunfinder.client.shared.constants.ScreenConstants;
 import com.bikefunfinder.client.shared.model.BikeRide;
 import com.bikefunfinder.client.shared.widgets.MobiInputBox;
 import com.bikefunfinder.client.shared.widgets.WidgetHelper;
-import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.*;
 import com.googlecode.mgwt.ui.client.widget.MCheckBox;
 import com.googlecode.mgwt.ui.client.widget.MListBox;
 import com.googlecode.mgwt.ui.client.widget.MTextArea;
 import com.googlecode.mgwt.ui.client.widget.MTextBox;
 
-public class BikeRideCreateWidgets {
+public class BikeRideCreateWidgetsImpl implements BikeRideCreateWidgets {
     public final MTextBox bikeRideId = new MTextBox(); //This is not used on the page... hidden field with values.. replace with injection code in time.
     public final MTextBox bikeRideName = new MTextBox();
     public final MTextBox rideLeaderName = new MTextBox();
@@ -27,13 +27,64 @@ public class BikeRideCreateWidgets {
     public final MobiInputBox startTime = new MobiInputBox("timepicker");
     public final MTextArea details = new MTextArea();
 
-    public BikeRideCreateWidgets() {
+    public BikeRideCreateWidgetsImpl() {
         for(ScreenConstants.TargetAudience target: ScreenConstants.TargetAudience.values()) {
             targetAudience.addItem(target.getDisplayName());
         }
     }
 
-    public void setWidgetsFrom(BikeRide bikeRide) {
+    @Override
+    public MTextBox getBikeRideId() {
+        return bikeRideId;
+    }
+
+    @Override
+    public MTextBox getBikeRideName() {
+        return bikeRideName;
+    }
+
+    @Override
+    public MTextBox getLocationAddress() {
+        return locationAddress;
+    }
+
+    @Override
+    public MTextBox getLocationCity() {
+        return locationCity;
+    }
+
+    @Override
+    public MTextBox getLocationState() {
+        return locationState;
+    }
+
+    @Override
+    public MCheckBox getTrackingAllowed() {
+        return trackingAllowed;
+    }
+
+    @Override
+    public ListBox getTargetAudience() {
+        return targetAudience;
+    }
+
+    @Override
+    public MTextBox getStartDate() {
+        return startDate;
+    }
+
+    @Override
+    public MTextBox getStartTime() {
+        return startTime;
+    }
+
+    @Override
+    public MTextArea getDetails() {
+        return details;
+    }
+
+    @Override
+    public void setStateFrom(BikeRide bikeRide) {
         if(bikeRide==null) return; // failSafe but ugly;
 
         WidgetHelper.setSafeText(bikeRideName, bikeRide.getBikeRideName());
@@ -60,6 +111,7 @@ public class BikeRideCreateWidgets {
 
     }
 
+    @Override
     public void resetState() {
         bikeRideName.setText("");
         rideLeaderName.setText("");
