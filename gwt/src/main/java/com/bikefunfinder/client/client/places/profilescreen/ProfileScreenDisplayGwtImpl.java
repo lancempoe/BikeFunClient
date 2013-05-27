@@ -11,10 +11,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
-import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.HTML;
-import com.google.gwt.user.client.ui.HasHorizontalAlignment;
-import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.user.client.ui.*;
 import com.googlecode.mgwt.dom.client.event.tap.TapEvent;
 import com.googlecode.mgwt.ui.client.MGWT;
 import com.googlecode.mgwt.ui.client.widget.FormListEntry;
@@ -36,9 +33,9 @@ public class ProfileScreenDisplayGwtImpl extends Composite implements ProfileScr
     @UiField
     ScrollPanel scrollPanel;
 
-    HTML userName = new HTML();
-    HTML joinedTimeStamp = new HTML();
-    HTML totalHostedBikeRideCount = new HTML();
+    Label userName = new Label();
+    Label joinedTimeStamp = new Label();
+    Label totalHostedBikeRideCount = new Label();
 
     private static Widget buildFormWidget(String title, Widget widget) {
         FormListEntry formListEntry = new FormListEntry();

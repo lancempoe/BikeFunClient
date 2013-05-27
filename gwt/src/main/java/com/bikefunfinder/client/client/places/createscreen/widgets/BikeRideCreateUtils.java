@@ -35,7 +35,7 @@ public class BikeRideCreateUtils {
 
         br.setBikeRideName(rideCreateWidgets.getBikeRideName().getText());
         br.setTargetAudience(rideCreateWidgets.getTargetAudience().getValue(
-                rideCreateWidgets.getTargetAudience().getSelectedIndex())
+            rideCreateWidgets.getTargetAudience().getSelectedIndex())
         );
         br.setLocation(createLocationFrom(rideCreateWidgets));
         br.setDetails(rideCreateWidgets.getDetails().getText());

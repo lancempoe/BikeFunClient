@@ -8,7 +8,7 @@ import com.bikefunfinder.client.shared.constants.ScreenConstants;
 import com.bikefunfinder.client.shared.model.BikeRide;
 import com.bikefunfinder.client.shared.widgets.MobiInputBox;
 import com.bikefunfinder.client.shared.widgets.WidgetHelper;
-import com.google.gwt.user.client.ui.*;
+import com.google.gwt.event.shared.GwtEvent;
 import com.googlecode.mgwt.ui.client.widget.MCheckBox;
 import com.googlecode.mgwt.ui.client.widget.MListBox;
 import com.googlecode.mgwt.ui.client.widget.MTextArea;

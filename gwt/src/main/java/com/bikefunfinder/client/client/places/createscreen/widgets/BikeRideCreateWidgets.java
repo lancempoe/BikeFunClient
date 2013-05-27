@@ -4,7 +4,6 @@ package com.bikefunfinder.client.client.places.createscreen.widgets;
  * @created 5/24/13 9:48 PM
  */
 
-import com.google.gwt.user.client.ui.*;
 import com.googlecode.mgwt.ui.client.widget.MCheckBox;
 import com.googlecode.mgwt.ui.client.widget.MListBox;
 import com.googlecode.mgwt.ui.client.widget.MTextArea;
