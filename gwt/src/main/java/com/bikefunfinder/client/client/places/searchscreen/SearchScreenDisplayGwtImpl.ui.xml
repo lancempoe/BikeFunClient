@@ -27,7 +27,7 @@
             <g:FormPanel width="100%">
                 <g:HTMLPanel >
 
-                    <g:FlowPanel ui:field="widgetList" />
+                    <mgwt:WidgetList ui:field="widgetList" />
                     <mgwt:Button ui:field="searchRide" text="Search"/>
 
                 </g:HTMLPanel>

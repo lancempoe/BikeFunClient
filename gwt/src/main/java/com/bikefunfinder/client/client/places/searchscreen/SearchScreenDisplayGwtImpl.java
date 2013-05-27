@@ -32,7 +32,8 @@ public class SearchScreenDisplayGwtImpl extends Composite implements SearchScree
     private Presenter presenter;
 
     @UiField(provided = true)
-    FlowPanel widgetList;
+    WidgetList widgetList;
+
     FormListEntry formListEntry;
 
     @UiField
@@ -63,7 +64,7 @@ public class SearchScreenDisplayGwtImpl extends Composite implements SearchScree
     public SearchScreenDisplayGwtImpl() {
 
         //Build the form.
-        widgetList = new FlowPanel();
+        widgetList = new WidgetList();
         widgetList.addStyleName(Resources.INSTANCE.css().searchScreenPadding());
 
         formListEntry = new FormListEntry();
