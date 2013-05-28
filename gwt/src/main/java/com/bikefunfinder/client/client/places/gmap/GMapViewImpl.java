@@ -470,15 +470,15 @@ public class GMapViewImpl implements GMapDisplay {
         fp.add(htmlWidget);
 
         //Anchor link = new Anchor("(more information)", presenter.provideTokenHrefFor(bikeRide));
-        HTML link = new HTML("(more information)");
-        link.addClickHandler(new ClickHandler() {
-            @Override
-            public void onClick(ClickEvent event) {
-                presenter.moreRideDetilsScreenRequested(bikeRide);
-            }
-        });
-        link.getElement().getStyle().setColor("black");
-        fp.add(link);
+//        HTML link = new HTML("(more information)");
+//        link.addClickHandler(new ClickHandler() {
+//            @Override
+//            public void onClick(ClickEvent event) {
+//                presenter.moreRideDetilsScreenRequested(bikeRide);
+//            }
+//        });
+//        link.getElement().getStyle().setColor("black");
+//        fp.add(link);
 
 
         
