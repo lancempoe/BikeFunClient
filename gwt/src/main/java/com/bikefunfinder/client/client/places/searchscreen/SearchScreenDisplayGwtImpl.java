@@ -34,11 +34,6 @@ public class SearchScreenDisplayGwtImpl extends Composite implements SearchScree
     @UiField(provided = true)
     WidgetList widgetList;
 
-    FormListEntry formListEntry;
-
-    @UiField
-    ScrollPanel scrollPanel;
-
     MTextBox search = new MTextBox();
     MListBox targetAudience = new MListBox();
     MTextBox city = new MTextBox();
@@ -65,9 +60,9 @@ public class SearchScreenDisplayGwtImpl extends Composite implements SearchScree
 
         //Build the form.
         widgetList = new WidgetList();
-        widgetList.addStyleName(Resources.INSTANCE.css().searchScreenPadding());
+        //widgetList.addStyleName(Resources.INSTANCE.css().searchScreenPadding());
 
-        formListEntry = new FormListEntry();
+        FormListEntry formListEntry = new FormListEntry();
         formListEntry.setText("Search:");
         formListEntry.add(search);
         widgetList.add(formListEntry);
@@ -87,8 +82,6 @@ public class SearchScreenDisplayGwtImpl extends Composite implements SearchScree
         widgetList.add(formListEntry);
 
         initWidget(uiBinder.createAndBindUi(this));
-
-        scrollPanel.setUsePos(MGWT.getOsDetection().isAndroid());
     }
 
     @Override

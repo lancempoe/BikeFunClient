@@ -23,7 +23,7 @@
             </mgwt:right>
         </mgwt:HeaderPanel>
 
-        <mgwt:ScrollPanel ui:field="scrollPanel">
+
             <g:FormPanel width="100%">
                 <g:HTMLPanel >
 
@@ -32,6 +32,5 @@
 
                 </g:HTMLPanel>
             </g:FormPanel>
-        </mgwt:ScrollPanel>
     </mgwt:LayoutPanel>
 </ui:UiBinder>
