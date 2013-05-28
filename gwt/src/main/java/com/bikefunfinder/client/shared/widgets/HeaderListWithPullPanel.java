@@ -13,6 +13,7 @@ import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.DOM;
+import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
@@ -324,18 +325,30 @@ public class HeaderListWithPullPanel<G, T> extends Composite {
 
     private void updateHeaderPositionAndTitle(int y) {
         if(pagesY==null) return;
-        if(movingHeader==null) return;
+        if(cellList==null) return;
 
+        if(movingHeader==null) return;
         int headerHeight = movingHeader.getOffsetHeight();
 
         if (lastPage != currentPage) {
             lastPage = currentPage;
-            int modelIndex = cellList.getMapping().get(currentPage);
-            final CellGroup<G, T> gtCellGroup = list.get(modelIndex);
-            if(gtCellGroup!=null) {
-                final G group = gtCellGroup.getGroup();
-                if(group!=null) {
-                    movingHeader.setHTML(cellList.renderGroupHeader(group));
+            final Map<Integer, Integer> mapping = cellList.getMapping();
+
+            if(mapping!=null) {
+                int modelIndex;
+
+                try {
+                    modelIndex = mapping.get(currentPage);
+                } catch (Exception e) {
+                    return;
+                }
+
+                final CellGroup<G, T> gtCellGroup = list.get(modelIndex);
+                if(gtCellGroup!=null) {
+                    final G group = gtCellGroup.getGroup();
+                    if(group!=null) {
+                        movingHeader.setHTML(cellList.renderGroupHeader(group));
+                    }
                 }
             }
         }
@@ -361,13 +374,19 @@ public class HeaderListWithPullPanel<G, T> extends Composite {
 
             if (nextHeader + headerHeight - y > 0) {
                 int move = -(nextHeader + headerHeight - y);
-                CssUtil.translate(movingHeader.getElement(), 0, move);
+                final Element element = movingHeader.getElement();
+                if(element!=null) {
+                    CssUtil.translate(element, 0, move);
+                }
 
                 needReset = true;
             } else {
                 if (needReset) {
                     needReset = false;
-                    CssUtil.translate(movingHeader.getElement(), 0, 0);
+                    final Element element = movingHeader.getElement();
+                    if(element!=null) {
+                        CssUtil.translate(element, 0, 0);
+                    }
                 }
 
             }
