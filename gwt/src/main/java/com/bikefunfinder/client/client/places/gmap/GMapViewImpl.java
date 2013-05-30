@@ -12,6 +12,7 @@ import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.*;
+import com.googlecode.mgwt.ui.client.MGWT;
 import com.googlecode.mgwt.ui.client.widget.Button;
 import com.google.maps.gwt.client.*;
 import com.google.maps.gwt.client.GoogleMap.CenterChangedHandler;
@@ -275,12 +276,12 @@ public class GMapViewImpl implements GMapDisplay {
     }
 
     @Override
-    public void setMapInfo(GeoLoc phoneGpsLoc, BikeRide bikeRide) {
+    public void setMapInfo(GeoLoc phoneGpsLoc, BikeRide bikeRide, boolean reCenterReZoom) {
 
         //Build the view of the map
         if (map == null || resetMap) {
             buildMap();
-        } else {
+        } else if (reCenterReZoom) {
             map.panTo(center);
             map.setZoom(zoom);
         }
@@ -469,33 +470,12 @@ public class GMapViewImpl implements GMapDisplay {
         htmlWidget.getElement().getStyle().setColor("black");
         fp.add(htmlWidget);
 
-        //Anchor link = new Anchor("(more information)", presenter.provideTokenHrefFor(bikeRide));
-//        HTML link = new HTML("(more information)");
-//        link.addClickHandler(new ClickHandler() {
-//            @Override
-//            public void onClick(ClickEvent event) {
-//                presenter.moreRideDetilsScreenRequested(bikeRide);
-//            }
-//        });
-//        link.getElement().getStyle().setColor("black");
-//        fp.add(link);
-
-
-        
-        /*
-        Button testButton = new Button();
-
-        testButton.addTapHandler(new TapHandler() {
-            @Override
-            public void onTap(final TapEvent tapEvent) {
-                Window.alert("woohoo a button!");
-            }
-        });
-
-        testButton.setText("(more information)");
-        DOM.setStyleAttribute(testButton.getElement(), "color", "black");
-        fp.add(testButton);
-        */
+        //Only available in iphone  //TODO ONLY FOR IPHONE
+        if (MGWT.getOsDetection().isIPhone()) {
+            Anchor link = new Anchor("(more information)", presenter.provideTokenHrefFor(bikeRide));
+            link.getElement().getStyle().setColor("black");
+            fp.add(link);
+        }
 
         return fp.getElement();
     }
