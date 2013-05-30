@@ -112,7 +112,4 @@ private final ClientFactory<EventScreenDisplay> clientFactory = Injector.INSTANC
     public void editRideButtonSelected() {
         clientFactory.getPlaceController().goTo(new CreateScreenPlace(this.bikeRide));
     }
-
-
-
 }
