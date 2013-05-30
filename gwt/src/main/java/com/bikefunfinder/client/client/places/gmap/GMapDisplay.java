@@ -32,7 +32,7 @@ public interface GMapDisplay extends IsWidget {
     }
 
     void setMapInfo(GeoLoc phoneGpsLoc, List<BikeRide> list);
-    void setMapInfo(GeoLoc phoneGpsLoc, BikeRide bikeRide);
+    void setMapInfo(GeoLoc phoneGpsLoc, BikeRide bikeRide, boolean reCenterReZoom);
 
 }
 
