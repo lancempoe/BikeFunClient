@@ -109,9 +109,13 @@ public class HomeScreenDisplayGwtImpl extends Composite implements HomeScreenDis
             }
         }, 0, 0, 45, 36, false , false);
 
+
         addButton = new TabBarButton(tabBarAddImage);
         searchButton = new TabBarButton(tabBarSearchImage);
         loginButton = new TabBarButton(tabBarContactsImage);
+        addButton.addStyleName("menuButton");
+        searchButton.addStyleName("menuButton");
+        loginButton.addStyleName("menuButton");
 
         initWidget(uiBinder.createAndBindUi(this));
         
