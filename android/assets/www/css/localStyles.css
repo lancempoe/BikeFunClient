@@ -11,5 +11,6 @@
 }
 
 .menuButton>div {
-    background-image: -webkit-gradient(linear, 0% 0%, 0% 0%,  from(#ffffff), to(#3ec6f9), color-stop(0.6,#7ab3ed),color-stop(0.7,#2f92e6));
+    background-image: none;
+    background-color: #fff;
 }
