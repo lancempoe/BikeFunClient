@@ -5,6 +5,7 @@ function setupTimePicker() {
         theme: 'ios',
         display: 'bottom',
         mode: 'mixed',
+        stepMinute: 15,
         onSelect: function(valueText,inst){
             $('#timepicker').text(valueText);
         }
