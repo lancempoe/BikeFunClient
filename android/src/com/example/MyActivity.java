@@ -1,6 +1,7 @@
 package com.example;
 
 
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 
 import org.apache.cordova.*;
@@ -14,5 +15,6 @@ public class MyActivity extends DroidGap {
         super.onCreate(savedInstanceState);
         //setContentView(R.layout.main);
         super.loadUrl("file:///android_asset/www/index.html");
+        setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
     }
 }
