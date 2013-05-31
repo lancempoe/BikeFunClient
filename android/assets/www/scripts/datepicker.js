@@ -3,9 +3,8 @@ function setupDatePicker() {
 //http://demo.mobiscroll.com/calendar#mode=clickpick&display=modal&theme=android-ics+light
     $('#datepicker').mobiscroll().calendar({
         theme: 'android-ics light',
-        display: 'modal',
+        display: 'bottom',
         controls: ['calendar'],
-        layout: 'liquid',
         onSelect: function(valueText,inst){
             $('#datepicker').text(valueText);
         }
