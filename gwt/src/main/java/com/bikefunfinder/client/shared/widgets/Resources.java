@@ -12,4 +12,7 @@ public interface Resources extends ClientBundle {
 
     @Source("HeaderList.css")
     HeaderListCssResource css();
+
+    @Source("loadingScreen.css")
+    LoadingScreenResource loadingScreenCss();
 }
