@@ -56,7 +56,9 @@
         <plugin name="Battery" value="CDVBattery" />
         <plugin name="Globalization" value="CDVGlobalization" />
         <plugin name="InAppBrowser" value="CDVInAppBrowser" />
+        <plugin name="gaPlugin" value="GAPlugin" />
     </plugins>
 
     <access origin="*" />
+    <access origin="google-analytics.com" />
 </widget>
