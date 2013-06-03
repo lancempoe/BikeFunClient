@@ -8,20 +8,19 @@ package com.bikefunfinder.client.shared.request;
  */
 
 import com.bikefunfinder.client.shared.model.AnonymousUser;
-import com.bikefunfinder.client.shared.model.json.Utils;
 import com.bikefunfinder.client.shared.constants.Settings;
+import com.bikefunfinder.client.shared.request.converters.PayloadConverters;
+import com.bikefunfinder.client.shared.request.ratsnest.*;
 import com.google.gwt.http.client.*;
-import com.google.gwt.user.client.Window;
-import com.googlecode.mgwt.ui.client.dialog.Dialogs;
 
 public final class AnonymousRequest {
 
     public static final class Builder {
-        private ServiceCallback<AnonymousUser> callback;
+        private WebServiceResponseConsumer<AnonymousUser> callback;
         private String key;
         private String uuid;
 
-        public Builder(final ServiceCallback<AnonymousUser> callback) {
+        public Builder(final WebServiceResponseConsumer<AnonymousUser> callback) {
             if (callback == null) {
                 throw new NullPointerException();
             }
@@ -29,7 +28,7 @@ public final class AnonymousRequest {
             this.callback = callback;
         }
 
-        public Builder callback(final ServiceCallback<AnonymousUser> callback) {
+        public Builder callback(final WebServiceResponseConsumer<AnonymousUser> callback) {
             if (callback == null) {
                 throw new NullPointerException();
             }
@@ -54,7 +53,7 @@ public final class AnonymousRequest {
 
     private static final String URL = Settings.HOST + "FunService/rest/users/anonymous/";
 
-    private final ServiceCallback<AnonymousUser> callback;
+    private final WebServiceResponseConsumer<AnonymousUser> callback;
     private final String key;
     private final String uuid;
     private final Request request;
@@ -75,18 +74,15 @@ public final class AnonymousRequest {
     }
 
     private Request send() {
-        Request request = null;
-
-        final RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.GET, getUrlWithQuery());
         try {
-            request = requestBuilder.sendRequest(null, getRequestCallback());
+            final RepeatableRequestBuilder requestBuilder = new RepeatableRequestBuilder(RequestBuilder.GET, getUrlWithQuery(), null);
             requestBuilder.setHeader("Accept", "application/json");
             requestBuilder.setHeader("content-type", "application/json");
+            return requestBuilder.sendRequest(null, getRequestCallback(requestBuilder));
         } catch (final RequestException e) {
             e.printStackTrace();
+            return null;
         }
-
-        return request;
     }
 
     private String getUrlWithQuery() {
@@ -100,39 +96,12 @@ public final class AnonymousRequest {
         return builder.toString();
     }
 
-    private RequestCallback getRequestCallback() {
-        final RequestCallback requestCallback = new RequestCallback() {
-            @Override
-            public void onError(final Request request, final Throwable exception) {
-                Dialogs.alert("Error", "Unable to get anonymous user.", new Dialogs.AlertCallback() {
-                    @Override
-                    public void onButtonPressed() {
-                        callback.onError();
-                    }
-                });
-            }
+    private RequestCallback getRequestCallback(final RepeatableRequestBuilder requestBuilder) {
 
-            @Override
-            public void onResponseReceived(final Request request, final Response response) {
-                final int statusCode = response.getStatusCode();
-                if ((statusCode < 200) || (statusCode >= 300)) {
-                    final StringBuilder builder = new StringBuilder();
-                    builder.append("Unable to get anonymous user. ");
-                    builder.append(response.getText());
-                    Dialogs.alert("Notice: ", builder.toString(), new Dialogs.AlertCallback() {
-                        @Override
-                        public void onButtonPressed() {
-                            callback.onError();
-                        }
-                    });
-                } else {
-                    AnonymousUser anonymousUser = Utils.castJsonTxtToJSOObject(response.getText());
-                    callback.onResponseReceived(anonymousUser);
+        RequestCallBackHandlerStack<AnonymousUser> cachedPewpChain = new RequestCallBackHandlerStack<AnonymousUser>(
+                PayloadConverters.AnonymousUser_JSON_OBJECT_CONVERTER, requestBuilder, callback, NoCacheStrategy.INSTANCE
+        );
 
-                }
-            }
-        };
-
-        return requestCallback;
+        return new RequestCallbackSorter<AnonymousUser>(cachedPewpChain);
     }
 }

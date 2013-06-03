@@ -16,7 +16,7 @@ import com.bikefunfinder.client.shared.model.json.Utils;
 import com.bikefunfinder.client.shared.request.EventRequest;
 import com.bikefunfinder.client.shared.request.NewTrackRequest;
 import com.bikefunfinder.client.shared.request.SearchByProximityRequest;
-import com.bikefunfinder.client.shared.request.ServiceCallback;
+import com.bikefunfinder.client.shared.request.ratsnest.WebServiceResponseConsumer;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.http.client.UrlBuilder;
 import com.google.gwt.user.client.Timer;
@@ -31,7 +31,6 @@ import com.googlecode.gwtphonegap.showcase.client.NavBaseActivity;
 import com.googlecode.mgwt.ui.client.dialog.ConfirmDialog;
 import com.googlecode.mgwt.ui.client.dialog.Dialogs;
 
-import java.util.ArrayList;
 import java.util.Date;
 
 /**
@@ -191,11 +190,11 @@ public class GMapActivity extends NavBaseActivity implements GMapDisplay.Present
 
     private void pingClientTrack() {
         if (isTracking) {
-            ServiceCallback<Tracking> callback = new ServiceCallback<Tracking>() {
-                @Override
-                public void onError() {
-                    //Unable to refresh... leave screen as is.
-                }
+            WebServiceResponseConsumer<Tracking> callback = new WebServiceResponseConsumer<Tracking>() {
+//                @Override
+//                public void onError() {
+//                    //Unable to refresh... leave screen as is.
+//                }
 
                 @Override
                 public void onResponseReceived(Tracking tracking) {
@@ -300,12 +299,12 @@ public class GMapActivity extends NavBaseActivity implements GMapDisplay.Present
 
     private void fireRequestForHereAndNow(final GMapDisplay display, final GeoLoc phoneGeoLoc) {
 
-        ServiceCallback<Root> callback = new ServiceCallback<Root>() {
-            @Override
-            public void onError() {
-                display.displayPageName("Sorry, No Rides");
-                display.setMapInfo(phoneGeoLoc, new ArrayList<BikeRide>());
-            }
+        WebServiceResponseConsumer<Root> callback = new WebServiceResponseConsumer<Root>() {
+//            @Override
+//            public void onError() {
+//                display.displayPageName("Sorry, No Rides");
+//                display.setMapInfo(phoneGeoLoc, new ArrayList<BikeRide>());
+//            }
 
             @Override
             public void onResponseReceived(Root root) {
@@ -324,11 +323,11 @@ public class GMapActivity extends NavBaseActivity implements GMapDisplay.Present
 
     private void updatedBikeRide(final GeoLoc phoneGeoLoc) {
 
-        ServiceCallback<BikeRide> callback = new ServiceCallback<BikeRide>() {
-            @Override
-            public void onError() {
-                //Unable to refresh... leave screen as is.
-            }
+        WebServiceResponseConsumer<BikeRide> callback = new WebServiceResponseConsumer<BikeRide>() {
+//            @Override
+//            public void onError() {
+//                //Unable to refresh... leave screen as is.
+//            }
 
             @Override
             public void onResponseReceived(BikeRide bikeRide) {

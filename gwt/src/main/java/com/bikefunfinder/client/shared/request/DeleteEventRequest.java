@@ -8,22 +8,21 @@ package com.bikefunfinder.client.shared.request;
  * To change this template use File | Settings | File Templates.
  */
 
-import com.bikefunfinder.client.shared.model.AnonymousUser;
 import com.bikefunfinder.client.shared.model.Root;
 import com.bikefunfinder.client.shared.model.printer.JSODescriber;
 import com.bikefunfinder.client.shared.constants.Settings;
+import com.bikefunfinder.client.shared.request.converters.NoOpResponseObject;
+import com.bikefunfinder.client.shared.request.converters.PayloadConverters;
+import com.bikefunfinder.client.shared.request.ratsnest.*;
 import com.google.gwt.http.client.*;
-import com.googlecode.mgwt.ui.client.dialog.ConfirmDialog;
-import com.googlecode.mgwt.ui.client.dialog.ConfirmDialog.*;
-import com.googlecode.mgwt.ui.client.dialog.Dialogs;
 
 public final class DeleteEventRequest {
 
     public static final class Builder {
-        private ServiceCallback<NoOpResponseObject> callback;
+        private WebServiceResponseConsumer<NoOpResponseObject> callback;
         private Root root;
 
-        public Builder(final ServiceCallback<NoOpResponseObject> callback) {
+        public Builder(final WebServiceResponseConsumer<NoOpResponseObject> callback) {
             if (callback == null) {
                 throw new NullPointerException();
             }
@@ -31,7 +30,7 @@ public final class DeleteEventRequest {
             this.callback = callback;
         }
 
-        public Builder callback(final ServiceCallback<NoOpResponseObject> callback) {
+        public Builder callback(final WebServiceResponseConsumer<NoOpResponseObject> callback) {
             if (callback == null) {
                 throw new NullPointerException();
             }
@@ -52,7 +51,7 @@ public final class DeleteEventRequest {
 
     private static final String URL = Settings.HOST + "FunService/rest/bikerides/delete/";
 
-    private final ServiceCallback<NoOpResponseObject> callback;
+    private final WebServiceResponseConsumer<NoOpResponseObject> callback;
     private final Root root;
     private final Request request;
 
@@ -71,22 +70,18 @@ public final class DeleteEventRequest {
     }
 
     private Request send() {
-        Request request = null;
-
-        final RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST, getUrlWithQuery());
         try {
+            final String requestData = JSODescriber.toJSON(root);
+            //Window.alert(requestData); //if yer wanting some debuggerz
 
-            final String jsonText = JSODescriber.toJSON(root);
-            //Window.alert(jsonText); //if yer wanting some debuggerz
+            final RepeatableRequestBuilder requestBuilder = new RepeatableRequestBuilder(RequestBuilder.POST, getUrlWithQuery(), requestData);
             requestBuilder.setHeader("Content-Type", "application/json");
-
-            request = requestBuilder.sendRequest(jsonText, getRequestCallback());
+            return requestBuilder.sendRequest(requestData, getRequestCallback(requestBuilder));
 
         } catch (final RequestException e) {
             e.printStackTrace();
+            return null;
         }
-
-        return request;
     }
 
     private String getUrlWithQuery() {
@@ -96,43 +91,12 @@ public final class DeleteEventRequest {
         return builder.toString();
     }
 
-    private RequestCallback getRequestCallback() {
-        final RequestCallback requestCallback = new RequestCallback() {
-            @Override
-            public void onError(final Request request, final Throwable exception) {
-                Dialogs.alert("Error", "Unable to delete event.", new Dialogs.AlertCallback() {
-                    @Override
-                    public void onButtonPressed() {
-                        callback.onError();
-                    }
-                });
-            }
+    private RequestCallback getRequestCallback(final RepeatableRequestBuilder requestBuilder) {
 
-            @Override
-            public void onResponseReceived(final Request request, final Response response) {
-                final int statusCode = response.getStatusCode();
-                if ((statusCode < 200) || (statusCode >= 300)) {
-                    final StringBuilder builder = new StringBuilder();
-                    builder.append("Unable to delete event. ");
-                    builder.append(response.getText());
-                    Dialogs.alert("Notice: ", builder.toString(), new Dialogs.AlertCallback() {
-                        @Override
-                        public void onButtonPressed() {
-                            callback.onError();
-                        }
-                    });
-                } else {
-                    Dialogs.alert("Notice: ", "Successfully Deleted Event!", new Dialogs.AlertCallback() {
-                        @Override
-                        public void onButtonPressed() {
-                            //Nothing needs to happen... simply notify the user.
-                        }
-                    });
-                    callback.onResponseReceived(NoOpResponseObject.NO_OP_RESPONSE_OBJECT);
-                }
-            }
-        };
+        RequestCallBackHandlerStack<NoOpResponseObject> cachedPewpChain = new RequestCallBackHandlerStack<NoOpResponseObject>(
+                PayloadConverters.NoOpResponse_JSON_OBJECT_CONVERTER, requestBuilder, callback, NoCacheStrategy.INSTANCE
+        );
 
-        return requestCallback;
+        return new RequestCallbackSorter<NoOpResponseObject>(cachedPewpChain);
     }
 }

@@ -6,6 +6,7 @@ package com.bikefunfinder.client.gin;
 
 import com.bikefunfinder.client.shared.model.BikeRide;
 import com.bikefunfinder.client.shared.model.GeoLoc;
+import com.bikefunfinder.client.shared.model.Root;
 
 import java.util.List;
 
@@ -21,4 +22,16 @@ public interface RamObjectCache {
 
     public GeoLoc getCurrentPhoneGeoLoc();
     public void setCurrentPhoneGeoLoc(GeoLoc phoneGeoLoc);
+
+    ///////
+
+    public Root getSearchByTimeOfDay();
+    public void setSearchByTimeOfDay(Root root);
+
+    public Root getSearchByTimeOfDayForProfile();
+    public void setSearchByTimeOfDayForProfile(Root root);
+
+    public Root getSearchByProximity();
+    public void setSearchByProximity(Root root);
+
 }

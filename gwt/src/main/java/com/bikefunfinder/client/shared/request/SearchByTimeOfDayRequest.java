@@ -4,24 +4,25 @@ package com.bikefunfinder.client.shared.request;
  * @created 3/19/13 10:33 PM
  */
 
+import com.bikefunfinder.client.gin.Injector;
+import com.bikefunfinder.client.gin.RamObjectCache;
 import com.bikefunfinder.client.shared.model.GeoLoc;
 import com.bikefunfinder.client.shared.model.Root;
 import com.bikefunfinder.client.shared.constants.Settings;
-import com.bikefunfinder.client.shared.model.json.Utils;
+import com.bikefunfinder.client.shared.request.converters.PayloadConverters;
+import com.bikefunfinder.client.shared.request.ratsnest.*;
 import com.google.gwt.http.client.*;
-import com.google.gwt.user.client.Window;
-import com.googlecode.mgwt.ui.client.dialog.Dialogs;
 
 import java.math.BigDecimal;
 
 public final class SearchByTimeOfDayRequest {
 
     public static final class Builder {
-        private ServiceCallback<Root> callback;
+        private WebServiceResponseConsumer<Root> callback;
         private BigDecimal longitude;
         private BigDecimal latitude;
 
-        public Builder(final ServiceCallback<Root> callback) {
+        public Builder(final WebServiceResponseConsumer<Root> callback) {
             if (callback == null) {
                 throw new NullPointerException();
             }
@@ -29,7 +30,7 @@ public final class SearchByTimeOfDayRequest {
             this.callback = callback;
         }
 
-        public Builder callback(final ServiceCallback<Root> callback) {
+        public Builder callback(final WebServiceResponseConsumer<Root> callback) {
             if (callback == null) {
                 throw new NullPointerException();
             }
@@ -54,7 +55,7 @@ public final class SearchByTimeOfDayRequest {
 
     private static final String URL = Settings.HOST + "FunService/rest/display/by_time_of_day/";
 
-    private final ServiceCallback<Root> callback;
+    private final WebServiceResponseConsumer<Root> callback;
     private final BigDecimal latitude;
     private final BigDecimal longitude;
     private final Request request;
@@ -75,16 +76,13 @@ public final class SearchByTimeOfDayRequest {
     }
 
     private Request send() {
-        Request request = null;
-
-        final RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.GET, getUrlWithQuery());
         try {
-            request = requestBuilder.sendRequest(null, getRequestCallback());
+            final RepeatableRequestBuilder requestBuilder = new RepeatableRequestBuilder(RequestBuilder.GET, getUrlWithQuery(), null );
+            return requestBuilder.sendRequest(null, getRequestCallback(requestBuilder));
         } catch (final RequestException e) {
             e.printStackTrace();
+            return null;
         }
-
-        return request;
     }
 
     private String getUrlWithQuery() {
@@ -98,39 +96,22 @@ public final class SearchByTimeOfDayRequest {
         return builder.toString();
     }
 
-    private RequestCallback getRequestCallback() {
-        final RequestCallback requestCallback = new RequestCallback() {
+    private final RamObjectCache ramObjectCache = Injector.INSTANCE.getRamObjectCache();
+    private RequestCallback getRequestCallback(final RepeatableRequestBuilder requestBuilder) {
+
+        RequestCallBackHandlerStack<Root> cachedPewpChain = new RequestCallBackHandlerStack<Root>(
+            PayloadConverters.ROOT_JSON_OBJECT_CONVERTER, requestBuilder, callback, new CacheStrategy<Root>() {
             @Override
-            public void onError(final Request request, final Throwable exception) {
-                Dialogs.alert("Error", "Unable to get by_time_of_day.", new Dialogs.AlertCallback() {
-                    @Override
-                    public void onButtonPressed() {
-                        callback.onError();
-                    }
-                });
+            public void cacheType(Root type) {
+                ramObjectCache.setSearchByTimeOfDay(type);
             }
 
             @Override
-            public void onResponseReceived(final Request request, final Response response) {
-                final int statusCode = response.getStatusCode();
-                if ((statusCode < 200) || (statusCode >= 300)) {
-                    final StringBuilder builder = new StringBuilder();
-                    builder.append("BFF is unavailable. ");
-                    builder.append(response.getText());
-                    Dialogs.alert("Notice: ", builder.toString(), new Dialogs.AlertCallback() {
-                        @Override
-                        public void onButtonPressed() {
-                            callback.onError();
-                        }
-                    });
-                } else {
-                    Root root = Utils.castJsonTxtToJSOObject(response.getText());
-                    callback.onResponseReceived(root);
-
-                }
+            public Root getCachedType() {
+                return ramObjectCache.getSearchByTimeOfDay();
             }
-        };
+        });
 
-        return requestCallback;
+        return new RequestCallbackSorter<Root>(cachedPewpChain);
     }
 }

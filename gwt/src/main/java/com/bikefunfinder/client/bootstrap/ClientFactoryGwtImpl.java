@@ -17,13 +17,11 @@ import com.bikefunfinder.client.client.places.searchscreen.SearchScreenActivity;
 import com.bikefunfinder.client.client.places.searchscreen.SearchScreenDisplay;
 import com.bikefunfinder.client.client.places.searchscreen.SearchScreenDisplayGwtImpl;
 import com.bikefunfinder.client.shared.model.AnonymousUser;
-import com.bikefunfinder.client.shared.model.BikeRide;
-import com.bikefunfinder.client.shared.model.GeoLoc;
 import com.bikefunfinder.client.shared.model.User;
 import com.bikefunfinder.client.shared.model.json.Utils;
 import com.bikefunfinder.client.shared.model.printer.JSODescriber;
 import com.bikefunfinder.client.shared.request.AnonymousRequest;
-import com.bikefunfinder.client.shared.request.ServiceCallback;
+import com.bikefunfinder.client.shared.request.ratsnest.WebServiceResponseConsumer;
 import com.google.gwt.core.shared.GWT;
 import com.google.gwt.place.shared.PlaceController;
 import com.google.gwt.user.client.Window;
@@ -99,12 +97,12 @@ public class ClientFactoryGwtImpl implements ClientFactory {
     }
 
     public void deviceNetworkStateChanged(OnlineEvent onlineEvent) {
-        Window.alert("Device is on the network!"+onlineEvent.toString());
+//        Window.alert("Device is on the network!"+onlineEvent.toString());
         isDiviceOnline = true;
     }
 
     public void deviceNetworkStateChanged(OffLineEvent offLineEvent) {
-        Window.alert("Device is offline!"+offLineEvent.toString());
+//        Window.alert("Device is offline!"+offLineEvent.toString());
         isDiviceOnline = false;
 
     }
@@ -223,11 +221,11 @@ public class ClientFactoryGwtImpl implements ClientFactory {
     }
 
     private void createAnonymousAccount(final Storage storageInterface, final String key, final String uuid) {
-        ServiceCallback<AnonymousUser> callback = new ServiceCallback<AnonymousUser>() {
-            @Override
-            public void onError() {
-                //At this point the message has already been displayed to the user.
-            }
+        WebServiceResponseConsumer<AnonymousUser> callback = new WebServiceResponseConsumer<AnonymousUser>() {
+//            @Override
+//            public void onError() {
+//                //At this point the message has already been displayed to the user.
+//            }
 
             @Override
             public void onResponseReceived(AnonymousUser anonymousUser) {

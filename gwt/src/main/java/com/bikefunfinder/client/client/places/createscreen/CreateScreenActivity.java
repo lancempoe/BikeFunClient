@@ -15,6 +15,8 @@ import com.bikefunfinder.client.shared.Tools.NonPhoneGapGeoLocCallback;
 import com.bikefunfinder.client.shared.model.*;
 import com.bikefunfinder.client.shared.model.json.Utils;
 import com.bikefunfinder.client.shared.request.*;
+import com.bikefunfinder.client.shared.request.converters.NoOpResponseObject;
+import com.bikefunfinder.client.shared.request.ratsnest.WebServiceResponseConsumer;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JsArray;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
@@ -97,13 +99,13 @@ public class CreateScreenActivity extends MGWTAbstractActivity implements Create
             return ;
         }
 
-        final NewEventRequest.Builder request = new NewEventRequest.Builder(new ServiceCallback<BikeRide>() {
-            @Override
-            public void onError() {
-                //display.displayFailedToCreateRideMessage();
-                //At this point the message has already been displayed to the user.
-                isSubmittingRide = false;
-            }
+        final NewEventRequest.Builder request = new NewEventRequest.Builder(new WebServiceResponseConsumer<BikeRide>() {
+//            @Override
+//            public void onError() {
+//                //display.displayFailedToCreateRideMessage();
+//                //At this point the message has already been displayed to the user.
+//                isSubmittingRide = false;
+//            }
 
             @Override
             public void onResponseReceived(BikeRide bikeRide) {
@@ -134,11 +136,11 @@ public class CreateScreenActivity extends MGWTAbstractActivity implements Create
     @Override
     public void onUpdateSelected(final Root root) {
 
-        final UpdateEventRequest.Builder request = new UpdateEventRequest.Builder(new ServiceCallback<BikeRide>() {
-            @Override
-            public void onError() {
-                //At this point the message has already been displayed to the user.
-            }
+        final UpdateEventRequest.Builder request = new UpdateEventRequest.Builder(new WebServiceResponseConsumer<BikeRide>() {
+//            @Override
+//            public void onError() {
+//                //At this point the message has already been displayed to the user.
+//            }
 
             @Override
             public void onResponseReceived(BikeRide bikeRide) {
@@ -186,11 +188,11 @@ public class CreateScreenActivity extends MGWTAbstractActivity implements Create
     }
 
     private void DeleteEvent(final BikeRide bikeRide) {
-        final DeleteEventRequest.Builder request = new DeleteEventRequest.Builder(new ServiceCallback<NoOpResponseObject>() {
-            @Override
-            public void onError() {
-                //At this point the message has already been displayed to the user.
-            }
+        final DeleteEventRequest.Builder request = new DeleteEventRequest.Builder(new WebServiceResponseConsumer<NoOpResponseObject>() {
+//            @Override
+//            public void onError() {
+//                //At this point the message has already been displayed to the user.
+//            }
 
             @Override
             public void onResponseReceived(NoOpResponseObject noOpResponseObject) {

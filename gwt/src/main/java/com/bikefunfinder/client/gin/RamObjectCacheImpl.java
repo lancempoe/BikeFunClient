@@ -6,7 +6,7 @@ package com.bikefunfinder.client.gin;
 
 import com.bikefunfinder.client.shared.model.BikeRide;
 import com.bikefunfinder.client.shared.model.GeoLoc;
-import com.google.gwt.core.client.GWT;
+import com.bikefunfinder.client.shared.model.Root;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +18,10 @@ public class RamObjectCacheImpl implements RamObjectCache {
 
     private final List<BikeRide> bikeRideList = new ArrayList<BikeRide>();
     private GeoLoc currentPhoneGeoLoc;
+
+    private Root lastTimeOfDay = null;
+    private Root lastTimeOfDayForProfile = null;
+    private Root lastSearchByProximity = null;
 
     @Override
     public List<BikeRide> getHereAndNowBikeRideCache() {
@@ -101,5 +105,35 @@ public class RamObjectCacheImpl implements RamObjectCache {
     @Override
     public void setCurrentPhoneGeoLoc(GeoLoc phoneGeoLoc) {
         this.currentPhoneGeoLoc = phoneGeoLoc;
+    }
+
+    @Override
+    public Root getSearchByTimeOfDay() {
+        return lastTimeOfDay;
+    }
+
+    @Override
+    public void setSearchByTimeOfDay(Root root) {
+        lastTimeOfDay = root;
+    }
+
+    @Override
+    public Root getSearchByTimeOfDayForProfile() {
+        return lastTimeOfDayForProfile;
+    }
+
+    @Override
+    public void setSearchByTimeOfDayForProfile(Root root) {
+        lastTimeOfDayForProfile = root;
+    }
+
+    @Override
+    public Root getSearchByProximity() {
+        return lastSearchByProximity;
+    }
+
+    @Override
+    public void setSearchByProximity(Root root) {
+        lastSearchByProximity = root;
     }
 }

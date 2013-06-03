@@ -10,12 +10,10 @@ import com.bikefunfinder.client.shared.Tools.DeviceTools;
 import com.bikefunfinder.client.shared.Tools.NonPhoneGapGeoLocCallback;
 import com.bikefunfinder.client.shared.model.*;
 import com.bikefunfinder.client.shared.request.SearchByTimeOfDayForProfileRequest;
-import com.bikefunfinder.client.shared.request.ServiceCallback;
-import com.google.gwt.user.client.Window;
+import com.bikefunfinder.client.shared.request.ratsnest.WebServiceResponseConsumer;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.web.bindery.event.shared.EventBus;
 import com.googlecode.mgwt.mvp.client.MGWTAbstractActivity;
-import com.googlecode.mgwt.ui.client.dialog.Dialogs;
 
 public class ProfileScreenActivity extends MGWTAbstractActivity implements ProfileScreenDisplay.Presenter {
 
@@ -71,20 +69,20 @@ public class ProfileScreenActivity extends MGWTAbstractActivity implements Profi
     }
 
     private void fireRequestForsearchByTimeOfDayForProfile(GeoLoc geoLoc) {
-        ServiceCallback<Root> callback = new ServiceCallback<Root>() {
+        WebServiceResponseConsumer<Root> callback = new WebServiceResponseConsumer<Root>() {
             @Override
             public void onResponseReceived(Root root) {
                 clientFactory.getPlaceController().goTo(new HomeScreenPlace(root, HomeScreenPlace.UsageEnum.ShowMyRides));
             }
 
-            @Override
-            public void onError() {
-                Dialogs.alert("Warning", "Oops, your BFF will be back shortly.", new Dialogs.AlertCallback() {
-                    @Override
-                    public void onButtonPressed() {
-                    }
-                });
-            }
+//            @Override
+//            public void onError() {
+//                Dialogs.alert("Warning", "Oops, your BFF will be back shortly.", new Dialogs.AlertCallback() {
+//                    @Override
+//                    public void onButtonPressed() {
+//                    }
+//                });
+//            }
         };
         SearchByTimeOfDayForProfileRequest.Builder request = new SearchByTimeOfDayForProfileRequest.Builder(callback);
         request.latitude(geoLoc).longitude(geoLoc).rideLeaderId(userId).send();

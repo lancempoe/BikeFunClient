@@ -10,22 +10,22 @@ package com.bikefunfinder.client.shared.request;
 
 import com.bikefunfinder.client.shared.constants.Settings;
 import com.bikefunfinder.client.shared.model.*;
-import com.bikefunfinder.client.shared.model.json.Utils;
 import com.bikefunfinder.client.shared.model.printer.JSODescriber;
+import com.bikefunfinder.client.shared.request.converters.PayloadConverters;
+import com.bikefunfinder.client.shared.request.ratsnest.*;
 import com.google.gwt.http.client.*;
-import com.googlecode.mgwt.ui.client.dialog.Dialogs;
 
 import java.math.BigDecimal;
 
 public final class SearchByParametersRequest {
 
     public static final class Builder {
-        private ServiceCallback<Root> callback;
+        private WebServiceResponseConsumer<Root> callback;
         private Query query;
         private BigDecimal longitude;
         private BigDecimal latitude;
 
-        public Builder(final ServiceCallback<Root> callback) {
+        public Builder(final WebServiceResponseConsumer<Root> callback) {
             if (callback == null) {
                 throw new NullPointerException();
             }
@@ -33,7 +33,7 @@ public final class SearchByParametersRequest {
             this.callback = callback;
         }
 
-        public Builder callback(final ServiceCallback<Root> callback) {
+        public Builder callback(final WebServiceResponseConsumer<Root> callback) {
             if (callback == null) {
                 throw new NullPointerException();
             }
@@ -64,7 +64,7 @@ public final class SearchByParametersRequest {
 
     private static final String URL = Settings.HOST + "FunService/rest/display/by_search/";
 
-    private final ServiceCallback<Root> callback;
+    private final WebServiceResponseConsumer<Root> callback;
     private final Query query;
     private final BigDecimal latitude;
     private final BigDecimal longitude;
@@ -87,18 +87,15 @@ public final class SearchByParametersRequest {
     }
 
     private Request send() {
-        Request request = null;
-
-        final RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST, getUrlWithQuery());
         try {
+            final String requestPayload = JSODescriber.toJSON(query);
+            final RepeatableRequestBuilder requestBuilder = new RepeatableRequestBuilder(RequestBuilder.POST, getUrlWithQuery(), requestPayload);
             requestBuilder.setHeader("Content-Type", "application/json");
-            final String jsonText = JSODescriber.toJSON(query);
-            request = requestBuilder.sendRequest(jsonText, getRequestCallback());
+            return requestBuilder.sendRequest(requestPayload, getRequestCallback(requestBuilder));
         } catch (final RequestException e) {
             e.printStackTrace();
+            return null;
         }
-
-        return request;
     }
 
     private String getUrlWithQuery() {
@@ -112,38 +109,12 @@ public final class SearchByParametersRequest {
         return builder.toString();
     }
 
-    private RequestCallback getRequestCallback() {
-        final RequestCallback requestCallback = new RequestCallback() {
-            @Override
-            public void onError(final Request request, final Throwable exception) {
-                Dialogs.alert("Error", "Unable to get by_search.", new Dialogs.AlertCallback() {
-                    @Override
-                    public void onButtonPressed() {
-                        callback.onError();
-                    }
-                });
-            }
+    private RequestCallback getRequestCallback(final RepeatableRequestBuilder requestBuilder) {
 
-            @Override
-            public void onResponseReceived(final Request request, final Response response) {
-                final int statusCode = response.getStatusCode();
-                if ((statusCode < 200) || (statusCode >= 300)) {
-                    final StringBuilder builder = new StringBuilder();
-                    builder.append(response.getText());
-                    Dialogs.alert("Notice: ", builder.toString(), new Dialogs.AlertCallback() {
-                        @Override
-                        public void onButtonPressed() {
-                            callback.onError();
-                        }
-                    });
-                } else {
-                    Root root = Utils.castJsonTxtToJSOObject(response.getText());
-                    callback.onResponseReceived(root);
+        RequestCallBackHandlerStack<Root> cachedPewpChain = new RequestCallBackHandlerStack<Root>(
+                PayloadConverters.ROOT_JSON_OBJECT_CONVERTER, requestBuilder, callback, NoCacheStrategy.INSTANCE
+        );
 
-                }
-            }
-        };
-
-        return requestCallback;
+        return new RequestCallbackSorter<Root>(cachedPewpChain);
     }
 }

@@ -1,4 +1,4 @@
-package com.bikefunfinder.client.shared.request;
+package com.bikefunfinder.client.shared.request.converters;
 /*
  * @author: tneuwerth
  * @created 5/27/13 3:24 PM

@@ -1,12 +1,11 @@
 package com.bikefunfinder.client.shared.request;
 
 import com.bikefunfinder.client.shared.constants.Settings;
-import com.bikefunfinder.client.shared.model.Tracking;
 import com.bikefunfinder.client.shared.model.User;
-import com.bikefunfinder.client.shared.model.json.Utils;
 import com.bikefunfinder.client.shared.model.printer.JSODescriber;
+import com.bikefunfinder.client.shared.request.converters.PayloadConverters;
+import com.bikefunfinder.client.shared.request.ratsnest.*;
 import com.google.gwt.http.client.*;
-import com.googlecode.mgwt.ui.client.dialog.Dialogs;
 
 /**
  * Created with IntelliJ IDEA.
@@ -17,10 +16,10 @@ import com.googlecode.mgwt.ui.client.dialog.Dialogs;
 public final class NewUserRequest {
 
     public static final class Builder {
-        private ServiceCallback<User> callback;
+        private WebServiceResponseConsumer<User> callback;
         private User user;
 
-        public Builder(final ServiceCallback<User> callback) {
+        public Builder(final WebServiceResponseConsumer<User> callback) {
             if (callback == null) {
                 throw new NullPointerException();
             }
@@ -28,7 +27,7 @@ public final class NewUserRequest {
             this.callback = callback;
         }
 
-        public Builder callback(final ServiceCallback<User> callback) {
+        public Builder callback(final WebServiceResponseConsumer<User> callback) {
             if (callback == null) {
                 throw new NullPointerException();
             }
@@ -49,7 +48,7 @@ public final class NewUserRequest {
 
     private static final String URL = Settings.HOST + "FunService/rest/users";
 
-    private final ServiceCallback<User> callback;
+    private final WebServiceResponseConsumer<User> callback;
     private final User user;
     private final Request request;
 
@@ -70,12 +69,13 @@ public final class NewUserRequest {
     private Request send() {
         Request request = null;
 
-        final RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST, getUrlWithQuery());
         try {
-            final String jsonText = JSODescriber.toJSON(user);
+            final String requestPayload = JSODescriber.toJSON(user);
             //Window.alert(jsonText); //if yer wanting some debuggerz
+
+            final RepeatableRequestBuilder requestBuilder = new RepeatableRequestBuilder(RequestBuilder.POST, getUrlWithQuery(), requestPayload);
+            request = requestBuilder.sendRequest(requestPayload, getRequestCallback(requestBuilder));
             requestBuilder.setHeader("Content-Type", "application/json");
-            request = requestBuilder.sendRequest(jsonText, getRequestCallback());
         } catch (final RequestException e) {
             e.printStackTrace();
         }
@@ -90,40 +90,13 @@ public final class NewUserRequest {
         return builder.toString();
     }
 
-    private RequestCallback getRequestCallback() {
-        final RequestCallback requestCallback = new RequestCallback() {
-            @Override
-            public void onError(final Request request, final Throwable exception) {
-                Dialogs.alert("Error", "Unable to create new user.",
-                        new Dialogs.AlertCallback() {
-                            @Override
-                            public void onButtonPressed() {
-                                callback.onError();
-                            }
-                        });
-            }
+    private RequestCallback getRequestCallback(final RepeatableRequestBuilder requestBuilder) {
 
-            @Override
-            public void onResponseReceived(final Request request, final Response response) {
-                final int statusCode = response.getStatusCode();
-                if ((statusCode < 200) || (statusCode >= 300)) {
-                    final StringBuilder builder = new StringBuilder();
-                    builder.append("Unable to create new user. ");
-                    builder.append(response.getText());
-                    Dialogs.alert("Notice: ", builder.toString(), new Dialogs.AlertCallback() {
-                        @Override
-                        public void onButtonPressed() {
-                            callback.onError();
-                        }
-                    });
-                } else {
-                    User user = Utils.castJsonTxtToJSOObject(response.getText());
-                    callback.onResponseReceived(user);
-                }
-            }
-        };
+        RequestCallBackHandlerStack<User> cachedPewpChain = new RequestCallBackHandlerStack<User>(
+                PayloadConverters.User_JSON_OBJECT_CONVERTER, requestBuilder, callback, NoCacheStrategy.INSTANCE
+        );
 
-        return requestCallback;
+        return new RequestCallbackSorter<User>(cachedPewpChain);
     }
 }
 

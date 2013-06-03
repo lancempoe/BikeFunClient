@@ -14,7 +14,7 @@ import com.bikefunfinder.client.shared.model.GeoLoc;
 import com.bikefunfinder.client.shared.model.Query;
 import com.bikefunfinder.client.shared.model.Root;
 import com.bikefunfinder.client.shared.request.SearchByParametersRequest;
-import com.bikefunfinder.client.shared.request.ServiceCallback;
+import com.bikefunfinder.client.shared.request.ratsnest.WebServiceResponseConsumer;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.web.bindery.event.shared.EventBus;
 import com.googlecode.mgwt.mvp.client.MGWTAbstractActivity;
@@ -53,11 +53,11 @@ public class SearchScreenActivity extends MGWTAbstractActivity implements Search
     @Override
     public void searchRideButtonSelected(Query query) {
 
-        final SearchByParametersRequest.Builder request = new SearchByParametersRequest.Builder(new ServiceCallback<Root>() {
-            @Override
-            public void onError() {
-                //At this point the message has already been displayed to the user.
-            }
+        final SearchByParametersRequest.Builder request = new SearchByParametersRequest.Builder(new WebServiceResponseConsumer<Root>() {
+//            @Override
+//            public void onError() {
+//                //At this point the message has already been displayed to the user.
+//            }
 
             @Override
             public void onResponseReceived(Root root) {

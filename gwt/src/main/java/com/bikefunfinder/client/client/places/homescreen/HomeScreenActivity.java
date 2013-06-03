@@ -1,7 +1,6 @@
 package com.bikefunfinder.client.client.places.homescreen;
 
 import com.bikefunfinder.client.bootstrap.ClientFactory;
-import com.bikefunfinder.client.bootstrap.db.DBKeys;
 import com.bikefunfinder.client.client.places.createscreen.CreateScreenPlace;
 import com.bikefunfinder.client.client.places.eventscreen.EventScreenPlace;
 import com.bikefunfinder.client.client.places.gmap.GMapPlace;
@@ -15,17 +14,11 @@ import com.bikefunfinder.client.shared.constants.ScreenConstants;
 import com.bikefunfinder.client.shared.model.*;
 import com.bikefunfinder.client.shared.model.Root;
 import com.bikefunfinder.client.shared.model.helper.Extractor;
-import com.bikefunfinder.client.shared.model.json.Utils;
 import com.bikefunfinder.client.shared.request.SearchByTimeOfDayRequest;
-import com.bikefunfinder.client.shared.request.ServiceCallback;
-import com.google.gwt.core.client.GWT;
-import com.google.gwt.core.client.RunAsyncCallback;
-import com.google.gwt.user.client.Window;
+import com.bikefunfinder.client.shared.request.ratsnest.WebServiceResponseConsumer;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.web.bindery.event.shared.EventBus;
 import com.googlecode.mgwt.mvp.client.MGWTAbstractActivity;
-
-import java.util.ArrayList;
 
 import com.google.gwt.regexp.shared.*;
 import com.googlecode.mgwt.ui.client.dialog.Dialogs;
@@ -195,7 +188,7 @@ public class HomeScreenActivity extends MGWTAbstractActivity implements HomeScre
             final GeoLoc geoLoc,
             final NotifyTimeAndDayCallback notifyTimeAndDayCallback) {
 
-        ServiceCallback<Root> callback = new ServiceCallback<Root>() {
+        WebServiceResponseConsumer<Root> callback = new WebServiceResponseConsumer<Root>() {
             @Override
             public void onResponseReceived(Root root) {
                 ramObjectCache.setHereAndNowBikeRideCache(Extractor.getBikeRidesFrom(root));
@@ -203,12 +196,12 @@ public class HomeScreenActivity extends MGWTAbstractActivity implements HomeScre
                 notifyTimeAndDayCallback.onResponseReceived();
             }
 
-            @Override
-            public void onError() {
-                display.display(new ArrayList<BikeRide>());
-                display.display("City Unknown");
-                notifyTimeAndDayCallback.onError();
-            }
+//            @Override
+//            public void onError() {
+//                display.display(new ArrayList<BikeRide>());
+//                display.display("City Unknown");
+//                notifyTimeAndDayCallback.onError();
+//            }
         };
         SearchByTimeOfDayRequest.Builder request = new SearchByTimeOfDayRequest.Builder(callback);
         request.latitude(geoLoc).longitude(geoLoc).send();

@@ -7,22 +7,22 @@ package com.bikefunfinder.client.shared.request;
 import com.bikefunfinder.client.shared.model.BikeRide;
 import com.bikefunfinder.client.shared.constants.Settings;
 import com.bikefunfinder.client.shared.model.GeoLoc;
-import com.bikefunfinder.client.shared.model.json.Utils;
 import com.bikefunfinder.client.shared.model.printer.JSODescriber;
+import com.bikefunfinder.client.shared.request.converters.PayloadConverters;
+import com.bikefunfinder.client.shared.request.ratsnest.*;
 import com.google.gwt.http.client.*;
-import com.googlecode.mgwt.ui.client.dialog.Dialogs;
 
 import java.math.BigDecimal;
 
 public final class NewEventRequest {
 
     public static final class Builder {
-        private ServiceCallback<BikeRide> callback;
+        private WebServiceResponseConsumer<BikeRide> callback;
         private BikeRide bikeRide;
         private BigDecimal longitude;
         private BigDecimal latitude;
 
-        public Builder(final ServiceCallback<BikeRide> callback) {
+        public Builder(final WebServiceResponseConsumer<BikeRide> callback) {
             if (callback == null) {
                 throw new NullPointerException();
             }
@@ -30,7 +30,7 @@ public final class NewEventRequest {
             this.callback = callback;
         }
 
-        public Builder callback(final ServiceCallback<BikeRide> callback) {
+        public Builder callback(final WebServiceResponseConsumer<BikeRide> callback) {
             if (callback == null) {
                 throw new NullPointerException();
             }
@@ -61,7 +61,7 @@ public final class NewEventRequest {
 
     private static final String URL = Settings.HOST + "FunService/rest/bikerides/new";
 
-    private final ServiceCallback<BikeRide> callback;
+    private final WebServiceResponseConsumer<BikeRide> callback;
     private final BikeRide bikeRide;
     private final BigDecimal latitude;
     private final BigDecimal longitude;
@@ -84,18 +84,16 @@ public final class NewEventRequest {
     }
 
     private Request send() {
-        Request request = null;
-
-        final RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST, getUrlWithQuery());
         try {
+            final String requestData = JSODescriber.toJSON(bikeRide);
+
+            final RepeatableRequestBuilder requestBuilder = new RepeatableRequestBuilder(RequestBuilder.POST, getUrlWithQuery(), requestData);
             requestBuilder.setHeader("Content-Type", "application/json");
-            final String jsonText = JSODescriber.toJSON(bikeRide);
-            request = requestBuilder.sendRequest(jsonText, getRequestCallback());
+            return requestBuilder.sendRequest(requestData, getRequestCallback(requestBuilder));
         } catch (final RequestException e) {
             e.printStackTrace();
+            return null;
         }
-
-        return request;
     }
 
     private String getUrlWithQuery() {
@@ -109,44 +107,12 @@ public final class NewEventRequest {
         return builder.toString();
     }
 
-    private RequestCallback getRequestCallback() {
-        final RequestCallback requestCallback = new RequestCallback() {
-            @Override
-            public void onError(final Request request, final Throwable exception) {
-                Dialogs.alert("Error", "Unable to create new bike ride.",
-                        new Dialogs.AlertCallback() {
-                    @Override
-                    public void onButtonPressed() {
-                        callback.onError();
-                    }
-                });
-            }
+    private RequestCallback getRequestCallback(final RepeatableRequestBuilder requestBuilder) {
 
-            @Override
-            public void onResponseReceived(final Request request, final Response response) {
-                final int statusCode = response.getStatusCode();
-                if ((statusCode < 200) || (statusCode >= 300)) {
-                    final StringBuilder builder = new StringBuilder();
-                    builder.append(response.getText());
-                    Dialogs.alert("Notice: ", builder.toString(), new Dialogs.AlertCallback() {
-                        @Override
-                        public void onButtonPressed() {
-                            callback.onError();
-                        }
-                    });
-                } else {
-                    Dialogs.alert("Notice: ", "Successfully Created Event!", new Dialogs.AlertCallback() {
-                        @Override
-                        public void onButtonPressed() {
-                            //Nothing needs to happen... simply notify the user.
-                        }
-                    });
-                    BikeRide bikeRide = Utils.castJsonTxtToJSOObject(response.getText());
-                    callback.onResponseReceived(bikeRide);
-                }
-            }
-        };
+        RequestCallBackHandlerStack<BikeRide> cachedPewpChain = new RequestCallBackHandlerStack<BikeRide>(
+                PayloadConverters.BikeRide_JSON_OBJECT_CONVERTER, requestBuilder, callback, NoCacheStrategy.INSTANCE
+        );
 
-        return requestCallback;
+        return new RequestCallbackSorter<BikeRide>(cachedPewpChain);
     }
 }

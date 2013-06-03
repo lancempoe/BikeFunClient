@@ -6,18 +6,18 @@ package com.bikefunfinder.client.shared.request;
 
 import com.bikefunfinder.client.shared.constants.Settings;
 import com.bikefunfinder.client.shared.model.Tracking;
-import com.bikefunfinder.client.shared.model.json.Utils;
 import com.bikefunfinder.client.shared.model.printer.JSODescriber;
+import com.bikefunfinder.client.shared.request.converters.PayloadConverters;
+import com.bikefunfinder.client.shared.request.ratsnest.*;
 import com.google.gwt.http.client.*;
-import com.googlecode.mgwt.ui.client.dialog.Dialogs;
 
 public final class NewTrackRequest {
 
     public static final class Builder {
-        private ServiceCallback<Tracking> callback;
+        private WebServiceResponseConsumer<Tracking> callback;
         private Tracking tracking;
 
-        public Builder(final ServiceCallback<Tracking> callback) {
+        public Builder(final WebServiceResponseConsumer<Tracking> callback) {
             if (callback == null) {
                 throw new NullPointerException();
             }
@@ -25,7 +25,7 @@ public final class NewTrackRequest {
             this.callback = callback;
         }
 
-        public Builder callback(final ServiceCallback<Tracking> callback) {
+        public Builder callback(final WebServiceResponseConsumer<Tracking> callback) {
             if (callback == null) {
                 throw new NullPointerException();
             }
@@ -46,7 +46,7 @@ public final class NewTrackRequest {
 
     private static final String URL = Settings.HOST + "FunService/rest/tracking/new ";
 
-    private final ServiceCallback<Tracking> callback;
+    private final WebServiceResponseConsumer<Tracking> callback;
     private final Tracking tracking;
     private final Request request;
 
@@ -67,12 +67,13 @@ public final class NewTrackRequest {
     private Request send() {
         Request request = null;
 
-        final RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.POST, getUrlWithQuery());
         try {
-            final String jsonText = JSODescriber.toJSON(tracking);
-            //Window.alert(jsonText); //if yer wanting some debuggerz
+            final String requestData = JSODescriber.toJSON(tracking);
+            //Window.alert(requestData); //if yer wanting some debuggerz
+
+            final RepeatableRequestBuilder requestBuilder = new RepeatableRequestBuilder(RequestBuilder.POST, getUrlWithQuery(), requestData);
             requestBuilder.setHeader("Content-Type", "application/json");
-            request = requestBuilder.sendRequest(jsonText, getRequestCallback());
+            request = requestBuilder.sendRequest(requestData, getRequestCallback(requestBuilder));
         } catch (final RequestException e) {
             e.printStackTrace();
         }
@@ -87,38 +88,12 @@ public final class NewTrackRequest {
         return builder.toString();
     }
 
-    private RequestCallback getRequestCallback() {
-        final RequestCallback requestCallback = new RequestCallback() {
-            @Override
-            public void onError(final Request request, final Throwable exception) {
-                Dialogs.alert("Error", "Unable to create new tracking on bike ride.",
-                        new Dialogs.AlertCallback() {
-                            @Override
-                            public void onButtonPressed() {
-                                callback.onError();
-                            }
-                        });
-            }
+    private RequestCallback getRequestCallback(final RepeatableRequestBuilder requestBuilder) {
 
-            @Override
-            public void onResponseReceived(final Request request, final Response response) {
-                final int statusCode = response.getStatusCode();
-                if ((statusCode < 200) || (statusCode >= 300)) {
-                    final StringBuilder builder = new StringBuilder();
-                    builder.append("Unable to create new tracking on bike ride. ");
-                    builder.append(response.getText());
-                    Dialogs.alert("Notice: ", builder.toString(), new Dialogs.AlertCallback() {
-                        @Override
-                        public void onButtonPressed() {
-                            callback.onError();
-                        }
-                    });
-                } else {
-                    Tracking tracking = Utils.castJsonTxtToJSOObject(response.getText());
-                    callback.onResponseReceived(tracking);
-                }
-            }
-        };
-        return requestCallback;
+        RequestCallBackHandlerStack<Tracking> cachedPewpChain = new RequestCallBackHandlerStack<Tracking>(
+                PayloadConverters.Tracking_JSON_OBJECT_CONVERTER, requestBuilder, callback , NoCacheStrategy.INSTANCE
+        );
+
+        return new RequestCallbackSorter<Tracking>(cachedPewpChain);
     }
 }

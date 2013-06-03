@@ -11,22 +11,22 @@ package com.bikefunfinder.client.shared.request;
 import com.bikefunfinder.client.shared.model.BikeRide;
 import com.bikefunfinder.client.shared.constants.Settings;
 import com.bikefunfinder.client.shared.model.GeoLoc;
-import com.bikefunfinder.client.shared.model.json.Utils;
+import com.bikefunfinder.client.shared.request.converters.PayloadConverters;
+import com.bikefunfinder.client.shared.request.ratsnest.*;
 import com.google.gwt.http.client.*;
-import com.googlecode.mgwt.ui.client.dialog.Dialogs;
 
 import java.math.BigDecimal;
 
 public final class EventRequest {
 
     public static final class Builder {
-        private ServiceCallback<BikeRide> callback;
+        private WebServiceResponseConsumer<BikeRide> callback;
         private String eventId;
         private BigDecimal longitude;
         private BigDecimal latitude;
         private String clientId;
 
-        public Builder(final ServiceCallback<BikeRide> callback) {
+        public Builder(final WebServiceResponseConsumer<BikeRide> callback) {
             if (callback == null) {
                 throw new NullPointerException();
             }
@@ -34,7 +34,7 @@ public final class EventRequest {
             this.callback = callback;
         }
 
-        public Builder callback(final ServiceCallback<BikeRide> callback) {
+        public Builder callback(final WebServiceResponseConsumer<BikeRide> callback) {
             if (callback == null) {
                 throw new NullPointerException();
             }
@@ -67,7 +67,7 @@ public final class EventRequest {
 
     private static final String URL = Settings.HOST + "FunService/rest/bikerides/";
 
-    private final ServiceCallback<BikeRide> callback;
+    private final WebServiceResponseConsumer<BikeRide> callback;
     private final String eventId;
     private final String clientId;
     private final BigDecimal latitude;
@@ -92,16 +92,14 @@ public final class EventRequest {
     }
 
     private Request send() {
-        Request request = null;
-
-        final RequestBuilder requestBuilder = new RequestBuilder(RequestBuilder.GET, getUrlWithQuery());
         try {
-            request = requestBuilder.sendRequest(null, getRequestCallback());
+            String requestData = null;
+            final RepeatableRequestBuilder requestBuilder = new RepeatableRequestBuilder(RequestBuilder.GET, getUrlWithQuery(), requestData);
+            return requestBuilder.sendRequest(null, getRequestCallback(requestBuilder));
         } catch (final RequestException e) {
             e.printStackTrace();
+            return null;
         }
-
-        return request;
     }
 
     private String getUrlWithQuery() {
@@ -118,38 +116,12 @@ public final class EventRequest {
         return builder.toString();
     }
 
-    private RequestCallback getRequestCallback() {
-        final RequestCallback requestCallback = new RequestCallback() {
-            @Override
-            public void onError(final Request request, final Throwable exception) {
-                Dialogs.alert("Error", "Unable to get event.", new Dialogs.AlertCallback() {
-                    @Override
-                    public void onButtonPressed() {
-                        callback.onError();
-                    }
-                });
-            }
+    private RequestCallback getRequestCallback(final RepeatableRequestBuilder requestBuilder) {
 
-            @Override
-            public void onResponseReceived(final Request request, final Response response) {
-                final int statusCode = response.getStatusCode();
-                if ((statusCode < 200) || (statusCode >= 300)) {
-                    final StringBuilder builder = new StringBuilder();
-                    builder.append("Unable to get event. ");
-                    builder.append(response.getText());
-                    Dialogs.alert("Notice: ", builder.toString(), new Dialogs.AlertCallback() {
-                        @Override
-                        public void onButtonPressed() {
-                            callback.onError();
-                        }
-                    });
-                } else {
-                    BikeRide bikeRide = Utils.castJsonTxtToJSOObject(response.getText());
-                    callback.onResponseReceived(bikeRide);
-                }
-            }
-        };
+        RequestCallBackHandlerStack<BikeRide> cachedPewpChain = new RequestCallBackHandlerStack<BikeRide>(
+                PayloadConverters.BikeRide_JSON_OBJECT_CONVERTER, requestBuilder, callback, NoCacheStrategy.INSTANCE
+        );
 
-        return requestCallback;
+        return new RequestCallbackSorter<BikeRide>(cachedPewpChain);
     }
 }
