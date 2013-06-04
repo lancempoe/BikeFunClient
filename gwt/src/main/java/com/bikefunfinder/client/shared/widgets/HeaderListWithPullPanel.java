@@ -1,11 +1,14 @@
 package com.bikefunfinder.client.shared.widgets;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import com.bikefunfinder.client.client.places.homescreen.HomeRefreshPullHandler;
 import com.bikefunfinder.client.client.places.homescreen.HomeScreenDisplay;
+import com.bikefunfinder.client.shared.constants.ScreenConstants;
+import com.bikefunfinder.client.shared.model.printer.JsDateWrapper;
 import com.google.gwt.core.shared.GWT;
 import com.google.gwt.dom.client.Document;
 import com.google.gwt.event.logical.shared.HasSelectionHandlers;
@@ -177,7 +180,7 @@ public class HeaderListWithPullPanel<G, T> extends Composite {
     private LightArrayInt pagesY;
 
     private int currentPage;
-    private final GroupingCellList<G, T> cellList;
+    private final MyGroupingCellList<G, T> cellList;
 
     private boolean needReset = false;
 
@@ -193,7 +196,7 @@ public class HeaderListWithPullPanel<G, T> extends Composite {
      * @param cellList the cell list that renders its children inside this
      *            widget.
      */
-    public HeaderListWithPullPanel(GroupingCellList<G, T> cellList) {
+    public HeaderListWithPullPanel(MyGroupingCellList<G, T> cellList) {
         this(cellList, MGWTStyle.getTheme().getMGWTClientBundle().getGroupingList());
     }
 
@@ -204,7 +207,7 @@ public class HeaderListWithPullPanel<G, T> extends Composite {
      *            widget
      * @param css the css to use
      */
-    public HeaderListWithPullPanel(GroupingCellList<G, T> cellList, GroupingList css) {
+    public HeaderListWithPullPanel(MyGroupingCellList<G, T> cellList, GroupingList css) {
 //        super(cellList, css);
         this.cellList = cellList;
 //        this.cellList.addStyleName(Resources.INSTANCE.css().colorGreen());
@@ -290,7 +293,17 @@ public class HeaderListWithPullPanel<G, T> extends Composite {
 
         scrollPanel.refresh();
 
-        
+
+        String whereWeWantToGo = makeAPrettyRepresentationOfTodaysDate();
+        final String id = cellList.headers.get(whereWeWantToGo);
+        if(id!=null) {
+            Element omg = DOM.getElementById(id);
+            scrollPanel.scrollTo(0 , -omg.getAbsoluteTop());
+        }
+
+
+
+
         if(list.size()>0) {
         	// this is a hard faught bug fix. Essentially,
         	//when the list is re-rendered, as it is being done now,
@@ -301,6 +314,12 @@ public class HeaderListWithPullPanel<G, T> extends Composite {
 	        movingHeader.setHTML("");
         }
 
+    }
+
+    private String makeAPrettyRepresentationOfTodaysDate() {
+        Date today = new Date();
+        JsDateWrapper todayJsDateWrapped = new JsDateWrapper(new Double(today.getTime()));
+        return todayJsDateWrapped.toString(ScreenConstants.DateFormatPrintPretty);
     }
 
     private void updateCurrentPage(int y) {

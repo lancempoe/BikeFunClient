@@ -4,6 +4,7 @@ import com.bikefunfinder.client.shared.constants.ScreenConstants;
 import com.bikefunfinder.client.shared.model.BikeRide;
 import com.bikefunfinder.client.shared.model.printer.JsDateWrapper;
 import com.bikefunfinder.client.shared.widgets.HeaderListWithPullPanel;
+import com.bikefunfinder.client.shared.widgets.MyGroupingCellList;
 import com.bikefunfinder.client.shared.widgets.PullGroupPanel;
 import com.bikefunfinder.client.shared.widgets.PullToRefreshTextHeader;
 import com.google.gwt.core.client.GWT;
@@ -122,14 +123,15 @@ public class HomeScreenDisplayGwtImpl extends Composite implements HomeScreenDis
         timeAndDayButton.addStyleName(style.buttonTreatment());
         hereAndNowButton.addStyleName(style.buttonTreatment());
 
-        GroupingCellList<Header, Content> groupingCellList = new GroupingCellList<Header, Content>(new ContentCell(), new HeaderCell());
+        MyGroupingCellList<Header, Content> groupingCellList = new MyGroupingCellList<Header, Content>(new ContentCell(), new HeaderCell());
         groupingCellList.addSelectionHandler(new SelectionHandler<Content>() {
             @Override
             public void onSelection(SelectionEvent<Content> event) {
             presenter.onRideClick(event.getSelectedItem().getBikeRide());
             }
         });
-
+HTML poop = new HTML();
+        poop.getElement().scrollIntoView();
 
         pp = new PullGroupPanel<Header, Content>(new HeaderListWithPullPanel<Header, Content>(groupingCellList), presenter);
         headerListWidget.add(pp);
@@ -255,12 +257,6 @@ public class HomeScreenDisplayGwtImpl extends Composite implements HomeScreenDis
         }
 
         return list;
-    }
-
-    private String makeAPrettyRepresentationOfTodaysDate() {
-        Date today = new Date();
-        JsDateWrapper todayJsDateWrapped = new JsDateWrapper(new Double(today.getTime()));
-        return todayJsDateWrapped.toString(ScreenConstants.DateFormatPrintPretty);
     }
 
     private static class ContentCell implements Cell<Content> {
