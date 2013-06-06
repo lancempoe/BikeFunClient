@@ -35,7 +35,6 @@ public class CreateScreenActivity extends MGWTAbstractActivity implements Create
     private AnonymousUser anonymousUser;
     private User user;
     private boolean existingEvent = false;
-    private boolean isSubmittingRide = false;
 
     public CreateScreenActivity(ClientFactory<CreateScreenDisplay> clientFactory, BikeRide bikeRide) {
         this.clientFactory = clientFactory;
@@ -103,12 +102,6 @@ public class CreateScreenActivity extends MGWTAbstractActivity implements Create
     @Override
     public void onCreateSelected(BikeRide br) {
 
-        if(!isSubmittingRide) {
-            isSubmittingRide = true;
-        } else {
-            return ;
-        }
-
         final NewEventRequest.Builder request = new NewEventRequest.Builder(new WebServiceResponseConsumer<BikeRide>() {
 //            @Override
 //            public void onError() {
@@ -166,17 +159,7 @@ public class CreateScreenActivity extends MGWTAbstractActivity implements Create
             public void onSuccess(GeoLoc geoLoc) {
                 request.latitude(geoLoc).longitude(geoLoc).send();
             }
-        }, new CacheStrategy<GeoLoc>() {
-            @Override
-            public void cacheType(GeoLoc type) {
-                //To change body of implemented methods use File | Settings | File Templates.
-            }
-
-            @Override
-            public GeoLoc getCachedType() {
-                return null;  //To change body of implemented methods use File | Settings | File Templates.
-            }
-        }));
+        }, GeoLocCacheStrategy.INSTANCE));
 
     }
 

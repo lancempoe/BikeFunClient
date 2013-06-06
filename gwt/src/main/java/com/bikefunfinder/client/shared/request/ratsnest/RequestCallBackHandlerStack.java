@@ -58,4 +58,9 @@ public class RequestCallBackHandlerStack<T> implements RequestCallbackSorter.Poo
             refireStrategy.refire(requestBuilder, this);
         }
     }
+
+    @Override
+    public void errorPoop() {
+        LoadingScreen.closeLoader();
+    }
 }

@@ -27,6 +27,7 @@ public class RequestCallbackSorter<T> implements RequestCallback {
             Dialogs.alert("Error", response.getText(), new Dialogs.AlertCallback() {
                 @Override
                 public void onButtonPressed() {
+                    poopHandlerStack.errorPoop();
                 }
             });
         } else {
@@ -40,14 +41,9 @@ public class RequestCallbackSorter<T> implements RequestCallback {
     }
 
     // the stuff below does not belong here
-    public interface PoopHandlerStack<T> extends HandlesFilthyMesses<T>, HandlesGoodPoops<T> {
-    }
-
-    public interface HandlesGoodPoops<T> {
+    public interface PoopHandlerStack<T> {
         public void goodPoop(Response response);
-    }
-
-    public interface HandlesFilthyMesses<T> {
         public void messyPoop(Request request);
+        public void errorPoop();
     }
 }

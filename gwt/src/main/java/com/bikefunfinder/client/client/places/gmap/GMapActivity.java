@@ -215,13 +215,28 @@ public class GMapActivity extends NavBaseActivity implements GMapDisplay.Present
     private void startWatching() {
         //Update the bikeRide
         if (MapScreenType.EVENT.equals(screenType)) {
-            updatedBikeRide(ramObjectCache.getCurrentPhoneGeoLoc());
+
+            DeviceTools.requestPhoneGeoLoc(new NonPhoneGapGeoLocCallback(new NonPhoneGapGeoLocCallback.GeolocationHandler() {
+                @Override
+                public void onSuccess(GeoLoc geoLoc) {
+                    updatedBikeRide(geoLoc);
+                }
+            }, GeoLocCacheStrategy.INSTANCE));
+
+
             if (isTracking) {
                 pingClientTrack();
             }
         }
 
-        setMapView(ramObjectCache.getCurrentPhoneGeoLoc());
+
+        DeviceTools.requestPhoneGeoLoc(new NonPhoneGapGeoLocCallback(new NonPhoneGapGeoLocCallback.GeolocationHandler() {
+            @Override
+            public void onSuccess(GeoLoc geoLoc) {
+                setMapView(geoLoc);
+            }
+        }, GeoLocCacheStrategy.INSTANCE));
+
     }
 
     /**
@@ -233,6 +248,11 @@ public class GMapActivity extends NavBaseActivity implements GMapDisplay.Present
             setHereAndNowView(phoneGeoLoc); //Here & now Map
         } else { //Event Map
             clearWatch();
+
+            if(ramObjectCache.getCurrentBikeRide() == null) {
+                setHereAndNowView(phoneGeoLoc); //Here & now Map
+                return;
+            }
 
             if (isTracking) { //Tracking
                 setTrackView(phoneGeoLoc);
