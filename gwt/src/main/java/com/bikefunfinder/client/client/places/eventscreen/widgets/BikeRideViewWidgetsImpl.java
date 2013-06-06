@@ -95,9 +95,9 @@ public class BikeRideViewWidgetsImpl implements BikeRideViewWidgets {
         if(bikeRide.createJsDateWrapperRideStartTime()!=null) {
 
             JsDateWrapper a = bikeRide.createJsDateWrapperRideStartTime();
-            final String s1 = a.toString(ScreenConstants.DateFormatPrintPretty);
+            final String date = a.toString(ScreenConstants.DateFormatPrintPretty);
             final String time = a.toString(ScreenConstants.TimeFormatPrintPretty);
-            return time + " at " + time;
+            return date + " at " + time;
 
         }
         return "";

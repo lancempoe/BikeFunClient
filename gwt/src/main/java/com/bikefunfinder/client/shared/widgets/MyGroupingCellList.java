@@ -1,10 +1,9 @@
 package com.bikefunfinder.client.shared.widgets;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
+import com.bikefunfinder.client.shared.constants.ScreenConstants;
+import com.bikefunfinder.client.shared.model.printer.JsDateWrapper;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.logical.shared.HasSelectionHandlers;
@@ -15,6 +14,7 @@ import com.google.gwt.safehtml.client.SafeHtmlTemplates;
 import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.user.client.Window;
+import com.googlecode.mgwt.ui.client.MGWT;
 import com.googlecode.mgwt.ui.client.MGWTStyle;
 import com.googlecode.mgwt.ui.client.theme.base.ListCss;
 import com.googlecode.mgwt.ui.client.widget.CellList;
@@ -31,7 +31,7 @@ import com.googlecode.mgwt.ui.client.widget.celllist.Cell;
  */
 public class MyGroupingCellList<G, T> extends CellList<T> implements HasSelectionHandlers<T> {
 
-    private final Cell<G> header;
+    private final ColoredCell<G> header;
     private final Map<Integer, Integer> map = new HashMap<Integer, Integer>();
     private final Map<Integer, T> modelMap = new HashMap<Integer, T>();
 
@@ -80,7 +80,7 @@ public class MyGroupingCellList<G, T> extends CellList<T> implements HasSelectio
      * @param cell the cell for content
      * @param header the cell for the headers
      */
-    public MyGroupingCellList(Cell<T> cell, Cell<G> header) {
+    public MyGroupingCellList(ColoredCell<T> cell, ColoredCell<G> header) {
         this(cell, header, MGWTStyle.getTheme().getMGWTClientBundle().getListCss());
     }
 
@@ -91,7 +91,7 @@ public class MyGroupingCellList<G, T> extends CellList<T> implements HasSelectio
      * @param header the cell for the headers
      * @param css the css to use
      */
-    public MyGroupingCellList(Cell<T> cell, Cell<G> header, ListCss css) {
+    public MyGroupingCellList(ColoredCell<T> cell, ColoredCell<G> header, ListCss css) {
         super(cell, css);
         this.header = header;
 

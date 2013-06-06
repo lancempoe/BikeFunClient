@@ -3,10 +3,7 @@ package com.bikefunfinder.client.client.places.homescreen;
 import com.bikefunfinder.client.shared.constants.ScreenConstants;
 import com.bikefunfinder.client.shared.model.BikeRide;
 import com.bikefunfinder.client.shared.model.printer.JsDateWrapper;
-import com.bikefunfinder.client.shared.widgets.HeaderListWithPullPanel;
-import com.bikefunfinder.client.shared.widgets.MyGroupingCellList;
-import com.bikefunfinder.client.shared.widgets.PullGroupPanel;
-import com.bikefunfinder.client.shared.widgets.PullToRefreshTextHeader;
+import com.bikefunfinder.client.shared.widgets.*;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JsDate;
 import com.google.gwt.event.logical.shared.SelectionEvent;
@@ -130,8 +127,7 @@ public class HomeScreenDisplayGwtImpl extends Composite implements HomeScreenDis
             presenter.onRideClick(event.getSelectedItem().getBikeRide());
             }
         });
-HTML poop = new HTML();
-        poop.getElement().scrollIntoView();
+
 
         pp = new PullGroupPanel<Header, Content>(new HeaderListWithPullPanel<Header, Content>(groupingCellList), presenter);
         headerListWidget.add(pp);
@@ -259,7 +255,7 @@ HTML poop = new HTML();
         return list;
     }
 
-    private static class ContentCell implements Cell<Content> {
+    private static class ContentCell implements ColoredCell<Content> {
 
         @Override
         public void render(SafeHtmlBuilder safeHtmlBuilder, Content model) {
@@ -271,9 +267,13 @@ HTML poop = new HTML();
             return true;
         }
 
+        @Override
+        public String getColorCss() {
+            //todo: implement me!!
+            return "yumm";
+        }
     }
-    private static class HeaderCell implements Cell<Header> {
-
+    private static class HeaderCell implements ColoredCell<Header> {
         @Override
         public void render(SafeHtmlBuilder safeHtmlBuilder, Header model) {
 
@@ -285,6 +285,11 @@ HTML poop = new HTML();
             return false;
         }
 
+        @Override
+        public String getColorCss() {
+            //todo make this happen
+            return "yumm";
+        }
     }
 
     @Override

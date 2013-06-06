@@ -99,7 +99,7 @@ public final class AnonymousRequest {
     private RequestCallback getRequestCallback(final RepeatableRequestBuilder requestBuilder) {
 
         RequestCallBackHandlerStack<AnonymousUser> cachedPewpChain = new RequestCallBackHandlerStack<AnonymousUser>(
-                PayloadConverters.AnonymousUser_JSON_OBJECT_CONVERTER, requestBuilder, callback, NoCacheStrategy.INSTANCE
+            PayloadConverters.AnonymousUser_JSON_OBJECT_CONVERTER, requestBuilder, callback, NoCacheStrategy.INSTANCE
         );
 
         return new RequestCallbackSorter<AnonymousUser>(cachedPewpChain);

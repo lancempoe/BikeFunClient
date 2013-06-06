@@ -293,17 +293,6 @@ public class HeaderListWithPullPanel<G, T> extends Composite {
 
         scrollPanel.refresh();
 
-
-        String whereWeWantToGo = makeAPrettyRepresentationOfTodaysDate();
-        final String id = cellList.headers.get(whereWeWantToGo);
-        if(id!=null) {
-            Element omg = DOM.getElementById(id);
-            scrollPanel.scrollTo(0 , -omg.getAbsoluteTop());
-        }
-
-
-
-
         if(list.size()>0) {
         	// this is a hard faught bug fix. Essentially,
         	//when the list is re-rendered, as it is being done now,
@@ -314,12 +303,6 @@ public class HeaderListWithPullPanel<G, T> extends Composite {
 	        movingHeader.setHTML("");
         }
 
-    }
-
-    private String makeAPrettyRepresentationOfTodaysDate() {
-        Date today = new Date();
-        JsDateWrapper todayJsDateWrapped = new JsDateWrapper(new Double(today.getTime()));
-        return todayJsDateWrapped.toString(ScreenConstants.DateFormatPrintPretty);
     }
 
     private void updateCurrentPage(int y) {

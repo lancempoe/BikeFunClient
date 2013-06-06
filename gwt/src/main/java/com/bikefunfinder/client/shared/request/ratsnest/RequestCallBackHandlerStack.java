@@ -56,13 +56,13 @@ public class RequestCallBackHandlerStack<T> implements RequestCallbackSorter.Poo
     private void refireRequestInAfterSomeTime(final RequestCallBackHandlerStack<T> thizz) {
         Timer timer = new Timer() {
             public void run() {
-                try {
-                    requestBuilder.setCallback(new RequestCallbackSorter(thizz));
-                    requestBuilder.setRequestData(requestBuilder.getPayload());
-                    requestBuilder.send();
-                } catch (RequestException e) {
-                    e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-                }
+            try {
+                requestBuilder.setCallback(new RequestCallbackSorter(thizz));
+                requestBuilder.setRequestData(requestBuilder.getPayload());
+                requestBuilder.send();
+            } catch (RequestException e) {
+                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            }
             }
         };
 
