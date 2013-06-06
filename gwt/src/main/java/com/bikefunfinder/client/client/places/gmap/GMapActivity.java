@@ -7,6 +7,7 @@ import com.bikefunfinder.client.client.places.homescreen.HomeScreenPlace;
 import com.bikefunfinder.client.gin.Injector;
 import com.bikefunfinder.client.gin.RamObjectCache;
 import com.bikefunfinder.client.shared.Tools.DeviceTools;
+import com.bikefunfinder.client.shared.Tools.NativeUtilities;
 import com.bikefunfinder.client.shared.Tools.NonPhoneGapGeoLocCallback;
 import com.bikefunfinder.client.shared.constants.ScreenConstants;
 import com.bikefunfinder.client.shared.constants.ScreenConstants.*;
@@ -28,6 +29,7 @@ import com.googlecode.gwtphonegap.client.geolocation.GeolocationCallback;
 import com.googlecode.gwtphonegap.client.geolocation.GeolocationOptions;
 import com.googlecode.gwtphonegap.client.geolocation.GeolocationWatcher;
 import com.googlecode.gwtphonegap.showcase.client.NavBaseActivity;
+import com.googlecode.mgwt.ui.client.MGWT;
 import com.googlecode.mgwt.ui.client.dialog.ConfirmDialog;
 import com.googlecode.mgwt.ui.client.dialog.Dialogs;
 
@@ -288,12 +290,20 @@ public class GMapActivity extends NavBaseActivity implements GMapDisplay.Present
         display.resetForEvent(eventGeoLoc);
         display.display(ramObjectCache.getCurrentBikeRide());
         display.setMapInfo(phoneGeoLoc, ramObjectCache.getCurrentBikeRide(), isFirstPostSavePhoneGeoLoc);
+
+        if (MGWT.getOsDetection().isPhone()) {
+            NativeUtilities.trackPage("Event Screen");
+        }
     }
 
     private void setHereAndNowView(final GeoLoc phoneGeoLoc) {
         final GMapDisplay display = clientFactory.getDisplay(this);
         display.resetForHereAndNow(phoneGeoLoc);
         fireRequestForHereAndNow(display, phoneGeoLoc);
+
+        if (MGWT.getOsDetection().isPhone()) {
+            NativeUtilities.trackPage("Here & Now Screen");
+        }
     }
 
 
@@ -337,12 +347,6 @@ public class GMapActivity extends NavBaseActivity implements GMapDisplay.Present
         };
         EventRequest.Builder request = new EventRequest.Builder(callback);
         request.clientId(userId).id(ramObjectCache.getCurrentBikeRide().getId()).latitude(phoneGeoLoc).longitude(phoneGeoLoc).send();
-    }
-
-    @Override
-    public void moreRideDetilsScreenRequested(BikeRide bikeRide) {
-        if (timer != null) { timer.cancel(); }
-        clientFactory.getPlaceController().goTo(new EventScreenPlace(bikeRide));
     }
 
     @Override

@@ -19,32 +19,42 @@
 
     <script type="text/javascript" language="javascript" src="scripts/GAPlugin.js"></script>
 	<script type="text/javascript">
-			var gaPlugin;
+        var gaPlugin;
         
-            // Wait for Cordova to connect with the device
-            // More details here: http://docs.phonegap.com/en/1.0.0/phonegap_events_events.md.html
-            document.addEventListener("deviceready",onDeviceReady,false);
-            document.addEventListener("resume", onResume, false);
-            
-			function onDeviceReady() {
-                gaPlugin = window.plugins.gaPlugin;
-                gaPlugin.init(gaSuccess, gaError, "UA-41361242-3", 30);
-                gaPlugin.trackPage(gaSuccess, gaError, "index.html");            
-			}
+        // Wait for Cordova to connect with the device
+        // More details here: http://docs.phonegap.com/en/2.5.0/cordova_events_events.md.html#Events
+        document.addEventListener("deviceready",onDeviceReady,false);
+        document.addEventListener("resume", onResume, false);
+        document.addEventListener("pause", onPause, false);
+    
+        function onDeviceReady() {
+            gaPlugin = window.plugins.gaPlugin;
+            gaPlugin.init(gaSuccess, gaError, "UA-41361242-3", 10);
+            trackPage("Application Started");
+        }
         
-            function onResume() {
-                gaPlugin.trackPage(gaSuccess, gaError, "index.html");
-            }
+        function onResume() {
+            gaPlugin = window.plugins.gaPlugin;
+            gaPlugin.init(gaSuccess, gaError, "UA-41361242-3", 10);
+            trackPage("Application Resumed");
+        }
         
-            function gaSuccess(){
-                //Nothing further required
-            }
+        function onPause() {
+            gaPlugin.exitGA(gaPlugin, gaError);
+        }
         
-            function gaError(msg){
-                //Do not display any errors to the client.
-            }
-
-			
+        function trackPage(pageBeingTracked) {
+            gaPlugin.trackPage(gaSuccess, gaError, pageBeingTracked);
+        }
+        
+        function gaSuccess(){
+            //Nothing further required
+        }
+        
+        function gaError(msg){
+            //Do not display any errors to the client.
+        }
+        
     </script>
 
     <script type="text/javascript" language="javascript" src="bikefunfinder/bikefunfinder.nocache.js"></script>

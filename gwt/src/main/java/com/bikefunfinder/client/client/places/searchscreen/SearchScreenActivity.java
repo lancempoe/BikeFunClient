@@ -7,6 +7,7 @@ package com.bikefunfinder.client.client.places.searchscreen;
 import com.bikefunfinder.client.bootstrap.ClientFactory;
 import com.bikefunfinder.client.client.places.homescreen.HomeScreenPlace;
 import com.bikefunfinder.client.shared.Tools.DeviceTools;
+import com.bikefunfinder.client.shared.Tools.NativeUtilities;
 import com.bikefunfinder.client.shared.Tools.NonPhoneGapGeoLocCallback;
 import com.bikefunfinder.client.shared.constants.ScreenConstants;
 import com.bikefunfinder.client.shared.model.BikeRide;
@@ -18,6 +19,7 @@ import com.bikefunfinder.client.shared.request.ratsnest.WebServiceResponseConsum
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.web.bindery.event.shared.EventBus;
 import com.googlecode.mgwt.mvp.client.MGWTAbstractActivity;
+import com.googlecode.mgwt.ui.client.MGWT;
 
 import java.util.List;
 
@@ -43,6 +45,10 @@ public class SearchScreenActivity extends MGWTAbstractActivity implements Search
         final SearchScreenDisplay display = clientFactory.getDisplay(this);
         display.setPresenter(this);
         panel.setWidget(display);
+
+        if (MGWT.getOsDetection().isPhone()) {
+            NativeUtilities.trackPage("Search Screen");
+        }
     }
 
     @Override

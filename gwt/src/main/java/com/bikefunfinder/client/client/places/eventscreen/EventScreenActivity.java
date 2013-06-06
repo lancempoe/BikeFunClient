@@ -11,6 +11,7 @@ import com.bikefunfinder.client.client.places.gmap.GMapPlace;
 import com.bikefunfinder.client.client.places.createscreen.CreateScreenPlace;
 import com.bikefunfinder.client.client.places.homescreen.HomeScreenPlace;
 import com.bikefunfinder.client.gin.Injector;
+import com.bikefunfinder.client.shared.Tools.NativeUtilities;
 import com.bikefunfinder.client.shared.model.AnonymousUser;
 import com.bikefunfinder.client.shared.model.BikeRide;
 import com.bikefunfinder.client.shared.model.Tracking;
@@ -21,6 +22,7 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.web.bindery.event.shared.EventBus;
 import com.googlecode.mgwt.mvp.client.MGWTAbstractActivity;
+import com.googlecode.mgwt.ui.client.MGWT;
 
 public class EventScreenActivity extends MGWTAbstractActivity implements EventScreenDisplay.Presenter {
 
@@ -91,6 +93,9 @@ private final ClientFactory<EventScreenDisplay> clientFactory = Injector.INSTANC
         }
         display.displayTrackings(trackings);
 
+        if (MGWT.getOsDetection().isPhone()) {
+            NativeUtilities.trackPage("Event Screen");
+        }
     }
 
     @Override
