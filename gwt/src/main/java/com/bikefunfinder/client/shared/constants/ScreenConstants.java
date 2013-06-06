@@ -1,5 +1,6 @@
 package com.bikefunfinder.client.shared.constants;
 
+import com.bikefunfinder.client.shared.model.printer.JsDateWrapper;
 import com.google.gwt.i18n.client.NumberFormat;
 
 /**
@@ -78,4 +79,7 @@ public class ScreenConstants {
 
     public static final double MinimumTimeBeforeTrackingAllowed = 1800000; //30 minutes
     public static final double MaximumTimeAfterTrackingAllowed = 86400000;  //24 hours
+
+    public static final double TimeUntilItsNotCurrent = JsDateWrapper.getHours(1); // 1 hour
+    public static final double TimeUntilItsOld = JsDateWrapper.getHours(0);
 }

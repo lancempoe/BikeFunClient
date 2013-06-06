@@ -6,5 +6,5 @@ import com.googlecode.mgwt.ui.client.widget.celllist.Cell;
  */
 
 public interface ColoredCell<T> extends Cell<T> {
-    public String getColorCss();
+    public String getColorCss(T model);
 }

@@ -8,10 +8,10 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JsDate;
 import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
-import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.resources.client.impl.ImageResourcePrototype;
+import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.safehtml.shared.SafeUri;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -20,22 +20,18 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Widget;
-import com.googlecode.mgwt.dom.client.event.orientation.OrientationChangeEvent;
-import com.googlecode.mgwt.dom.client.event.orientation.OrientationChangeHandler;
 import com.googlecode.mgwt.dom.client.event.tap.TapEvent;
-import com.googlecode.mgwt.ui.client.MGWT;
-import com.googlecode.mgwt.ui.client.MGWTStyle;
-import com.googlecode.mgwt.ui.client.theme.base.TabBarCss;
-import com.googlecode.mgwt.ui.client.widget.*;
+import com.googlecode.mgwt.ui.client.widget.Button;
+import com.googlecode.mgwt.ui.client.widget.GroupingCellList;
+import com.googlecode.mgwt.ui.client.widget.GroupingCellList.CellGroup;
+import com.googlecode.mgwt.ui.client.widget.HeaderPanel;
+import com.googlecode.mgwt.ui.client.widget.LayoutPanel;
 import com.googlecode.mgwt.ui.client.widget.base.ButtonBase;
 import com.googlecode.mgwt.ui.client.widget.base.PullPanel;
-import com.googlecode.mgwt.ui.client.widget.tabbar.TabBarButton;
-import com.googlecode.mgwt.ui.client.widget.GroupingCellList.CellGroup;
 import com.googlecode.mgwt.ui.client.widget.celllist.Cell;
-import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
+import com.googlecode.mgwt.ui.client.widget.tabbar.TabBarButton;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -168,7 +164,6 @@ public class HomeScreenDisplayGwtImpl extends Composite implements HomeScreenDis
             wasAdjusted = adjustPullPanelSize();
             pp.refresh();
         }
-
     }
 
     public static boolean isSameDate(JsDateWrapper date1, JsDateWrapper date2) {
@@ -268,9 +263,12 @@ public class HomeScreenDisplayGwtImpl extends Composite implements HomeScreenDis
         }
 
         @Override
-        public String getColorCss() {
+        public String getColorCss(Content model) {
             //todo: implement me!!
-            return "yumm";
+
+            String cssClass = model.getBikeRideListItemCssClass();
+            Logger.getLogger("").log(Level.WARNING, "hi we made it! " + cssClass);
+            return model.getBikeRideListItemCssClass();
         }
     }
     private static class HeaderCell implements ColoredCell<Header> {
@@ -286,9 +284,9 @@ public class HomeScreenDisplayGwtImpl extends Composite implements HomeScreenDis
         }
 
         @Override
-        public String getColorCss() {
+        public String getColorCss(Header model) {
             //todo make this happen
-            return "yumm";
+            return "customHeaderStyles";
         }
     }
 

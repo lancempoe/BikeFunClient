@@ -14,3 +14,17 @@
     background-image: none;
     background-color: #fff;
 }
+
+.oldRide {
+    background-color: grey !important;
+
+}
+
+.currentRide, activeRide {
+    background-color: #9ddaa6 !important;
+}
+
+.futureRide {
+    background-color: white !important;
+
+}

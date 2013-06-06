@@ -7,6 +7,7 @@ package com.bikefunfinder.client.shared.request.ratsnest;
 import com.google.gwt.http.client.Request;
 import com.google.gwt.http.client.RequestCallback;
 import com.google.gwt.http.client.Response;
+import com.googlecode.mgwt.ui.client.dialog.Dialogs;
 
 public class RequestCallbackSorter<T> implements RequestCallback {
     private final PoopHandlerStack<T> poopHandlerStack;
@@ -21,6 +22,13 @@ public class RequestCallbackSorter<T> implements RequestCallback {
 
         if ((statusCode >= 200) && (statusCode < 300)) {
             poopHandlerStack.goodPoop(response);
+        } else if(statusCode == 412) {
+            //Service is sending back precondition fail.
+            Dialogs.alert("Error", response.getText(), new Dialogs.AlertCallback() {
+                @Override
+                public void onButtonPressed() {
+                }
+            });
         } else {
             poopHandlerStack.messyPoop(request);
         }

@@ -9,6 +9,7 @@ import com.bikefunfinder.client.client.places.searchscreen.SearchScreenPlace;
 import com.bikefunfinder.client.gin.Injector;
 import com.bikefunfinder.client.gin.RamObjectCache;
 import com.bikefunfinder.client.shared.Tools.DeviceTools;
+import com.bikefunfinder.client.shared.Tools.NativeUtilities;
 import com.bikefunfinder.client.shared.Tools.NonPhoneGapGeoLocCallback;
 import com.bikefunfinder.client.shared.constants.ScreenConstants;
 import com.bikefunfinder.client.shared.model.*;
@@ -23,6 +24,7 @@ import com.google.web.bindery.event.shared.EventBus;
 import com.googlecode.mgwt.mvp.client.MGWTAbstractActivity;
 
 import com.google.gwt.regexp.shared.*;
+import com.googlecode.mgwt.ui.client.MGWT;
 import com.googlecode.mgwt.ui.client.dialog.Dialogs;
 
 /**
@@ -57,14 +59,14 @@ public class HomeScreenActivity extends MGWTAbstractActivity implements HomeScre
     }
 
     private void setupDisplay(Root root) {
+        //root will never be null
+
         final HomeScreenDisplay display = clientFactory.getDisplay(this);
-        if(root != null) {
-            display.display(Extractor.getBikeRidesFrom(root));
-        }
+
+        display.display(Extractor.getBikeRidesFrom(root));
 
         //Get City
-        if (root != null &&
-            root.getBikeRides() != null &&
+        if (root.getBikeRides() != null &&
             root.getBikeRides().length() > 0 &&
             root.getClosestLocation() != null)  {
             MatchResult matcher = buildMatcher(root.getClosestLocation().getFormattedAddress());
@@ -80,8 +82,10 @@ public class HomeScreenActivity extends MGWTAbstractActivity implements HomeScre
                 }
             }
         }  else {
-            display.display("Sorry, No Rides");
+            display.display("Sorry, No Rides");   //TODO NEED TO MAKE BUTTONS SMALLER OTHERWISE THE SORRY NO RIDES IS TOO LONG.
         }
+
+        NativeUtilities.trackPage("Home Screen");
     }
 
     private MatchResult buildMatcher(String formattedAddress) {

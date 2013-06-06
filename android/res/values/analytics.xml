@@ -3,7 +3,6 @@
 <resources>
     <!--Replace placeholder ID with your tracking ID-->
     <string name="ga_trackingId">UA-41361242-3</string>
-
     <string name="ga_appName">Bike Fun Finder</string>
     <string name="ga_appVersion">Android v1.0</string>
 

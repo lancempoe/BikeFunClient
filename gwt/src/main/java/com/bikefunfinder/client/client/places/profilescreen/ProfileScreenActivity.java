@@ -7,6 +7,7 @@ package com.bikefunfinder.client.client.places.profilescreen;
 import com.bikefunfinder.client.bootstrap.ClientFactory;
 import com.bikefunfinder.client.client.places.homescreen.HomeScreenPlace;
 import com.bikefunfinder.client.shared.Tools.DeviceTools;
+import com.bikefunfinder.client.shared.Tools.NativeUtilities;
 import com.bikefunfinder.client.shared.Tools.NonPhoneGapGeoLocCallback;
 import com.bikefunfinder.client.shared.model.*;
 import com.bikefunfinder.client.shared.request.SearchByTimeOfDayForProfileRequest;
@@ -16,6 +17,7 @@ import com.bikefunfinder.client.shared.request.ratsnest.WebServiceResponseConsum
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.web.bindery.event.shared.EventBus;
 import com.googlecode.mgwt.mvp.client.MGWTAbstractActivity;
+import com.googlecode.mgwt.ui.client.MGWT;
 
 public class ProfileScreenActivity extends MGWTAbstractActivity implements ProfileScreenDisplay.Presenter {
 
@@ -35,6 +37,8 @@ public class ProfileScreenActivity extends MGWTAbstractActivity implements Profi
         ProfileScreenDisplay display = this.clientFactory.getDisplay(this);
         setUserDisplayElements(user.getId(), user.getUserName());
         display.display(user);
+
+        NativeUtilities.trackPage("Profile Screen (User)");
     }
 
     public ProfileScreenActivity(ClientFactory clientFactory, AnonymousUser anonymousUser) {
@@ -42,6 +46,8 @@ public class ProfileScreenActivity extends MGWTAbstractActivity implements Profi
         ProfileScreenDisplay display = this.clientFactory.getDisplay(this);
         setUserDisplayElements(anonymousUser.getId(), anonymousUser.getUserName());
         display.display(anonymousUser);
+
+        NativeUtilities.trackPage("Profile Screen (Anonymous)");
     }
 
     private void setUserDisplayElements(String id, String name) {

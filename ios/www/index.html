@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="css/jquery.ui.css" />
     <link rel="stylesheet" href="css/mobiscroll.custom-2.5.2.min.css" />
     <link rel="stylesheet" href="css/localStyles.css" />
+        
     <script type="text/javascript" language="javascript" src="scripts/cordova-2.5.0.js"></script>
     <script type="text/javascript" language="javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
     <script type="text/javascript" language="javascript" src="scripts/jquery-1.9.1.min.js"></script>
@@ -16,39 +17,9 @@
     <script type="text/javascript" language="javascript" src="scripts/oauth.js"></script>
     <script type="text/javascript" language="javascript" src="scripts/timepicker.js"></script>
     <script type="text/javascript" language="javascript" src="scripts/datepicker.js"></script>
-
-    <script type="text/javascript" language="javascript" src="scripts/GAPlugin.js"></script>
-	<script type="text/javascript">
-			var gaPlugin;
-        
-            // Wait for Cordova to connect with the device
-            // More details here: http://docs.phonegap.com/en/1.0.0/phonegap_events_events.md.html
-            document.addEventListener("deviceready",onDeviceReady,false);
-            document.addEventListener("resume", onResume, false);
-            
-			function onDeviceReady() {
-                gaPlugin = window.plugins.gaPlugin;
-                gaPlugin.init(gaSuccess, gaError, "UA-41361242-3", 30);
-                gaPlugin.trackPage(gaSuccess, gaError, "index.html");            
-			}
-        
-            function onResume() {
-                gaPlugin.trackPage(gaSuccess, gaError, "index.html");
-            }
-        
-            function gaSuccess(){
-                //Nothing further required
-            }
-        
-            function gaError(msg){
-                //Do not display any errors to the client.
-            }
-
-			
-    </script>
-
     <script type="text/javascript" language="javascript" src="bikefunfinder/bikefunfinder.nocache.js"></script>
-
+    <script type="text/javascript" language="javascript" src="scripts/GAPlugin.js"></script>
+    <script type="text/javascript" language="javascript" src="scripts/Analytics.js"></script>
 </head>
 
 <body>

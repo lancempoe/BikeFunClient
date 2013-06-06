@@ -7,6 +7,7 @@ import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.googlecode.mgwt.ui.client.widget.GroupingCellList.CellGroup;
+import com.google.gwt.core.client.JsDate;
 
 import java.util.List;
 
@@ -30,6 +31,8 @@ public interface HomeScreenDisplay extends IsWidget {
             void onError();
             void onResponseReceived();
         }
+
+
     }
 
 
@@ -100,5 +103,36 @@ public interface HomeScreenDisplay extends IsWidget {
 
             return safeHtmlBuilder.toSafeHtml();
         }
+
+        public String getBikeRideListItemCssClass() {
+            // Current Idea
+            //-------------
+            // - Old Rides Are Grey
+            // - isTracking Green
+            // - StartTime is between 2 hours before now is Green
+            // - Everything in the Future is normal
+
+            if(bikeRide.isCurrentlyTracking()) {
+                return "activeRide";
+            }
+            JsDate currentTime = JsDate.create();
+
+            JsDate rideTime = JsDate.create(bikeRide.getRideStartTime());
+
+            if(currentTime.getTime() - ScreenConstants.TimeUntilItsOld > this.bikeRide.getRideStartTime())
+            {
+                //Nope! Too old
+                return "oldRide";
+            } else if(currentTime.getTime() + ScreenConstants.TimeUntilItsNotCurrent < this.bikeRide.getRideStartTime()) {
+                //Nope! Too Early
+                return "futureRide";
+            } else {
+                return "currentRide";
+            }
+
+
+        }
+
+
     }
 }

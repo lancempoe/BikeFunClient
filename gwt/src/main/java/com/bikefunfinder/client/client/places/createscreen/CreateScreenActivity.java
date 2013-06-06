@@ -11,6 +11,7 @@ import com.bikefunfinder.client.client.places.homescreen.HomeScreenPlace;
 import com.bikefunfinder.client.gin.Injector;
 import com.bikefunfinder.client.gin.RamObjectCache;
 import com.bikefunfinder.client.shared.Tools.DeviceTools;
+import com.bikefunfinder.client.shared.Tools.NativeUtilities;
 import com.bikefunfinder.client.shared.Tools.NonPhoneGapGeoLocCallback;
 import com.bikefunfinder.client.shared.model.*;
 import com.bikefunfinder.client.shared.model.json.Utils;
@@ -24,6 +25,7 @@ import com.google.gwt.core.client.JsArray;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.web.bindery.event.shared.EventBus;
 import com.googlecode.mgwt.mvp.client.MGWTAbstractActivity;
+import com.googlecode.mgwt.ui.client.MGWT;
 import com.googlecode.mgwt.ui.client.dialog.ConfirmDialog;
 import com.googlecode.mgwt.ui.client.dialog.Dialogs;
 
@@ -50,6 +52,12 @@ public class CreateScreenActivity extends MGWTAbstractActivity implements Create
         }
 
         display.setVisibilityOfButtons(existingEvent);
+
+        if (existingEvent) {
+            NativeUtilities.trackPage("Update Screen");
+        } else {
+            NativeUtilities.trackPage("Create Screen");
+        }
     }
 
     private String getUserName() {
