@@ -36,9 +36,7 @@ public class ProfileScreenActivity extends MGWTAbstractActivity implements Profi
         setUserDisplayElements(user.getId(), user.getUserName());
         display.display(user);
 
-        if (MGWT.getOsDetection().isPhone()) {
-            NativeUtilities.trackPage("Profile Screen (User)");
-        }
+        NativeUtilities.trackPage("Profile Screen (User)");
     }
 
     public ProfileScreenActivity(ClientFactory clientFactory, AnonymousUser anonymousUser) {
@@ -47,9 +45,7 @@ public class ProfileScreenActivity extends MGWTAbstractActivity implements Profi
         setUserDisplayElements(anonymousUser.getId(), anonymousUser.getUserName());
         display.display(anonymousUser);
 
-        if (MGWT.getOsDetection().isPhone()) {
-            NativeUtilities.trackPage("Profile Screen (Anonymous)");
-        }
+        NativeUtilities.trackPage("Profile Screen (Anonymous)");
     }
 
     private void setUserDisplayElements(String id, String name) {

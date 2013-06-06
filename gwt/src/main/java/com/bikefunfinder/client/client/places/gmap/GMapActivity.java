@@ -291,9 +291,7 @@ public class GMapActivity extends NavBaseActivity implements GMapDisplay.Present
         display.display(ramObjectCache.getCurrentBikeRide());
         display.setMapInfo(phoneGeoLoc, ramObjectCache.getCurrentBikeRide(), isFirstPostSavePhoneGeoLoc);
 
-        if (MGWT.getOsDetection().isPhone()) {
-            NativeUtilities.trackPage("Event Screen");
-        }
+        NativeUtilities.trackPage("Event Screen");
     }
 
     private void setHereAndNowView(final GeoLoc phoneGeoLoc) {
@@ -301,9 +299,7 @@ public class GMapActivity extends NavBaseActivity implements GMapDisplay.Present
         display.resetForHereAndNow(phoneGeoLoc);
         fireRequestForHereAndNow(display, phoneGeoLoc);
 
-        if (MGWT.getOsDetection().isPhone()) {
-            NativeUtilities.trackPage("Here & Now Screen");
-        }
+        NativeUtilities.trackPage("Here & Now Screen");
     }
 
 

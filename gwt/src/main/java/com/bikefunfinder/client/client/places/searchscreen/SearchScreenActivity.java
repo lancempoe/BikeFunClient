@@ -46,9 +46,7 @@ public class SearchScreenActivity extends MGWTAbstractActivity implements Search
         display.setPresenter(this);
         panel.setWidget(display);
 
-        if (MGWT.getOsDetection().isPhone()) {
-            NativeUtilities.trackPage("Search Screen");
-        }
+        NativeUtilities.trackPage("Search Screen");
     }
 
     @Override

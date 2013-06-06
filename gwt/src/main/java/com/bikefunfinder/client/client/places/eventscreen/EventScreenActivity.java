@@ -93,9 +93,7 @@ private final ClientFactory<EventScreenDisplay> clientFactory = Injector.INSTANC
         }
         display.displayTrackings(trackings);
 
-        if (MGWT.getOsDetection().isPhone()) {
-            NativeUtilities.trackPage("Event Screen");
-        }
+        NativeUtilities.trackPage("Event Screen");
     }
 
     @Override

@@ -51,12 +51,10 @@ public class CreateScreenActivity extends MGWTAbstractActivity implements Create
 
         display.setVisibilityOfButtons(existingEvent);
 
-        if (MGWT.getOsDetection().isPhone()) {
-            if (existingEvent) {
-                NativeUtilities.trackPage("Update Screen");
-            } else {
-                NativeUtilities.trackPage("Create Screen");
-            }
+        if (existingEvent) {
+            NativeUtilities.trackPage("Update Screen");
+        } else {
+            NativeUtilities.trackPage("Create Screen");
         }
     }
 

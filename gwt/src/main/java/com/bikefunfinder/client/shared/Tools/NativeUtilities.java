@@ -1,5 +1,7 @@
 package com.bikefunfinder.client.shared.Tools;
 
+import com.googlecode.mgwt.ui.client.MGWT;
+
 /**
  * Created with IntelliJ IDEA.
  * User: lancepoehler
@@ -9,7 +11,11 @@ package com.bikefunfinder.client.shared.Tools;
  */
 public class NativeUtilities {
 
-    public static native void trackPage(String pageName) /*-{
+
+    public static void trackPage(String pageName) {
+            trackPageNative(pageName);
+    }
+    public static native void trackPageNative(String pageName) /*-{
         $wnd.trackPage(pageName);
      }-*/;
 
