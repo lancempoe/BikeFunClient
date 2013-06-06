@@ -311,9 +311,9 @@ public class MyCellList<T>  extends Composite implements HasCellSelectedHandler 
             }
 
             if(clazz.isEmpty()) {
-                clazz = cell.getColorCss();
+                clazz = cell.getColorCss(model);
             } else {
-                clazz += " " + cell.getColorCss();
+                clazz += " " + cell.getColorCss(model);
             }
 
             cell.render(cellBuilder, model);

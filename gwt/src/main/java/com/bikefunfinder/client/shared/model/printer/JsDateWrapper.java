@@ -70,4 +70,17 @@ public class JsDateWrapper implements Comparable<JsDateWrapper> {
 
         return "";
     }
+
+    public static double getMinutes(int minutes) {
+        return minutes * 60000;
+    }
+
+    public static double getHours(int hours) {
+        return hours * 3600000;
+    }
+
+    public static double getDays(int days) {
+        return days * 86400000;
+    }
+
 }

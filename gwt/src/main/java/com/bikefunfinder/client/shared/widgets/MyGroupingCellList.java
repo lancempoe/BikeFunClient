@@ -145,9 +145,9 @@ public class MyGroupingCellList<G, T> extends MyCellList<T> implements HasSelect
                 }
 
                 if(clazz.isEmpty()) {
-                    clazz = cell.getColorCss();
+                    clazz = cell.getColorCss(model);
                 } else {
-                    clazz += " " + cell.getColorCss();
+                    clazz += " " + cell.getColorCss(model);
                 }
 
                 cell.render(cellBuilder, model);

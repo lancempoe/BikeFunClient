@@ -33,6 +33,8 @@ import com.googlecode.mgwt.ui.client.widget.tabbar.TabBarButton;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 public class HomeScreenDisplayGwtImpl extends Composite implements HomeScreenDisplay {
@@ -261,9 +263,12 @@ public class HomeScreenDisplayGwtImpl extends Composite implements HomeScreenDis
         }
 
         @Override
-        public String getColorCss() {
+        public String getColorCss(Content model) {
             //todo: implement me!!
-            return "yumm";
+
+            String cssClass = model.getBikeRideListItemCssClass();
+            Logger.getLogger("").log(Level.WARNING, "hi we made it! " + cssClass);
+            return model.getBikeRideListItemCssClass();
         }
     }
     private static class HeaderCell implements ColoredCell<Header> {
@@ -279,9 +284,9 @@ public class HomeScreenDisplayGwtImpl extends Composite implements HomeScreenDis
         }
 
         @Override
-        public String getColorCss() {
+        public String getColorCss(Header model) {
             //todo make this happen
-            return "yumm";
+            return "customHeaderStyles";
         }
     }
 
