@@ -94,7 +94,8 @@ public final class DeleteEventRequest {
     private RequestCallback getRequestCallback(final RepeatableRequestBuilder requestBuilder) {
 
         RequestCallBackHandlerStack<NoOpResponseObject> cachedPewpChain = new RequestCallBackHandlerStack<NoOpResponseObject>(
-                PayloadConverters.NoOpResponse_JSON_OBJECT_CONVERTER, requestBuilder, callback, NoCacheStrategy.INSTANCE
+                PayloadConverters.NoOpResponse_JSON_OBJECT_CONVERTER, requestBuilder, callback,
+                NoCacheStrategy.INSTANCE, new RepeatForeverWaitingBetweenRetries<NoOpResponseObject>()
         );
 
         return new RequestCallbackSorter<NoOpResponseObject>(cachedPewpChain);

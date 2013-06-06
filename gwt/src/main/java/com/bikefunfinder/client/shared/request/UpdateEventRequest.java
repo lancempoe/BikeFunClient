@@ -112,7 +112,7 @@ public final class UpdateEventRequest {
 
         RequestCallBackHandlerStack<BikeRide> cachedPewpChain = new RequestCallBackHandlerStack<BikeRide>(
                 PayloadConverters.BikeRide_JSON_OBJECT_CONVERTER, requestBuilder, callback,
-                NoCacheStrategy.INSTANCE
+                NoCacheStrategy.INSTANCE, new RepeatForeverWaitingBetweenRetries<BikeRide>()
         );
 
         return new RequestCallbackSorter<BikeRide>(cachedPewpChain);

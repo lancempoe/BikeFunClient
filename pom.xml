@@ -11,7 +11,7 @@
     <name>GWT Phonegap Showcase</name>
 
     <modules>
-        <module>gwtphonegap.showcase.gwt</module>
+        <module>bikefunfinder</module>
         <module>com.bikefunfinder.BikeFunFinder</module>
     </modules>
 

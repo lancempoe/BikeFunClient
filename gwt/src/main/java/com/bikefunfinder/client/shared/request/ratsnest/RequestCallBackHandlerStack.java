@@ -16,15 +16,18 @@ public class RequestCallBackHandlerStack<T> implements RequestCallbackSorter.Poo
     private final RepeatableRequestBuilder requestBuilder;
     private final WebServiceResponseConsumer<T> callback;
     private final CacheStrategy<T> cacheStrategy;
+    private final RefireStrategy<T> refireStrategy;
 
     public RequestCallBackHandlerStack(JsonObjectConverter<T> successfulPayloadConverter,
                                        RepeatableRequestBuilder requestBuilder,
                                        WebServiceResponseConsumer<T> callback,
-                                       CacheStrategy<T> cacheStrategy) {
+                                       CacheStrategy<T> cacheStrategy,
+                                       RefireStrategy<T> refireStrategy) {
         this.successfulPayloadConverter = successfulPayloadConverter;
         this.requestBuilder = requestBuilder;
         this.callback = callback;
         this.cacheStrategy = cacheStrategy;
+        this.refireStrategy = refireStrategy;
 
         LoadingScreen.openLoaderPanel();
     }
@@ -44,29 +47,15 @@ public class RequestCallBackHandlerStack<T> implements RequestCallbackSorter.Poo
 
     @Override
     public void messyPoop(Request request) {
+        if(refireStrategy.shouldCloseWaitingDialog()) {
+            LoadingScreen.closeLoader();
+        }
 
         T cachedEntry = cacheStrategy.getCachedType();
         if(cachedEntry!=null) {
             informCallBackOfSuccess(cachedEntry);
         } else {
-            refireRequestInAfterSomeTime(this);
+            refireStrategy.refire(requestBuilder, this);
         }
-    }
-
-    private void refireRequestInAfterSomeTime(final RequestCallBackHandlerStack<T> thizz) {
-        Timer timer = new Timer() {
-            public void run() {
-            try {
-                requestBuilder.setCallback(new RequestCallbackSorter(thizz));
-                requestBuilder.setRequestData(requestBuilder.getPayload());
-                requestBuilder.send();
-            } catch (RequestException e) {
-                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-            }
-            }
-        };
-
-        // Execute the timer to expire 2 seconds in the future
-        timer.schedule(2000);
     }
 }

@@ -136,4 +136,16 @@ public class RamObjectCacheImpl implements RamObjectCache {
     public void setSearchByProximity(Root root) {
         lastSearchByProximity = root;
     }
+
+
+    private BikeRide eventRequest;
+    @Override
+    public BikeRide getEventRequest() {
+        return eventRequest;
+    }
+
+    @Override
+    public void setEventRequest(BikeRide bikeRide) {
+        this.eventRequest = bikeRide;
+    }
 }

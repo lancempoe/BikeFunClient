@@ -129,8 +129,7 @@ public final class SearchByProximityRequest {
             public Root getCachedType() {
                 return ramObjectCache.getSearchByProximity();
             }
-        }
-        );
+        }, new RepeatForeverWaitingBetweenRetries<Root>());
 
         return new RequestCallbackSorter<Root>(cachedPewpChain);
     }

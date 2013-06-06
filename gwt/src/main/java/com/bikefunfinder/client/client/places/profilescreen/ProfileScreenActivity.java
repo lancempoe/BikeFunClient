@@ -10,6 +10,8 @@ import com.bikefunfinder.client.shared.Tools.DeviceTools;
 import com.bikefunfinder.client.shared.Tools.NonPhoneGapGeoLocCallback;
 import com.bikefunfinder.client.shared.model.*;
 import com.bikefunfinder.client.shared.request.SearchByTimeOfDayForProfileRequest;
+import com.bikefunfinder.client.shared.request.ratsnest.CacheStrategy;
+import com.bikefunfinder.client.shared.request.ratsnest.GeoLocCacheStrategy;
 import com.bikefunfinder.client.shared.request.ratsnest.WebServiceResponseConsumer;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.web.bindery.event.shared.EventBus;
@@ -54,18 +56,13 @@ public class ProfileScreenActivity extends MGWTAbstractActivity implements Profi
 
     @Override
     public void onShowMyRidesButton() {
-        DeviceTools.getPhoneGeoLoc(clientFactory, new NonPhoneGapGeoLocCallback() {
+
+        DeviceTools.requestPhoneGeoLoc(new NonPhoneGapGeoLocCallback(new NonPhoneGapGeoLocCallback.GeolocationHandler() {
             @Override
             public void onSuccess(GeoLoc geoLoc) {
                 fireRequestForsearchByTimeOfDayForProfile(geoLoc);
             }
-
-            @Override
-            public void onFailure(GeoLoc geoLoc) {
-                //TODO Show Error?  Defaulting location
-                fireRequestForsearchByTimeOfDayForProfile(geoLoc);
-            }
-        });
+        }, GeoLocCacheStrategy.INSTANCE));
     }
 
     private void fireRequestForsearchByTimeOfDayForProfile(GeoLoc geoLoc) {

@@ -34,4 +34,8 @@ public interface RamObjectCache {
     public Root getSearchByProximity();
     public void setSearchByProximity(Root root);
 
+    public BikeRide getEventRequest();
+    public void setEventRequest(BikeRide bikeRide);
+
+
 }

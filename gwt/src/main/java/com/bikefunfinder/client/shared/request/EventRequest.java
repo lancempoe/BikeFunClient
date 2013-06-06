@@ -8,6 +8,8 @@ package com.bikefunfinder.client.shared.request;
  * To change this template use File | Settings | File Templates.
  */
 
+import com.bikefunfinder.client.gin.Injector;
+import com.bikefunfinder.client.gin.RamObjectCache;
 import com.bikefunfinder.client.shared.model.BikeRide;
 import com.bikefunfinder.client.shared.constants.Settings;
 import com.bikefunfinder.client.shared.model.GeoLoc;
@@ -116,10 +118,22 @@ public final class EventRequest {
         return builder.toString();
     }
 
+    private final RamObjectCache ramObjectCache = Injector.INSTANCE.getRamObjectCache();
     private RequestCallback getRequestCallback(final RepeatableRequestBuilder requestBuilder) {
 
         RequestCallBackHandlerStack<BikeRide> cachedPewpChain = new RequestCallBackHandlerStack<BikeRide>(
-                PayloadConverters.BikeRide_JSON_OBJECT_CONVERTER, requestBuilder, callback, NoCacheStrategy.INSTANCE
+                PayloadConverters.BikeRide_JSON_OBJECT_CONVERTER, requestBuilder, callback,
+                new CacheStrategy<BikeRide>() {
+                    @Override
+                    public void cacheType(BikeRide type) {
+                        ramObjectCache.setEventRequest(type);
+                    }
+
+                    @Override
+                    public BikeRide getCachedType() {
+                        return ramObjectCache.getEventRequest();
+                    }
+                }, new TryToRecallSetNumberOfFailures<BikeRide>(2)
         );
 
         return new RequestCallbackSorter<BikeRide>(cachedPewpChain);

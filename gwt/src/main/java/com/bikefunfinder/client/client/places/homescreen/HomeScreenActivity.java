@@ -15,6 +15,8 @@ import com.bikefunfinder.client.shared.model.*;
 import com.bikefunfinder.client.shared.model.Root;
 import com.bikefunfinder.client.shared.model.helper.Extractor;
 import com.bikefunfinder.client.shared.request.SearchByTimeOfDayRequest;
+import com.bikefunfinder.client.shared.request.ratsnest.CacheStrategy;
+import com.bikefunfinder.client.shared.request.ratsnest.GeoLocCacheStrategy;
 import com.bikefunfinder.client.shared.request.ratsnest.WebServiceResponseConsumer;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.web.bindery.event.shared.EventBus;
@@ -118,30 +120,12 @@ public class HomeScreenActivity extends MGWTAbstractActivity implements HomeScre
     public void onTimeAndDayButton() {
         final HomeScreenDisplay display = clientFactory.getDisplay(this);
 
-        DeviceTools.getPhoneGeoLoc(clientFactory, new NonPhoneGapGeoLocCallback() {
+        DeviceTools.requestPhoneGeoLoc(new NonPhoneGapGeoLocCallback(new NonPhoneGapGeoLocCallback.GeolocationHandler() {
             @Override
             public void onSuccess(GeoLoc geoLoc) {
                 fireRequestForTimeOfDay(display, geoLoc, noOpNotifyTimeAndDayCallback);
-
             }
-
-            @Override
-            public void onFailure(GeoLoc geoLoc) {
-
-
-                if (geoFailCount++ < 3) { //Allow fails up to 3 times.
-                    onTimeAndDayButton(); //Try again.
-                } else {
-                    Dialogs.alert("Warning", "Your GPS location is currently unavailable, we will show you results for Portland Oregon.", new Dialogs.AlertCallback() {
-                        @Override
-                        public void onButtonPressed() {
-                        }
-                    });
-                    fireRequestForTimeOfDay(display, geoLoc, noOpNotifyTimeAndDayCallback);
-                }
-
-            }
-        });
+        }, GeoLocCacheStrategy.INSTANCE));
     }
 
     @Override
@@ -160,24 +144,23 @@ public class HomeScreenActivity extends MGWTAbstractActivity implements HomeScre
 
         final HomeScreenDisplay display = clientFactory.getDisplay(this);
 
-        DeviceTools.getPhoneGeoLoc(clientFactory, new NonPhoneGapGeoLocCallback() {
+        DeviceTools.requestPhoneGeoLoc(new NonPhoneGapGeoLocCallback(new NonPhoneGapGeoLocCallback.GeolocationHandler() {
             @Override
             public void onSuccess(GeoLoc geoLoc) {
                 fireRequestForTimeOfDay(display, geoLoc, callback);
                 callback.onResponseReceived();
             }
+        }, new CacheStrategy<GeoLoc>() {
+            @Override
+            public void cacheType(GeoLoc type) {
+                //To change body of implemented methods use File | Settings | File Templates.
+            }
 
             @Override
-            public void onFailure(GeoLoc geoLoc) {
-                Dialogs.alert("Warning", "Your GPS location is currently unavailable, we will show you results for Portland Oregon.", new Dialogs.AlertCallback() {
-                    @Override
-                    public void onButtonPressed() {
-                    }
-                });
-                fireRequestForTimeOfDay(display, geoLoc, callback);
-                callback.onResponseReceived();
+            public GeoLoc getCachedType() {
+                return null;  //To change body of implemented methods use File | Settings | File Templates.
             }
-        });
+        }));
 
     }
 
@@ -196,12 +179,6 @@ public class HomeScreenActivity extends MGWTAbstractActivity implements HomeScre
                 notifyTimeAndDayCallback.onResponseReceived();
             }
 
-//            @Override
-//            public void onError() {
-//                display.display(new ArrayList<BikeRide>());
-//                display.display("City Unknown");
-//                notifyTimeAndDayCallback.onError();
-//            }
         };
         SearchByTimeOfDayRequest.Builder request = new SearchByTimeOfDayRequest.Builder(callback);
         request.latitude(geoLoc).longitude(geoLoc).send();

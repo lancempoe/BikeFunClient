@@ -14,6 +14,8 @@ import com.bikefunfinder.client.shared.model.GeoLoc;
 import com.bikefunfinder.client.shared.model.Query;
 import com.bikefunfinder.client.shared.model.Root;
 import com.bikefunfinder.client.shared.request.SearchByParametersRequest;
+import com.bikefunfinder.client.shared.request.ratsnest.CacheStrategy;
+import com.bikefunfinder.client.shared.request.ratsnest.GeoLocCacheStrategy;
 import com.bikefunfinder.client.shared.request.ratsnest.WebServiceResponseConsumer;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.web.bindery.event.shared.EventBus;
@@ -71,17 +73,11 @@ public class SearchScreenActivity extends MGWTAbstractActivity implements Search
         }
         request.query(query);
 
-        DeviceTools.getPhoneGeoLoc(clientFactory, new NonPhoneGapGeoLocCallback() {
+        DeviceTools.requestPhoneGeoLoc(new NonPhoneGapGeoLocCallback(new NonPhoneGapGeoLocCallback.GeolocationHandler() {
             @Override
             public void onSuccess(GeoLoc geoLoc) {
                 request.latitude(geoLoc).longitude(geoLoc).send();
             }
-
-            @Override
-            public void onFailure(GeoLoc geoLoc) {
-                //TODO Show Error?  Defaulting location
-                request.latitude(geoLoc).longitude(geoLoc).send();
-            }
-        });
+        }, GeoLocCacheStrategy.INSTANCE));
     }
 }

@@ -112,7 +112,8 @@ public final class SearchByParametersRequest {
     private RequestCallback getRequestCallback(final RepeatableRequestBuilder requestBuilder) {
 
         RequestCallBackHandlerStack<Root> cachedPewpChain = new RequestCallBackHandlerStack<Root>(
-                PayloadConverters.ROOT_JSON_OBJECT_CONVERTER, requestBuilder, callback, NoCacheStrategy.INSTANCE
+                PayloadConverters.ROOT_JSON_OBJECT_CONVERTER, requestBuilder, callback,
+                NoCacheStrategy.INSTANCE, new RepeatForeverWaitingBetweenRetries<Root>()
         );
 
         return new RequestCallbackSorter<Root>(cachedPewpChain);

@@ -16,6 +16,8 @@ import com.bikefunfinder.client.shared.model.*;
 import com.bikefunfinder.client.shared.model.json.Utils;
 import com.bikefunfinder.client.shared.request.*;
 import com.bikefunfinder.client.shared.request.converters.NoOpResponseObject;
+import com.bikefunfinder.client.shared.request.ratsnest.CacheStrategy;
+import com.bikefunfinder.client.shared.request.ratsnest.GeoLocCacheStrategy;
 import com.bikefunfinder.client.shared.request.ratsnest.WebServiceResponseConsumer;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JsArray;
@@ -119,18 +121,12 @@ public class CreateScreenActivity extends MGWTAbstractActivity implements Create
 
         request.bikeRide(br);
 
-        DeviceTools.getPhoneGeoLoc(clientFactory, new NonPhoneGapGeoLocCallback() {
+        DeviceTools.requestPhoneGeoLoc(new NonPhoneGapGeoLocCallback(new NonPhoneGapGeoLocCallback.GeolocationHandler() {
             @Override
             public void onSuccess(GeoLoc geoLoc) {
                 request.latitude(geoLoc).longitude(geoLoc).send();
             }
-
-            @Override
-            public void onFailure(GeoLoc geoLoc) {
-                //TODO Show Error?  Defaulting location
-                request.latitude(geoLoc).longitude(geoLoc).send();
-            }
-        });
+        }, GeoLocCacheStrategy.INSTANCE));
     }
 
     @Override
@@ -157,18 +153,22 @@ public class CreateScreenActivity extends MGWTAbstractActivity implements Create
         }
         request.root(root);
 
-        DeviceTools.getPhoneGeoLoc(clientFactory, new NonPhoneGapGeoLocCallback() {
+        DeviceTools.requestPhoneGeoLoc(new NonPhoneGapGeoLocCallback(new NonPhoneGapGeoLocCallback.GeolocationHandler() {
             @Override
             public void onSuccess(GeoLoc geoLoc) {
                 request.latitude(geoLoc).longitude(geoLoc).send();
             }
+        }, new CacheStrategy<GeoLoc>() {
+            @Override
+            public void cacheType(GeoLoc type) {
+                //To change body of implemented methods use File | Settings | File Templates.
+            }
 
             @Override
-            public void onFailure(GeoLoc geoLoc) {
-                //TODO Show Error?  Defaulting location
-                request.latitude(geoLoc).longitude(geoLoc).send();
+            public GeoLoc getCachedType() {
+                return null;  //To change body of implemented methods use File | Settings | File Templates.
             }
-        });
+        }));
 
     }
 

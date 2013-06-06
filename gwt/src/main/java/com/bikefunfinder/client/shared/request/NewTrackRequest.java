@@ -91,7 +91,8 @@ public final class NewTrackRequest {
     private RequestCallback getRequestCallback(final RepeatableRequestBuilder requestBuilder) {
 
         RequestCallBackHandlerStack<Tracking> cachedPewpChain = new RequestCallBackHandlerStack<Tracking>(
-                PayloadConverters.Tracking_JSON_OBJECT_CONVERTER, requestBuilder, callback , NoCacheStrategy.INSTANCE
+                PayloadConverters.Tracking_JSON_OBJECT_CONVERTER, requestBuilder, callback ,
+                NoCacheStrategy.INSTANCE, new TryToRecallSetNumberOfFailures(2)
         );
 
         return new RequestCallbackSorter<Tracking>(cachedPewpChain);

@@ -16,6 +16,8 @@ import com.bikefunfinder.client.shared.model.json.Utils;
 import com.bikefunfinder.client.shared.request.EventRequest;
 import com.bikefunfinder.client.shared.request.NewTrackRequest;
 import com.bikefunfinder.client.shared.request.SearchByProximityRequest;
+import com.bikefunfinder.client.shared.request.ratsnest.CacheStrategy;
+import com.bikefunfinder.client.shared.request.ratsnest.GeoLocCacheStrategy;
 import com.bikefunfinder.client.shared.request.ratsnest.WebServiceResponseConsumer;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.http.client.UrlBuilder;
@@ -27,7 +29,7 @@ import com.googlecode.gwtphonegap.client.geolocation.Geolocation;
 import com.googlecode.gwtphonegap.client.geolocation.GeolocationCallback;
 import com.googlecode.gwtphonegap.client.geolocation.GeolocationOptions;
 import com.googlecode.gwtphonegap.client.geolocation.GeolocationWatcher;
-import com.googlecode.gwtphonegap.showcase.client.NavBaseActivity;
+import com.bikefunfinder.client.shared.widgets.NavBaseActivity;
 import com.googlecode.mgwt.ui.client.dialog.ConfirmDialog;
 import com.googlecode.mgwt.ui.client.dialog.Dialogs;
 
@@ -87,35 +89,14 @@ public class GMapActivity extends NavBaseActivity implements GMapDisplay.Present
         }
     }
     private void refreshScreen() {
-        DeviceTools.getPhoneGeoLoc(clientFactory, new NonPhoneGapGeoLocCallback() {
+        DeviceTools.requestPhoneGeoLoc(new NonPhoneGapGeoLocCallback(new NonPhoneGapGeoLocCallback.GeolocationHandler() {
             @Override
-            public void onSuccess(GeoLoc phoneGeoLoc) {
-                ramObjectCache.setCurrentPhoneGeoLoc(phoneGeoLoc);
+            public void onSuccess(GeoLoc geoLoc) {
+                ramObjectCache.setCurrentPhoneGeoLoc(geoLoc);
                 geoFailCount = 0;
                 postSavePhoneGeoLoc();
             }
-
-            @Override
-            public void onFailure(GeoLoc phoneGeoLoc) {
-                if(!isTracking) {
-                    Dialogs.alert("Warning", "Your GPS location is currently unavailable, we will show you results for Portland Oregon.", new Dialogs.AlertCallback() {
-                        @Override
-                        public void onButtonPressed() {
-                        }
-                    });
-                    ramObjectCache.setCurrentPhoneGeoLoc(phoneGeoLoc);
-                    postSavePhoneGeoLoc();
-                } else if (geoFailCount++ > 5) { //Allow fails up to 5 times.
-                    Dialogs.alert("Error", "Unable to obtain your GeoLocation.", new Dialogs.AlertCallback() {
-                        @Override
-                        public void onButtonPressed() {
-                            //Stop Tracking AND close the popup.
-                            backButtonSelected();
-                        }
-                    });
-                }
-            }
-        });
+        }, GeoLocCacheStrategy.INSTANCE));
     }
 
     @Override
@@ -323,6 +304,10 @@ public class GMapActivity extends NavBaseActivity implements GMapDisplay.Present
 
     private void updatedBikeRide(final GeoLoc phoneGeoLoc) {
 
+        if(ramObjectCache.getCurrentBikeRide() == null) {
+            return;
+        }
+
         WebServiceResponseConsumer<BikeRide> callback = new WebServiceResponseConsumer<BikeRide>() {
 //            @Override
 //            public void onError() {
@@ -331,7 +316,7 @@ public class GMapActivity extends NavBaseActivity implements GMapDisplay.Present
 
             @Override
             public void onResponseReceived(BikeRide bikeRide) {
-                ramObjectCache.setCurrentBikeRide(bikeRide);
+            ramObjectCache.setCurrentBikeRide(bikeRide);
             }
 
         };

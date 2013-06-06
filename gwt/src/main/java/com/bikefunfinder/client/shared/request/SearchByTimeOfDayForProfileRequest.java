@@ -123,7 +123,7 @@ public final class SearchByTimeOfDayForProfileRequest {
             public Root getCachedType() {
                 return ramObjectCache.getSearchByTimeOfDayForProfile();
             }
-        }
+        }, new RepeatForeverWaitingBetweenRetries<Root>()
         );
 
         return new RequestCallbackSorter<Root>(cachedPewpChain);

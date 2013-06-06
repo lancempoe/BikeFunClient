@@ -110,7 +110,8 @@ public final class NewEventRequest {
     private RequestCallback getRequestCallback(final RepeatableRequestBuilder requestBuilder) {
 
         RequestCallBackHandlerStack<BikeRide> cachedPewpChain = new RequestCallBackHandlerStack<BikeRide>(
-                PayloadConverters.BikeRide_JSON_OBJECT_CONVERTER, requestBuilder, callback, NoCacheStrategy.INSTANCE
+                PayloadConverters.BikeRide_JSON_OBJECT_CONVERTER, requestBuilder, callback,
+                NoCacheStrategy.INSTANCE, new RepeatForeverWaitingBetweenRetries<BikeRide>()
         );
 
         return new RequestCallbackSorter<BikeRide>(cachedPewpChain);

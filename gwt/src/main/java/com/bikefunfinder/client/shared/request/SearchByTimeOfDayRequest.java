@@ -110,7 +110,7 @@ public final class SearchByTimeOfDayRequest {
             public Root getCachedType() {
                 return ramObjectCache.getSearchByTimeOfDay();
             }
-        });
+        }, new RepeatForeverWaitingBetweenRetries<Root>());
 
         return new RequestCallbackSorter<Root>(cachedPewpChain);
     }

@@ -1,6 +1,7 @@
 package com.bikefunfinder.client.shared.Tools;
 
 import com.bikefunfinder.client.bootstrap.ClientFactory;
+import com.bikefunfinder.client.gin.Injector;
 import com.googlecode.gwtphonegap.client.geolocation.*;
 
 /**
@@ -11,9 +12,9 @@ import com.googlecode.gwtphonegap.client.geolocation.*;
  * To change this template use File | Settings | File Templates.
  */
 public class DeviceTools {
+    private static final ClientFactory clientFactory = Injector.INSTANCE.getClientFactory();
 
-    public static void getPhoneGeoLoc(ClientFactory clientFactory,
-                                        NonPhoneGapGeoLocCallback callback) {
+    public static void requestPhoneGeoLoc(NonPhoneGapGeoLocCallback callback) {
 
         final GeolocationOptions options = new GeolocationOptions();
         options.setEnableHighAccuracy(true);

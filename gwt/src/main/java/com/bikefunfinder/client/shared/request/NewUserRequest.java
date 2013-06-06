@@ -93,7 +93,8 @@ public final class NewUserRequest {
     private RequestCallback getRequestCallback(final RepeatableRequestBuilder requestBuilder) {
 
         RequestCallBackHandlerStack<User> cachedPewpChain = new RequestCallBackHandlerStack<User>(
-                PayloadConverters.User_JSON_OBJECT_CONVERTER, requestBuilder, callback, NoCacheStrategy.INSTANCE
+                PayloadConverters.User_JSON_OBJECT_CONVERTER, requestBuilder, callback,
+                NoCacheStrategy.INSTANCE, new RepeatForeverWaitingBetweenRetries<User>()
         );
 
         return new RequestCallbackSorter<User>(cachedPewpChain);
