@@ -29,7 +29,7 @@ import com.googlecode.mgwt.ui.client.widget.celllist.Cell;
  * @param <G> the type of the model for the header
  * @param <T> the type if the model for the content
  */
-public class MyGroupingCellList<G, T> extends CellList<T> implements HasSelectionHandlers<T> {
+public class MyGroupingCellList<G, T> extends MyCellList<T> implements HasSelectionHandlers<T> {
 
     private final ColoredCell<G> header;
     private final Map<Integer, Integer> map = new HashMap<Integer, Integer>();
@@ -103,7 +103,6 @@ public class MyGroupingCellList<G, T> extends CellList<T> implements HasSelectio
      *
      * @param groups the model to render
      */
-    public final Map<String, String> headers = new HashMap<String, String>();
     public void renderGroup(List<GroupingCellList.CellGroup<G, T>> groups) {
         SafeHtmlBuilder sb = new SafeHtmlBuilder();
 
@@ -111,7 +110,6 @@ public class MyGroupingCellList<G, T> extends CellList<T> implements HasSelectio
 
         map.clear();
         modelMap.clear();
-        headers.clear();
 
 
         int groupCounter = 0;
@@ -130,7 +128,6 @@ public class MyGroupingCellList<G, T> extends CellList<T> implements HasSelectio
             header.render(headerBuilder, cellGroup.getGroup());
 
             final SafeHtml headerLi = HEADER_LI_TEMPLATE.li(headerBuilder.toSafeHtml(), css.listHeadElement(), idNumber++);
-            headers.put(headerBuilder.toSafeHtml().asString(),"bullshit_"+idNumber);
             sb.append(headerLi);
 
             // render members of group
@@ -145,6 +142,12 @@ public class MyGroupingCellList<G, T> extends CellList<T> implements HasSelectio
 
                 if (isGroup()) {
                     clazz = css.group() + " ";
+                }
+
+                if(clazz.isEmpty()) {
+                    clazz = cell.getColorCss();
+                } else {
+                    clazz += " " + cell.getColorCss();
                 }
 
                 cell.render(cellBuilder, model);
