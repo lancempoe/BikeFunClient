@@ -9,8 +9,6 @@ import com.bikefunfinder.client.shared.model.Tracking;
 import com.google.gwt.core.client.JsArray;
 import com.google.gwt.user.client.ui.IsWidget;
 
-import java.util.List;
-
 public interface EventScreenDisplay extends IsWidget {
 
     /**

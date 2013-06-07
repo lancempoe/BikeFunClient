@@ -2,7 +2,8 @@ package com.bikefunfinder.client.shared.Tools;
 
 import com.bikefunfinder.client.bootstrap.ClientFactory;
 import com.bikefunfinder.client.gin.Injector;
-import com.googlecode.gwtphonegap.client.geolocation.*;
+import com.googlecode.gwtphonegap.client.geolocation.Geolocation;
+import com.googlecode.gwtphonegap.client.geolocation.GeolocationOptions;
 
 /**
  * Created with IntelliJ IDEA.

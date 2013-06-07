@@ -1,7 +1,7 @@
 package com.bikefunfinder.client.bootstrap;
 
-import com.bikefunfinder.client.gin.Injector;
 import com.bikefunfinder.client.client.places.homescreen.HomeScreenPlace;
+import com.bikefunfinder.client.gin.Injector;
 import com.bikefunfinder.client.shared.model.AnonymousUser;
 import com.bikefunfinder.client.shared.request.AnonymousRequest;
 import com.bikefunfinder.client.shared.request.ratsnest.WebServiceResponseConsumer;

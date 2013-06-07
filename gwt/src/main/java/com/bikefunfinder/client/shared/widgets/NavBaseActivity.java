@@ -1,9 +1,9 @@
 package com.bikefunfinder.client.shared.widgets;
 
+import com.bikefunfinder.client.bootstrap.ClientFactory;
 import com.bikefunfinder.client.client.places.homescreen.HomeScreenPlace;
 import com.bikefunfinder.client.gin.Injector;
 import com.google.gwt.place.shared.PlaceController;
-import com.bikefunfinder.client.bootstrap.ClientFactory;
 import com.googlecode.mgwt.mvp.client.MGWTAbstractActivity;
 
 public abstract class NavBaseActivity extends MGWTAbstractActivity {

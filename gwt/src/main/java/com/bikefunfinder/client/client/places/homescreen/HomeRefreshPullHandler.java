@@ -4,8 +4,6 @@ package com.bikefunfinder.client.client.places.homescreen;
  * @created 4/28/13 3:37 PM
  */
 
-import com.google.gwt.user.client.Window;
-import com.googlecode.mgwt.ui.client.widget.base.PullArrowWidget;
 import com.googlecode.mgwt.ui.client.widget.base.PullPanel;
 
 public class HomeRefreshPullHandler implements PullPanel.Pullhandler {

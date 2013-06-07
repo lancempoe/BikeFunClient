@@ -6,9 +6,6 @@ package com.bikefunfinder.client.shared.model;
 
 import com.bikefunfinder.client.shared.model.printer.JsDateWrapper;
 import com.google.gwt.core.client.JavaScriptObject;
-import com.google.gwt.i18n.client.DateTimeFormat;
-
-import java.util.Date;
 
 public class Tracking extends JavaScriptObject {
 

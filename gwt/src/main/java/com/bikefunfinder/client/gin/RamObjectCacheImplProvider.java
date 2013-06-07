@@ -4,7 +4,6 @@ package com.bikefunfinder.client.gin;
  * @created 5/15/13 6:33 PM
  */
 
-import com.bikefunfinder.client.bootstrap.ClientFactoryGwtImpl;
 import com.google.inject.Provider;
 
 public class RamObjectCacheImplProvider implements Provider<RamObjectCacheImpl> {

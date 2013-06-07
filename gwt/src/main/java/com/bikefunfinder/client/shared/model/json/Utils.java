@@ -8,7 +8,6 @@ import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.core.client.JsonUtils;
 import com.google.gwt.user.client.Window;
 
-
 import java.util.Date;
 
 public class Utils {

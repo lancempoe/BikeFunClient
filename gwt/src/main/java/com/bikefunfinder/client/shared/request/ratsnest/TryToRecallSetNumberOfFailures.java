@@ -6,7 +6,6 @@ package com.bikefunfinder.client.shared.request.ratsnest;
 
 import com.google.gwt.http.client.RequestException;
 import com.google.gwt.user.client.Timer;
-import com.google.gwt.user.client.Window;
 
 public class TryToRecallSetNumberOfFailures<T> implements RefireStrategy<T> {
     public final int numberOfTimesToRetry;

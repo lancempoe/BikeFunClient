@@ -1,12 +1,9 @@
 package com.bikefunfinder.client.shared.Tools;
 
-import com.bikefunfinder.client.shared.constants.ScreenConstants;
 import com.bikefunfinder.client.shared.model.GeoLoc;
 import com.bikefunfinder.client.shared.request.ratsnest.CacheStrategy;
-import com.bikefunfinder.client.shared.request.ratsnest.RequestCallbackSorter;
 import com.bikefunfinder.client.shared.widgets.LoadingScreen;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.http.client.RequestException;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
 import com.googlecode.gwtphonegap.client.geolocation.Coordinates;
@@ -14,10 +11,35 @@ import com.googlecode.gwtphonegap.client.geolocation.GeolocationCallback;
 import com.googlecode.gwtphonegap.client.geolocation.Position;
 import com.googlecode.gwtphonegap.client.geolocation.PositionError;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 public class NonPhoneGapGeoLocCallback implements GeolocationCallback {
+    public enum GeoLocationAccuracy {
+        /*
+           From AmericanCulturalAssumption:
+           (Most?) American cities are laid out with 1/16 mile by 1/8 mile grids.
+           (Metric equivalents: 100 meters by 200 meters.)
+           Major streets are usually at 1/4, 1/2, or 1 mile intervals.
+           (Metric equivalents: 400 meters, 800 meters, or 1.6 km
+        */
+        GOOD(1000), FAIR(1500), BAD(1501);
+
+        private final int accuracyInMeters;
+
+        private GeoLocationAccuracy(int accuracyInMeters) {
+            this.accuracyInMeters = accuracyInMeters;
+        }
+
+        public static
+        GeoLocationAccuracy qualifyPosition(double accuracy) {
+
+            if(accuracy <= GOOD.accuracyInMeters) {
+                return GOOD;
+            } else if (accuracy <= FAIR.accuracyInMeters) {
+                return FAIR;
+            }
+
+            return BAD;
+        }
+    }
 
     public interface GeolocationHandler {
         public abstract void onSuccess(GeoLoc geoLoc);
@@ -36,9 +58,28 @@ public class NonPhoneGapGeoLocCallback implements GeolocationCallback {
 
     @Override
     public void onSuccess(final Position position) {
-        GeoLoc geoLoc = buildGeoLocFrom(position);
-        cacheStrategy.cacheType(geoLoc);
-        informCallBackOfSuccess(geoLoc);
+
+        GeoLoc geoLocToReturn;
+
+        GeoLoc lastGeoLoc = cacheStrategy.getCachedType();
+        if(lastGeoLoc==null) {
+            // we have a geo so we can be picky
+            geoLocToReturn = buildGeoLocFrom(position);
+        } else {
+            double accuracy = position.getCoordinates().getAccuracy();
+            GeoLocationAccuracy incomingPositionQuality = GeoLocationAccuracy.qualifyPosition(accuracy);
+
+            if(incomingPositionQuality == GeoLocationAccuracy.GOOD ||
+               incomingPositionQuality == GeoLocationAccuracy.FAIR) {
+                geoLocToReturn = buildGeoLocFrom(position);
+            } else {
+
+                geoLocToReturn = lastGeoLoc;
+            }
+        }
+
+        cacheStrategy.cacheType(geoLocToReturn);
+        informCallBackOfSuccess(geoLocToReturn);
     }
 
     private GeoLoc buildGeoLocFrom(Position position) {

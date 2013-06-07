@@ -3,11 +3,10 @@ package com.bikefunfinder.client.client.places.homescreen;
 import com.bikefunfinder.client.shared.constants.ScreenConstants;
 import com.bikefunfinder.client.shared.model.BikeRide;
 import com.bikefunfinder.client.shared.model.printer.JsDateWrapper;
+import com.google.gwt.core.client.JsDate;
 import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.user.client.ui.IsWidget;
-import com.googlecode.mgwt.ui.client.widget.GroupingCellList.CellGroup;
-import com.google.gwt.core.client.JsDate;
 
 import java.util.List;
 

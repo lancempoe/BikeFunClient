@@ -1,7 +1,7 @@
 package com.bikefunfinder.client.client.places.homescreen;
 
-import com.bikefunfinder.client.shared.model.BikeRide;
 import com.bikefunfinder.client.client.places.homescreen.HomeScreenDisplay.Presenter;
+import com.bikefunfinder.client.shared.model.BikeRide;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 

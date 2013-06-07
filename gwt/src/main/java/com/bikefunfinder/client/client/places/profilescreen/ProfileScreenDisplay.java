@@ -5,7 +5,6 @@ package com.bikefunfinder.client.client.places.profilescreen;
  */
 
 import com.bikefunfinder.client.shared.model.AnonymousUser;
-import com.bikefunfinder.client.shared.model.BikeRide;
 import com.bikefunfinder.client.shared.model.User;
 import com.google.gwt.user.client.ui.IsWidget;
 

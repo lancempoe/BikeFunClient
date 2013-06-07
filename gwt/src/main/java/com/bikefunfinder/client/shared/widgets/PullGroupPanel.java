@@ -1,27 +1,20 @@
 package com.bikefunfinder.client.shared.widgets;
 
-import java.util.Iterator;
-import java.util.List;
-
-import com.bikefunfinder.client.client.places.homescreen.HomeRefreshPullHandler;
 import com.bikefunfinder.client.client.places.homescreen.HomeScreenDisplay;
-
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
-import com.googlecode.mgwt.ui.client.MGWTStyle;
 import com.googlecode.mgwt.ui.client.widget.GroupingCellList;
-import com.googlecode.mgwt.ui.client.widget.HeaderList;
 import com.googlecode.mgwt.ui.client.widget.LayoutPanel;
 import com.googlecode.mgwt.ui.client.widget.ScrollPanel;
-import com.googlecode.mgwt.ui.client.widget.base.PullArrowHeader;
+import com.googlecode.mgwt.ui.client.widget.base.HasRefresh;
 import com.googlecode.mgwt.ui.client.widget.base.PullPanel;
 import com.googlecode.mgwt.ui.client.widget.base.PullPanel.PullWidget.PullState;
 import com.googlecode.mgwt.ui.client.widget.event.scroll.ScrollEndEvent;
 import com.googlecode.mgwt.ui.client.widget.event.scroll.ScrollMoveEvent;
 import com.googlecode.mgwt.ui.client.widget.event.scroll.ScrollRefreshEvent;
 import com.googlecode.mgwt.ui.client.widget.event.scroll.ScrollStartEvent;
-import com.googlecode.mgwt.ui.client.widget.base.HasRefresh;
+
+import java.util.List;
 
 public class PullGroupPanel<G, T> extends Composite implements HasRefresh {
 

@@ -4,11 +4,8 @@ package com.bikefunfinder.client.client.places.searchscreen;
  * @created 4/10/13 11:31 AM
  */
 
-import com.bikefunfinder.client.shared.model.BikeRide;
 import com.bikefunfinder.client.shared.model.Query;
 import com.google.gwt.user.client.ui.IsWidget;
-
-import java.util.List;
 
 public interface SearchScreenDisplay extends IsWidget {
 

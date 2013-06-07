@@ -5,7 +5,6 @@ package com.bikefunfinder.client.shared.model;
  */
 
 import com.google.gwt.core.client.JavaScriptObject;
-import com.googlecode.mgwt.ui.client.widget.MTextBox;
 
 public class Query extends JavaScriptObject {
 

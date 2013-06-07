@@ -7,9 +7,7 @@ package com.bikefunfinder.client.shared.request.ratsnest;
 import com.bikefunfinder.client.shared.request.converters.JsonObjectConverter;
 import com.bikefunfinder.client.shared.widgets.LoadingScreen;
 import com.google.gwt.http.client.Request;
-import com.google.gwt.http.client.RequestException;
 import com.google.gwt.http.client.Response;
-import com.google.gwt.user.client.Timer;
 
 public class RequestCallBackHandlerStack<T> implements RequestCallbackSorter.PoopHandlerStack<T> {
     private final JsonObjectConverter<T> successfulPayloadConverter;

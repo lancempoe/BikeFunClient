@@ -4,7 +4,6 @@ package com.bikefunfinder.client.shared.widgets;
  * @created 6/2/13 1:51 PM
  */
 
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.resources.client.impl.ImageResourcePrototype;
 import com.google.gwt.safehtml.shared.SafeUri;

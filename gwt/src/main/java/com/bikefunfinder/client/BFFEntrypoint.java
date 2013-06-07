@@ -7,10 +7,9 @@ package com.bikefunfinder.client;
 
 import com.bikefunfinder.client.bootstrap.PhoneGapDependentBootScrapper;
 import com.bikefunfinder.client.bootstrap.PhoneGapDependentBootScrapperImpl;
-import com.bikefunfinder.client.gin.Injector;
+import com.bikefunfinder.client.bootstrap.UncaughtExceptionHandlerFactory;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
-import com.bikefunfinder.client.bootstrap.UncaughtExceptionHandlerFactory;
 import com.googlecode.gwtphonegap.client.PhoneGap;
 import com.googlecode.gwtphonegap.client.PhoneGapAvailableHandler;
 import com.googlecode.gwtphonegap.client.PhoneGapTimeoutHandler;

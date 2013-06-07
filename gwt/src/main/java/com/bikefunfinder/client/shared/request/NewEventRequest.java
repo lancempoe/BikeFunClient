@@ -4,13 +4,16 @@ package com.bikefunfinder.client.shared.request;
  * @created 4/15/13 1:33 AM
  */
 
-import com.bikefunfinder.client.shared.model.BikeRide;
 import com.bikefunfinder.client.shared.constants.Settings;
+import com.bikefunfinder.client.shared.model.BikeRide;
 import com.bikefunfinder.client.shared.model.GeoLoc;
 import com.bikefunfinder.client.shared.model.printer.JSODescriber;
 import com.bikefunfinder.client.shared.request.converters.PayloadConverters;
 import com.bikefunfinder.client.shared.request.ratsnest.*;
-import com.google.gwt.http.client.*;
+import com.google.gwt.http.client.Request;
+import com.google.gwt.http.client.RequestBuilder;
+import com.google.gwt.http.client.RequestCallback;
+import com.google.gwt.http.client.RequestException;
 
 import java.math.BigDecimal;
 

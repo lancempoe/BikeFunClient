@@ -6,12 +6,10 @@ package com.bikefunfinder.client.shared.model;
  * Time: 5:40 PM
  * To change this template use File | Settings | File Templates.
  */
+
 import com.bikefunfinder.client.shared.model.printer.JsDateWrapper;
 import com.google.gwt.core.client.JavaScriptObject;
-import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.json.client.JSONObject;
-
-import java.util.Date;
 
 public class AnonymousUser extends JavaScriptObject {
 
