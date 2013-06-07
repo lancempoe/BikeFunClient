@@ -30,28 +30,27 @@ import com.googlecode.mgwt.ui.client.dialog.ConfirmDialog;
 import com.googlecode.mgwt.ui.client.dialog.Dialogs;
 
 public class CreateScreenActivity extends MGWTAbstractActivity implements CreateScreenDisplay.Presenter {
-    private final RamObjectCache ramObjectCache = Injector.INSTANCE.getRamObjectCache();
-    private final ClientFactory<CreateScreenDisplay> clientFactory;
-    private AnonymousUser anonymousUser;
-    private User user;
-    private boolean existingEvent = false;
 
-    public CreateScreenActivity(ClientFactory<CreateScreenDisplay> clientFactory, BikeRide bikeRide) {
-        this.clientFactory = clientFactory;
-        setUserNameFields(clientFactory);
-        clientFactory.getDisplay(this).display(getUserName());
+    private final ClientFactory<CreateScreenDisplay> clientFactory = Injector.INSTANCE.getClientFactory();
+    private boolean existingEvent = false;
+    private final AnonymousUser anonymousUser;
+    private final User user;
+
+    public CreateScreenActivity(BikeRide bikeRide, User user, AnonymousUser anonymousUser) {
+        this.user = user;
+        this.anonymousUser = anonymousUser;
 
         final CreateScreenDisplay display = clientFactory.getDisplay(this);
+
         if (bikeRide != null) {
-            clientFactory.getDisplay(this).display("Updating Ride with: " + getUserName());
+            display.setUserNameOnDisplay("Updating Ride with: " + getUserName());
             existingEvent = true; //typeIsUpdate
-            display.display(bikeRide);
+            display.populateWithExistingBikeRideDetails(bikeRide);
         } else {
-            clientFactory.getDisplay(this).display("Creating Ride with: " + getUserName());
+            display.setUserNameOnDisplay("Creating Ride with: " + getUserName());
         }
 
         display.setVisibilityOfButtons(existingEvent);
-
         if (existingEvent) {
             NativeUtilities.trackPage("Update Screen");
         } else {
@@ -79,18 +78,6 @@ public class CreateScreenActivity extends MGWTAbstractActivity implements Create
         return userId;
     }
 
-    private void setUserNameFields(ClientFactory<CreateScreenDisplay> clientFactory) {
-        //Set the logged in user details
-        if (clientFactory.getStoredValue(DBKeys.USER) != null) {
-            User user = Utils.castJsonTxtToJSOObject(clientFactory.getStoredValue(DBKeys.USER));
-            this.user = user;
-        }
-        else if (clientFactory.getStoredValue(DBKeys.ANONYMOUS_USER) != null) {
-            AnonymousUser anonymousUser = Utils.castJsonTxtToJSOObject(clientFactory.getStoredValue(DBKeys.ANONYMOUS_USER));
-            this.anonymousUser = anonymousUser;
-        }
-    }
-
     @Override
     public void start(AcceptsOneWidget panel, EventBus eventBus) {
         final CreateScreenDisplay display = clientFactory.getDisplay(this);
@@ -100,64 +87,43 @@ public class CreateScreenActivity extends MGWTAbstractActivity implements Create
     }
 
     @Override
-    public void onCreateSelected(BikeRide br) {
+    public void onCreateSelected(final BikeRide createFormBikeRideState) {
 
-        final NewEventRequest.Builder request = new NewEventRequest.Builder(new WebServiceResponseConsumer<BikeRide>() {
-//            @Override
-//            public void onError() {
-//                //display.displayFailedToCreateRideMessage();
-//                //At this point the message has already been displayed to the user.
-//                isSubmittingRide = false;
-//            }
-
-            @Override
-            public void onResponseReceived(BikeRide bikeRide) {
-                clientFactory.refreshUserAccount();
-                clientFactory.getPlaceController().goTo(new EventScreenPlace(bikeRide));
-            }
-        });
-
-        br.setRideLeaderId(getUserId());
-        br.setRideLeaderName(getUserName());
-
-        request.bikeRide(br);
+        createFormBikeRideState.setRideLeaderId(getUserId());
+        createFormBikeRideState.setRideLeaderName(getUserName());
 
         DeviceTools.requestPhoneGeoLoc(new NonPhoneGapGeoLocCallback(new NonPhoneGapGeoLocCallback.GeolocationHandler() {
             @Override
             public void onSuccess(GeoLoc geoLoc) {
-                request.latitude(geoLoc).longitude(geoLoc).send();
+                final NewEventRequest.Builder request = new NewEventRequest.Builder(new WebServiceResponseConsumer<BikeRide>() {
+                    @Override
+                    public void onResponseReceived(final BikeRide bikeRide) {
+                        clientFactory.getPlaceController().goTo(new EventScreenPlace(bikeRide));
+                    }
+                });
+                request.bikeRide(createFormBikeRideState).latitude(geoLoc).longitude(geoLoc).send();
             }
         }, GeoLocCacheStrategy.INSTANCE));
     }
 
     @Override
     public void onUpdateSelected(final Root root) {
-
-        final UpdateEventRequest.Builder request = new UpdateEventRequest.Builder(new WebServiceResponseConsumer<BikeRide>() {
-//            @Override
-//            public void onError() {
-//                //At this point the message has already been displayed to the user.
-//            }
-
-            @Override
-            public void onResponseReceived(BikeRide bikeRide) {
-                clientFactory.refreshUserAccount();
-                clientFactory.getPlaceController().goTo(new EventScreenPlace(bikeRide));
-                ramObjectCache.updateRide(bikeRide);
-            }
-        });
-
         if (user != null) {
             root.setUser(user);
         } else {
             root.setAnonymousUser(anonymousUser);
         }
-        request.root(root);
 
         DeviceTools.requestPhoneGeoLoc(new NonPhoneGapGeoLocCallback(new NonPhoneGapGeoLocCallback.GeolocationHandler() {
             @Override
             public void onSuccess(GeoLoc geoLoc) {
-                request.latitude(geoLoc).longitude(geoLoc).send();
+                final UpdateEventRequest.Builder updateBikeRideRequest = new UpdateEventRequest.Builder(new WebServiceResponseConsumer<BikeRide>() {
+                    @Override
+                    public void onResponseReceived(BikeRide bikeRide) {
+                        clientFactory.getPlaceController().goTo(new EventScreenPlace(bikeRide));
+                    }
+                });
+                updateBikeRideRequest.root(root).latitude(geoLoc).longitude(geoLoc).send();
             }
         }, GeoLocCacheStrategy.INSTANCE));
 
@@ -180,22 +146,13 @@ public class CreateScreenActivity extends MGWTAbstractActivity implements Create
 
     private void DeleteEvent(final BikeRide bikeRide) {
         final DeleteEventRequest.Builder request = new DeleteEventRequest.Builder(new WebServiceResponseConsumer<NoOpResponseObject>() {
-//            @Override
-//            public void onError() {
-//                //At this point the message has already been displayed to the user.
-//            }
-
             @Override
             public void onResponseReceived(NoOpResponseObject noOpResponseObject) {
-                clientFactory.refreshUserAccount();
                 clientFactory.getPlaceController().goTo(new HomeScreenPlace());
-                ramObjectCache.deleteRide(bikeRide.getId());
             }
         });
 
-
-        request.root(BuildRoot(bikeRide));
-        request.send();
+        request.root(BuildRoot(bikeRide)).send();
     }
 
     private Root BuildRoot(BikeRide bikeRide) {

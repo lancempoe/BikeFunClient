@@ -6,6 +6,7 @@ package com.bikefunfinder.client.client.places.profilescreen;
 
 import com.bikefunfinder.client.bootstrap.ClientFactory;
 import com.bikefunfinder.client.client.places.homescreen.HomeScreenPlace;
+import com.bikefunfinder.client.gin.Injector;
 import com.bikefunfinder.client.shared.Tools.DeviceTools;
 import com.bikefunfinder.client.shared.Tools.NativeUtilities;
 import com.bikefunfinder.client.shared.Tools.NonPhoneGapGeoLocCallback;
@@ -21,9 +22,17 @@ import com.googlecode.mgwt.ui.client.MGWT;
 
 public class ProfileScreenActivity extends MGWTAbstractActivity implements ProfileScreenDisplay.Presenter {
 
-    private final ClientFactory<ProfileScreenDisplay> clientFactory;
+    private final ClientFactory<ProfileScreenDisplay> clientFactory = Injector.INSTANCE.getClientFactory();
     private String userName = "";
     private String userId = "";
+
+    public ProfileScreenActivity(User user) {
+        ProfileScreenDisplay display = this.clientFactory.getDisplay(this);
+        setUserDisplayElements(user.getId(), user.getUserName());
+        display.display(user);
+
+        NativeUtilities.trackPage("Profile Screen (User)");
+    }
 
     @Override
     public void start(AcceptsOneWidget panel, EventBus eventBus) {
@@ -32,17 +41,7 @@ public class ProfileScreenActivity extends MGWTAbstractActivity implements Profi
         panel.setWidget(display);
     }
 
-    public ProfileScreenActivity(ClientFactory clientFactory, User user) {
-        this.clientFactory = clientFactory;
-        ProfileScreenDisplay display = this.clientFactory.getDisplay(this);
-        setUserDisplayElements(user.getId(), user.getUserName());
-        display.display(user);
-
-        NativeUtilities.trackPage("Profile Screen (User)");
-    }
-
-    public ProfileScreenActivity(ClientFactory clientFactory, AnonymousUser anonymousUser) {
-        this.clientFactory = clientFactory;
+    public ProfileScreenActivity(AnonymousUser anonymousUser) {
         ProfileScreenDisplay display = this.clientFactory.getDisplay(this);
         setUserDisplayElements(anonymousUser.getId(), anonymousUser.getUserName());
         display.display(anonymousUser);
@@ -90,32 +89,6 @@ public class ProfileScreenActivity extends MGWTAbstractActivity implements Profi
         SearchByTimeOfDayForProfileRequest.Builder request = new SearchByTimeOfDayForProfileRequest.Builder(callback);
         request.latitude(geoLoc).longitude(geoLoc).rideLeaderId(userId).send();
     }
-
-//    private InAppBrowserDisplay display;
-//    private PhoneGap phoneGap;
-//    private InAppBrowser inAppBrowser;
-//
-//    public ProfileScreenActivity(ClientFactory clientFactory) {
-//            this.clientFactory = clientFactory;
-//
-//            this.display = null;//clientFactory.getChildBrowserDisplay();
-//            this.phoneGap = clientFactory.getPhoneGap();
-//
-//            inAppBrowser = this.phoneGap.getInAppBrowser();
-////        inAppBrowser = GWT.create(InAppBrowserReferenceJsImpl.class);
-//    }
-//
-//    @Override
-//    public void start(AcceptsOneWidget panel, EventBus eventBus) {
-//        final ProfileScreenDisplay display = clientFactory.getDisplay(this);
-//        display.setPresenter(this);
-//        panel.setWidget(display);
-//    }
-//
-//    @Override
-//    public void backButtonSelected() {
-//        clientFactory.getPlaceController().goTo(new HomeScreenPlace());
-//    }
 
     @Override
     public void onLoginButtonPressed() {

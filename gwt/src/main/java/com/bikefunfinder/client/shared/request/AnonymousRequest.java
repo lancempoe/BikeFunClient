@@ -7,6 +7,8 @@ package com.bikefunfinder.client.shared.request;
  * Time: 12:57 PM
  */
 
+import com.bikefunfinder.client.bootstrap.AccountDetailsProvider;
+import com.bikefunfinder.client.gin.Injector;
 import com.bikefunfinder.client.shared.model.AnonymousUser;
 import com.bikefunfinder.client.shared.constants.Settings;
 import com.bikefunfinder.client.shared.request.converters.PayloadConverters;
@@ -17,8 +19,6 @@ public final class AnonymousRequest {
 
     public static final class Builder {
         private WebServiceResponseConsumer<AnonymousUser> callback;
-        private String key;
-        private String uuid;
 
         public Builder(final WebServiceResponseConsumer<AnonymousUser> callback) {
             if (callback == null) {
@@ -37,14 +37,6 @@ public final class AnonymousRequest {
             return this;
         }
 
-        public Builder key(final String key) {
-            this.key = key;
-            return this;
-        }
-        public Builder uuid(final String uuid) {
-            this.uuid = uuid;
-            return this;
-        }
 
         public AnonymousRequest send() {
             return new AnonymousRequest(this);
@@ -54,8 +46,6 @@ public final class AnonymousRequest {
     private static final String URL = Settings.HOST + "FunService/rest/users/anonymous/";
 
     private final WebServiceResponseConsumer<AnonymousUser> callback;
-    private final String key;
-    private final String uuid;
     private final Request request;
 
     public void cancel() {
@@ -68,8 +58,6 @@ public final class AnonymousRequest {
 
     private AnonymousRequest(final Builder builder) {
         callback = builder.callback;
-        key = builder.key;
-        uuid = builder.uuid;
         request = send();
     }
 
@@ -86,13 +74,14 @@ public final class AnonymousRequest {
     }
 
     private String getUrlWithQuery() {
+        AccountDetailsProvider.AccountDetails accountDetails = Injector.INSTANCE.getClientFactory().getAccountDetailsProvider().getAccountDetails();
+
         final StringBuilder builder = new StringBuilder();
         builder.append(URL);
-        builder.append(key);
+        builder.append(accountDetails.key);
         builder.append("/");
-        builder.append(uuid);
+        builder.append(accountDetails.uuid);
 
-//        Window.alert(builder.toString());
         return builder.toString();
     }
 
@@ -100,7 +89,7 @@ public final class AnonymousRequest {
 
         RequestCallBackHandlerStack<AnonymousUser> cachedPewpChain = new RequestCallBackHandlerStack<AnonymousUser>(
             PayloadConverters.AnonymousUser_JSON_OBJECT_CONVERTER, requestBuilder, callback,
-                NoCacheStrategy.INSTANCE, new RepeatForeverWaitingBetweenRetries<AnonymousUser>()
+                AnnonymousUserCacheStrategy.INSTANCE, new RepeatForeverWaitingBetweenRetries<AnonymousUser>()
         );
 
         return new RequestCallbackSorter<AnonymousUser>(cachedPewpChain);

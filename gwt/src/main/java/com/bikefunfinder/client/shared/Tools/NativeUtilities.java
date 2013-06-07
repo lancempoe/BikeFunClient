@@ -11,11 +11,13 @@ import com.googlecode.mgwt.ui.client.MGWT;
  */
 public class NativeUtilities {
 
-
     public static void trackPage(String pageName) {
+        if( MGWT.getOsDetection().isPhone() ) {
             trackPageNative(pageName);
+        }
     }
-    public static native void trackPageNative(String pageName) /*-{
+
+    private static native void trackPageNative(String pageName) /*-{
         $wnd.trackPage(pageName);
      }-*/;
 

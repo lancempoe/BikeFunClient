@@ -15,22 +15,17 @@ import com.bikefunfinder.client.client.places.profilescreen.ProfileScreenPlace;
 import com.bikefunfinder.client.client.places.searchscreen.SearchScreenActivity;
 import com.bikefunfinder.client.client.places.searchscreen.SearchScreenPlace;
 import com.bikefunfinder.client.gin.Injector;
+import com.bikefunfinder.client.shared.request.ratsnest.AnnonymousUserCacheStrategy;
 import com.google.gwt.activity.shared.Activity;
 import com.google.gwt.activity.shared.ActivityMapper;
 import com.google.gwt.place.shared.Place;
 import com.bikefunfinder.client.client.places.gmap.*;
-import com.google.gwt.user.client.Window;
 
 public class ActivityMapperDelegate implements ActivityMapper {
 
-    private final ClientFactory clientFactory;
+    private final ClientFactory clientFactory = Injector.INSTANCE.getClientFactory();
     private static Place lastSeen;
     private static Activity lastActivity;
-
-    public ActivityMapperDelegate() {
-        this.clientFactory = Injector.INSTANCE.getClientFactory();
-        this.clientFactory.refreshUserAccount();
-    }
 
     @Override
     public Activity getActivity(Place place) {
@@ -41,23 +36,35 @@ public class ActivityMapperDelegate implements ActivityMapper {
         lastSeen = place;
 
         if(place instanceof CreateScreenPlace) {
-            lastActivity = new CreateScreenActivity(clientFactory, ((CreateScreenPlace) place).getBikeRide());
+            final CreateScreenPlace createScreenPlace = (CreateScreenPlace) place;
+            lastActivity = new CreateScreenActivity(createScreenPlace.getBikeRide(), createScreenPlace.getUser(), createScreenPlace.getAnonymousUser());
+
         } else if(place instanceof EventScreenPlace) {
-            lastActivity = new EventScreenActivity(((EventScreenPlace) place).getBikeRide(),
-                                                   ((EventScreenPlace) place).getWasConstructedById());
+            final EventScreenPlace eventScreenPlace = (EventScreenPlace) place;
+            lastActivity = new EventScreenActivity(eventScreenPlace.getBikeRide(),
+                                                   eventScreenPlace.getWasConstructedById(), null, AnnonymousUserCacheStrategy.INSTANCE.getCachedType());
+
         } else if(place instanceof HomeScreenPlace) {
-            lastActivity =  new HomeScreenActivity(((HomeScreenPlace) place).getRoot(), ((HomeScreenPlace) place).getUsage());
+            final HomeScreenPlace homeScreenPlace = (HomeScreenPlace) place;
+            lastActivity =  new HomeScreenActivity(homeScreenPlace.getRoot(), homeScreenPlace.getUsage());
+
         } else if(place instanceof ProfileScreenPlace) {
-            if (((ProfileScreenPlace) place).getUser() != null) {
-                lastActivity =  new ProfileScreenActivity(clientFactory, ((ProfileScreenPlace) place).getUser());
+            final ProfileScreenPlace profileScreenPlace = (ProfileScreenPlace) place;
+            if (profileScreenPlace.getUser() != null) {
+                lastActivity =  new ProfileScreenActivity(profileScreenPlace.getUser());
             } else  {
-                lastActivity =  new ProfileScreenActivity(clientFactory, ((ProfileScreenPlace) place).getAnonymousUser());
+                lastActivity =  new ProfileScreenActivity(profileScreenPlace.getAnonymousUser());
             }
+
         } else if(place instanceof SearchScreenPlace) {
-            lastActivity =  new SearchScreenActivity(clientFactory, ((SearchScreenPlace) place).getQuery());
+            final SearchScreenPlace searchScreenPlace = (SearchScreenPlace) place;
+            lastActivity =  new SearchScreenActivity(searchScreenPlace.getQuery());
+
         } else if(place instanceof GMapPlace) {
-            lastActivity =  new GMapActivity(((GMapPlace)place).getPageName(),
-                                             ((GMapPlace)place).getBikeRide());
+            final GMapPlace gMapPlace = (GMapPlace) place;
+            lastActivity =  new GMapActivity(gMapPlace.getPageName(),
+                                             gMapPlace.getBikeRide(), null, AnnonymousUserCacheStrategy.INSTANCE.getCachedType());
+
         }
 
         return lastActivity;

@@ -4,6 +4,7 @@ package com.bikefunfinder.client.gin;
  * @created 5/15/13 6:08 PM
  */
 
+import com.bikefunfinder.client.shared.model.AnonymousUser;
 import com.bikefunfinder.client.shared.model.BikeRide;
 import com.bikefunfinder.client.shared.model.GeoLoc;
 import com.bikefunfinder.client.shared.model.Root;
@@ -20,10 +21,13 @@ public interface RamObjectCache {
     public void updateRide(BikeRide bikeRide);
     public void deleteRide(String bikeRideId);
 
+    ///////
+
+    public AnonymousUser getAnonymousUser();
+    public void setAnonymousUser(AnonymousUser anonymousUser);
+
     public GeoLoc getCurrentPhoneGeoLoc();
     public void setCurrentPhoneGeoLoc(GeoLoc phoneGeoLoc);
-
-    ///////
 
     public Root getSearchByTimeOfDay();
     public void setSearchByTimeOfDay(Root root);

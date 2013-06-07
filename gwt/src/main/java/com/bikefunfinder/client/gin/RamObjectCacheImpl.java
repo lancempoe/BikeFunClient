@@ -4,6 +4,7 @@ package com.bikefunfinder.client.gin;
  * @created 5/15/13 6:14 PM
  */
 
+import com.bikefunfinder.client.shared.model.AnonymousUser;
 import com.bikefunfinder.client.shared.model.BikeRide;
 import com.bikefunfinder.client.shared.model.GeoLoc;
 import com.bikefunfinder.client.shared.model.Root;
@@ -147,5 +148,16 @@ public class RamObjectCacheImpl implements RamObjectCache {
     @Override
     public void setEventRequest(BikeRide bikeRide) {
         this.eventRequest = bikeRide;
+    }
+
+    private AnonymousUser anonymousUser;
+    @Override
+    public AnonymousUser getAnonymousUser() {
+        return anonymousUser;
+    }
+
+    @Override
+    public void setAnonymousUser(AnonymousUser anonymousUser) {
+        this.anonymousUser = anonymousUser;
     }
 }

@@ -2,6 +2,9 @@ package com.bikefunfinder.client.bootstrap;
 
 import com.bikefunfinder.client.gin.Injector;
 import com.bikefunfinder.client.client.places.homescreen.HomeScreenPlace;
+import com.bikefunfinder.client.shared.model.AnonymousUser;
+import com.bikefunfinder.client.shared.request.AnonymousRequest;
+import com.bikefunfinder.client.shared.request.ratsnest.WebServiceResponseConsumer;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.place.shared.PlaceHistoryHandler;
 import com.google.gwt.user.client.Window;
@@ -20,7 +23,6 @@ import java.util.List;
  * User: tim
  * Date: 3/16/13
  * Time: 1:17 PM
- * To change this template use File | Settings | File Templates.
  */
 public class PhoneGapDependentBootScrapperImpl extends PhoneGapDependentBootScrapper {
 
@@ -30,16 +32,12 @@ public class PhoneGapDependentBootScrapperImpl extends PhoneGapDependentBootScra
 
     public void phoneGapInitFailure() {
         Window.alert("can not load phonegap");
-
     }
-
-    private ClientFactory clientFactory;
 
     protected void phoneGapAvailable() {
         Injector.INSTANCE.getClientFactory().setPhoneGap(phoneGapApi);
-        clientFactory = Injector.INSTANCE.getClientFactory();
 
-        buildDisplay(clientFactory);
+        buildDisplay();
 
         setOfflineHandlerIfAvailable();
         setOnlineHandlerIfAvailable();
@@ -50,8 +48,15 @@ public class PhoneGapDependentBootScrapperImpl extends PhoneGapDependentBootScra
         //ensure theme is injected
         MGWTStyle.getTheme().getMGWTClientBundle().getMainCss().ensureInjected();
 
-        PlaceHistoryHandler historyHandler = createHistoryMapper(clientFactory);
-        historyHandler.handleCurrentHistory();
+        //Boot the UI after a call to anonymous user
+        WebServiceResponseConsumer<AnonymousUser> callback = new WebServiceResponseConsumer<AnonymousUser>() {
+            @Override
+            public void onResponseReceived(AnonymousUser anonymousUser) {
+                PlaceHistoryHandler historyHandler = createHistoryMapper();
+                historyHandler.handleCurrentHistory();
+            }
+        };
+        new AnonymousRequest.Builder(callback).send();
     }
 
     private void setOfflineHandlerIfAvailable() {
@@ -60,7 +65,7 @@ public class PhoneGapDependentBootScrapperImpl extends PhoneGapDependentBootScra
             hasOfflineHandler.addOfflineHandler(new OffLineHandler() {
                 @Override
                 public void onOffLine(OffLineEvent event) {
-                    clientFactory.deviceNetworkStateChanged(event);
+                    Injector.INSTANCE.getClientFactory().deviceNetworkStateChanged(event);
                 }
             });
         }
@@ -72,18 +77,17 @@ public class PhoneGapDependentBootScrapperImpl extends PhoneGapDependentBootScra
             hasOnlineHandler.addOnlineHandler(new OnlineHandler() {
                 @Override
                 public void onOnlineEvent(OnlineEvent event) {
-                    clientFactory.deviceNetworkStateChanged(event);
+                    Injector.INSTANCE.getClientFactory().deviceNetworkStateChanged(event);
                 }
             });
         }
     }
 
-
-
-    private PlaceHistoryHandler createHistoryMapper(final ClientFactory clientFactory) {
+    private PlaceHistoryHandler createHistoryMapper() {
         AppPlaceHistoryMapper historyMapper = GWT.create(AppPlaceHistoryMapper.class);
         final PlaceHistoryHandler historyHandler = new PlaceHistoryHandler(historyMapper);
 
+        ClientFactory clientFactory = Injector.INSTANCE.getClientFactory();
         clientFactory.setPlaceHistoryMapper(historyMapper);
         historyHandler.register(clientFactory.getPlaceController(),
                 clientFactory.getEventBus(),
@@ -93,7 +97,7 @@ public class PhoneGapDependentBootScrapperImpl extends PhoneGapDependentBootScra
 
     }
 
-    private void buildDisplay(ClientFactory clientFactory) {
+    private void buildDisplay() {
         List<IsWidget> elementsToAdd = RootUiFactory.getUserInterfaceRootWidgets();
         for (IsWidget widget : elementsToAdd) {
             RootPanel.get().add(widget);

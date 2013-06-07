@@ -44,14 +44,15 @@ import java.util.Date;
  * To change this template use File | Settings | File Templates.
  */
 public class GMapActivity extends NavBaseActivity implements GMapDisplay.Presenter {
-    private final Injector injector = Injector.INSTANCE;
-    private final ClientFactory<GMapDisplay> clientFactory;
-    private static Timer timer;
-    private int calledTimes = 0;
+    private final ClientFactory<GMapDisplay> clientFactory = Injector.INSTANCE.getClientFactory();
+    private final RamObjectCache ramObjectCache = Injector.INSTANCE.getRamObjectCache();
 
+    private static Timer timer;
+    private final AnonymousUser anonymousUser;
+
+    private final User user;
     private final Geolocation geolocation; //TODO WHAT IS THIS??? NEEDS TO BE CLEANED UP.. CAUSING TWO CALLS.
     private GeolocationWatcher watcher = null;  //TODO WHAT IS THIS??? NEEDS TO BE CLEANED UP.. CAUSING TWO CALLS.
-    private final RamObjectCache ramObjectCache;
     private String userId;
     private String userName;
     private String pageName;
@@ -59,18 +60,23 @@ public class GMapActivity extends NavBaseActivity implements GMapDisplay.Present
     private boolean isFirstPostSavePhoneGeoLoc = true;
     private int refreshTrackingCount = 0;
     private ConfirmDialog.ConfirmCallback trackingWarning;
-    private int geoFailCount = 0;
+
     public MapScreenType screenType = MapScreenType.EVENT; //Default Value.
 
-    public GMapActivity(String pageName, BikeRide bikeRide) {
+    public GMapActivity(String pageName, BikeRide bikeRide, User user, AnonymousUser anonymousUser) {
         if (bikeRide == null) { screenType = MapScreenType.HERE_AND_NOW; }
-        this.clientFactory = injector.getClientFactory();
-        this.ramObjectCache = injector.getRamObjectCache();
+
+        this.anonymousUser = anonymousUser;
+        this.user = user;
+
         ramObjectCache.setCurrentBikeRide(bikeRide);
         this.geolocation = clientFactory.getPhoneGap().getGeolocation();  //Init GeoLoc Obj, not a request from device.
         this.pageName = pageName;
+
         setUserOrAnonymousUser();
-        setUserId(this.userId);
+        clientFactory.getDisplay(this).setUserId(userId);
+
+
         setDisplayPageName(this.pageName);
         //Required GeoLoc even for viewing a bikeride, otherwise maps does not load
         refreshScreen();
@@ -78,23 +84,21 @@ public class GMapActivity extends NavBaseActivity implements GMapDisplay.Present
 
     private void setUserOrAnonymousUser() {
         //Set the logged in user details
-        if (clientFactory.getStoredValue(DBKeys.USER) != null) {
-            User user = Utils.castJsonTxtToJSOObject(clientFactory.getStoredValue(DBKeys.USER));
+        if (user != null) {
             this.userId = user.getId();
             this.userName = user.getUserName();
         }
-        else if (clientFactory.getStoredValue(DBKeys.ANONYMOUS_USER) != null) {
-            AnonymousUser anonymousUser = Utils.castJsonTxtToJSOObject(clientFactory.getStoredValue(DBKeys.ANONYMOUS_USER));
+        else if (anonymousUser != null) {
             this.userId = anonymousUser.getId();
             this.userName = anonymousUser.getUserName();
         }
     }
+
     private void refreshScreen() {
         DeviceTools.requestPhoneGeoLoc(new NonPhoneGapGeoLocCallback(new NonPhoneGapGeoLocCallback.GeolocationHandler() {
             @Override
             public void onSuccess(GeoLoc geoLoc) {
                 ramObjectCache.setCurrentPhoneGeoLoc(geoLoc);
-                geoFailCount = 0;
                 postSavePhoneGeoLoc();
             }
         }, GeoLocCacheStrategy.INSTANCE));
@@ -116,6 +120,7 @@ public class GMapActivity extends NavBaseActivity implements GMapDisplay.Present
             startWatching();
 
             if (MapScreenType.EVENT.equals(screenType)) {
+                if(timer!=null) { timer.cancel(); }
                 timer = new Timer() {
                     public void run() {
                         refreshScreen();
@@ -124,6 +129,7 @@ public class GMapActivity extends NavBaseActivity implements GMapDisplay.Present
 
                 // Schedule the timer to run once in x seconds.
                 timer.scheduleRepeating(ScreenConstants.SCREEN_REFRESH_RATE_IN_SECONDS * 1000);
+
             }
             isFirstPostSavePhoneGeoLoc = false;
         } else if (isTracking) {

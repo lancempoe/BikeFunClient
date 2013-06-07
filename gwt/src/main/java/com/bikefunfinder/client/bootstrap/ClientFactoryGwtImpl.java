@@ -1,12 +1,14 @@
 package com.bikefunfinder.client.bootstrap;
 
-import com.bikefunfinder.client.bootstrap.db.DBKeys;
 import com.bikefunfinder.client.client.places.createscreen.CreateScreenActivity;
 import com.bikefunfinder.client.client.places.createscreen.CreateScreenDisplay;
 import com.bikefunfinder.client.client.places.createscreen.CreateScreenDisplayGwtImpl;
 import com.bikefunfinder.client.client.places.eventscreen.EventScreenActivity;
 import com.bikefunfinder.client.client.places.eventscreen.EventScreenDisplay;
 import com.bikefunfinder.client.client.places.eventscreen.EventScreenDisplayGwtImpl;
+import com.bikefunfinder.client.client.places.gmap.GMapActivity;
+import com.bikefunfinder.client.client.places.gmap.GMapDisplay;
+import com.bikefunfinder.client.client.places.gmap.GMapViewImpl;
 import com.bikefunfinder.client.client.places.homescreen.HomeScreenActivity;
 import com.bikefunfinder.client.client.places.homescreen.HomeScreenDisplay;
 import com.bikefunfinder.client.client.places.homescreen.HomeScreenDisplayGwtImpl;
@@ -16,30 +18,17 @@ import com.bikefunfinder.client.client.places.profilescreen.ProfileScreenDisplay
 import com.bikefunfinder.client.client.places.searchscreen.SearchScreenActivity;
 import com.bikefunfinder.client.client.places.searchscreen.SearchScreenDisplay;
 import com.bikefunfinder.client.client.places.searchscreen.SearchScreenDisplayGwtImpl;
-import com.bikefunfinder.client.shared.model.AnonymousUser;
-import com.bikefunfinder.client.shared.model.User;
-import com.bikefunfinder.client.shared.model.json.Utils;
-import com.bikefunfinder.client.shared.model.printer.JSODescriber;
-import com.bikefunfinder.client.shared.request.AnonymousRequest;
-import com.bikefunfinder.client.shared.request.ratsnest.WebServiceResponseConsumer;
-import com.google.gwt.core.shared.GWT;
 import com.google.gwt.place.shared.PlaceController;
-import com.google.gwt.user.client.Window;
 import com.google.web.bindery.event.shared.EventBus;
 import com.google.web.bindery.event.shared.SimpleEventBus;
 import com.googlecode.gwtphonegap.client.PhoneGap;
 import com.googlecode.gwtphonegap.client.event.OffLineEvent;
 import com.googlecode.gwtphonegap.client.event.OnlineEvent;
 import com.googlecode.mgwt.mvp.client.MGWTAbstractActivity;
-import com.googlecode.mgwt.storage.client.Storage;
-import com.bikefunfinder.client.client.places.gmap.*;
-import java.util.Date;
-
 
 public class ClientFactoryGwtImpl implements ClientFactory {
 
     private PhoneGap phoneGap;
-    private final LocalStorageWrapper storageInterface;
     private SimpleEventBus eventBus;
     private PlaceController placeController;
     private HomeScreenDisplay homeScreenDisplay;
@@ -49,16 +38,18 @@ public class ClientFactoryGwtImpl implements ClientFactory {
     private EventScreenDisplay eventScreenDisplay;
     private GMapDisplay gMapDisplay;
     private AppPlaceHistoryMapper historyHandler;
+    private AccountDetailsProvider accountDetailsProvider;
     private boolean isDiviceOnline = true;
 
     public ClientFactoryGwtImpl() {
-        this.storageInterface = new LocalStorageWrapper();
         this.eventBus = new SimpleEventBus();
         this.placeController = new PlaceController(eventBus);
     }
 
+    @Override
     public void setPhoneGap(PhoneGap phoneGap) {
         this.phoneGap = phoneGap;
+        accountDetailsProvider = new AccountDetailsProviderImpl(new LocalStorageWrapper(), phoneGap);
     }
 
     @Override
@@ -76,6 +67,35 @@ public class ClientFactoryGwtImpl implements ClientFactory {
         return eventBus;
     }
 
+    @Override
+    public void deviceNetworkStateChanged(OnlineEvent onlineEvent) {
+        isDiviceOnline = true;
+    }
+
+    @Override
+    public void deviceNetworkStateChanged(OffLineEvent offLineEvent) {
+        isDiviceOnline = false;
+    }
+
+    @Override
+    public boolean isDeviceConnectedToNetwork() {
+        return isDiviceOnline;
+    }
+
+    @Override
+    public AccountDetailsProvider getAccountDetailsProvider() {
+        return accountDetailsProvider;
+    }
+
+    @Override
+    public void setPlaceHistoryMapper(AppPlaceHistoryMapper historyMapper) {
+        this.historyHandler = historyMapper;
+    }
+
+    @Override
+    public AppPlaceHistoryMapper getPlaceHistoryMapper() {
+        return historyHandler;
+    }
 
     @Override
     public Object getDisplay(MGWTAbstractActivity activity) {
@@ -96,163 +116,45 @@ public class ClientFactoryGwtImpl implements ClientFactory {
         throw new RuntimeException("No fair! We need a real activity");
     }
 
-    public void deviceNetworkStateChanged(OnlineEvent onlineEvent) {
-//        Window.alert("Device is on the network!"+onlineEvent.toString());
-        isDiviceOnline = true;
-    }
-
-    public void deviceNetworkStateChanged(OffLineEvent offLineEvent) {
-//        Window.alert("Device is offline!"+offLineEvent.toString());
-        isDiviceOnline = false;
-
-    }
-
-    @Override
-    public boolean isDeviceConnectedToNetwork() {
-        return isDiviceOnline;
-    }
-
-    public CreateScreenDisplay getCreateScreenDisplay() {
+    private CreateScreenDisplay getCreateScreenDisplay() {
         if (createScreenDisplay == null) {
             createScreenDisplay = new CreateScreenDisplayGwtImpl();
         }
         return createScreenDisplay;
     }
 
-
-    public HomeScreenDisplay getHomeScreenDisplay() {
+    private HomeScreenDisplay getHomeScreenDisplay() {
         if (homeScreenDisplay == null) {
             homeScreenDisplay = new HomeScreenDisplayGwtImpl();
         }
         return homeScreenDisplay;
     }
 
-
-    public ProfileScreenDisplay getProfileScreenDisplay() {
+    private ProfileScreenDisplay getProfileScreenDisplay() {
         if (profileScreenDisplay == null) {
             profileScreenDisplay = new ProfileScreenDisplayGwtImpl();
         }
         return profileScreenDisplay;
     }
 
-
-    public EventScreenDisplay getEventScreenDisplay() {
+    private EventScreenDisplay getEventScreenDisplay() {
         if(eventScreenDisplay == null) {
             eventScreenDisplay = new EventScreenDisplayGwtImpl();
         }
         return eventScreenDisplay;
     }
 
-
-    public SearchScreenDisplay getSearchScreenDisplay() {
+    private SearchScreenDisplay getSearchScreenDisplay() {
         if (searchScreenDisplay == null) {
             searchScreenDisplay = new SearchScreenDisplayGwtImpl();
         }
         return searchScreenDisplay;
     }
 
-
-    public GMapDisplay getGMapDisplay() {
+    private GMapDisplay getGMapDisplay() {
         if (gMapDisplay == null) {
             gMapDisplay = new GMapViewImpl();
         }
         return gMapDisplay;
-    }
-
-    /**
-     * Pass a DBKey and get back the stored value if it exists.
-     * @param dbKey
-     * @return
-     */
-    @Override
-    public String getStoredValue(String dbKey) {
-
-        String jsonText = "";
-        Storage storageInterface = this.storageInterface.getStorageInterfaceMyBeNull();
-        if(storageInterface==null) {
-            Window.alert("Storage interface is not supported (null)");
-        } else {
-            jsonText = storageInterface.getItem(dbKey);
-        }
-        return jsonText;
-    }
-
-
-
-    @Override
-    public boolean setStoredValue(String dbKey, String value) {
-
-        Storage storageInterface = this.storageInterface.getStorageInterfaceMyBeNull();
-        if(storageInterface==null) {
-            Window.alert("Storage interface is not supported (null)");
-            return false;
-        } else {
-            storageInterface.setItem(dbKey, value);
-        }
-        return true;
-    }
-
-    @Override
-    public void refreshUserAccount() {
-
-        Storage storageInterface = this.storageInterface.getStorageInterfaceMyBeNull();
-        if(storageInterface==null) {
-            Window.alert("Storage interface is not supported (null)");
-        } else {
-            String jsonText = storageInterface.getItem(DBKeys.USER);
-            if(jsonText!=null && !jsonText.isEmpty()) {
-                //TODO WE NEED TO VALIDATE THAT THE USER IS STILL LOGGED IN PRIOR TO SENDING BACK, IF NOT SEND BACK ANONYMOUSUSER
-                User user = Utils.castJsonTxtToJSOObject(jsonText);
-            }  else {
-                jsonText = storageInterface.getItem(DBKeys.ANONYMOUS_USER);
-                if(jsonText==null || jsonText.isEmpty()) {
-                    final Date now = new Date();
-                    createAnonymousAccount(storageInterface,
-                        Long.toString(now.getTime()),
-                        phoneGap.getDevice().getUuid());
-                } else {
-                    AnonymousUser anonymousUser = Utils.castJsonTxtToJSOObject(jsonText);
-                    createAnonymousAccount(storageInterface,
-                        anonymousUser.getDeviceAccount().getKey(),
-                        anonymousUser.getDeviceAccount().getDeviceUUID());
-                }
-            }
-        }
-    }
-
-    private void createAnonymousAccount(final Storage storageInterface, final String key, final String uuid) {
-        WebServiceResponseConsumer<AnonymousUser> callback = new WebServiceResponseConsumer<AnonymousUser>() {
-//            @Override
-//            public void onError() {
-//                //At this point the message has already been displayed to the user.
-//            }
-
-            @Override
-            public void onResponseReceived(AnonymousUser anonymousUser) {
-                final String jsonText = JSODescriber.toJSON(anonymousUser);
-                storageInterface.setItem(DBKeys.ANONYMOUS_USER, jsonText);
-            }
-        };
-        AnonymousRequest.Builder request = new AnonymousRequest.Builder(callback);
-        request.key(key).uuid(uuid).send();
-    }
-
-    private String buildUserJsonTxt() {
-        User user = GWT.create(User.class);
-        user.setId("id");
-        user.setDeviceAccount(null);
-        user.setOAuth(null);
-
-        return JSODescriber.toJSON(user);
-    }
-
-    @Override
-    public void setPlaceHistoryMapper(AppPlaceHistoryMapper historyMapper) {
-        this.historyHandler = historyHandler;
-    }
-
-    @Override
-    public AppPlaceHistoryMapper getPlaceHistoryMapper() {
-        return historyHandler;
     }
 }

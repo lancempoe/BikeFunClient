@@ -28,9 +28,7 @@ public interface ClientFactory<DisplayType> {
     public void deviceNetworkStateChanged(OffLineEvent offLineEvent);
     public boolean isDeviceConnectedToNetwork();
 
-    public String getStoredValue(String value);
-    public boolean setStoredValue(String key, String value);
-    public void refreshUserAccount();
+    public AccountDetailsProvider getAccountDetailsProvider();
 
     public void setPlaceHistoryMapper(AppPlaceHistoryMapper historyHandler);
     public AppPlaceHistoryMapper getPlaceHistoryMapper();

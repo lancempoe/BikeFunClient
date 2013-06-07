@@ -6,6 +6,7 @@ package com.bikefunfinder.client.client.places.searchscreen;
 
 import com.bikefunfinder.client.bootstrap.ClientFactory;
 import com.bikefunfinder.client.client.places.homescreen.HomeScreenPlace;
+import com.bikefunfinder.client.gin.Injector;
 import com.bikefunfinder.client.shared.Tools.DeviceTools;
 import com.bikefunfinder.client.shared.Tools.NativeUtilities;
 import com.bikefunfinder.client.shared.Tools.NonPhoneGapGeoLocCallback;
@@ -26,13 +27,12 @@ import com.googlecode.mgwt.ui.client.MGWT;
 import java.util.List;
 
 public class SearchScreenActivity extends MGWTAbstractActivity implements SearchScreenDisplay.Presenter {
-    private final ClientFactory<SearchScreenDisplay> clientFactory;
+    private final ClientFactory<SearchScreenDisplay> clientFactory = Injector.INSTANCE.getClientFactory();
     private final Query query;
 
     private List<BikeRide> currentList;
 
-    public SearchScreenActivity(ClientFactory clientFactory, Query query) {
-        this.clientFactory = clientFactory;
+    public SearchScreenActivity(Query query) {
         this.query = query;
         setupDisplay();
 

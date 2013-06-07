@@ -17,7 +17,11 @@ import com.bikefunfinder.client.shared.model.BikeRide;
 import com.bikefunfinder.client.shared.model.Tracking;
 import com.bikefunfinder.client.shared.model.User;
 import com.bikefunfinder.client.shared.model.json.Utils;
+import com.bikefunfinder.client.shared.request.AnonymousRequest;
+import com.bikefunfinder.client.shared.request.ratsnest.AnnonymousUserCacheStrategy;
+import com.bikefunfinder.client.shared.request.ratsnest.WebServiceResponseConsumer;
 import com.google.gwt.core.client.JsArray;
+import com.google.gwt.place.shared.PlaceHistoryHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.web.bindery.event.shared.EventBus;
@@ -27,27 +31,27 @@ import com.googlecode.mgwt.ui.client.MGWT;
 public class EventScreenActivity extends MGWTAbstractActivity implements EventScreenDisplay.Presenter {
 
 private final ClientFactory<EventScreenDisplay> clientFactory = Injector.INSTANCE.getClientFactory();
-    private String userName = "";
-    private String userId = "";
+    private final AnonymousUser anonymousUser;
+    private final User user;
+    private final boolean cameFromGmap;
+
     private BikeRide bikeRide;
 
-    boolean cameFromGmap;
+    private String userName = "";
+    private String userId = "";
 
-    @Override
-    public void start(AcceptsOneWidget panel, EventBus eventBus) {
-        final EventScreenDisplay display = clientFactory.getDisplay(this);
-        display.setPresenter(this);
-        panel.setWidget(display);
-    }
+    public EventScreenActivity(BikeRide bikeRide, boolean cameFromGmap, User user, AnonymousUser anonymousUser) {
+        this.cameFromGmap = cameFromGmap;
+        this.bikeRide = bikeRide;
+        this.user = user;
+        this.anonymousUser = anonymousUser;
 
-    public EventScreenActivity(BikeRide bikeRide, boolean cameFromGmap) {
         if(bikeRide==null) {
             clientFactory.getPlaceController().goTo(new HomeScreenPlace());
             return;
         }
 
-        this.cameFromGmap = cameFromGmap;
-        this.bikeRide = bikeRide;
+
         final EventScreenDisplay display = this.clientFactory.getDisplay(this);
         setUserNameFields();
         display.resetState();
@@ -59,14 +63,18 @@ private final ClientFactory<EventScreenDisplay> clientFactory = Injector.INSTANC
         }
     }
 
+    @Override
+    public void start(AcceptsOneWidget panel, EventBus eventBus) {
+        final EventScreenDisplay display = clientFactory.getDisplay(this);
+        display.setPresenter(this);
+        panel.setWidget(display);
+    }
+
     private void setUserNameFields() {
         //Set the logged in user details
-        if (clientFactory.getStoredValue(DBKeys.USER) != null) {
-            User user = Utils.castJsonTxtToJSOObject(clientFactory.getStoredValue(DBKeys.USER));
+        if (user != null) {
             setUserDisplayElements(user.getId(), user.getUserName());
-        }
-        else if (clientFactory.getStoredValue(DBKeys.ANONYMOUS_USER) != null) {
-            AnonymousUser anonymousUser = Utils.castJsonTxtToJSOObject(clientFactory.getStoredValue(DBKeys.ANONYMOUS_USER));
+        } else if (anonymousUser!=null) {
             setUserDisplayElements(anonymousUser.getId(), anonymousUser.getUserName());
         }
     }
@@ -113,6 +121,6 @@ private final ClientFactory<EventScreenDisplay> clientFactory = Injector.INSTANC
 
     @Override
     public void editRideButtonSelected() {
-        clientFactory.getPlaceController().goTo(new CreateScreenPlace(this.bikeRide));
+        clientFactory.getPlaceController().goTo(new CreateScreenPlace(this.bikeRide, null, AnnonymousUserCacheStrategy.INSTANCE.getCachedType()));
     }
 }

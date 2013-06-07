@@ -27,9 +27,15 @@ import com.googlecode.mgwt.ui.client.widget.WidgetList;
 
 public class CreateScreenDisplayGwtImpl  extends Composite implements CreateScreenDisplay {
     private static OverviewDisplayGwtImplUiBinder uiBinder = GWT.create(OverviewDisplayGwtImplUiBinder.class);
-    interface OverviewDisplayGwtImplUiBinder extends UiBinder<Widget, CreateScreenDisplayGwtImpl> {}
+    public interface OverviewDisplayGwtImplUiBinder extends UiBinder<Widget, CreateScreenDisplayGwtImpl> {}
 
     private Presenter presenter;
+
+    public CreateScreenDisplayGwtImpl() {
+        widgetList = BikeRideViewUtils.buildBikeViewWidgitList(bikeDisplayWidgets);
+        initWidget(uiBinder.createAndBindUi(this));
+        scrollPanel.setUsePos(MGWT.getOsDetection().isAndroid());
+    }
 
     @UiField
     HTML userName;
@@ -51,12 +57,6 @@ public class CreateScreenDisplayGwtImpl  extends Composite implements CreateScre
 
     final BikeRideCreateWidgets bikeDisplayWidgets = new BikeRideCreateWidgetsImpl();
 
-    public CreateScreenDisplayGwtImpl() {
-        widgetList = BikeRideViewUtils.buildBikeViewWidgitList(bikeDisplayWidgets);
-        initWidget(uiBinder.createAndBindUi(this));
-        scrollPanel.setUsePos(MGWT.getOsDetection().isAndroid());
-    }
-
     @Override
     protected void onLoad() {
         setupTimePicker();
@@ -77,12 +77,12 @@ public class CreateScreenDisplayGwtImpl  extends Composite implements CreateScre
     }
 
     @Override
-    public void display(BikeRide bikeRide) {
+    public void populateWithExistingBikeRideDetails(BikeRide bikeRide) {
         bikeDisplayWidgets.setStateFrom(bikeRide);
     }
 
     @Override
-    public void display(String userName) {
+    public void setUserNameOnDisplay(String userName) {
         this.userName.setText(userName);
     }
 

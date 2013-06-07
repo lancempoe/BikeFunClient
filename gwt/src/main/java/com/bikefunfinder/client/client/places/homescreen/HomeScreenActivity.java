@@ -15,7 +15,9 @@ import com.bikefunfinder.client.shared.constants.ScreenConstants;
 import com.bikefunfinder.client.shared.model.*;
 import com.bikefunfinder.client.shared.model.Root;
 import com.bikefunfinder.client.shared.model.helper.Extractor;
+import com.bikefunfinder.client.shared.request.AnonymousRequest;
 import com.bikefunfinder.client.shared.request.SearchByTimeOfDayRequest;
+import com.bikefunfinder.client.shared.request.ratsnest.AnnonymousUserCacheStrategy;
 import com.bikefunfinder.client.shared.request.ratsnest.CacheStrategy;
 import com.bikefunfinder.client.shared.request.ratsnest.GeoLocCacheStrategy;
 import com.bikefunfinder.client.shared.request.ratsnest.WebServiceResponseConsumer;
@@ -102,7 +104,7 @@ public class HomeScreenActivity extends MGWTAbstractActivity implements HomeScre
 
     @Override
     public void onNewButton() {
-        clientFactory.getPlaceController().goTo(new CreateScreenPlace());
+        clientFactory.getPlaceController().goTo(new CreateScreenPlace(null, null, AnnonymousUserCacheStrategy.INSTANCE.getCachedType()));
     }
 
     @Override
@@ -112,7 +114,14 @@ public class HomeScreenActivity extends MGWTAbstractActivity implements HomeScre
 
     @Override
     public void onLoginButton() {
-        clientFactory.getPlaceController().goTo(new ProfileScreenPlace());
+
+        WebServiceResponseConsumer<AnonymousUser> callback = new WebServiceResponseConsumer<AnonymousUser>() {
+            @Override
+            public void onResponseReceived(AnonymousUser anonymousUser) {
+            clientFactory.getPlaceController().goTo(new ProfileScreenPlace(null, anonymousUser));
+            }
+        };
+        new AnonymousRequest.Builder(callback).send();
     }
 
     @Override
@@ -154,17 +163,7 @@ public class HomeScreenActivity extends MGWTAbstractActivity implements HomeScre
                 fireRequestForTimeOfDay(display, geoLoc, callback);
                 callback.onResponseReceived();
             }
-        }, new CacheStrategy<GeoLoc>() {
-            @Override
-            public void cacheType(GeoLoc type) {
-                //To change body of implemented methods use File | Settings | File Templates.
-            }
-
-            @Override
-            public GeoLoc getCachedType() {
-                return null;  //To change body of implemented methods use File | Settings | File Templates.
-            }
-        }));
+        }, GeoLocCacheStrategy.INSTANCE));
 
     }
 

@@ -15,8 +15,8 @@ public interface CreateScreenDisplay extends IsWidget {
      */
     public void resetState();
     public void displayFailedToCreateRideMessage();
-    public void display(BikeRide bikeRide);
-    public void display(String userName);
+    public void populateWithExistingBikeRideDetails(BikeRide bikeRide);
+    public void setUserNameOnDisplay(String userName);
     public void setVisibilityOfButtons(boolean existingEvent);
 
     /**
