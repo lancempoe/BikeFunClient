@@ -28,6 +28,8 @@ public interface ClientFactory<DisplayType> {
     public void deviceNetworkStateChanged(OffLineEvent offLineEvent);
     public boolean isDeviceConnectedToNetwork();
 
+    public void shutoffGmapTimerToBeSafe();
+
     public AccountDetailsProvider getAccountDetailsProvider();
 
     public void setPlaceHistoryMapper(AppPlaceHistoryMapper historyHandler);

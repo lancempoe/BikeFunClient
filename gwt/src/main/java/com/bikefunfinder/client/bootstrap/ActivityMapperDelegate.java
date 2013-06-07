@@ -33,6 +33,9 @@ public class ActivityMapperDelegate implements ActivityMapper {
             return lastActivity;
         }
 
+
+        clientFactory.shutoffGmapTimerToBeSafe();
+
         lastSeen = place;
 
         if(place instanceof CreateScreenPlace) {

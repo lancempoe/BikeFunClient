@@ -98,6 +98,13 @@ public class ClientFactoryGwtImpl implements ClientFactory {
     }
 
     @Override
+    public void shutoffGmapTimerToBeSafe() {
+        if(GMapActivity.timer!=null) {
+            GMapActivity.timer.cancel();
+        }
+    }
+
+    @Override
     public Object getDisplay(MGWTAbstractActivity activity) {
         if(activity instanceof CreateScreenActivity) {
             return getCreateScreenDisplay();

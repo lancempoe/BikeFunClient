@@ -56,6 +56,7 @@ private final ClientFactory<EventScreenDisplay> clientFactory = Injector.INSTANC
         setUserNameFields();
         display.resetState();
         setupDisplay(this.bikeRide);
+
         if (this.bikeRide.getRideLeaderId().equals(userId)) {
             display.displayEdit(true);
         } else {
