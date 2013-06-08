@@ -238,7 +238,7 @@ public class GMapActivity extends NavBaseActivity implements GMapDisplay.Present
         display.display(bikeRide);
         display.setupMapToDisplayBikeRide(phoneGeoLoc, bikeRide, isFirstPostSavePhoneGeoLoc);
 
-        NativeUtilities.trackPage("Event Screen");
+        NativeUtilities.trackPage("Event Map Screen");
     }
 
     private void setHereAndNowView(final GeoLoc phoneGeoLoc) {
