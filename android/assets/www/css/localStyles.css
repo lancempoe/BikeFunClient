@@ -20,7 +20,7 @@
 
 }
 
-.currentRide, activeRide {
+.currentRide, .activeRide {
     background-color: #9ddaa6 !important;
 }
 
