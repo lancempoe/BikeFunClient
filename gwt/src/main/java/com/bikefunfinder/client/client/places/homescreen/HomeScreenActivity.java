@@ -83,7 +83,7 @@ public class HomeScreenActivity extends MGWTAbstractActivity implements HomeScre
                 }
             }
         }  else {
-            display.display("Sorry, No Rides");   //TODO NEED TO MAKE BUTTONS SMALLER OTHERWISE THE SORRY NO RIDES IS TOO LONG.
+            display.display("No Rides");
         }
 
         NativeUtilities.trackPage("Home Screen");

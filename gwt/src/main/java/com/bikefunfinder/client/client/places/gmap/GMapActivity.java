@@ -257,7 +257,7 @@ public class GMapActivity extends NavBaseActivity implements GMapDisplay.Present
             public void onResponseReceived(Root root) {
                 ramObjectCache.setHereAndNowBikeRideCache(Extractor.getBikeRidesFrom(root));
                 if (ramObjectCache.getHereAndNowBikeRideCache().size() == 0) {
-                    display.displayPageName("Sorry, No Rides");
+                    display.displayPageName("No Rides");
                 }
 
                 display.setupMapDisplayForHereAndNow(phoneGeoLoc, ramObjectCache.getHereAndNowBikeRideCache());
