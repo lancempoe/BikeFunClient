@@ -5,7 +5,7 @@ import com.bikefunfinder.client.shared.constants.Settings;
 import com.bikefunfinder.client.shared.model.User;
 import com.bikefunfinder.client.shared.model.printer.JSODescriber;
 import com.bikefunfinder.client.shared.request.converters.PayloadConverters;
-import com.bikefunfinder.client.shared.request.ratsnest.*;
+import com.bikefunfinder.client.shared.request.management.*;
 import com.google.gwt.http.client.Request;
 import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.http.client.RequestCallback;

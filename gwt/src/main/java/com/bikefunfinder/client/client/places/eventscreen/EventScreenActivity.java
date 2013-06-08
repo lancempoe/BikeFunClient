@@ -14,7 +14,7 @@ import com.bikefunfinder.client.shared.model.AnonymousUser;
 import com.bikefunfinder.client.shared.model.BikeRide;
 import com.bikefunfinder.client.shared.model.Tracking;
 import com.bikefunfinder.client.shared.model.User;
-import com.bikefunfinder.client.shared.request.ratsnest.AnnonymousUserCacheStrategy;
+import com.bikefunfinder.client.shared.request.management.AnnonymousUserCacheStrategy;
 import com.google.gwt.core.client.JsArray;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.web.bindery.event.shared.EventBus;

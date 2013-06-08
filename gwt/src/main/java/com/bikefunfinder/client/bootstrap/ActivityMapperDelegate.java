@@ -17,7 +17,7 @@ import com.bikefunfinder.client.client.places.profilescreen.ProfileScreenPlace;
 import com.bikefunfinder.client.client.places.searchscreen.SearchScreenActivity;
 import com.bikefunfinder.client.client.places.searchscreen.SearchScreenPlace;
 import com.bikefunfinder.client.gin.Injector;
-import com.bikefunfinder.client.shared.request.ratsnest.AnnonymousUserCacheStrategy;
+import com.bikefunfinder.client.shared.request.management.AnnonymousUserCacheStrategy;
 import com.google.gwt.activity.shared.Activity;
 import com.google.gwt.activity.shared.ActivityMapper;
 import com.google.gwt.place.shared.Place;
@@ -34,8 +34,7 @@ public class ActivityMapperDelegate implements ActivityMapper {
             return lastActivity;
         }
 
-
-        clientFactory.shutoffGmapTimerToBeSafe();
+        GMapActivity.cancelGeoLocationWatcherIfRegistered();
 
         lastSeen = place;
 

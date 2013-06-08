@@ -19,9 +19,9 @@ import com.bikefunfinder.client.shared.model.Root;
 import com.bikefunfinder.client.shared.model.helper.Extractor;
 import com.bikefunfinder.client.shared.request.AnonymousRequest;
 import com.bikefunfinder.client.shared.request.SearchByTimeOfDayRequest;
-import com.bikefunfinder.client.shared.request.ratsnest.AnnonymousUserCacheStrategy;
-import com.bikefunfinder.client.shared.request.ratsnest.GeoLocCacheStrategy;
-import com.bikefunfinder.client.shared.request.ratsnest.WebServiceResponseConsumer;
+import com.bikefunfinder.client.shared.request.management.AnnonymousUserCacheStrategy;
+import com.bikefunfinder.client.shared.request.management.GeoLocCacheStrategy;
+import com.bikefunfinder.client.shared.request.management.WebServiceResponseConsumer;
 import com.google.gwt.regexp.shared.MatchResult;
 import com.google.gwt.regexp.shared.RegExp;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
@@ -137,7 +137,7 @@ public class HomeScreenActivity extends MGWTAbstractActivity implements HomeScre
             public void onSuccess(GeoLoc geoLoc) {
                 fireRequestForTimeOfDay(display, geoLoc, noOpNotifyTimeAndDayCallback);
             }
-        }, GeoLocCacheStrategy.INSTANCE));
+        }));
     }
 
     @Override
@@ -162,7 +162,7 @@ public class HomeScreenActivity extends MGWTAbstractActivity implements HomeScre
                 fireRequestForTimeOfDay(display, geoLoc, callback);
                 callback.onResponseReceived();
             }
-        }, GeoLocCacheStrategy.INSTANCE));
+        }));
 
     }
 

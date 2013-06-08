@@ -18,6 +18,7 @@ import com.bikefunfinder.client.client.places.profilescreen.ProfileScreenDisplay
 import com.bikefunfinder.client.client.places.searchscreen.SearchScreenActivity;
 import com.bikefunfinder.client.client.places.searchscreen.SearchScreenDisplay;
 import com.bikefunfinder.client.client.places.searchscreen.SearchScreenDisplayGwtImpl;
+import com.bikefunfinder.client.shared.Tools.DeviceTools;
 import com.google.gwt.place.shared.PlaceController;
 import com.google.web.bindery.event.shared.EventBus;
 import com.google.web.bindery.event.shared.SimpleEventBus;
@@ -95,13 +96,6 @@ public class ClientFactoryGwtImpl implements ClientFactory {
     @Override
     public AppPlaceHistoryMapper getPlaceHistoryMapper() {
         return historyHandler;
-    }
-
-    @Override
-    public void shutoffGmapTimerToBeSafe() {
-        if(GMapActivity.timer!=null) {
-            GMapActivity.timer.cancel();
-        }
     }
 
     @Override

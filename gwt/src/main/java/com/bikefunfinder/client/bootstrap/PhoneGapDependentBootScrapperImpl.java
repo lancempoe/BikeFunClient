@@ -4,7 +4,7 @@ import com.bikefunfinder.client.client.places.homescreen.HomeScreenPlace;
 import com.bikefunfinder.client.gin.Injector;
 import com.bikefunfinder.client.shared.model.AnonymousUser;
 import com.bikefunfinder.client.shared.request.AnonymousRequest;
-import com.bikefunfinder.client.shared.request.ratsnest.WebServiceResponseConsumer;
+import com.bikefunfinder.client.shared.request.management.WebServiceResponseConsumer;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.place.shared.PlaceHistoryHandler;
 import com.google.gwt.user.client.Window;

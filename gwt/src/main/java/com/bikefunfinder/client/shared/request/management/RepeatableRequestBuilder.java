@@ -1,4 +1,4 @@
-package com.bikefunfinder.client.shared.request.ratsnest;
+package com.bikefunfinder.client.shared.request.management;
 /*
  * @author: tneuwerth
  * @created 6/2/13 2:49 PM

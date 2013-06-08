@@ -1,4 +1,4 @@
-package com.bikefunfinder.client.shared.request.ratsnest;
+package com.bikefunfinder.client.shared.request.management;
 /*
  * @author: tneuwerth
  * @created 5/31/13 12:33 AM
@@ -15,19 +15,31 @@ public class RequestCallBackHandlerStack<T> implements RequestCallbackSorter.Poo
     private final WebServiceResponseConsumer<T> callback;
     private final CacheStrategy<T> cacheStrategy;
     private final RefireStrategy<T> refireStrategy;
+    private final ScreenBlockingStrategy screenBlockingStrategy;
 
     public RequestCallBackHandlerStack(JsonObjectConverter<T> successfulPayloadConverter,
                                        RepeatableRequestBuilder requestBuilder,
                                        WebServiceResponseConsumer<T> callback,
                                        CacheStrategy<T> cacheStrategy,
                                        RefireStrategy<T> refireStrategy) {
+        this(successfulPayloadConverter, requestBuilder, callback, cacheStrategy, refireStrategy,
+                new BlockUntilSuccessScreenBlockingStrategy());
+    }
+
+    public RequestCallBackHandlerStack(JsonObjectConverter<T> successfulPayloadConverter,
+                                       RepeatableRequestBuilder requestBuilder,
+                                       WebServiceResponseConsumer<T> callback,
+                                       CacheStrategy<T> cacheStrategy,
+                                       RefireStrategy<T> refireStrategy,
+                                       ScreenBlockingStrategy screenBlockingStrategy) {
         this.successfulPayloadConverter = successfulPayloadConverter;
         this.requestBuilder = requestBuilder;
         this.callback = callback;
         this.cacheStrategy = cacheStrategy;
         this.refireStrategy = refireStrategy;
+        this.screenBlockingStrategy = screenBlockingStrategy;
 
-        LoadingScreen.openLoaderPanel();
+        screenBlockingStrategy.afterConstruction();
     }
 
     @Override
@@ -39,14 +51,14 @@ public class RequestCallBackHandlerStack<T> implements RequestCallbackSorter.Poo
     }
 
     private void informCallBackOfSuccess(T objectPayload) {
-        LoadingScreen.closeLoader();
+        screenBlockingStrategy.beforeCallbackSuccessfulIsCalled();
         callback.onResponseReceived(objectPayload);
     }
 
     @Override
     public void messyPoop(Request request) {
         if(refireStrategy.shouldCloseWaitingDialog()) {
-            LoadingScreen.closeLoader();
+            screenBlockingStrategy.whenNetworkErrorAndRquestWantsToGiveUp();
         }
 
         T cachedEntry = cacheStrategy.getCachedType();
@@ -59,6 +71,6 @@ public class RequestCallBackHandlerStack<T> implements RequestCallbackSorter.Poo
 
     @Override
     public void errorPoop() {
-        LoadingScreen.closeLoader();
+        screenBlockingStrategy.whenServerRespondsToCallWithClientErrorMessage();
     }
 }

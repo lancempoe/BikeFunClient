@@ -23,6 +23,7 @@ public interface GMapDisplay extends IsWidget {
     public void displayPageName(String pageName);
     public void resetForHereAndNow(GeoLoc centerGeoLoc);
     public void resetForEvent(GeoLoc centerGeoLoc);
+    public void resetPolyLine();
 
     public interface Presenter {
         public void backButtonSelected();
@@ -30,8 +31,8 @@ public interface GMapDisplay extends IsWidget {
         public String provideTokenHrefFor(BikeRide bikeRide);
     }
 
-    void setMapInfo(GeoLoc phoneGpsLoc, List<BikeRide> list);
-    void setMapInfo(GeoLoc phoneGpsLoc, BikeRide bikeRide, boolean reCenterReZoom);
+    void setupMapDisplayForHereAndNow(GeoLoc phoneGpsLoc, List<BikeRide> list);
+    void setupMapToDisplayBikeRide(GeoLoc phoneGpsLoc, BikeRide bikeRide, boolean reCenterReZoom);
 
 }
 

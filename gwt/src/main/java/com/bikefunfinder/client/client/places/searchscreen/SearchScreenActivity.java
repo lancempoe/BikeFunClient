@@ -16,8 +16,8 @@ import com.bikefunfinder.client.shared.model.GeoLoc;
 import com.bikefunfinder.client.shared.model.Query;
 import com.bikefunfinder.client.shared.model.Root;
 import com.bikefunfinder.client.shared.request.SearchByParametersRequest;
-import com.bikefunfinder.client.shared.request.ratsnest.GeoLocCacheStrategy;
-import com.bikefunfinder.client.shared.request.ratsnest.WebServiceResponseConsumer;
+import com.bikefunfinder.client.shared.request.management.GeoLocCacheStrategy;
+import com.bikefunfinder.client.shared.request.management.WebServiceResponseConsumer;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.web.bindery.event.shared.EventBus;
 import com.googlecode.mgwt.mvp.client.MGWTAbstractActivity;
@@ -80,6 +80,6 @@ public class SearchScreenActivity extends MGWTAbstractActivity implements Search
             public void onSuccess(GeoLoc geoLoc) {
                 request.latitude(geoLoc).longitude(geoLoc).send();
             }
-        }, GeoLocCacheStrategy.INSTANCE));
+        }));
     }
 }

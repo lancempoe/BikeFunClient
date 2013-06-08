@@ -15,8 +15,8 @@ import com.bikefunfinder.client.shared.model.GeoLoc;
 import com.bikefunfinder.client.shared.model.Root;
 import com.bikefunfinder.client.shared.model.User;
 import com.bikefunfinder.client.shared.request.SearchByTimeOfDayForProfileRequest;
-import com.bikefunfinder.client.shared.request.ratsnest.GeoLocCacheStrategy;
-import com.bikefunfinder.client.shared.request.ratsnest.WebServiceResponseConsumer;
+import com.bikefunfinder.client.shared.request.management.GeoLocCacheStrategy;
+import com.bikefunfinder.client.shared.request.management.WebServiceResponseConsumer;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.web.bindery.event.shared.EventBus;
 import com.googlecode.mgwt.mvp.client.MGWTAbstractActivity;
@@ -68,7 +68,7 @@ public class ProfileScreenActivity extends MGWTAbstractActivity implements Profi
             public void onSuccess(GeoLoc geoLoc) {
                 fireRequestForsearchByTimeOfDayForProfile(geoLoc);
             }
-        }, GeoLocCacheStrategy.INSTANCE));
+        }));
     }
 
     private void fireRequestForsearchByTimeOfDayForProfile(GeoLoc geoLoc) {

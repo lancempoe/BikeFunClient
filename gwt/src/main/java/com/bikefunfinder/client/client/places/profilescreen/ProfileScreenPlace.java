@@ -6,7 +6,7 @@ package com.bikefunfinder.client.client.places.profilescreen;
 
 import com.bikefunfinder.client.shared.model.AnonymousUser;
 import com.bikefunfinder.client.shared.model.User;
-import com.bikefunfinder.client.shared.request.ratsnest.AnnonymousUserCacheStrategy;
+import com.bikefunfinder.client.shared.request.management.AnnonymousUserCacheStrategy;
 import com.google.gwt.place.shared.Place;
 import com.google.gwt.place.shared.PlaceTokenizer;
 

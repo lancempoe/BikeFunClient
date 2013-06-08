@@ -9,6 +9,7 @@ import com.google.gwt.core.client.JsDate;
 import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.Timer;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTML;
@@ -65,14 +66,14 @@ public class GMapViewImpl implements GMapDisplay {
 
     private List<InfoWindow> inforWindows = new ArrayList<InfoWindow>();
     private List<Marker> markers = new ArrayList<Marker>();
-    private Polyline polyline;
+    private static Polyline polyline;
 
     private Presenter presenter;
 
-    BikeRide bikeRide;
+    private BikeRide bikeRide;
     private String userId;
-    HeaderPanel headerPanel;
-    Button trackingRideButton;
+    private HeaderPanel headerPanel;
+    private Button trackingRideButton;
 
     public GMapViewImpl() {
         main = new LayoutPanel();
@@ -85,12 +86,7 @@ public class GMapViewImpl implements GMapDisplay {
         backButton = new HeaderButton();
         backButton.setText("Back");
         backButton.setBackButton(true);
-//        if (MGWT.getOsDetection().isTablet()) {
-//            backButton.setBackButton(false);
-//            backButton.addStyleName(MGWTStyle.getTheme().getMGWTClientBundle().getUtilCss().portraitonly());
-//        } else {
-//            backButton.setBackButton(true);
-//        }
+
         backButton.addTapHandler(new TapHandler() {
             @Override
             public void onTap(final TapEvent tapEvent) {
@@ -219,6 +215,14 @@ public class GMapViewImpl implements GMapDisplay {
         }
     }
 
+    @Override
+    public void resetPolyLine() {
+        if(polyline!=null) {
+            polyline.setMap(null);
+            polyline = null;
+        }
+    }
+
     private void setTrackingButtonText() {
         if (tracking) {
             Logger.getLogger("").log(Level.WARNING, "StopTracking button text");
@@ -230,7 +234,7 @@ public class GMapViewImpl implements GMapDisplay {
     }
 
     @Override
-    public void setMapInfo(final GeoLoc phoneGpsLoc, List<BikeRide> list) {
+    public void setupMapDisplayForHereAndNow(final GeoLoc phoneGpsLoc, List<BikeRide> list) {
 
         //Build the view of the map
         if (map == null || resetMap) {
@@ -277,7 +281,7 @@ public class GMapViewImpl implements GMapDisplay {
     }
 
     @Override
-    public void setMapInfo(GeoLoc phoneGpsLoc, BikeRide bikeRide, boolean reCenterReZoom) {
+    public void setupMapToDisplayBikeRide(GeoLoc phoneGpsLoc, BikeRide bikeRide, boolean reCenterReZoom) {
 
         //Build the view of the map
         if (map == null || resetMap) {

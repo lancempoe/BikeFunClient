@@ -1,7 +1,8 @@
 package com.bikefunfinder.client.shared.Tools;
 
 import com.bikefunfinder.client.shared.model.GeoLoc;
-import com.bikefunfinder.client.shared.request.ratsnest.CacheStrategy;
+import com.bikefunfinder.client.shared.request.management.CacheStrategy;
+import com.bikefunfinder.client.shared.request.management.GeoLocCacheStrategy;
 import com.bikefunfinder.client.shared.widgets.LoadingScreen;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Timer;
@@ -48,10 +49,9 @@ public class NonPhoneGapGeoLocCallback implements GeolocationCallback {
     private final GeolocationHandler callback;
     private final CacheStrategy<GeoLoc> cacheStrategy;
 
-    public NonPhoneGapGeoLocCallback(GeolocationHandler callback,
-                                     CacheStrategy<GeoLoc> cacheStrategy) {
+    public NonPhoneGapGeoLocCallback(GeolocationHandler callback) {
         this.callback = callback;
-        this.cacheStrategy = cacheStrategy;
+        this.cacheStrategy = GeoLocCacheStrategy.INSTANCE;
 
         LoadingScreen.openLoaderPanel();
     }
@@ -63,20 +63,19 @@ public class NonPhoneGapGeoLocCallback implements GeolocationCallback {
 
         GeoLoc lastGeoLoc = cacheStrategy.getCachedType();
         if(lastGeoLoc==null) {
-            // we have a geo so we can be picky
             geoLocToReturn = buildGeoLocFrom(position);
         } else {
-            double accuracy = position.getCoordinates().getAccuracy();
-            GeoLocationAccuracy incomingPositionQuality = GeoLocationAccuracy.qualifyPosition(accuracy);
+            // we have a geo so we can be picky
+            double accuracyInMeters = position.getCoordinates().getAccuracy();
+            GeoLocationAccuracy positionQuality = GeoLocationAccuracy.qualifyPosition(accuracyInMeters);
 
-            if(incomingPositionQuality == GeoLocationAccuracy.GOOD ||
-               incomingPositionQuality == GeoLocationAccuracy.FAIR) {
-                geoLocToReturn = buildGeoLocFrom(position);
-            } else {
-
+            if(positionQuality == GeoLocationAccuracy.BAD) {
                 geoLocToReturn = lastGeoLoc;
+            } else {
+                geoLocToReturn = buildGeoLocFrom(position);
             }
         }
+
 
         cacheStrategy.cacheType(geoLocToReturn);
         informCallBackOfSuccess(geoLocToReturn);

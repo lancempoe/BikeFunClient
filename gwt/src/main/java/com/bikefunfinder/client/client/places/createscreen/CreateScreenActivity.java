@@ -16,8 +16,8 @@ import com.bikefunfinder.client.shared.request.DeleteEventRequest;
 import com.bikefunfinder.client.shared.request.NewEventRequest;
 import com.bikefunfinder.client.shared.request.UpdateEventRequest;
 import com.bikefunfinder.client.shared.request.converters.NoOpResponseObject;
-import com.bikefunfinder.client.shared.request.ratsnest.GeoLocCacheStrategy;
-import com.bikefunfinder.client.shared.request.ratsnest.WebServiceResponseConsumer;
+import com.bikefunfinder.client.shared.request.management.GeoLocCacheStrategy;
+import com.bikefunfinder.client.shared.request.management.WebServiceResponseConsumer;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JsArray;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
@@ -100,7 +100,7 @@ public class CreateScreenActivity extends MGWTAbstractActivity implements Create
                 });
                 request.bikeRide(createFormBikeRideState).latitude(geoLoc).longitude(geoLoc).send();
             }
-        }, GeoLocCacheStrategy.INSTANCE));
+        }));
     }
 
     @Override
@@ -122,7 +122,7 @@ public class CreateScreenActivity extends MGWTAbstractActivity implements Create
                 });
                 updateBikeRideRequest.root(root).latitude(geoLoc).longitude(geoLoc).send();
             }
-        }, GeoLocCacheStrategy.INSTANCE));
+        }));
 
     }
 
