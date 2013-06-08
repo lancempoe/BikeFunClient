@@ -18,7 +18,7 @@ function onResume() {
 }
 
 function onPause() {
-    gaPlugin.exitGA(gaPlugin, gaError);
+    gaPlugin.exit(gaPlugin, gaError);
 }
 
 function trackPage(pageBeingTracked) {
