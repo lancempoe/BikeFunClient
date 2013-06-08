@@ -70,7 +70,7 @@ public class ScreenConstants {
 
     public static final double PORTLAND_LATITUDE = 45.52345275878906;
     public static final double PORTLAND_LONGITUDE = -122.6762084960938;
-    public static final int SCREEN_REFRESH_RATE_IN_SECONDS = 10;
+    public static final int SCREEN_REFRESH_RATE_IN_SECONDS = 20;
     public static final int TRACKING_WITHOUT_CONFORMATION_IN_SECONDS = 60*60; //1 hour
     public static final int MAX_TRACKING_WITHOUT_CONFORMATION_IN_SECONDS = TRACKING_WITHOUT_CONFORMATION_IN_SECONDS*2; //2 hours
 

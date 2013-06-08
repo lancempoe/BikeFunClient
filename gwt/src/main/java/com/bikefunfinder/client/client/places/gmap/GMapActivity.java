@@ -308,13 +308,15 @@ public class GMapActivity extends NavBaseActivity implements GMapDisplay.Present
     @Override
     public void backButtonSelected() {
         cancelGeoLocationWatcherIfRegistered();
+        trackingRideButtonSelected(false);
         trackingWarning = null; //just in case the message is up.
         clientFactory.getPlaceController().goTo(new HomeScreenPlace());
     }
 
     public static void cancelGeoLocationWatcherIfRegistered() {
         if(geolocationWatcher!=null) {
-            DeviceTools.cancelWatcher(geolocationWatcher);}
+            DeviceTools.cancelWatcher(geolocationWatcher);
+        }
     }
 
     @Override
