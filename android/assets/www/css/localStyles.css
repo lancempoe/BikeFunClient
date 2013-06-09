@@ -28,3 +28,49 @@
     background-color: white !important;
 
 }
+
+.rideBlock {
+    display: inline-block;
+    z-index: auto;
+    margin:0px;
+
+}
+.rideTime {
+    z-index: auto;
+    margin:0px;
+    padding:0px;
+    position: absolute;
+    width: 60px;
+    border-right-style: solid;
+    border-right-width: 1px;
+}
+
+.time {
+    font-size:14px;
+    font-style: bold;
+}
+
+.distance {
+    font-size:12px;
+    font-style: italic;
+}
+.descriptionBlock {
+    left:100px;
+    z-index: auto;
+    margin:0px;
+    margin-left: 2px;
+    padding-left: 70px;
+}
+
+
+.rideName {
+    font-size:22px;
+}
+
+.description {
+    border: 1px solid;
+    border-radius:2px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space:nowrap;
+}

@@ -81,24 +81,46 @@ public interface HomeScreenDisplay extends IsWidget {
 
         public SafeHtml getShortDescription() {
             SafeHtmlBuilder safeHtmlBuilder = new SafeHtmlBuilder();
+            safeHtmlBuilder.appendHtmlConstant("<div class=\"rideTime\">");
+
 
             if(this.getTimeDisplay()!=null && !this.getTimeDisplay().isEmpty()) {
+                safeHtmlBuilder.appendHtmlConstant("<p class=\"time\">");
                 safeHtmlBuilder.appendEscaped(this.getTimeDisplay());
+                safeHtmlBuilder.appendHtmlConstant("</p>");
             }
-            safeHtmlBuilder.appendHtmlConstant(", ");
+            if(this.getDistance()!=null && !this.getDistance().isEmpty()) {
+                safeHtmlBuilder.appendHtmlConstant("<p class=\"distance\">");
+                safeHtmlBuilder.appendEscaped(this.getDistance());
+                safeHtmlBuilder.appendHtmlConstant("</p>");
+            }
 
-            safeHtmlBuilder.appendEscaped(this.bikeRide.getTargetAudience());
-            safeHtmlBuilder.appendHtmlConstant(", ");
+            safeHtmlBuilder.appendHtmlConstant("</div>");
+            safeHtmlBuilder.appendHtmlConstant("<div class=\"descriptionBlock\">");
+            safeHtmlBuilder.appendHtmlConstant("<h1 class=\"rideName\">");
 
             if(this.bikeRide.getBikeRideName() !=null && !this.bikeRide.getBikeRideName().isEmpty()) {
                 safeHtmlBuilder.appendEscaped(this.bikeRide.getBikeRideName());
             }
-            safeHtmlBuilder.appendHtmlConstant(", ");
 
-            if(this.getDistance()!=null && !this.getDistance().isEmpty()) {
-                safeHtmlBuilder.appendEscaped(this.getDistance());
+            safeHtmlBuilder.appendHtmlConstant("</h1>");
+
+
+            if(this.bikeRide.getDetails() != null && !this.bikeRide.getDetails().isEmpty()) {
+                safeHtmlBuilder.appendHtmlConstant("<p class=\"description\">");
+                safeHtmlBuilder.appendEscaped(this.bikeRide.getDetails());
+                safeHtmlBuilder.appendHtmlConstant("</p>");
             }
-            safeHtmlBuilder.appendHtmlConstant(" Miles Away");
+
+            safeHtmlBuilder.appendHtmlConstant("</div>");
+//            safeHtmlBuilder.appendEscaped(this.bikeRide.getTargetAudience());
+//            safeHtmlBuilder.appendHtmlConstant(", ");
+//
+//
+//            safeHtmlBuilder.appendHtmlConstant(", ");
+//
+
+//            safeHtmlBuilder.appendHtmlConstant(" Miles Away");
 
             return safeHtmlBuilder.toSafeHtml();
         }

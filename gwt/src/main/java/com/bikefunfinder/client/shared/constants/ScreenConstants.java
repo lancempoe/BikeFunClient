@@ -66,7 +66,7 @@ public class ScreenConstants {
     public static final String xJSDateOnlyDateFormat = "MM/dd/yyyy";
 
     public static final String DateFormatPrintPretty = "dddd, MMMM dd, yyyy";
-    public static final String TimeFormatPrintPretty = "hh:mm TT";
+    public static final String TimeFormatPrintPretty = "h:mmtt";
 
     public static final double PORTLAND_LATITUDE = 45.52345275878906;
     public static final double PORTLAND_LONGITUDE = -122.6762084960938;
@@ -74,7 +74,7 @@ public class ScreenConstants {
     public static final int TRACKING_WITHOUT_CONFORMATION_IN_SECONDS = 60*60; //1 hour
     public static final int MAX_TRACKING_WITHOUT_CONFORMATION_IN_SECONDS = TRACKING_WITHOUT_CONFORMATION_IN_SECONDS*2; //2 hours
 
-    public static final NumberFormat DISTANCE_FORMAT = NumberFormat.getFormat("#.##");
+    public static final NumberFormat DISTANCE_FORMAT = NumberFormat.getFormat("#.#mi away");
     public static final String RegularExpression_City = "^((?!,).)+(?=,)";
 
     public static final double MinimumTimeBeforeTrackingAllowed = 1800000; //30 minutes
