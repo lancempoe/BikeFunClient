@@ -263,10 +263,7 @@ public class HomeScreenDisplayGwtImpl extends Composite implements HomeScreenDis
 
         @Override
         public String getColorCss(Content model) {
-            //todo: implement me!!
-
-            String cssClass = model.getBikeRideListItemCssClass();
-            Logger.getLogger("").log(Level.WARNING, "hi we made it! " + cssClass);
+            //todo: We may want to create css in GWT. External uses !important
             return model.getBikeRideListItemCssClass();
         }
     }
