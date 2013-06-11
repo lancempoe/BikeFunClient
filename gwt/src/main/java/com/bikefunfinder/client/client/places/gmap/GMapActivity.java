@@ -108,10 +108,7 @@ public class GMapActivity extends NavBaseActivity implements GMapDisplay.Present
      */
     private void refreshScreen(final GeoLoc geoLoc) {
 
-        if (isFirstPostSavePhoneGeoLoc) {
-            updateBikeRideOnMapAndPingIfTracking(geoLoc);
-            isFirstPostSavePhoneGeoLoc = false;
-        } else if (isTracking) {
+        if (isTracking) {
 
             if (refreshTrackingCount *ScreenConstants.SCREEN_REFRESH_RATE_IN_SECONDS >= ScreenConstants.TRACKING_WITHOUT_CONFORMATION_IN_SECONDS) {
                 if(trackingWarning == null) { //Display message if it is not already displayed.
@@ -122,18 +119,15 @@ public class GMapActivity extends NavBaseActivity implements GMapDisplay.Present
                     //Stop Tracking AND close the popup.
                     trackingWarning.onCancel();
                     backButtonSelected(); //This is bad code... right?
+                    return;
 
-                } else { //Keep tracking
-                    updateBikeRideOnMapAndPingIfTracking(geoLoc);
                 }
-            } else {
-                updateBikeRideOnMapAndPingIfTracking(geoLoc);
             }
             refreshTrackingCount++;
-
-        } else {
-            updateBikeRideOnMapAndPingIfTracking(geoLoc);
         }
+
+        updateBikeRideOnMapAndPingIfTracking(geoLoc);
+        isFirstPostSavePhoneGeoLoc = false;
     }
 
     private void showTrackingWarning() {

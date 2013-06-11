@@ -11,6 +11,7 @@ import com.googlecode.gwtphonegap.client.geolocation.Coordinates;
 import com.googlecode.gwtphonegap.client.geolocation.GeolocationCallback;
 import com.googlecode.gwtphonegap.client.geolocation.Position;
 import com.googlecode.gwtphonegap.client.geolocation.PositionError;
+import com.googlecode.mgwt.ui.client.dialog.Dialogs;
 
 public class NonPhoneGapGeoLocCallback implements GeolocationCallback {
     public enum GeoLocationAccuracy {
@@ -102,10 +103,16 @@ public class NonPhoneGapGeoLocCallback implements GeolocationCallback {
         } else {
 
             if(error.getCode() == PositionError.PERMISSION_DENIED) {
-                Window.alert("Permission denied, change settings and continue.");
+                final NonPhoneGapGeoLocCallback thizz = this;
+                Dialogs.alert("Error:", "Permission denied, change settings and continue.", new Dialogs.AlertCallback() {
+                    @Override
+                    public void onButtonPressed() {
+                        refireRequestInAfterSomeTime(thizz);
+                    }
+                });
+            } else {
+                refireRequestInAfterSomeTime(this);
             }
-
-            refireRequestInAfterSomeTime(this);
         }
     }
 
@@ -113,7 +120,6 @@ public class NonPhoneGapGeoLocCallback implements GeolocationCallback {
         Timer timer = new Timer() {
             public void run() {
                 DeviceTools.requestPhoneGeoLoc(thizz);
-
             }
         };
 

@@ -301,7 +301,7 @@ public class GMapViewImpl implements GMapDisplay {
 
         if (tracking) {
             //Draw on the users screen.
-            LatLng printLineLatLng =  LatLng.create(phoneGpsLoc.getLatitude(), phoneGpsLoc.getLongitude());
+            LatLng printLineLatLng = LatLng.create(phoneGpsLoc.getLatitude(), phoneGpsLoc.getLongitude());
             if (polyline == null) {
                 final PolylineOptions polylineOptions = createPolylineOptions(map, printLineLatLng);
                 polyline = Polyline.create(polylineOptions);
