@@ -294,6 +294,7 @@ public class GMapActivity extends NavBaseActivity implements GMapDisplay.Present
             geolocationWatcher = DeviceTools.requestGeoUpdates(new NonPhoneGapGeoLocCallback(new NonPhoneGapGeoLocCallback.GeolocationHandler() {
                 @Override
                 public void onSuccess(GeoLoc geoLoc) {
+                    NativeUtilities.partialWakeLock();
                     refreshScreen(geoLoc);
                 }
             }));
@@ -316,6 +317,7 @@ public class GMapActivity extends NavBaseActivity implements GMapDisplay.Present
     public static void cancelGeoLocationWatcherIfRegistered() {
         if(geolocationWatcher!=null) {
             DeviceTools.cancelWatcher(geolocationWatcher);
+            NativeUtilities.releasePartialWakeLock();
         }
     }
 
