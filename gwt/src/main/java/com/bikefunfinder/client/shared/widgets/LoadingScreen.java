@@ -34,8 +34,8 @@ public class LoadingScreen {
         if (!isOpen) {
             glassPanel.setWidget(new Image(tabBarAddImage));
             glassPanel.setGlassEnabled(true);
-            glassPanel.setPopupPosition(Window.getClientWidth() / 2 - 50,
-                    Window.getClientHeight() / 2 - 45);
+            glassPanel.setPopupPosition((Window.getClientWidth() / 2)-16 ,
+                    (Window.getClientHeight() / 2)-16 );
             glassPanel.show();
             isOpen = true;
             glassPanel.addStyleName(Resources.INSTANCE.loadingScreenCss().greyBackgroundCss());
