@@ -92,6 +92,7 @@ public interface HomeScreenDisplay extends IsWidget {
             if(this.getDistance()!=null && !this.getDistance().isEmpty()) {
                 safeHtmlBuilder.appendHtmlConstant("<p class=\"distance\">");
                 safeHtmlBuilder.appendEscaped(this.getDistance());
+                safeHtmlBuilder.appendHtmlConstant("<span class=\"distanceUnit\">mi. away</span>");
                 safeHtmlBuilder.appendHtmlConstant("</p>");
             }
 
@@ -106,9 +107,14 @@ public interface HomeScreenDisplay extends IsWidget {
             safeHtmlBuilder.appendHtmlConstant("</h1>");
 
 
-            if(this.bikeRide.getDetails() != null && !this.bikeRide.getDetails().isEmpty()) {
-                safeHtmlBuilder.appendHtmlConstant("<p class=\"description\">");
-                safeHtmlBuilder.appendEscaped(this.bikeRide.getDetails());
+//            if(this.bikeRide.getDetails() != null && !this.bikeRide.getDetails().isEmpty()) {
+//                safeHtmlBuilder.appendHtmlConstant("<p class=\"description\">");
+//                safeHtmlBuilder.appendEscaped(this.bikeRide.getDetails());
+//                safeHtmlBuilder.appendHtmlConstant("</p>");
+//            }
+            if(this.bikeRide.getLocation().getStreetAddress() != null && !this.bikeRide.getLocation().getStreetAddress().isEmpty()) {
+                safeHtmlBuilder.appendHtmlConstant("<p class=\"address\">");
+                safeHtmlBuilder.appendEscaped(this.bikeRide.getLocation().getFormattedAddress() );
                 safeHtmlBuilder.appendHtmlConstant("</p>");
             }
 

@@ -74,7 +74,7 @@ public class ScreenConstants {
     public static final int TRACKING_WITHOUT_CONFORMATION_IN_SECONDS = 60*60; //1 hour
     public static final int MAX_TRACKING_WITHOUT_CONFORMATION_IN_SECONDS = TRACKING_WITHOUT_CONFORMATION_IN_SECONDS*2; //2 hours
 
-    public static final NumberFormat DISTANCE_FORMAT = NumberFormat.getFormat("#.#mi away");
+    public static final NumberFormat DISTANCE_FORMAT = NumberFormat.getFormat("#.#");
     public static final String RegularExpression_City = "^((?!,).)+(?=,)";
 
     public static final double MinimumTimeBeforeTrackingAllowed = 1800000; //30 minutes
