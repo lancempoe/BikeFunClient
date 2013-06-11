@@ -21,4 +21,12 @@ public class NativeUtilities {
         $wnd.trackPage(pageName);
      }-*/;
 
+    public static native void partialWakeLock() /*-{
+        $wnd.dim();
+     }-*/;
+
+    public static native void releasePartialWakeLock() /*-{
+        $wnd.release();
+     }-*/;
+
 }

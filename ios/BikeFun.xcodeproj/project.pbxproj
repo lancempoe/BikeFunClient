@@ -43,6 +43,7 @@
 		3D5D9E221758875500383628 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3D8D0A52175864D400D87B7F /* CoreData.framework */; };
 		3D5D9E3317599C5B00383628 /* libGoogleAnalytics.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3D5D9E3217599C5B00383628 /* libGoogleAnalytics.a */; };
 		3D5D9E361759A4F100383628 /* GAPlugin.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D5D9E351759A4F100383628 /* GAPlugin.m */; };
+		3DAF5AFC1765694C00557F20 /* PowerManagement.m in Sources */ = {isa = PBXBuildFile; fileRef = 3DAF5AFB1765694C00557F20 /* PowerManagement.m */; };
 		5B1594DD16A7569C00FEF299 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B1594DC16A7569C00FEF299 /* AssetsLibrary.framework */; };
 		D4A0D8761607E02300AEF8BB /* Default-568h@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = D4A0D8751607E02300AEF8BB /* Default-568h@2x~iphone.png */; };
 		F840E1F1165FE0F500CFE078 /* config.xml in Resources */ = {isa = PBXBuildFile; fileRef = F840E1F0165FE0F500CFE078 /* config.xml */; };
@@ -113,6 +114,8 @@
 		3D5D9E341759A4F100383628 /* GAPlugin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GAPlugin.h; path = BikeFun/Plugins/GoogleAnalytics/GAPlugin.h; sourceTree = SOURCE_ROOT; };
 		3D5D9E351759A4F100383628 /* GAPlugin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GAPlugin.m; path = BikeFun/Plugins/GoogleAnalytics/GAPlugin.m; sourceTree = SOURCE_ROOT; };
 		3D8D0A52175864D400D87B7F /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		3DAF5AFA1765694C00557F20 /* PowerManagement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PowerManagement.h; path = PowerManagement/PowerManagement.h; sourceTree = "<group>"; };
+		3DAF5AFB1765694C00557F20 /* PowerManagement.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PowerManagement.m; path = PowerManagement/PowerManagement.m; sourceTree = "<group>"; };
 		5B1594DC16A7569C00FEF299 /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
 		8D1107310486CEB800E47090 /* BikeFun-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "BikeFun-Info.plist"; path = "../BikeFun-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
 		D4A0D8751607E02300AEF8BB /* Default-568h@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x~iphone.png"; sourceTree = "<group>"; };
@@ -261,6 +264,7 @@
 		307C750510C5A3420062BCA9 /* Plugins */ = {
 			isa = PBXGroup;
 			children = (
+				3DAF5AF91765686A00557F20 /* PowerManagement */,
 				3D8D0A6717587D1600D87B7F /* GoogleAnalyticsSDK */,
 			);
 			name = Plugins;
@@ -310,8 +314,8 @@
 		3D8D0A6717587D1600D87B7F /* GoogleAnalyticsSDK */ = {
 			isa = PBXGroup;
 			children = (
-				3D5D9E341759A4F100383628 /* GAPlugin.h */,
 				3D5D9E351759A4F100383628 /* GAPlugin.m */,
+				3D5D9E341759A4F100383628 /* GAPlugin.h */,
 				3D5D9E2D17599C5B00383628 /* GAI.h */,
 				3D5D9E2E17599C5B00383628 /* GAITrackedViewController.h */,
 				3D5D9E2F17599C5B00383628 /* GAITracker.h */,
@@ -320,6 +324,15 @@
 				3D5D9E3217599C5B00383628 /* libGoogleAnalytics.a */,
 			);
 			path = GoogleAnalyticsSDK;
+			sourceTree = "<group>";
+		};
+		3DAF5AF91765686A00557F20 /* PowerManagement */ = {
+			isa = PBXGroup;
+			children = (
+				3DAF5AFA1765694C00557F20 /* PowerManagement.h */,
+				3DAF5AFB1765694C00557F20 /* PowerManagement.m */,
+			);
+			name = PowerManagement;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -444,6 +457,7 @@
 				1D3623260D0F684500981E51 /* AppDelegate.m in Sources */,
 				302D95F114D2391D003F00A1 /* MainViewController.m in Sources */,
 				3D5D9E361759A4F100383628 /* GAPlugin.m in Sources */,
+				3DAF5AFC1765694C00557F20 /* PowerManagement.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

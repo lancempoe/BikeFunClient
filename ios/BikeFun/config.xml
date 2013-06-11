@@ -57,6 +57,7 @@
         <plugin name="Globalization" value="CDVGlobalization" />
         <plugin name="InAppBrowser" value="CDVInAppBrowser" />
         <plugin name="gaPlugin" value="GAPlugin" />
+        <plugin name="PowerManagement" value="PowerManagement" />
     </plugins>
 
     <access origin="*" />
