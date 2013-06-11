@@ -6,7 +6,9 @@ import com.bikefunfinder.client.shared.constants.ScreenConstants.MapScreenType;
 import com.bikefunfinder.client.shared.model.BikeRide;
 import com.bikefunfinder.client.shared.model.GeoLoc;
 import com.google.gwt.core.client.JsDate;
+import com.google.gwt.query.client.plugins.widgets.WidgetsHtmlPanel;
 import com.google.gwt.safehtml.shared.SafeHtml;
+import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
@@ -154,7 +156,11 @@ public class GMapViewImpl implements GMapDisplay {
 
     @Override
     public void displayPageName(String pageName) {
-        this.headerPanel.setCenter(pageName);
+        SafeHtmlBuilder safeHtmlBuilder = new SafeHtmlBuilder();
+        safeHtmlBuilder.appendHtmlConstant("<p class=\"eventHeader\">");
+        safeHtmlBuilder.appendEscaped(pageName);
+        safeHtmlBuilder.appendHtmlConstant("</p>");
+        this.headerPanel.setRightWidget(new HTML(safeHtmlBuilder.toSafeHtml().asString()));
     }
 
     private void onUpdateRidePressed(TapEvent event) {
