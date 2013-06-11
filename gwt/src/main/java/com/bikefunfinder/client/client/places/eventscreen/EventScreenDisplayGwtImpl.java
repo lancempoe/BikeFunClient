@@ -35,9 +35,6 @@ public class EventScreenDisplayGwtImpl extends Composite implements EventScreenD
     @UiField
     ScrollPanel scrollPanel;
 
-    @UiField
-    HTML currentTrackings = new HTML();
-
     final BikeRideViewWidgets bikeDisplayWidgets = new BikeRideViewWidgetsImpl();
 
     public EventScreenDisplayGwtImpl() {
@@ -63,7 +60,8 @@ public class EventScreenDisplayGwtImpl extends Composite implements EventScreenD
 
     @Override
     public void displayTrackings(JsArray<Tracking> trackings) {
-        this.currentTrackings.setHTML(BikeRideViewUtils.buildOrderListHtmlForTracking(trackings));
+        //NOTE:  This provides all the Trackings for the event.
+        //  Feel free to display the tracks later
     }
 
     @Override

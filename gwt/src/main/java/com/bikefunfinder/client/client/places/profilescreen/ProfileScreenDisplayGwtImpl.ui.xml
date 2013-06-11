@@ -5,10 +5,11 @@
 
     <ui:style>
         .positioningForName {
-        position:absolute; top:35%;
-        text-transform: none;
-        font-size: 13px !important;
-        font-weight: normal !important;
+            position:absolute; top:35%;
+            text-transform: none;
+            font-size: 15px !important;
+            font-weight: bold !important;
+            color: white;
         }
     </ui:style>
 

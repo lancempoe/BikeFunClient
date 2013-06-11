@@ -54,6 +54,10 @@
     font-size:12px;
     font-style: italic;
 }
+.distanceUnit {
+    font-size: 9zpx;
+    font-style: italic;
+}
 .descriptionBlock {
     left:100px;
     z-index: auto;
@@ -64,13 +68,31 @@
 
 
 .rideName {
-    font-size:22px;
+    font-size:20px;
 }
 
 .description {
-    border: 1px solid;
-    border-radius:2px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space:nowrap;
+    visibility:hidden;
 }
+
+.address {
+
+}
+
+.eventHeader {
+    text-transform: none;
+    font-size: 15px !important;
+    font-weight: bold !important;
+    color: white;
+    margin-left: 75px;
+    overflow: hidden;
+    height: 38px;
+    line-height: 40px;
+    text-overflow: ellipsis;
+
+
+}
+
