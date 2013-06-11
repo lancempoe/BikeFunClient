@@ -16,9 +16,10 @@ public class ScreenConstants {
     public static enum TargetAudience {
         FAMILY_FRIENDLY("Family Friendly", 0),
         ROADIES("Roadies", 1),
-        BOOZY("Boozy", 2),
-        NAKED("Naked", 3),
-        BOOZY_AND_NAKED("Boozy and Naked", 4);
+        EDUCATIONAL("Educational", 2),
+        ART("Art",3),
+        BOOZY("Boozy", 4),
+        NAKED("Naked", 5);
 
         private final String displayName;
         private final int orderCount;
