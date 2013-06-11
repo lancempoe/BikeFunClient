@@ -10,10 +10,7 @@ import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.ui.Anchor;
-import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.HTML;
-import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.user.client.ui.*;
 import com.google.maps.gwt.client.*;
 import com.google.maps.gwt.client.GoogleMap.CenterChangedHandler;
 import com.google.maps.gwt.client.GoogleMap.DragEndHandler;
@@ -193,6 +190,7 @@ public class GMapViewImpl implements GMapDisplay {
             circle.setVisible(true);
         }
     }
+
     @Override
     public void resetForEvent(final GeoLoc centerGeoLoc) {
         if (!MapScreenType.EVENT.equals(priorMapScreenType)) {
@@ -212,6 +210,16 @@ public class GMapViewImpl implements GMapDisplay {
         zoom = EVENT_ZOOM;
         if (circle != null) {
             circle.setVisible(false);
+        }
+    }
+
+    @Override
+    public void truffleShuffle() {
+        if(mapPanel!=null && mapPanel.isAttached()) {
+            final int width = mapPanel.getOffsetWidth() +1;
+            final int height = mapPanel.getOffsetHeight() +1;
+            mapPanel.setPixelSize(width, height);
+            mapPanel.setPixelSize(width-1, height-1);
         }
     }
 

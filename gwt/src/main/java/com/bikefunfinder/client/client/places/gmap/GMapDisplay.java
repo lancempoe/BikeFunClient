@@ -24,6 +24,7 @@ public interface GMapDisplay extends IsWidget {
     public void resetForHereAndNow(GeoLoc centerGeoLoc);
     public void resetForEvent(GeoLoc centerGeoLoc);
     public void resetPolyLine();
+    public void truffleShuffle();
 
     public interface Presenter {
         public void backButtonSelected();

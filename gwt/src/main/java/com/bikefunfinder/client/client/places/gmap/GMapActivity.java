@@ -19,7 +19,6 @@ import com.bikefunfinder.client.shared.request.management.WebServiceResponseCons
 import com.bikefunfinder.client.shared.widgets.NavBaseActivity;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.http.client.UrlBuilder;
-import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.web.bindery.event.shared.EventBus;
@@ -38,6 +37,7 @@ import java.util.Date;
  */
 public class GMapActivity extends NavBaseActivity implements GMapDisplay.Presenter {
     private final ClientFactory<GMapDisplay> clientFactory = Injector.INSTANCE.getClientFactory();
+    private final GMapDisplay display = clientFactory.getDisplay(this);
     private final RamObjectCache ramObjectCache = Injector.INSTANCE.getRamObjectCache();
 
     private static GeolocationWatcher geolocationWatcher;
@@ -65,8 +65,10 @@ public class GMapActivity extends NavBaseActivity implements GMapDisplay.Present
         this.pageName = pageName;
 
         setUserOrAnonymousUser();
-        clientFactory.getDisplay(this).setUserId(userId);
-        clientFactory.getDisplay(this).resetPolyLine();
+
+        display.setUserId(userId);
+        display.resetPolyLine();
+        display.truffleShuffle();
 
         setDisplayPageName(this.pageName);
         //Required GeoLoc even for viewing a bikeride, otherwise maps does not load
@@ -87,7 +89,6 @@ public class GMapActivity extends NavBaseActivity implements GMapDisplay.Present
 
     @Override
     public void start(final AcceptsOneWidget panel, final EventBus eventBus) {
-        final GMapDisplay display = clientFactory.getDisplay(this);
         display.setPresenter(this);
         panel.setWidget(display);
     }
@@ -177,12 +178,10 @@ public class GMapActivity extends NavBaseActivity implements GMapDisplay.Present
     }
 
     private void setIsTrackingDisplay() {
-        GMapDisplay display = clientFactory.getDisplay(this);
         display.setIsTracking(isTracking);
     }
 
     private void setDisplayPageName(String pageName) {
-        GMapDisplay display = clientFactory.getDisplay(this);
         display.displayPageName(pageName);
     }
 
@@ -226,14 +225,12 @@ public class GMapActivity extends NavBaseActivity implements GMapDisplay.Present
     }
 
     private void setTrackView(final GeoLoc phoneGeoLoc) {
-        final GMapDisplay display = clientFactory.getDisplay(this);
         display.resetForEvent(phoneGeoLoc);
         display.display(bikeRide);
         display.setupMapToDisplayBikeRide(phoneGeoLoc, bikeRide, isTracking);
     }
 
     private void setEventView(final GeoLoc phoneGeoLoc, final GeoLoc eventGeoLoc) {
-        final GMapDisplay display = clientFactory.getDisplay(this);
         display.resetForEvent(eventGeoLoc);
         display.display(bikeRide);
         display.setupMapToDisplayBikeRide(phoneGeoLoc, bikeRide, isFirstPostSavePhoneGeoLoc);
@@ -242,7 +239,6 @@ public class GMapActivity extends NavBaseActivity implements GMapDisplay.Present
     }
 
     private void setHereAndNowView(final GeoLoc phoneGeoLoc) {
-        final GMapDisplay display = clientFactory.getDisplay(this);
         display.resetForHereAndNow(phoneGeoLoc);
         fireRequestForHereAndNow(display, phoneGeoLoc);
 
