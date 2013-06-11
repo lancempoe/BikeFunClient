@@ -21,7 +21,7 @@ public class NonPhoneGapGeoLocCallback implements GeolocationCallback {
            Major streets are usually at 1/4, 1/2, or 1 mile intervals.
            (Metric equivalents: 400 meters, 800 meters, or 1.6 km
         */
-        GOOD(1000), FAIR(1500), BAD(1501);
+        GOOD(100), FAIR(500), BAD(501);
 
         private final int accuracyInMeters;
 
