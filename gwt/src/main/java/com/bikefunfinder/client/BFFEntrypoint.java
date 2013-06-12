@@ -36,7 +36,6 @@ public class BFFEntrypoint implements EntryPoint {
         //this will create a link element at the end of head
         MGWTStyle.getTheme().getMGWTClientBundle().getMainCss().ensureInjected();
         //append your own css as last thing in the head
-        MGWTStyle.injectStyleSheet("css/styles.css");
 
     }
 }
