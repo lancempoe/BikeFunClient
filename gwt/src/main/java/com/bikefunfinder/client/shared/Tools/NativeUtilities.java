@@ -21,11 +21,23 @@ public class NativeUtilities {
         $wnd.trackPage(pageName);
      }-*/;
 
-    public static native void partialWakeLock() /*-{
+    public static void partialWakeLock() {
+        if( MGWT.getOsDetection().isPhone() ) {
+            partialWakeLockNative();
+        }
+    }
+
+    public static void releasePartialWakeLock() {
+        if( MGWT.getOsDetection().isPhone() ) {
+            releasePartialWakeLockNative();
+        }
+    }
+
+    public static native void partialWakeLockNative() /*-{
         $wnd.dim();
      }-*/;
 
-    public static native void releasePartialWakeLock() /*-{
+    public static native void releasePartialWakeLockNative() /*-{
         $wnd.release();
      }-*/;
 

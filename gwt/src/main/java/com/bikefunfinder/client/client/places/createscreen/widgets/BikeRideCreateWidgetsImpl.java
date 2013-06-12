@@ -122,7 +122,7 @@ public class BikeRideCreateWidgetsImpl implements BikeRideCreateWidgets {
         startDate.setText("");
         startTime.setText("");
         details.setValue("");
-        details.setVisibleLines(5);
+        details.setVisibleLines(10);
         bikeRideId.setText("");
     }
 }
