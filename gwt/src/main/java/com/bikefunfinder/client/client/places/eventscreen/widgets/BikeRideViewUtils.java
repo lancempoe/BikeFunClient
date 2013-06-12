@@ -36,7 +36,7 @@ public class BikeRideViewUtils {
     public enum CreateWidgetLabels {
         bikeRideNames("Bike Ride Name:"),
         targetAudience("Target Audience:"),
-        trackingAllowed("Tracking allowed"),
+        trackingAllowed("Tracking:"),
         startingAddress("Starting Address:"),
         startingCity("Starting City:"),
         startingState("Starting State:"),
