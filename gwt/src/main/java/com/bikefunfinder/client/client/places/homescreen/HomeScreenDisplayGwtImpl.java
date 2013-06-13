@@ -1,11 +1,13 @@
 package com.bikefunfinder.client.client.places.homescreen;
 
 import com.bikefunfinder.client.shared.constants.ScreenConstants;
+import com.bikefunfinder.client.shared.css.AppBundle;
 import com.bikefunfinder.client.shared.model.BikeRide;
 import com.bikefunfinder.client.shared.model.printer.JsDateWrapper;
 import com.bikefunfinder.client.shared.widgets.*;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JsDate;
+import com.google.gwt.dom.client.StyleInjector;
 import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.resources.client.CssResource;
@@ -109,6 +111,8 @@ public class HomeScreenDisplayGwtImpl extends Composite implements HomeScreenDis
         addButton.addStyleName("menuButton");
         searchButton.addStyleName("menuButton");
         loginButton.addStyleName("menuButton");
+
+        StyleInjector.inject(AppBundle.INSTANCE.css().getText());
 
         initWidget(uiBinder.createAndBindUi(this));
         
