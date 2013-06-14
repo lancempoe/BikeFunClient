@@ -49,7 +49,7 @@ public class GMapActivity extends NavBaseActivity implements GMapDisplay.Present
     private String pageName;
     private boolean isTracking;
     private boolean isFirstPostSavePhoneGeoLoc = true;
-    private int refreshTrackingCount = 0;
+    private Date trackingTimer;
     private ConfirmDialog.ConfirmCallback trackingWarning;
 
     public MapScreenType screenType = MapScreenType.EVENT; //Default Value.
@@ -109,21 +109,19 @@ public class GMapActivity extends NavBaseActivity implements GMapDisplay.Present
     private void refreshScreen(final GeoLoc geoLoc) {
 
         if (isTracking) {
-
-            if (refreshTrackingCount *ScreenConstants.SCREEN_REFRESH_RATE_IN_SECONDS >= ScreenConstants.TRACKING_WITHOUT_CONFORMATION_IN_SECONDS) {
+            Date now = new Date();
+            if ((trackingTimer.getTime()+(ScreenConstants.TRACKING_WITHOUT_CONFORMATION_IN_MILLISECONDS)) < now.getTime()) {
                 if(trackingWarning == null) { //Display message if it is not already displayed.
                     showTrackingWarning();
                 }
 
-                if (refreshTrackingCount *ScreenConstants.SCREEN_REFRESH_RATE_IN_SECONDS >= ScreenConstants.MAX_TRACKING_WITHOUT_CONFORMATION_IN_SECONDS) {
+                if ((trackingTimer.getTime()+(ScreenConstants.MAX_TRACKING_WITHOUT_CONFORMATION_IN_MILLISECONDS)) < now.getTime()) {
                     //Stop Tracking AND close the popup.
                     trackingWarning.onCancel();
                     backButtonSelected(); //This is bad code... right?
                     return;
-
                 }
             }
-            refreshTrackingCount++;
         }
 
         updateBikeRideOnMapAndPingIfTracking(geoLoc);
@@ -134,13 +132,12 @@ public class GMapActivity extends NavBaseActivity implements GMapDisplay.Present
         trackingWarning = new ConfirmDialog.ConfirmCallback() {
             @Override
             public void onOk() {
-                refreshTrackingCount = 0;
+                trackingTimer = new Date();
                 trackingWarning = null;
             }
 
             @Override
             public void onCancel() {
-                refreshTrackingCount = 0;
                 trackingRideButtonSelected(false); //This is also pretty bad code.
                 trackingWarning = null;
             }
@@ -281,10 +278,11 @@ public class GMapActivity extends NavBaseActivity implements GMapDisplay.Present
 
         if(isTracking) {
             cancelGeoLocationWatcherIfRegistered();
+            NativeUtilities.partialWakeLock();
+            trackingTimer = new Date();
             geolocationWatcher = DeviceTools.requestGeoUpdates(new NonPhoneGapGeoLocCallback(new NonPhoneGapGeoLocCallback.GeolocationHandler() {
                 @Override
                 public void onSuccess(GeoLoc geoLoc) {
-                    NativeUtilities.partialWakeLock();
                     refreshScreen(geoLoc);
                 }
             }));

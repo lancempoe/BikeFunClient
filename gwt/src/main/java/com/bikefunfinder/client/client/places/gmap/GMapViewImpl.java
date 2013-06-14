@@ -99,7 +99,7 @@ public class GMapViewImpl implements GMapDisplay {
         trackingRideButton.addTapHandler(new TapHandler() {
             @Override
             public void onTap(TapEvent tapEvent) {
-                Logger.getLogger("").log(Level.WARNING, "track pressed and setting to : " + !tracking);
+                Logger.getLogger("").log(Level.INFO, "track pressed and setting to : " + !tracking);
                 onUpdateRidePressed(tapEvent);
             }
         });
@@ -239,10 +239,10 @@ public class GMapViewImpl implements GMapDisplay {
 
     private void setTrackingButtonText() {
         if (tracking) {
-            Logger.getLogger("").log(Level.WARNING, "StopTracking button text");
+            Logger.getLogger("").log(Level.INFO, "StopTracking button text");
             this.trackingRideButton.setText(STOP_TRACKING);
         } else {
-            Logger.getLogger("").log(Level.WARNING, "StartTracking button text");
+            Logger.getLogger("").log(Level.INFO, "StartTracking button text");
             this.trackingRideButton.setText(START_TRACKING);
         }
     }
