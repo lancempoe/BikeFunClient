@@ -6,6 +6,7 @@ import com.bikefunfinder.client.client.places.homescreen.HomeScreenPlace;
 import com.bikefunfinder.client.gin.Injector;
 import com.bikefunfinder.client.gin.RamObjectCache;
 import com.bikefunfinder.client.shared.Tools.DeviceTools;
+import com.bikefunfinder.client.shared.Tools.MustGetGoodGeo;
 import com.bikefunfinder.client.shared.Tools.NativeUtilities;
 import com.bikefunfinder.client.shared.Tools.NonPhoneGapGeoLocCallback;
 import com.bikefunfinder.client.shared.constants.ScreenConstants;
@@ -19,6 +20,7 @@ import com.bikefunfinder.client.shared.request.management.WebServiceResponseCons
 import com.bikefunfinder.client.shared.widgets.NavBaseActivity;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.http.client.UrlBuilder;
+import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.web.bindery.event.shared.EventBus;
@@ -41,16 +43,56 @@ public class GMapActivity extends NavBaseActivity implements GMapDisplay.Present
     private final RamObjectCache ramObjectCache = Injector.INSTANCE.getRamObjectCache();
 
     private static GeolocationWatcher geolocationWatcher;
+    private static ScreenRefreshTimer screenRefreshTimer;
+    private static TrackingRefreshTimer trackingRefreshTimer;
+
     private final AnonymousUser anonymousUser;
 
     private final User user;
     private String userId;
     private String userName;
     private String pageName;
-    private boolean isTracking;
+    private static boolean isTracking;
     private boolean isFirstPostSavePhoneGeoLoc = true;
-    private Date trackingTimer;
-    private ConfirmDialog.ConfirmCallback trackingWarning;
+    private long timeTrackingStartedInMillis;
+
+    private class ScreenRefreshTimer extends Timer {
+        private final GMapActivity gMapActivity;
+
+        private ScreenRefreshTimer(GMapActivity gMapActivity) {
+            this.gMapActivity = gMapActivity;
+        }
+
+        @Override
+        public void run() {
+            gMapActivity.callGeoThenUpdateBikeRideOnMap();
+        }
+    }
+
+    private class TrackingRefreshTimer extends Timer {
+        private final GMapActivity gMapActivity;
+
+        private TrackingRefreshTimer(GMapActivity gMapActivity) {
+            this.gMapActivity = gMapActivity;
+        }
+
+        @Override
+        public void run() {
+            gMapActivity.trackingPingLogic();
+        }
+    }
+
+    private ConfirmDialog.ConfirmCallback trackingWarning = new ConfirmDialog.ConfirmCallback() {
+        @Override
+        public void onOk() {
+            isTracking = true;
+        }
+
+        @Override
+        public void onCancel() {
+            display.setTrackingButtonText(isTracking);
+        }
+    };
 
     public MapScreenType screenType = MapScreenType.EVENT; //Default Value.
     public BikeRide bikeRide;
@@ -58,21 +100,52 @@ public class GMapActivity extends NavBaseActivity implements GMapDisplay.Present
     public GMapActivity(String pageName, BikeRide bikeRide, User user, AnonymousUser anonymousUser) {
         if (bikeRide == null) { screenType = MapScreenType.HERE_AND_NOW; }
 
+        cancelScreenRefreshTimer();
+        screenRefreshTimer = new ScreenRefreshTimer(this);
+        screenRefreshTimer.scheduleRepeating(ScreenConstants.SCREEN_REFRESH_RATE_IN_MILLISECONDS);
+
+        cancelTrackingRefreshTimer();
+        trackingRefreshTimer = new TrackingRefreshTimer(this);
+        trackingRefreshTimer.scheduleRepeating(ScreenConstants.SCREEN_REFRESH_RATE_IN_MILLISECONDS);
+
         this.anonymousUser = anonymousUser;
         this.user = user;
 
         this.bikeRide = bikeRide;
         this.pageName = pageName;
+        this.isTracking = false;
 
         setUserOrAnonymousUser();
 
         display.setUserId(userId);
         display.resetPolyLine();
         display.truffleShuffle();
+        display.setTrackingButtonText(isTracking);
 
         setDisplayPageName(this.pageName);
+
         //Required GeoLoc even for viewing a bikeride, otherwise maps does not load
-        callGeoThenRefreshScreen();
+        callGeoThenUpdateBikeRideOnMap();
+    }
+
+    @Override
+    public void start(final AcceptsOneWidget panel, final EventBus eventBus) {
+        display.setPresenter(this);
+        panel.setWidget(display);
+    }
+
+    public static void cancelScreenRefreshTimer() {
+        if(screenRefreshTimer!=null) {
+            screenRefreshTimer.cancel();
+            screenRefreshTimer = null;
+        }
+    }
+
+    public static void cancelTrackingRefreshTimer() {
+        if(trackingRefreshTimer!=null) {
+            trackingRefreshTimer.cancel();
+            trackingRefreshTimer = null;
+        }
     }
 
     private void setUserOrAnonymousUser() {
@@ -87,105 +160,68 @@ public class GMapActivity extends NavBaseActivity implements GMapDisplay.Present
         }
     }
 
-    @Override
-    public void start(final AcceptsOneWidget panel, final EventBus eventBus) {
-        display.setPresenter(this);
-        panel.setWidget(display);
-    }
+    private void callGeoThenUpdateBikeRideOnMap() {
 
-    private void callGeoThenRefreshScreen() {
-        DeviceTools.requestPhoneGeoLoc(new NonPhoneGapGeoLocCallback(new NonPhoneGapGeoLocCallback.GeolocationHandler() {
-            @Override
-            public void onSuccess(GeoLoc geoLoc) {
-                refreshScreen(geoLoc);
-            }
-        }));
-    }
-
-
-    /**
-     * Items that need to happen while on the map screen.  It can and should be cleaned up in version 2.
-     */
-    private void refreshScreen(final GeoLoc geoLoc) {
-
-        if (isTracking) {
-            Date now = new Date();
-            if ((trackingTimer.getTime()+(ScreenConstants.TRACKING_WITHOUT_CONFORMATION_IN_MILLISECONDS)) < now.getTime()) {
-                if(trackingWarning == null) { //Display message if it is not already displayed.
-                    showTrackingWarning();
-                }
-
-                if ((trackingTimer.getTime()+(ScreenConstants.MAX_TRACKING_WITHOUT_CONFORMATION_IN_MILLISECONDS)) < now.getTime()) {
-                    //Stop Tracking AND close the popup.
-                    trackingWarning.onCancel();
-                    backButtonSelected(); //This is bad code... right?
-                    return;
-                }
-            }
-        }
-
-        updateBikeRideOnMapAndPingIfTracking(geoLoc);
-        isFirstPostSavePhoneGeoLoc = false;
-    }
-
-    private void showTrackingWarning() {
-        trackingWarning = new ConfirmDialog.ConfirmCallback() {
-            @Override
-            public void onOk() {
-                trackingTimer = new Date();
-                trackingWarning = null;
-            }
-
-            @Override
-            public void onCancel() {
-                trackingRideButtonSelected(false); //This is also pretty bad code.
-                trackingWarning = null;
-            }
-        };
-
-        Dialogs.confirm("Warning:", "Tracking is about to expire. Continue Tracking?", trackingWarning);
-    }
-
-    private void pingClientTrack(GeoLoc geoLoc) {
-        if (isTracking) {
-            WebServiceResponseConsumer<Tracking> callback = new WebServiceResponseConsumer<Tracking>() {
+        if(accurateGeoLoc!=null) {
+            //skip a geo and get better accuracy when rides are being tracked!
+            updateBikeRideOnMap(accurateGeoLoc);
+        } else {
+            //cest la vie. We've got to commit to the double donkey dip
+            DeviceTools.requestPhoneGeoLoc(new NonPhoneGapGeoLocCallback(new NonPhoneGapGeoLocCallback.GeolocationHandler() {
                 @Override
-                public void onResponseReceived(Tracking tracking) {
-                    //Success!  Nothing more needed.
+                public void onSuccess(GeoLoc geoLoc) {
+                    updateBikeRideOnMap(geoLoc);
                 }
-            };
-            NewTrackRequest.Builder request = new NewTrackRequest.Builder(callback);
-            Date date = new Date();
-
-            Tracking tracking = GWT.create(Tracking.class);
-            tracking.setBikeRideId(bikeRide.getId());
-            tracking.setGeoLoc(geoLoc);
-            tracking.setTrackingTime(date.getTime());
-            tracking.setTrackingUserId(userId);
-            tracking.setTrackingUserName(userName);
-
-            request.tracking(tracking).send();
+            }));
         }
-    }
-
-    private void setIsTrackingDisplay() {
-        display.setIsTracking(isTracking);
     }
 
     private void setDisplayPageName(String pageName) {
         display.displayPageName(pageName);
     }
 
-    private void updateBikeRideOnMapAndPingIfTracking(GeoLoc geoLoc) {
+    public void doRideTrackingPingIfWithinTimeBound(final GeoLoc geoLoc) {
+        final long nowInMillies = (new Date()).getTime();
+        final long timeSpentTracking = nowInMillies - timeTrackingStartedInMillis;
+
+        if(timeSpentTracking >= ScreenConstants.MAX_TRACKING_WITHOUT_CONFORMATION_IN_MILLISECONDS) {
+            isTracking = false;
+            Dialogs.confirm("Warning:", "Tracking is about to expire. Continue Tracking?", trackingWarning);
+            return;
+        }
+
+        callServerForClientTrack(geoLoc);
+    }
+
+
+    private void callServerForClientTrack(GeoLoc geoLoc) {
+
+        WebServiceResponseConsumer<Tracking> callback = new WebServiceResponseConsumer<Tracking>() {
+            @Override
+            public void onResponseReceived(Tracking tracking) {
+                //Success!  Nothing more needed.
+            }
+        };
+        NewTrackRequest.Builder request = new NewTrackRequest.Builder(callback);
+        Date date = new Date();
+
+        Tracking tracking = GWT.create(Tracking.class);
+        tracking.setBikeRideId(bikeRide.getId());
+        tracking.setGeoLoc(geoLoc);
+        tracking.setTrackingTime(date.getTime());
+        tracking.setTrackingUserId(userId);
+        tracking.setTrackingUserName(userName);
+
+        request.tracking(tracking).send();
+    }
+
+    private void updateBikeRideOnMap(GeoLoc geoLoc) {
         if (MapScreenType.EVENT.equals(screenType)) {
             updatedBikeRide(geoLoc);
-
-            if (isTracking) {
-                pingClientTrack(geoLoc);
-            }
         }
 
         setMapView(geoLoc);
+        isFirstPostSavePhoneGeoLoc = false;
     }
 
     /**
@@ -196,7 +232,6 @@ public class GMapActivity extends NavBaseActivity implements GMapDisplay.Present
         if (MapScreenType.HERE_AND_NOW.equals(screenType)) {
             setHereAndNowView(phoneGeoLoc); //Here & now Map
         } else { //Event Map
-//            clearWatch();
 
             if(bikeRide == null) {
                 setHereAndNowView(phoneGeoLoc); //Here & now Map
@@ -204,7 +239,7 @@ public class GMapActivity extends NavBaseActivity implements GMapDisplay.Present
             }
 
             if (isTracking) { //Tracking
-                setTrackView(phoneGeoLoc);
+
             } else if (bikeRide.getRideLeaderTracking() != null && bikeRide.getRideLeaderTracking().getId() != null) { //Following Event
                 setEventView(phoneGeoLoc, bikeRide.getRideLeaderTracking().getGeoLoc());
             } else if (bikeRide.getCurrentTrackings() != null && bikeRide.getCurrentTrackings().length() > 0) { //Following Event
@@ -218,13 +253,13 @@ public class GMapActivity extends NavBaseActivity implements GMapDisplay.Present
     private void setTrackView(final GeoLoc phoneGeoLoc) {
         display.resetForEvent(phoneGeoLoc);
         display.display(bikeRide);
-        display.setupMapToDisplayBikeRide(phoneGeoLoc, bikeRide, isTracking);
+        display.setupMapToDisplayBikeRide(phoneGeoLoc, bikeRide, isTracking, isTracking);
     }
 
     private void setEventView(final GeoLoc phoneGeoLoc, final GeoLoc eventGeoLoc) {
         display.resetForEvent(eventGeoLoc);
         display.display(bikeRide);
-        display.setupMapToDisplayBikeRide(phoneGeoLoc, bikeRide, isFirstPostSavePhoneGeoLoc);
+        display.setupMapToDisplayBikeRide(phoneGeoLoc, bikeRide, isFirstPostSavePhoneGeoLoc, false);
 
         NativeUtilities.trackPage("Event Map Screen");
     }
@@ -273,32 +308,41 @@ public class GMapActivity extends NavBaseActivity implements GMapDisplay.Present
     }
 
     @Override
-    public void trackingRideButtonSelected(boolean isTracking) {
-        this.isTracking = isTracking;
+    public void trackingRideButtonSelected() {
+        isTracking = !isTracking;
 
         if(isTracking) {
+            timeTrackingStartedInMillis = (new Date()).getTime();
+            screenRefreshTimer.run();
+            trackingRefreshTimer.run();
+        }
+
+        display.setTrackingButtonText(isTracking);
+    }
+
+    private static GeoLoc accurateGeoLoc;
+    private void trackingPingLogic() {
+        if(isTracking) {
             cancelGeoLocationWatcherIfRegistered();
-            NativeUtilities.partialWakeLock();
-            trackingTimer = new Date();
-            geolocationWatcher = DeviceTools.requestGeoUpdates(new NonPhoneGapGeoLocCallback(new NonPhoneGapGeoLocCallback.GeolocationHandler() {
+            geolocationWatcher = DeviceTools.requestGeoUpdates(new MustGetGoodGeo(new NonPhoneGapGeoLocCallback.GeolocationHandler() {
                 @Override
                 public void onSuccess(GeoLoc geoLoc) {
-                    refreshScreen(geoLoc);
+                    NativeUtilities.partialWakeLock();
+                    doRideTrackingPingIfWithinTimeBound(geoLoc);
+                    cancelGeoLocationWatcherIfRegistered();
+                    setTrackView(geoLoc);
+                    accurateGeoLoc = geoLoc;
                 }
             }));
         } else {
             cancelGeoLocationWatcherIfRegistered();
         }
-
-        setIsTrackingDisplay();
-        callGeoThenRefreshScreen();
     }
 
     @Override
     public void backButtonSelected() {
         cancelGeoLocationWatcherIfRegistered();
-        trackingRideButtonSelected(false);
-        trackingWarning = null; //just in case the message is up.
+        cancelScreenRefreshTimer();
         clientFactory.getPlaceController().goTo(new HomeScreenPlace());
     }
 
@@ -306,6 +350,7 @@ public class GMapActivity extends NavBaseActivity implements GMapDisplay.Present
         if(geolocationWatcher!=null) {
             DeviceTools.cancelWatcher(geolocationWatcher);
             NativeUtilities.releasePartialWakeLock();
+            geolocationWatcher = null;
         }
     }
 

@@ -3,6 +3,7 @@ package com.bikefunfinder.client.shared.Tools;
 import com.bikefunfinder.client.bootstrap.ClientFactory;
 import com.bikefunfinder.client.gin.Injector;
 import com.googlecode.gwtphonegap.client.geolocation.Geolocation;
+import com.googlecode.gwtphonegap.client.geolocation.GeolocationCallback;
 import com.googlecode.gwtphonegap.client.geolocation.GeolocationOptions;
 import com.googlecode.gwtphonegap.client.geolocation.GeolocationWatcher;
 
@@ -21,14 +22,14 @@ public class DeviceTools {
     static {
         options.setEnableHighAccuracy(true);
         options.setTimeout(5000);
-        options.setMaximumAge(15000);
+        options.setMaximumAge(5000);
     }
 
-    public static void requestPhoneGeoLoc(NonPhoneGapGeoLocCallback callback) {
+    public static void requestPhoneGeoLoc(GeolocationCallback callback) {
         phoneGeoLocation.getCurrentPosition(callback, options);
     }
 
-    public static GeolocationWatcher requestGeoUpdates(NonPhoneGapGeoLocCallback callback) {
+    public static GeolocationWatcher requestGeoUpdates(GeolocationCallback callback) {
          return phoneGeoLocation.watchPosition(options, callback);
     }
 

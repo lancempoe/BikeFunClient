@@ -6,12 +6,10 @@ import com.bikefunfinder.client.shared.constants.ScreenConstants.MapScreenType;
 import com.bikefunfinder.client.shared.model.BikeRide;
 import com.bikefunfinder.client.shared.model.GeoLoc;
 import com.google.gwt.core.client.JsDate;
-import com.google.gwt.query.client.plugins.widgets.WidgetsHtmlPanel;
 import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.Timer;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.*;
 import com.google.maps.gwt.client.*;
 import com.google.maps.gwt.client.GoogleMap.CenterChangedHandler;
@@ -52,16 +50,14 @@ public class GMapViewImpl implements GMapDisplay {
     private final LayoutPanel main;
     private final HeaderButton  backButton;
     private final FlowPanel mapPanel;
-    private final Timer resumeAutoPanAndZoomTimer;
 
     private GoogleMap map;
     private Circle circle;
     private LatLng center;
     private double zoom;
-    private boolean isRecentUserActivity = false;
+
     private MapScreenType priorMapScreenType;
     private boolean resetMap = true;
-    private boolean tracking = false;
 
     private List<InfoWindow> inforWindows = new ArrayList<InfoWindow>();
     private List<Marker> markers = new ArrayList<Marker>();
@@ -89,7 +85,9 @@ public class GMapViewImpl implements GMapDisplay {
         backButton.addTapHandler(new TapHandler() {
             @Override
             public void onTap(final TapEvent tapEvent) {
-                backButtonSelected(tapEvent);
+                if (presenter != null) {
+                    presenter.backButtonSelected();
+                }
             }
         });
         this.headerPanel.setLeftWidget(backButton);
@@ -99,8 +97,10 @@ public class GMapViewImpl implements GMapDisplay {
         trackingRideButton.addTapHandler(new TapHandler() {
             @Override
             public void onTap(TapEvent tapEvent) {
-                Logger.getLogger("").log(Level.INFO, "track pressed and setting to : " + !tracking);
-                onUpdateRidePressed(tapEvent);
+                Logger.getLogger("").log(Level.WARNING, "track button pressed ");
+                if (presenter != null) {
+                    presenter.trackingRideButtonSelected();
+                }
             }
         });
 
@@ -112,14 +112,6 @@ public class GMapViewImpl implements GMapDisplay {
         mapPanel.addStyleName(MGWTStyle.getTheme().getMGWTClientBundle().getLayoutCss().fillPanelExpandChild());
         main.add(mapPanel);
 
-        resumeAutoPanAndZoomTimer = new Timer() {
-            @Override
-            public void run() {
-                isRecentUserActivity = false;
-//                map.panTo(center);
-//                map.setZoom(zoom);
-            }
-        };
     }
 
     @Override
@@ -149,12 +141,6 @@ public class GMapViewImpl implements GMapDisplay {
     }
 
     @Override
-    public void setIsTracking(boolean isTracking) {
-        this.tracking = isTracking;
-        setTrackingButtonText();
-    }
-
-    @Override
     public void displayPageName(String pageName) {
         SafeHtmlBuilder safeHtmlBuilder = new SafeHtmlBuilder();
         safeHtmlBuilder.appendHtmlConstant("<p class=\"eventHeader\">");
@@ -163,15 +149,7 @@ public class GMapViewImpl implements GMapDisplay {
         this.headerPanel.setRightWidget(new HTML(safeHtmlBuilder.toSafeHtml().asString()));
     }
 
-    private void onUpdateRidePressed(TapEvent event) {
-        tracking = !tracking;
-        setTrackingButtonText();
-        if (presenter != null) {
-            presenter.trackingRideButtonSelected(tracking);
-        }
-    }
-
-    protected void backButtonSelected(TapEvent event) {
+    protected void backButtonSelected() {
         if (presenter != null) {
             presenter.backButtonSelected();
         }
@@ -210,7 +188,6 @@ public class GMapViewImpl implements GMapDisplay {
         }
 
         this.trackingRideButton.setVisible(true);
-        setTrackingButtonText();
 
         center = LatLng.create(centerGeoLoc.getLatitude(), centerGeoLoc.getLongitude());
         zoom = EVENT_ZOOM;
@@ -237,8 +214,9 @@ public class GMapViewImpl implements GMapDisplay {
         }
     }
 
-    private void setTrackingButtonText() {
-        if (tracking) {
+    @Override
+    public void setTrackingButtonText(boolean isTracking) {
+        if (isTracking) {
             Logger.getLogger("").log(Level.INFO, "StopTracking button text");
             this.trackingRideButton.setText(STOP_TRACKING);
         } else {
@@ -253,11 +231,6 @@ public class GMapViewImpl implements GMapDisplay {
         //Build the view of the map
         if (map == null || resetMap) {
             buildMap();
-        } else {
-            if (!isRecentUserActivity) {
-                map.panTo(center);
-                map.setZoom(zoom);
-            }
         }
 
         //Draw the search radius circle
@@ -295,7 +268,7 @@ public class GMapViewImpl implements GMapDisplay {
     }
 
     @Override
-    public void setupMapToDisplayBikeRide(GeoLoc phoneGpsLoc, BikeRide bikeRide, boolean reCenterReZoom) {
+    public void setupMapToDisplayBikeRide(GeoLoc phoneGpsLoc, BikeRide bikeRide, boolean reCenterReZoom, boolean isTracking) {
 
         //Build the view of the map
         if (map == null || resetMap) {
@@ -305,7 +278,7 @@ public class GMapViewImpl implements GMapDisplay {
             map.setZoom(zoom);
         }
 
-        if (tracking) {
+        if (isTracking) {
             //Draw on the users screen.
             LatLng printLineLatLng = LatLng.create(phoneGpsLoc.getLatitude(), phoneGpsLoc.getLongitude());
             if (polyline == null) {
@@ -350,37 +323,6 @@ public class GMapViewImpl implements GMapDisplay {
         BicyclingLayer bicyclingLayer = BicyclingLayer.create();
         bicyclingLayer.setMap(map);
 
-        map.addCenterChangedListener(new CenterChangedHandler() {
-            @Override
-            public void handle() {
-                if (!map.getCenter().equals(center)) {
-                    isRecentUserActivity = true;
-                    resumeAutoPanAndZoomTimer.schedule(RESUME_AUTO_PAN_AND_ZOOM_DELAY_MILLIS);
-                }
-            }
-        });
-        map.addZoomChangedListener(new ZoomChangedHandler() {
-            @Override
-            public void handle() {
-                if (map.getZoom() != zoom) {
-                    isRecentUserActivity = true;
-                    resumeAutoPanAndZoomTimer.schedule(RESUME_AUTO_PAN_AND_ZOOM_DELAY_MILLIS);
-                }
-            }
-        });
-        map.addDragStartListener(new DragStartHandler() {
-            @Override
-            public void handle() {
-                isRecentUserActivity = true;
-                resumeAutoPanAndZoomTimer.cancel();
-            }
-        });
-        map.addDragEndListener(new DragEndHandler() {
-            @Override
-            public void handle() {
-                resumeAutoPanAndZoomTimer.schedule(RESUME_AUTO_PAN_AND_ZOOM_DELAY_MILLIS);
-            }
-        });
     }
 
     private void AddAsMarker(GeoLoc geoLoc, final BikeRide bikeRide, ScreenConstants.TargetIcon icon) {

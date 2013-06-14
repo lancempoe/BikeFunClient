@@ -35,6 +35,7 @@ public class ActivityMapperDelegate implements ActivityMapper {
         }
 
         GMapActivity.cancelGeoLocationWatcherIfRegistered();
+        GMapActivity.cancelScreenRefreshTimer();
 
         lastSeen = place;
 

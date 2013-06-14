@@ -8,6 +8,8 @@ import com.bikefunfinder.client.gin.Injector;
 import com.bikefunfinder.client.gin.RamObjectCache;
 import com.bikefunfinder.client.shared.model.GeoLoc;
 
+import java.util.Date;
+
 public class GeoLocCacheStrategy implements CacheStrategy<GeoLoc> {
     public static final GeoLocCacheStrategy INSTANCE = new GeoLocCacheStrategy();
     private RamObjectCache ramObjectCache = Injector.INSTANCE.getRamObjectCache();

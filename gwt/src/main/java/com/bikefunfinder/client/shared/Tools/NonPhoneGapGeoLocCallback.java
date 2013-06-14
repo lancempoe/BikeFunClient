@@ -22,7 +22,7 @@ public class NonPhoneGapGeoLocCallback implements GeolocationCallback {
            Major streets are usually at 1/4, 1/2, or 1 mile intervals.
            (Metric equivalents: 400 meters, 800 meters, or 1.6 km
         */
-        GOOD(100), FAIR(500), BAD(501);
+        GOOD(50), FAIR(100), BAD(FAIR.accuracyInMeters+1);
 
         private final int accuracyInMeters;
 
@@ -48,18 +48,16 @@ public class NonPhoneGapGeoLocCallback implements GeolocationCallback {
     }
 
     private final GeolocationHandler callback;
-    private final CacheStrategy<GeoLoc> cacheStrategy;
+    private final GeoLocCacheStrategy cacheStrategy = GeoLocCacheStrategy.INSTANCE;
 
     public NonPhoneGapGeoLocCallback(GeolocationHandler callback) {
         this.callback = callback;
-        this.cacheStrategy = GeoLocCacheStrategy.INSTANCE;
 
         LoadingScreen.openLoaderPanel();
     }
 
     @Override
     public void onSuccess(final Position position) {
-
         GeoLoc geoLocToReturn;
 
         GeoLoc lastGeoLoc = cacheStrategy.getCachedType();
@@ -103,20 +101,21 @@ public class NonPhoneGapGeoLocCallback implements GeolocationCallback {
         } else {
 
             if(error.getCode() == PositionError.PERMISSION_DENIED) {
-                final NonPhoneGapGeoLocCallback thizz = this;
                 Dialogs.alert("Error:", "Permission denied, change settings and continue.", new Dialogs.AlertCallback() {
                     @Override
                     public void onButtonPressed() {
-                        refireRequestInAfterSomeTime(thizz);
+                        refireRequestInAfterSomeTime();
                     }
                 });
             } else {
-                refireRequestInAfterSomeTime(this);
+                refireRequestInAfterSomeTime();
             }
         }
     }
 
-    private void refireRequestInAfterSomeTime(final NonPhoneGapGeoLocCallback thizz) {
+    private void refireRequestInAfterSomeTime() {
+        final NonPhoneGapGeoLocCallback thizz = this;
+
         Timer timer = new Timer() {
             public void run() {
                 DeviceTools.requestPhoneGeoLoc(thizz);

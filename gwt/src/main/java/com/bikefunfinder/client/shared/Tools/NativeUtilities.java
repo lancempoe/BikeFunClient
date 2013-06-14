@@ -34,11 +34,11 @@ public class NativeUtilities {
     }
 
     public static native void partialWakeLockNative() /*-{
-        $wnd.dim();
+        //$wnd.dim();
      }-*/;
 
     public static native void releasePartialWakeLockNative() /*-{
-        $wnd.release();
+        //$wnd.release();
      }-*/;
 
 }
