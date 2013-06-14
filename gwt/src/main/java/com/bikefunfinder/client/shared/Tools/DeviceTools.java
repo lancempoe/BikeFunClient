@@ -22,7 +22,7 @@ public class DeviceTools {
     static {
         options.setEnableHighAccuracy(true);
         options.setTimeout(5000);
-        options.setMaximumAge(5000);
+        options.setMaximumAge(20000);
     }
 
     public static void requestPhoneGeoLoc(GeolocationCallback callback) {
