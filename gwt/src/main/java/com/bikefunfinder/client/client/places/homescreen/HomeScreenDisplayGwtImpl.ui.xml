@@ -7,7 +7,7 @@
 
 
     <ui:style type='com.bikefunfinder.client.client.places.homescreen.HomeScreenDisplayGwtImpl.MyStyle'>
-        .positioningForName { position:absolute; top:35%;
+        .positioningForName { position:absolute; top:20%;
                               font-size: 16pt;
                               font-weight: bold;
                               color: white; }
