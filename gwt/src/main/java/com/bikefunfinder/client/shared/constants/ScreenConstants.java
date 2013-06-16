@@ -72,8 +72,8 @@ public class ScreenConstants {
     public static final double PORTLAND_LATITUDE = 45.52345275878906;
     public static final double PORTLAND_LONGITUDE = -122.6762084960938;
     public static final int SCREEN_REFRESH_RATE_IN_MILLISECONDS = 20000;
-    public static final int TRACKING_WITHOUT_CONFORMATION_IN_SECONDS = 60*60; //1 hour
-    public static final int MAX_TRACKING_WITHOUT_CONFORMATION_IN_MILLISECONDS = TRACKING_WITHOUT_CONFORMATION_IN_SECONDS*2*1000; //2 hours
+    public static final int TRACKING_WITHOUT_CONFORMATION_IN_MILLISECONDS = 60*60*1000; //1 hour
+    public static final int MAX_TRACKING_WITHOUT_CONFORMATION_IN_MILLISECONDS = TRACKING_WITHOUT_CONFORMATION_IN_MILLISECONDS *2; //2 hours
 
     public static final NumberFormat DISTANCE_FORMAT = NumberFormat.getFormat("#.#");
     public static final String RegularExpression_City = "^((?!,).)+(?=,)";
