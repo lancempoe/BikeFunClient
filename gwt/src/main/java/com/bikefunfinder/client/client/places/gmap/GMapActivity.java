@@ -45,6 +45,7 @@ public class GMapActivity extends NavBaseActivity implements GMapDisplay.Present
     private static GeolocationWatcher geolocationWatcher;
     private static ScreenRefreshTimer screenRefreshTimer;
     private static TrackingRefreshTimer trackingRefreshTimer;
+    private static GeoLoc accurateGeoLoc;
 
     private final AnonymousUser anonymousUser;
 
@@ -320,7 +321,6 @@ public class GMapActivity extends NavBaseActivity implements GMapDisplay.Present
         display.setTrackingButtonText(isTracking);
     }
 
-    private static GeoLoc accurateGeoLoc;
     private void trackingPingLogic() {
         if(isTracking) {
             cancelGeoLocationWatcherIfRegistered();
@@ -343,6 +343,7 @@ public class GMapActivity extends NavBaseActivity implements GMapDisplay.Present
     public void backButtonSelected() {
         cancelGeoLocationWatcherIfRegistered();
         cancelScreenRefreshTimer();
+        cancelTrackingRefreshTimer();
         clientFactory.getPlaceController().goTo(new HomeScreenPlace());
     }
 

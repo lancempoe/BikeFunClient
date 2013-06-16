@@ -10,7 +10,6 @@ import com.google.gwt.safehtml.shared.SafeUri;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.DecoratedPopupPanel;
 import com.google.gwt.user.client.ui.Image;
-//import com.#########.ui.client.image.MyImages;
 
 public class LoadingScreen {
     private static DecoratedPopupPanel glassPanel = null;

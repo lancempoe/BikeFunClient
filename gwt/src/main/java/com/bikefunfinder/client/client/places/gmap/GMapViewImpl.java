@@ -187,12 +187,17 @@ public class GMapViewImpl implements GMapDisplay {
             marker.setMap((GoogleMap)null);
         }
 
-        this.trackingRideButton.setVisible(true);
-
+        trackingRideButton.setVisible(true);
         center = LatLng.create(centerGeoLoc.getLatitude(), centerGeoLoc.getLongitude());
         zoom = EVENT_ZOOM;
         if (circle != null) {
             circle.setVisible(false);
+        }
+    }
+
+    private void refreshMap() {
+        if (map != null) {
+            map.triggerResize();
         }
     }
 
@@ -264,6 +269,7 @@ public class GMapViewImpl implements GMapDisplay {
         }
 
         //Reset the check
+        refreshMap();
         resetMap = false;
     }
 
@@ -313,6 +319,7 @@ public class GMapViewImpl implements GMapDisplay {
         }
 
         //Reset the check
+        refreshMap();
         resetMap = false;
     }
 
@@ -431,12 +438,13 @@ public class GMapViewImpl implements GMapDisplay {
         htmlWidget.getElement().getStyle().setColor("black");
         fp.add(htmlWidget);
 
-        //Only available in iphone  //TODO ONLY FOR IPHONE
-        if (MGWT.getOsDetection().isIPhone()) {
-            Anchor link = new Anchor("(more information)", presenter.provideTokenHrefFor(bikeRide));
-            link.getElement().getStyle().setColor("black");
-            fp.add(link);
-        }
+//        //TODO This will be implemented in version 2
+//        //Only available in iphone
+//        if (MGWT.getOsDetection().isIPhone()) {
+//            Anchor link = new Anchor("(more information)", presenter.provideTokenHrefFor(bikeRide));
+//            link.getElement().getStyle().setColor("black");
+//            fp.add(link);
+//        }
 
         return fp.getElement();
     }
