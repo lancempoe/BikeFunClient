@@ -87,10 +87,12 @@ public class GMapActivity extends NavBaseActivity implements GMapDisplay.Present
         @Override
         public void onOk() {
             isTracking = true;
+            timeTrackingStartedInMillis = (new Date()).getTime();
         }
 
         @Override
         public void onCancel() {
+            isTracking = false;
             display.setTrackingButtonText(isTracking);
         }
     };
@@ -207,12 +209,12 @@ public class GMapActivity extends NavBaseActivity implements GMapDisplay.Present
         final long timeSpentTracking = nowInMillies - timeTrackingStartedInMillis;
 
         if(timeSpentTracking >= ScreenConstants.MAX_TRACKING_WITHOUT_CONFORMATION_IN_MILLISECONDS) {
-            isTracking = false;
+            trackingWarning.onCancel();
+        } else if(timeSpentTracking >= ScreenConstants.TIME_TO_WARN_USER_OF_TRACKING_DISABLING_IN_MILLIS) {
             Dialogs.confirm("Warning:", "Tracking is about to expire. Continue Tracking?", trackingWarning);
-            return;
+        } else {
+            callServerForClientTrack(geoLoc);
         }
-
-        callServerForClientTrack(geoLoc);
     }
 
 
