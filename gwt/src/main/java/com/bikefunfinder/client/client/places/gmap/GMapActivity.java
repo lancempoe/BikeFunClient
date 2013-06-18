@@ -370,7 +370,13 @@ public class GMapActivity extends NavBaseActivity implements GMapDisplay.Present
                     setTrackView(geoLoc);
                     accurateGeoLoc = geoLoc;
                 }
-            }));
+            }){
+                @Override
+                public void killingCall() {
+                    cancelGeoLocationWatcherIfRegistered();
+                }
+            }
+            );
         } else {
             cancelGeoLocationWatcherIfRegistered();
         }
