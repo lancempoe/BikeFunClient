@@ -44,10 +44,6 @@
     -webkit-border-radius: 3px;
 }
 
-.gmnoprint a {
-   pointer-events: none;
-   cursor: default;
-}
 
 .disableAllLinks a {
    pointer-events: none;

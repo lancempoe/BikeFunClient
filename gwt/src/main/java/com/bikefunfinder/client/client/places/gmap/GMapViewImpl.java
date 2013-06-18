@@ -115,8 +115,6 @@ public class GMapViewImpl implements GMapDisplay {
         mapPanel.addStyleName("disableAllLinks");
         main.add(mapPanel);
 
-        StyleInjector.inject(AppBundle.INSTANCE.css().getText());
-
     }
 
     @Override
