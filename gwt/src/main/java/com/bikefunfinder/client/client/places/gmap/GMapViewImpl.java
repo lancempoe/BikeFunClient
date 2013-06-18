@@ -204,10 +204,7 @@ public class GMapViewImpl implements GMapDisplay {
     @Override
     public void truffleShuffle() {
         if(mapPanel!=null && mapPanel.isAttached()) {
-            final int width = mapPanel.getOffsetWidth() +1;
-            final int height = mapPanel.getOffsetHeight() +1;
-            mapPanel.setPixelSize(width, height);
-            mapPanel.setPixelSize(width-1, height-1);
+            refreshMap(); // maybe? lance says it's only after the map is built.. so.. did it get better? if not nuke
         }
     }
 

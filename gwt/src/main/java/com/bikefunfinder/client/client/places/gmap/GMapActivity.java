@@ -103,11 +103,9 @@ public class GMapActivity extends NavBaseActivity implements GMapDisplay.Present
 
         cancelScreenRefreshTimer();
         screenRefreshTimer = new ScreenRefreshTimer(this);
-        screenRefreshTimer.scheduleRepeating(ScreenConstants.SCREEN_REFRESH_RATE_IN_MILLISECONDS);
 
         cancelTrackingRefreshTimer();
         trackingRefreshTimer = new TrackingRefreshTimer(this);
-        trackingRefreshTimer.scheduleRepeating(ScreenConstants.SCREEN_REFRESH_RATE_IN_MILLISECONDS);
 
         this.anonymousUser = anonymousUser;
         this.user = user;
@@ -125,14 +123,37 @@ public class GMapActivity extends NavBaseActivity implements GMapDisplay.Present
 
         setDisplayPageName(this.pageName);
 
-        //Required GeoLoc even for viewing a bikeride, otherwise maps does not load
-        callGeoThenUpdateBikeRideOnMap();
+        chooseWhichViewToGoWith();
+    }
+
+    private void chooseWhichViewToGoWith() {
+        if (MapScreenType.HERE_AND_NOW.equals(screenType)) {
+            DeviceTools.requestPhoneGeoLoc(new NonPhoneGapGeoLocCallback(new NonPhoneGapGeoLocCallback.GeolocationHandler() {
+                @Override
+                public void onSuccess(GeoLoc geoLoc) {
+                    setHereAndNowView(geoLoc); //Here & now Map
+                }
+            }));
+        } else {
+
+            screenRefreshTimer.scheduleRepeating(ScreenConstants.SCREEN_REFRESH_RATE_IN_MILLISECONDS);
+            trackingRefreshTimer.scheduleRepeating(ScreenConstants.SCREEN_REFRESH_RATE_IN_MILLISECONDS);
+
+            //Required GeoLoc even for viewing a bikeride, otherwise maps does not load
+            callGeoThenUpdateBikeRideOnMap();
+        }
     }
 
     @Override
     public void start(final AcceptsOneWidget panel, final EventBus eventBus) {
         display.setPresenter(this);
         panel.setWidget(display);
+    }
+
+    public static void cancelTimersAndAnyOutstandingActivities() {
+        cancelScreenRefreshTimer();
+        cancelTrackingRefreshTimer();
+        cancelGeoLocationWatcherIfRegistered();
     }
 
     public static void cancelScreenRefreshTimer() {
@@ -221,7 +242,7 @@ public class GMapActivity extends NavBaseActivity implements GMapDisplay.Present
             updatedBikeRide(geoLoc);
         }
 
-        setMapView(geoLoc);
+
         isFirstPostSavePhoneGeoLoc = false;
     }
 
@@ -229,25 +250,17 @@ public class GMapActivity extends NavBaseActivity implements GMapDisplay.Present
      * Set the map to view the correct geo location as well as setting all date points as well.
      * @param phoneGeoLoc
      */
-    private void setMapView(GeoLoc phoneGeoLoc) {
-        if (MapScreenType.HERE_AND_NOW.equals(screenType)) {
-            setHereAndNowView(phoneGeoLoc); //Here & now Map
-        } else { //Event Map
+    private void setMapView(GeoLoc phoneGeoLoc, BikeRide bikeRide) {
+        this.bikeRide = bikeRide;
 
-            if(bikeRide == null) {
-                setHereAndNowView(phoneGeoLoc); //Here & now Map
-                return;
-            }
+        if (isTracking) { //Tracking
 
-            if (isTracking) { //Tracking
-
-            } else if (bikeRide.getRideLeaderTracking() != null && bikeRide.getRideLeaderTracking().getId() != null) { //Following Event
-                setEventView(phoneGeoLoc, bikeRide.getRideLeaderTracking().getGeoLoc());
-            } else if (bikeRide.getCurrentTrackings() != null && bikeRide.getCurrentTrackings().length() > 0) { //Following Event
-                setEventView(phoneGeoLoc, bikeRide.getCurrentTrackings().get(0).getGeoLoc());
-            }  else { //Following Event
-                setEventView(phoneGeoLoc, bikeRide.getLocation().getGeoLoc());
-            }
+        } else if (bikeRide.getRideLeaderTracking() != null && bikeRide.getRideLeaderTracking().getId() != null) { //Following Event
+            setEventView(phoneGeoLoc, bikeRide.getRideLeaderTracking().getGeoLoc());
+        } else if (bikeRide.getCurrentTrackings() != null && bikeRide.getCurrentTrackings().length() > 0) { //Following Event
+            setEventView(phoneGeoLoc, bikeRide.getCurrentTrackings().get(0).getGeoLoc());
+        }  else { //Following Event
+            setEventView(phoneGeoLoc, bikeRide.getLocation().getGeoLoc());
         }
     }
 
@@ -300,7 +313,9 @@ public class GMapActivity extends NavBaseActivity implements GMapDisplay.Present
         WebServiceResponseConsumer<BikeRide> callback = new WebServiceResponseConsumer<BikeRide>() {
             @Override
             public void onResponseReceived(BikeRide bikeRide) {
+
                 ramObjectCache.setCurrentBikeRide(bikeRide);
+                setMapView(phoneGeoLoc, bikeRide);
             }
 
         };

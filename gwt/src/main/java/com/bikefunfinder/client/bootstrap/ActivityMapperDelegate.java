@@ -24,7 +24,6 @@ import com.google.gwt.place.shared.Place;
 
 public class ActivityMapperDelegate implements ActivityMapper {
 
-    private final ClientFactory clientFactory = Injector.INSTANCE.getClientFactory();
     private static Place lastSeen;
     private static Activity lastActivity;
 
@@ -34,8 +33,10 @@ public class ActivityMapperDelegate implements ActivityMapper {
             return lastActivity;
         }
 
-        GMapActivity.cancelGeoLocationWatcherIfRegistered();
-        GMapActivity.cancelScreenRefreshTimer();
+        //this is somewhat of a hack. The idea being that in android if you bail from the maps page
+        //via the back button on your phone, here we very much need to ensure that those timers and
+        //refresh activities do not hang around. That would be disastrous!
+        GMapActivity.cancelTimersAndAnyOutstandingActivities();
 
         lastSeen = place;
 
