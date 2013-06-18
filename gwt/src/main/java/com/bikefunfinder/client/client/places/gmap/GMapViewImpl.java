@@ -3,9 +3,11 @@ package com.bikefunfinder.client.client.places.gmap;
 import com.bikefunfinder.client.client.places.homescreen.HomeScreenDisplay;
 import com.bikefunfinder.client.shared.constants.ScreenConstants;
 import com.bikefunfinder.client.shared.constants.ScreenConstants.MapScreenType;
+import com.bikefunfinder.client.shared.css.AppBundle;
 import com.bikefunfinder.client.shared.model.BikeRide;
 import com.bikefunfinder.client.shared.model.GeoLoc;
 import com.google.gwt.core.client.JsDate;
+import com.google.gwt.dom.client.StyleInjector;
 import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.user.client.Element;
@@ -110,7 +112,10 @@ public class GMapViewImpl implements GMapDisplay {
         //Build the map
         mapPanel = new FlowPanel();
         mapPanel.addStyleName(MGWTStyle.getTheme().getMGWTClientBundle().getLayoutCss().fillPanelExpandChild());
+        mapPanel.addStyleName("disableAllLinks");
         main.add(mapPanel);
+
+        StyleInjector.inject(AppBundle.INSTANCE.css().getText());
 
     }
 
