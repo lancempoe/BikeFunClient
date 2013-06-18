@@ -5,5 +5,5 @@ package com.bikefunfinder.client.shared.request.converters;
  */
 
 public interface JsonObjectConverter<T> {
-    public T convert(String jsonTxt);
+    public T convert(String jsonTxt) throws Exception ;
 }

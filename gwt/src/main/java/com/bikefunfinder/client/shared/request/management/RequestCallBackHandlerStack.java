@@ -44,10 +44,15 @@ public class RequestCallBackHandlerStack<T> implements RequestCallbackSorter.Poo
 
     @Override
     public void goodPoop(Response response) {
-        T objectPayload = successfulPayloadConverter.convert(response.getText());
-        cacheStrategy.cacheType(objectPayload);
+        try {
+            T objectPayload = successfulPayloadConverter.convert(response.getText());
+            cacheStrategy.cacheType(objectPayload);
 
-        informCallBackOfSuccess(objectPayload);
+            informCallBackOfSuccess(objectPayload);
+        } catch(Exception exception) {
+            //catch: the converting in case the network was down.
+            refireStrategy.refire(requestBuilder, this);
+        }
     }
 
     private void informCallBackOfSuccess(T objectPayload) {

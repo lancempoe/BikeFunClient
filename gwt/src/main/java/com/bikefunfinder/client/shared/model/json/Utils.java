@@ -9,6 +9,8 @@ import com.google.gwt.core.client.JsonUtils;
 import com.google.gwt.user.client.Window;
 
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Utils {
     private static final int MILLISECONDS_IN_A_DAY = 86400000;
@@ -16,13 +18,12 @@ public class Utils {
         throw new RuntimeException("hey, this is private no touchies!");
     }
 
-    public static <T extends JavaScriptObject> T castJsonTxtToJSOObject(String json) {
+    public static <T extends JavaScriptObject> T castJsonTxtToJSOObject(String json) throws RuntimeException {
         if(!JsonUtils.safeToEval(json)) {
-            Window.alert("Woah nelly.  Unknown data.");
+            RuntimeException throwThis= new RuntimeException("Error parsing json: "+json);
+            Logger.getLogger("").log(Level.SEVERE, "Error parsing json", throwThis);
+            throw throwThis;
         }
-
-        //Window.alert("PepPep: "+json);
-        //Window.alert("jsonLenght: "+json.length());
 
 
         T castingObject = JsonUtils.safeEval(json);
