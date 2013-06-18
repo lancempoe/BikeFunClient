@@ -66,7 +66,7 @@ public class GMapActivity extends NavBaseActivity implements GMapDisplay.Present
 
         @Override
         public void run() {
-            gMapActivity.callGeoThenUpdateBikeRideOnMap();
+            gMapActivity.screenRefreshLogic();
         }
     }
 
@@ -142,7 +142,7 @@ public class GMapActivity extends NavBaseActivity implements GMapDisplay.Present
             trackingRefreshTimer.scheduleRepeating(ScreenConstants.SCREEN_REFRESH_RATE_IN_MILLISECONDS);
 
             //Required GeoLoc even for viewing a bikeride, otherwise maps does not load
-            callGeoThenUpdateBikeRideOnMap();
+            screenRefreshLogic();
         }
     }
 
@@ -184,7 +184,7 @@ public class GMapActivity extends NavBaseActivity implements GMapDisplay.Present
         }
     }
 
-    private void callGeoThenUpdateBikeRideOnMap() {
+    private void screenRefreshLogic() {
 
         if(accurateGeoLoc!=null) {
             //skip a geo and get better accuracy when rides are being tracked!
@@ -331,8 +331,8 @@ public class GMapActivity extends NavBaseActivity implements GMapDisplay.Present
 
         if(isTracking) {
             timeTrackingStartedInMillis = (new Date()).getTime();
-            screenRefreshTimer.run();
-            trackingRefreshTimer.run();
+            screenRefreshLogic();
+            trackingPingLogic();
         }
 
         display.setTrackingButtonText(isTracking);
