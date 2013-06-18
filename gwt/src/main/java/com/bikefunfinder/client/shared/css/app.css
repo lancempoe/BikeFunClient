@@ -43,3 +43,10 @@
     margin: 2px;
     -webkit-border-radius: 3px;
 }
+
+
+.disableAllLinks a {
+   pointer-events: none;
+   cursor: default;
+
+}

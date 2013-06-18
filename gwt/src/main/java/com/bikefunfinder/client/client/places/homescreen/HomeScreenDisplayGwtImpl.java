@@ -112,8 +112,6 @@ public class HomeScreenDisplayGwtImpl extends Composite implements HomeScreenDis
         searchButton.addStyleName("menuButton");
         loginButton.addStyleName("menuButton");
 
-        StyleInjector.inject(AppBundle.INSTANCE.css().getText());
-
         initWidget(uiBinder.createAndBindUi(this));
         
         timeAndDayButton.addStyleName(style.buttonTreatment());
