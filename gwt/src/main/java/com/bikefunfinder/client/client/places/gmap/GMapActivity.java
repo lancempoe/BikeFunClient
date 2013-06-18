@@ -16,6 +16,7 @@ import com.bikefunfinder.client.shared.model.helper.Extractor;
 import com.bikefunfinder.client.shared.request.EventRequest;
 import com.bikefunfinder.client.shared.request.NewTrackRequest;
 import com.bikefunfinder.client.shared.request.SearchByProximityRequest;
+import com.bikefunfinder.client.shared.request.management.GeoLocCacheStrategy;
 import com.bikefunfinder.client.shared.request.management.WebServiceResponseConsumer;
 import com.bikefunfinder.client.shared.widgets.NavBaseActivity;
 import com.google.gwt.core.client.GWT;
@@ -26,6 +27,7 @@ import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.web.bindery.event.shared.EventBus;
 import com.googlecode.gwtphonegap.client.geolocation.GeolocationWatcher;
 import com.googlecode.mgwt.ui.client.dialog.ConfirmDialog;
+import com.googlecode.mgwt.ui.client.dialog.Dialog;
 import com.googlecode.mgwt.ui.client.dialog.Dialogs;
 
 import java.util.Date;
@@ -57,6 +59,8 @@ public class GMapActivity extends NavBaseActivity implements GMapDisplay.Present
     private boolean isFirstPostSavePhoneGeoLoc = true;
     private long timeTrackingStartedInMillis;
 
+    private static Dialog warningDialog;
+
     private class ScreenRefreshTimer extends Timer {
         private final GMapActivity gMapActivity;
 
@@ -83,7 +87,7 @@ public class GMapActivity extends NavBaseActivity implements GMapDisplay.Present
         }
     }
 
-    private ConfirmDialog.ConfirmCallback trackingWarning = new ConfirmDialog.ConfirmCallback() {
+    private ConfirmDialog.ConfirmCallback trackingWarningCallBackAction = new ConfirmDialog.ConfirmCallback() {
         @Override
         public void onOk() {
             isTracking = true;
@@ -186,17 +190,26 @@ public class GMapActivity extends NavBaseActivity implements GMapDisplay.Present
 
     private void screenRefreshLogic() {
 
+
         if(accurateGeoLoc!=null) {
             //skip a geo and get better accuracy when rides are being tracked!
             updateBikeRideOnMap(accurateGeoLoc);
         } else {
-            //cest la vie. We've got to commit to the double donkey dip
-            DeviceTools.requestPhoneGeoLoc(new NonPhoneGapGeoLocCallback(new NonPhoneGapGeoLocCallback.GeolocationHandler() {
-                @Override
-                public void onSuccess(GeoLoc geoLoc) {
-                    updateBikeRideOnMap(geoLoc);
-                }
-            }));
+            //TN this is bad form, I'm doing it for the sake of getting out, the geo location call
+            //producers need the same XHRs treatment with repect to the abstract typed stragegies
+            //so we can controll the fuckers with finesse
+            GeoLoc lastLocationWeSaw = GeoLocCacheStrategy.INSTANCE.getCachedType();
+            if(lastLocationWeSaw != null) {
+                updateBikeRideOnMap(lastLocationWeSaw);
+            }else {
+                //cest la vie. We've got to commit to the double donkey dip
+                DeviceTools.requestPhoneGeoLoc(new NonPhoneGapGeoLocCallback(new NonPhoneGapGeoLocCallback.GeolocationHandler() {
+                    @Override
+                    public void onSuccess(GeoLoc geoLoc) {
+                        updateBikeRideOnMap(geoLoc);
+                    }
+                }));
+            }
         }
     }
 
@@ -204,17 +217,23 @@ public class GMapActivity extends NavBaseActivity implements GMapDisplay.Present
         display.displayPageName(pageName);
     }
 
-    public void doRideTrackingPingIfWithinTimeBound(final GeoLoc geoLoc) {
-        final long nowInMillies = (new Date()).getTime();
-        final long timeSpentTracking = nowInMillies - timeTrackingStartedInMillis;
+    private void checkIfWeShouldShowWarningDialog() {
+        final long timeSpentTracking = calculateTimeSpentTracking();
 
         if(timeSpentTracking >= ScreenConstants.MAX_TRACKING_WITHOUT_CONFORMATION_IN_MILLISECONDS) {
-            trackingWarning.onCancel();
+            if(warningDialog!=null) {
+                warningDialog.hide();
+            }
+
+            trackingWarningCallBackAction.onCancel();
         } else if(timeSpentTracking >= ScreenConstants.TIME_TO_WARN_USER_OF_TRACKING_DISABLING_IN_MILLIS) {
-            Dialogs.confirm("Warning:", "Tracking is about to expire. Continue Tracking?", trackingWarning);
-        } else {
-            callServerForClientTrack(geoLoc);
+            warningDialog = Dialogs.confirm("Warning:", "Tracking is about to expire. Continue Tracking?", trackingWarningCallBackAction);
         }
+    }
+
+    private long calculateTimeSpentTracking() {
+        final long nowInMillies = (new Date()).getTime();
+        return nowInMillies - timeTrackingStartedInMillis;
     }
 
 
@@ -345,7 +364,8 @@ public class GMapActivity extends NavBaseActivity implements GMapDisplay.Present
                 @Override
                 public void onSuccess(GeoLoc geoLoc) {
                     NativeUtilities.partialWakeLock();
-                    doRideTrackingPingIfWithinTimeBound(geoLoc);
+                    callServerForClientTrack(geoLoc);
+
                     cancelGeoLocationWatcherIfRegistered();
                     setTrackView(geoLoc);
                     accurateGeoLoc = geoLoc;
@@ -354,6 +374,8 @@ public class GMapActivity extends NavBaseActivity implements GMapDisplay.Present
         } else {
             cancelGeoLocationWatcherIfRegistered();
         }
+
+        checkIfWeShouldShowWarningDialog();
     }
 
     @Override

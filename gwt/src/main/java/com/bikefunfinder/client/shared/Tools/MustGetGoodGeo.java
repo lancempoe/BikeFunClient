@@ -29,7 +29,7 @@ public class MustGetGoodGeo implements GeolocationCallback {
 
 
         if(position == null || position.getCoordinates() == null) {
-            refireRequestInAfterSomeTime();
+            //refireRequestInAfterSomeTime();
             return;
         }
         // we have a geo so we can be picky
@@ -38,7 +38,7 @@ public class MustGetGoodGeo implements GeolocationCallback {
 
 
         if(positionQuality == NonPhoneGapGeoLocCallback.GeoLocationAccuracy.BAD) {
-            refireRequestInAfterSomeTime();
+            //refireRequestInAfterSomeTime();
             return;
         }
         GeoLoc geoLocToReturn = buildGeoLocFrom(position);
@@ -62,31 +62,35 @@ public class MustGetGoodGeo implements GeolocationCallback {
 
     @Override
     public void onFailure(final PositionError error) {
+        // needs the XHRs finesse right.. but fuck i guess for now we just fuck it
+        // couldn't get an accurate geo loc
 
-
+        //refire strategy
         if(error.getCode() == PositionError.PERMISSION_DENIED) {
             Dialogs.alert("Error:", "Permission denied, change settings and continue.", new Dialogs.AlertCallback() {
                 @Override
                 public void onButtonPressed() {
-                    refireRequestInAfterSomeTime();
+                    //refire strategy candidate!
+                    //refireRequestInAfterSomeTime();
                 }
             });
         } else {
-            refireRequestInAfterSomeTime();
+            //refire strategy candidate
+            //refireRequestInAfterSomeTime();
         }
 
     }
 
-    private void refireRequestInAfterSomeTime() {
-        final MustGetGoodGeo thizz = this;
-
-        Timer timer = new Timer() {
-            public void run() {
-                DeviceTools.requestPhoneGeoLoc(thizz);
-            }
-        };
-
-        // Execute the timer to expire 2 seconds in the future
-        timer.schedule(2000);
-    }
+//    private void refireRequestInAfterSomeTime() {
+//        final MustGetGoodGeo thizz = this;
+//
+//        Timer timer = new Timer() {
+//            public void run() {
+//                DeviceTools.requestPhoneGeoLoc(thizz);
+//            }
+//        };
+//
+//        // Execute the timer to expire 2 seconds in the future
+//        timer.schedule(2000);
+//    }
 }
