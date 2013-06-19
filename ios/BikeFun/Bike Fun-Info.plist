@@ -6,17 +6,6 @@
 	<string>English</string>
 	<key>CFBundleDisplayName</key>
 	<string>${PRODUCT_NAME}</string>
-	<key>CFBundleDocumentTypes</key>
-	<array>
-		<dict>
-			<key>CFBundleTypeName</key>
-			<string>MKDirectionsRequest</string>
-			<key>LSItemContentTypes</key>
-			<array>
-				<string>com.apple.maps.directionsrequest</string>
-			</array>
-		</dict>
-	</array>
 	<key>CFBundleExecutable</key>
 	<string>${EXECUTABLE_NAME}</string>
 	<key>CFBundleIconFile</key>
@@ -45,23 +34,13 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>iPhone RC1 v1.0</string>
+	<string>iPhone Beta 1.1</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
 	<string>1.0</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
-	<key>MKDirectionsApplicationSupportedModes</key>
-	<array>
-		<string>MKDirectionsModeBike</string>
-		<string>MKDirectionsModePedestrian</string>
-		<string>MKDirectionsModeBus</string>
-		<string>MKDirectionsModeFerry</string>
-		<string>MKDirectionsModeSubway</string>
-	</array>
-	<key>NSMainNibFile</key>
-	<string></string>
 	<key>NSMainNibFile~ipad</key>
 	<string></string>
 	<key>UIPrerenderedIcon</key>
