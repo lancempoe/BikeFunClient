@@ -109,26 +109,49 @@
     return [super webViewDidFinishLoad:theWebView];
 }
 
-/* Comment out the block below to over-ride */
+/**
+ 
+ * Start Loading Request
+ 
+ * This is where most of the magic happens... We take the request(s) and process the response.
+ 
+ * From here we can re direct links and other protocalls to different internal methods.
+ 
+ */
 
-/*
+- (BOOL)webView:(UIWebView *)theWebView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
 
-- (void) webViewDidStartLoad:(UIWebView*)theWebView
 {
-    return [super webViewDidStartLoad:theWebView];
+    
+    NSURL *url = [request URL];
+    
+    // add any other schemes you want to support, or perform additional
+    
+    // tests on the url before deciding what to do -jm
+    
+    if( [[url scheme] isEqualToString:@"http"] ||
+       
+       [[url scheme] isEqualToString:@"https"])
+        
+    {
+        
+        [[UIApplication sharedApplication] openURL:url];
+        
+        return NO;
+        
+    }
+    
+    else
+        
+    {
+        
+        return [ super webView:theWebView shouldStartLoadWithRequest:request navigationType:navigationType ];
+        
+    }
+    
+    
+    
 }
-
-- (void) webView:(UIWebView*)theWebView didFailLoadWithError:(NSError*)error
-{
-    return [super webView:theWebView didFailLoadWithError:error];
-}
-
-- (BOOL) webView:(UIWebView*)theWebView shouldStartLoadWithRequest:(NSURLRequest*)request navigationType:(UIWebViewNavigationType)navigationType
-{
-    return [super webView:theWebView shouldStartLoadWithRequest:request navigationType:navigationType];
-}
-*/
-
 @end
 
 @implementation MainCommandDelegate
