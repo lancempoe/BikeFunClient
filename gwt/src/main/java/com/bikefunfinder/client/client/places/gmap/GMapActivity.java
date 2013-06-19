@@ -21,6 +21,7 @@ import com.bikefunfinder.client.shared.request.management.WebServiceResponseCons
 import com.bikefunfinder.client.shared.widgets.NavBaseActivity;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.http.client.UrlBuilder;
+import com.google.gwt.place.shared.Place;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
@@ -208,7 +209,7 @@ public class GMapActivity extends NavBaseActivity implements GMapDisplay.Present
                     public void onSuccess(GeoLoc geoLoc) {
                         updateBikeRideOnMap(geoLoc);
                     }
-                }));
+                },2));
             }
         }
     }
@@ -359,24 +360,27 @@ public class GMapActivity extends NavBaseActivity implements GMapDisplay.Present
 
     private void trackingPingLogic() {
         if(isTracking) {
-            cancelGeoLocationWatcherIfRegistered();
-            geolocationWatcher = DeviceTools.requestGeoUpdates(new MustGetGoodGeo(new NonPhoneGapGeoLocCallback.GeolocationHandler() {
-                @Override
-                public void onSuccess(GeoLoc geoLoc) {
-                    NativeUtilities.partialWakeLock();
-                    callServerForClientTrack(geoLoc);
+            if(geolocationWatcher==null) {
+                geolocationWatcher = DeviceTools.requestGeoUpdates(
+                    new MustGetGoodGeo(
+                        new NonPhoneGapGeoLocCallback.GeolocationHandler() {
+                            @Override
+                            public void onSuccess(GeoLoc geoLoc) {
+                                NativeUtilities.partialWakeLock();
+                                callServerForClientTrack(geoLoc);
 
-                    cancelGeoLocationWatcherIfRegistered();
-                    setTrackView(geoLoc);
-                    accurateGeoLoc = geoLoc;
-                }
-            }){
-                @Override
-                public void killingCall() {
-                    cancelGeoLocationWatcherIfRegistered();
-                }
+                                cancelGeoLocationWatcherIfRegistered();
+                                setTrackView(geoLoc);
+                                accurateGeoLoc = geoLoc;
+                            }
+                        }){
+                            @Override
+                            public void killingCall() {
+                                cancelGeoLocationWatcherIfRegistered();
+                            }
+                        }
+                );
             }
-            );
         } else {
             cancelGeoLocationWatcherIfRegistered();
         }
@@ -386,10 +390,16 @@ public class GMapActivity extends NavBaseActivity implements GMapDisplay.Present
 
     @Override
     public void backButtonSelected() {
-        cancelGeoLocationWatcherIfRegistered();
-        cancelScreenRefreshTimer();
-        cancelTrackingRefreshTimer();
-        clientFactory.getPlaceController().goTo(new HomeScreenPlace());
+        cancelTimersAndAnyOutstandingActivities();
+
+        final Place whereWereGoing;
+        if(bikeRide!=null) {
+            whereWereGoing = new EventScreenPlace(bikeRide);
+        } else {
+            whereWereGoing = new HomeScreenPlace();
+        }
+
+        clientFactory.getPlaceController().goTo(whereWereGoing);
     }
 
     public static void cancelGeoLocationWatcherIfRegistered() {

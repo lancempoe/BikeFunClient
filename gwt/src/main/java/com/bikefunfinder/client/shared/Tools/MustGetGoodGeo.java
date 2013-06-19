@@ -8,30 +8,48 @@ import com.bikefunfinder.client.shared.model.GeoLoc;
 import com.bikefunfinder.client.shared.request.management.GeoLocCacheStrategy;
 import com.bikefunfinder.client.shared.widgets.LoadingScreen;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.user.client.Timer;
+import com.google.gwt.user.client.Window;
 import com.googlecode.gwtphonegap.client.geolocation.Coordinates;
 import com.googlecode.gwtphonegap.client.geolocation.GeolocationCallback;
 import com.googlecode.gwtphonegap.client.geolocation.Position;
 import com.googlecode.gwtphonegap.client.geolocation.PositionError;
 import com.googlecode.mgwt.ui.client.dialog.Dialogs;
 
+import java.util.Date;
+
 public abstract class MustGetGoodGeo implements GeolocationCallback {
 
     private final NonPhoneGapGeoLocCallback.GeolocationHandler callback;
     private final GeoLocCacheStrategy cacheStrategy = GeoLocCacheStrategy.INSTANCE;
-    private int numberOfTimesTried;
+    private final int timeToWaitBeforeKillingCall = 5000;
 
     public MustGetGoodGeo(NonPhoneGapGeoLocCallback.GeolocationHandler callback) {
         this.callback = callback;
+        stopIfGeoDoesntChange.schedule(timeToWaitBeforeKillingCall);
     }
+
+    private long lastGeoGet;
+    private final Timer stopIfGeoDoesntChange = new Timer() {
+        @Override
+        public void run() {
+            long now = (new Date()).getTime();
+            long elapsed = now - lastGeoGet;
+            if(elapsed>=timeToWaitBeforeKillingCall) {
+                killingCall();
+            } else {
+                stopIfGeoDoesntChange.schedule(timeToWaitBeforeKillingCall);
+            }
+        }
+    };
 
     public abstract void killingCall();
 
     @Override
     public void onSuccess(final Position position) {
-
+        lastGeoGet = (new Date()).getTime();
 
         if(position == null || position.getCoordinates() == null) {
-            refireRequestInAfterSomeTime();
             return;
         }
         // we have a geo so we can be picky
@@ -40,7 +58,6 @@ public abstract class MustGetGoodGeo implements GeolocationCallback {
 
 
         if(positionQuality == NonPhoneGapGeoLocCallback.GeoLocationAccuracy.BAD) {
-            refireRequestInAfterSomeTime();
             return;
         }
         GeoLoc geoLocToReturn = buildGeoLocFrom(position);
@@ -58,6 +75,7 @@ public abstract class MustGetGoodGeo implements GeolocationCallback {
     }
 
     private void informCallBackOfSuccess(GeoLoc objectPayload) {
+        stopIfGeoDoesntChange.cancel();
         LoadingScreen.closeLoader();
         callback.onSuccess(objectPayload);
     }
@@ -68,20 +86,10 @@ public abstract class MustGetGoodGeo implements GeolocationCallback {
             Dialogs.alert("Error:", "Permission denied, change settings and continue.", new Dialogs.AlertCallback() {
                 @Override
                 public void onButtonPressed() {
-                    refireRequestInAfterSomeTime();
+
                 }
             });
-        } else {
-            refireRequestInAfterSomeTime();
         }
 
-    }
-
-    private void refireRequestInAfterSomeTime() {
-        if(numberOfTimesTried>2) {
-            killingCall();
-        } else {
-            numberOfTimesTried ++;
-        }
     }
 }

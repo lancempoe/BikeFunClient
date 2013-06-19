@@ -50,8 +50,15 @@ public class NonPhoneGapGeoLocCallback implements GeolocationCallback {
     private final GeolocationHandler callback;
     private final GeoLocCacheStrategy cacheStrategy = GeoLocCacheStrategy.INSTANCE;
 
+    public final Integer maxAttempts;
+
     public NonPhoneGapGeoLocCallback(GeolocationHandler callback) {
+        this(callback, Integer.MAX_VALUE);
+    }
+
+    public NonPhoneGapGeoLocCallback(GeolocationHandler callback, int maxAttempts) {
         this.callback = callback;
+        this.maxAttempts = Integer.valueOf(maxAttempts);
 
         LoadingScreen.openLoaderPanel();
     }
@@ -113,16 +120,20 @@ public class NonPhoneGapGeoLocCallback implements GeolocationCallback {
         }
     }
 
+    private int timesRetried = 0;
     private void refireRequestInAfterSomeTime() {
         final NonPhoneGapGeoLocCallback thizz = this;
 
-        Timer timer = new Timer() {
-            public void run() {
-                DeviceTools.requestPhoneGeoLoc(thizz);
-            }
-        };
+        if(timesRetried<maxAttempts) {
+            Timer timer = new Timer() {
+                public void run() {
+                    DeviceTools.requestPhoneGeoLoc(thizz);
+                }
+            };
 
-        // Execute the timer to expire 2 seconds in the future
-        timer.schedule(2000);
+            // Execute the timer to expire 2 seconds in the future
+            timer.schedule(2000);
+        }
+        timesRetried ++;
     }
 }
