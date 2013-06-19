@@ -112,7 +112,6 @@ public class GMapViewImpl implements GMapDisplay {
         //Build the map
         mapPanel = new FlowPanel();
         mapPanel.addStyleName(MGWTStyle.getTheme().getMGWTClientBundle().getLayoutCss().fillPanelExpandChild());
-        mapPanel.addStyleName("disableAllLinks");
         main.add(mapPanel);
 
     }
