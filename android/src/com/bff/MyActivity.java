@@ -1,4 +1,4 @@
-package com.example;
+package com.bff;
 
 
 import android.content.pm.ActivityInfo;
