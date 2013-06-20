@@ -92,12 +92,14 @@ public class GMapActivity extends NavBaseActivity implements GMapDisplay.Present
         @Override
         public void onOk() {
             isTracking = true;
+            isShowing = false;
             timeTrackingStartedInMillis = (new Date()).getTime();
         }
 
         @Override
         public void onCancel() {
             isTracking = false;
+            isShowing = false;
             display.setTrackingButtonText(isTracking);
         }
     };
@@ -127,6 +129,11 @@ public class GMapActivity extends NavBaseActivity implements GMapDisplay.Present
         display.resetPolyLine();
         display.truffleShuffle();
         display.setTrackingButtonText(isTracking);
+
+        if(warningDialog!=null) {
+            warningDialog.hide();
+        }
+        isShowing = false;
 
         setDisplayPageName(this.pageName);
 
@@ -218,6 +225,7 @@ public class GMapActivity extends NavBaseActivity implements GMapDisplay.Present
         display.displayPageName(pageName);
     }
 
+    private static boolean isShowing = false;
     private void checkIfWeShouldShowWarningDialog() {
         final long timeSpentTracking = calculateTimeSpentTracking();
 
@@ -228,7 +236,12 @@ public class GMapActivity extends NavBaseActivity implements GMapDisplay.Present
 
             trackingWarningCallBackAction.onCancel();
         } else if(timeSpentTracking >= ScreenConstants.TIME_TO_WARN_USER_OF_TRACKING_DISABLING_IN_MILLIS) {
-            warningDialog = Dialogs.confirm("Warning:", "Tracking is about to expire. Continue Tracking?", trackingWarningCallBackAction);
+            if(warningDialog==null && !isShowing) {
+                warningDialog = Dialogs.confirm("Warning:", "Tracking is about to expire. Continue Tracking?", trackingWarningCallBackAction);
+            } else {
+                warningDialog.show();
+            }
+            isShowing = true;
         }
     }
 
