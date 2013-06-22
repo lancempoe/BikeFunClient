@@ -116,8 +116,10 @@ public class HomeScreenDisplayGwtImpl extends Composite implements HomeScreenDis
         
         timeAndDayButton.addStyleName(style.buttonTreatment());
         timeAndDayButton.addStyleName("icon-refresh");
+        timeAndDayButton.addStyleName("icon-large");
         hereAndNowButton.addStyleName(style.buttonTreatment());
         hereAndNowButton.addStyleName("icon-globe");
+        hereAndNowButton.addStyleName("icon-large");
 
         MyGroupingCellList<Header, Content> groupingCellList = new MyGroupingCellList<Header, Content>(new ContentCell(), new HeaderCell());
         groupingCellList.addSelectionHandler(new SelectionHandler<Content>() {

@@ -10,9 +10,9 @@ import com.google.gwt.resources.client.TextResource;
  * Time: 11:10 AM
  * To change this template use File | Settings | File Templates.
  */
-public interface FontAwesomeBundle extends ClientBundle {
+public interface FontAwesomeStyleBundle extends ClientBundle {
     @Source("font-awesome.css")
     TextResource css();
 
-    public static final FontAwesomeBundle INSTANCE = GWT.create(FontAwesomeBundle.class);
+    public static final FontAwesomeStyleBundle INSTANCE = GWT.create(FontAwesomeStyleBundle.class);
 }
