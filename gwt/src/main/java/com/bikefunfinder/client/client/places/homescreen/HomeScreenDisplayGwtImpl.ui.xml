@@ -37,10 +37,10 @@
         <g:FlowPanel ui:field="footerFlowPanel">
                 <g:HorizontalPanel ui:field="footerHorizontalPanel" width="100%">
                     <g:cell horizontalAlignment="ALIGN_LEFT">
-                        <mgwt:Button ui:field="hereAndNowButton" text="Here &amp; Now"/>
+                        <mgwt:Button ui:field="hereAndNowButton" text="&nbsp;Here &amp; Now"/>
                     </g:cell>
                     <g:cell horizontalAlignment="ALIGN_RIGHT">
-                        <mgwt:Button ui:field="timeAndDayButton" text="Time &amp; Day"/>
+                        <mgwt:Button ui:field="timeAndDayButton" text="&nbsp;Refresh"/>
                     </g:cell>
                 </g:HorizontalPanel>
         </g:FlowPanel>
