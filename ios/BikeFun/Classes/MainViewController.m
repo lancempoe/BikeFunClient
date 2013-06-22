@@ -135,7 +135,7 @@
         
     {
         
-        [[UIApplication sharedApplication] openURL:url];
+        //[[UIApplication sharedApplication] openURL:url];
         
         return NO;
         
