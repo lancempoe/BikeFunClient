@@ -68,6 +68,8 @@ public class GMapViewImpl implements GMapDisplay {
     private Presenter presenter;
 
     private BikeRide bikeRide;
+    private BikeRide priorBikeRide;
+
     private String userId;
     private HeaderPanel headerPanel;
     private Button trackingRideButton;
@@ -87,6 +89,7 @@ public class GMapViewImpl implements GMapDisplay {
         backButton.addTapHandler(new TapHandler() {
             @Override
             public void onTap(final TapEvent tapEvent) {
+                priorBikeRide = null;
                 if (presenter != null) {
                     presenter.backButtonSelected();
                 }
@@ -151,12 +154,6 @@ public class GMapViewImpl implements GMapDisplay {
         this.headerPanel.setRightWidget(new HTML(safeHtmlBuilder.toSafeHtml().asString()));
     }
 
-    protected void backButtonSelected() {
-        if (presenter != null) {
-            presenter.backButtonSelected();
-        }
-    }
-
     @Override
     public void resetForHereAndNow(final GeoLoc centerGeoLoc) {
         if (!MapScreenType.HERE_AND_NOW.equals(priorMapScreenType)) {
@@ -179,10 +176,7 @@ public class GMapViewImpl implements GMapDisplay {
 
     @Override
     public void resetForEvent(final GeoLoc centerGeoLoc) {
-        if (!MapScreenType.EVENT.equals(priorMapScreenType)) {
-            resetMap = true;
-            priorMapScreenType = MapScreenType.EVENT;
-        }
+        priorMapScreenType = MapScreenType.EVENT;
 
         //Clear out the markers
         for (Marker marker : markers) {
@@ -195,6 +189,15 @@ public class GMapViewImpl implements GMapDisplay {
         if (circle != null) {
             circle.setVisible(false);
         }
+    }
+
+    //We can move this to a common area if we want to use outside of this class
+    private boolean isEqualBikeRide(BikeRide bikeRide, BikeRide priorBikeRide) {
+        if ((bikeRide != null && priorBikeRide != null) &&
+             bikeRide.getId().equals(priorBikeRide.getId())) {
+            return true;
+        }
+        return false;
     }
 
     private void refreshMap() {
@@ -274,6 +277,12 @@ public class GMapViewImpl implements GMapDisplay {
 
     @Override
     public void setupMapToDisplayBikeRide(GeoLoc phoneGpsLoc, BikeRide bikeRide, boolean reCenterReZoom, boolean isTracking) {
+
+        //Reset map if new view.
+        if (!isEqualBikeRide(bikeRide, priorBikeRide)) {
+            resetMap = true;
+        }
+        priorBikeRide = bikeRide;
 
         //Build the view of the map
         if (map == null || resetMap) {
