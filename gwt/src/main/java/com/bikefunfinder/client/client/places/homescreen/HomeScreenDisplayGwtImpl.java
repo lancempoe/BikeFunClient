@@ -33,13 +33,11 @@ import com.googlecode.mgwt.ui.client.widget.tabbar.TabBarButton;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 
 public class HomeScreenDisplayGwtImpl extends Composite implements HomeScreenDisplay {
 
-    private static boolean showOldRides = true; //Setting to true but will be toggled first time through
+    private static boolean hideOldRides = true; //Default to hiding old rides.
     private static final String SHOW_EXPIRED_RIDES = "Show Earlier Rides";
     private static final String HIDE_EXPIRED_RIDES = "Hide Earlier Rides";
     
@@ -176,7 +174,7 @@ public class HomeScreenDisplayGwtImpl extends Composite implements HomeScreenDis
     }
 
     private void setExpiredRidesButtonText() {
-        if (showOldRides) {
+        if (hideOldRides) {
             this.expiredRidesButton.setText(SHOW_EXPIRED_RIDES);
         } else {
             this.expiredRidesButton.setText(HIDE_EXPIRED_RIDES);
@@ -206,7 +204,7 @@ public class HomeScreenDisplayGwtImpl extends Composite implements HomeScreenDis
 
     @UiHandler("expiredRidesButton")
     protected void onExpiredRidesButton(TapEvent event) {
-        showOldRides = !showOldRides;
+        hideOldRides = !hideOldRides;
         if (presenter != null) {
             presenter.onExpiredRidesButton();
         }
@@ -250,8 +248,8 @@ public class HomeScreenDisplayGwtImpl extends Composite implements HomeScreenDis
         String tableQuickLink = ""; //An empty sting will allow the quick link to function without having to see it.
         for (BikeRide bikeRide : bikeRides) {
 
-            //Hide/Show expired rides
-            if (showOldRides && DateTools.isOldRide(bikeRide)){
+            //Hide/Show expired rides that are not tracking
+            if (hideOldRides && !bikeRide.isCurrentlyTracking() && DateTools.isOldRide(bikeRide)){
                 continue;
             }
 
