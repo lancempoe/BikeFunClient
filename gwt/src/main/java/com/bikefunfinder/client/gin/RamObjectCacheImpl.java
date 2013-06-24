@@ -88,7 +88,7 @@ public class RamObjectCacheImpl implements RamObjectCache {
 
         for(BikeRide bikeRide: timeOfDayBikeRideList) {
             String bikeRideId = bikeRide.getId();
-            if(bikeRideId!=bikeRide.getId()) {
+            if(bikeRideId!=newBikeRide.getId()) {
                 newBikeRideList.add(bikeRide);
             }
         }

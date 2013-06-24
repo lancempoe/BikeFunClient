@@ -39,6 +39,8 @@ public class HomeScreenActivity extends MGWTAbstractActivity implements HomeScre
     private final ClientFactory<HomeScreenDisplay> clientFactory = Injector.INSTANCE.getClientFactory();
     private final HomeScreenDisplay display = clientFactory.getDisplay(this);
     private final HomeScreenPlace.UsageEnum usageEnum;
+    final RamObjectCache ramObjectCache = Injector.INSTANCE.getRamObjectCache();
+
     private int geoFailCount = 0;
 
     final NotifyTimeAndDayCallback noOpNotifyTimeAndDayCallback = new NotifyTimeAndDayCallback() {
@@ -161,8 +163,6 @@ public class HomeScreenActivity extends MGWTAbstractActivity implements HomeScre
         }));
 
     }
-
-    final RamObjectCache ramObjectCache = Injector.INSTANCE.getRamObjectCache();
 
     private void fireRequestForTimeOfDay(
             final HomeScreenDisplay display,
