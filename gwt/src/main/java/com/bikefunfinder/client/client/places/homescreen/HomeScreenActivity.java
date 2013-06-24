@@ -28,12 +28,16 @@ import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.web.bindery.event.shared.EventBus;
 import com.googlecode.mgwt.mvp.client.MGWTAbstractActivity;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  * @author: tneuwerth
  * @created 4/5/13 3:59 PM
  */
 public class HomeScreenActivity extends MGWTAbstractActivity implements HomeScreenDisplay.Presenter {
     private final ClientFactory<HomeScreenDisplay> clientFactory = Injector.INSTANCE.getClientFactory();
+    private final HomeScreenDisplay display = clientFactory.getDisplay(this);
     private final HomeScreenPlace.UsageEnum usageEnum;
     private int geoFailCount = 0;
 
@@ -44,25 +48,17 @@ public class HomeScreenActivity extends MGWTAbstractActivity implements HomeScre
 
     public HomeScreenActivity(Root root, HomeScreenPlace.UsageEnum usageEnum) {
         this.usageEnum = usageEnum;
-
-        if(root == null ) {
-            //save one and use a few times?
-            //store in db maybe for later?
-              refreshTimeAndDayReq(noOpNotifyTimeAndDayCallback);
-              
-//            String rootJson = com.bikefunfinder.client.shared.model.json.Utils.getTestingRootNodeJson(40);
-//            Root largeFakeRoot = com.bikefunfinder.client.shared.model.json.Utils.castJsonTxtToJSOObject(rootJson);
-//            setupDisplay(largeFakeRoot);
-
-        } else {
+        if (root != null) {
+            Logger.getLogger("").log(Level.SEVERE, "THis should never happen!!!!!!!!!");
             setupDisplay(root);
+        } else if (ramObjectCache.getTimeOfDayBikeRideCache().size() == 0) {
+            Logger.getLogger("").log(Level.SEVERE, "ramObjectCache.getTimeOfDayBikeRideCache().size() == 0");
+            refreshTimeAndDayReq(noOpNotifyTimeAndDayCallback);
         }
     }
 
     private void setupDisplay(Root root) {
         //root will never be null
-
-        final HomeScreenDisplay display = clientFactory.getDisplay(this);
 
         display.display(Extractor.getBikeRidesFrom(root));
 
@@ -96,7 +92,6 @@ public class HomeScreenActivity extends MGWTAbstractActivity implements HomeScre
 
     @Override
     public void start(AcceptsOneWidget panel, EventBus eventBus) {
-        final HomeScreenDisplay display = clientFactory.getDisplay(this);
         display.setPresenter(this);
         panel.setWidget(display);
     }
@@ -130,8 +125,6 @@ public class HomeScreenActivity extends MGWTAbstractActivity implements HomeScre
 
     @Override
     public void onTimeAndDayButton() {
-        final HomeScreenDisplay display = clientFactory.getDisplay(this);
-
         DeviceTools.requestPhoneGeoLoc(new NonPhoneGapGeoLocCallback(new NonPhoneGapGeoLocCallback.GeolocationHandler() {
             @Override
             public void onSuccess(GeoLoc geoLoc) {
@@ -146,6 +139,11 @@ public class HomeScreenActivity extends MGWTAbstractActivity implements HomeScre
     }
 
     @Override
+    public void onExpiredRidesButton() {
+        display.display(ramObjectCache.getTimeOfDayBikeRideCache());
+    }
+
+    @Override
     public void refreshTimeAndDayReq(final NotifyTimeAndDayCallback callback) {
         if(HomeScreenPlace.UsageEnum.ShowMyRides == usageEnum ||
            HomeScreenPlace.UsageEnum.FilterRides == usageEnum) {
@@ -153,8 +151,6 @@ public class HomeScreenActivity extends MGWTAbstractActivity implements HomeScre
             callback.onResponseReceived(); // tell the caller everything is happy
             return;
         }
-
-        final HomeScreenDisplay display = clientFactory.getDisplay(this);
 
         DeviceTools.requestPhoneGeoLoc(new NonPhoneGapGeoLocCallback(new NonPhoneGapGeoLocCallback.GeolocationHandler() {
             @Override
@@ -176,7 +172,8 @@ public class HomeScreenActivity extends MGWTAbstractActivity implements HomeScre
         WebServiceResponseConsumer<Root> callback = new WebServiceResponseConsumer<Root>() {
             @Override
             public void onResponseReceived(Root root) {
-                ramObjectCache.setHereAndNowBikeRideCache(Extractor.getBikeRidesFrom(root));
+                Logger.getLogger("").log(Level.INFO, "Root retrieved from fireRequestForTimeOfDay");
+                ramObjectCache.setTimeOfDayBikeRideCache(Extractor.getBikeRidesFrom(root));
                 setupDisplay(root);
                 notifyTimeAndDayCallback.onResponseReceived();
             }

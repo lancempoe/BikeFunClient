@@ -124,8 +124,8 @@ public final class SearchByProximityRequest {
         RequestCallBackHandlerStack<Root> cachedPewpChain = new RequestCallBackHandlerStack<Root>(
                 PayloadConverters.ROOT_JSON_OBJECT_CONVERTER, requestBuilder, callback,  new CacheStrategy<Root>() {
             @Override
-            public void cacheType(Root type) {
-                ramObjectCache.setSearchByProximity(type);
+            public void cacheType(Root root) {
+                ramObjectCache.setSearchByProximity(root);
             }
 
             @Override

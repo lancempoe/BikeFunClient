@@ -1,5 +1,6 @@
 package com.bikefunfinder.client.client.places.homescreen;
 
+import com.bikefunfinder.client.shared.Tools.DateTools;
 import com.bikefunfinder.client.shared.constants.ScreenConstants;
 import com.bikefunfinder.client.shared.model.BikeRide;
 import com.bikefunfinder.client.shared.model.printer.JsDateWrapper;
@@ -9,6 +10,8 @@ import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.user.client.ui.IsWidget;
 
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public interface HomeScreenDisplay extends IsWidget {
 
@@ -22,18 +25,16 @@ public interface HomeScreenDisplay extends IsWidget {
         public void onLoginButton();
         public void onRideClick(BikeRide bikeRide);
 
-        public void onTimeAndDayButton();
         public void onHereAndNowButton();
+        public void onExpiredRidesButton();
+        public void onTimeAndDayButton();
 
         public void refreshTimeAndDayReq(NotifyTimeAndDayCallback callback);
         public interface NotifyTimeAndDayCallback {
             void onError();
             void onResponseReceived();
         }
-
-
     }
-
 
     public class Header {
         private final String name;
@@ -146,20 +147,18 @@ public interface HomeScreenDisplay extends IsWidget {
 
             JsDate rideTime = JsDate.create(bikeRide.getRideStartTime());
 
-            if(currentTime.getTime() - ScreenConstants.TimeUntilItsOld > this.bikeRide.getRideStartTime())
-            {
-                //Nope! Too old
+            if (DateTools.isOldRide(this.bikeRide)) {
                 return "oldRide";
-            } else if(currentTime.getTime() + ScreenConstants.TimeUntilItsNotCurrent < this.bikeRide.getRideStartTime()) {
-                //Nope! Too Early
+            } else if (DateTools.isLeavingRide(this.bikeRide)) {
+                return "leavingRide";
+            } else if (DateTools.isCurrentRide(this.bikeRide) ) {
+                return "currentRide";
+            } else if (DateTools.isFutureRide(this.bikeRide)) {
                 return "futureRide";
             } else {
-                return "currentRide";
+                Logger.getLogger("").log(Level.SEVERE, "Invalid bike ride start time!");
+                return "oldRide";
             }
-
-
         }
-
-
     }
 }

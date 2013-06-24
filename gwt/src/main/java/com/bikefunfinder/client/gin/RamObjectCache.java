@@ -12,8 +12,11 @@ import com.bikefunfinder.client.shared.model.Root;
 import java.util.List;
 
 public interface RamObjectCache {
+
     public List<BikeRide> getHereAndNowBikeRideCache();
+    public List<BikeRide> getTimeOfDayBikeRideCache();
     public void setHereAndNowBikeRideCache(List<BikeRide> bikeRides);
+    public void setTimeOfDayBikeRideCache(List<BikeRide> bikeRides);
 
     public BikeRide getCurrentBikeRide();
     public void setCurrentBikeRide(BikeRide bikeRide);
@@ -40,6 +43,7 @@ public interface RamObjectCache {
 
     public BikeRide getEventRequest();
     public void setEventRequest(BikeRide bikeRide);
+
 
 
 }

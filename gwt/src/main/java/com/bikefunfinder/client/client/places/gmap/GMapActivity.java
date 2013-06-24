@@ -32,6 +32,8 @@ import com.googlecode.mgwt.ui.client.dialog.Dialog;
 import com.googlecode.mgwt.ui.client.dialog.Dialogs;
 
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Created with IntelliJ IDEA.
@@ -276,7 +278,6 @@ public class GMapActivity extends NavBaseActivity implements GMapDisplay.Present
         if (MapScreenType.EVENT.equals(screenType)) {
             updatedBikeRide(geoLoc);
         }
-
 
         isFirstPostSavePhoneGeoLoc = false;
     }

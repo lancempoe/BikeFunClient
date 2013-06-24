@@ -102,7 +102,6 @@ public class GMapViewImpl implements GMapDisplay {
         trackingRideButton.addTapHandler(new TapHandler() {
             @Override
             public void onTap(TapEvent tapEvent) {
-                Logger.getLogger("").log(Level.WARNING, "track button pressed ");
                 if (presenter != null) {
                     presenter.trackingRideButtonSelected();
                 }

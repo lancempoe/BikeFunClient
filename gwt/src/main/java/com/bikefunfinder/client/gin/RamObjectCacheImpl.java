@@ -17,34 +17,53 @@ import java.util.logging.Logger;
 public class RamObjectCacheImpl implements RamObjectCache {
     private Logger log = Logger.getLogger(getClass().getName());
 
-    private final List<BikeRide> bikeRideList = new ArrayList<BikeRide>();
+    private final List<BikeRide> hereAndNowBikeRideList = new ArrayList<BikeRide>();
+    private final List<BikeRide> timeOfDayBikeRideList = new ArrayList<BikeRide>();
+
     private GeoLoc currentPhoneGeoLoc;
+    private String currentBikeRideId = null;
 
     private Root lastTimeOfDay = null;
     private Root lastTimeOfDayForProfile = null;
     private Root lastSearchByProximity = null;
 
     @Override
-    public List<BikeRide> getHereAndNowBikeRideCache() {
-        return bikeRideList;
+    public void setHereAndNowBikeRideCache(List<BikeRide> bikeRides) {
+        hereAndNowBikeRideList.clear();
+        hereAndNowBikeRideList.addAll(bikeRides);
     }
 
     @Override
-    public void setHereAndNowBikeRideCache(List<BikeRide> bikeRides) {
-        bikeRideList.clear();
-        bikeRideList.addAll(bikeRides);
+    public void setTimeOfDayBikeRideCache(List<BikeRide> bikeRides) {
+        timeOfDayBikeRideList.clear();
+        timeOfDayBikeRideList.addAll(bikeRides);
     }
 
-    private String currentBikeRideId = null;
+    @Override
+    public List<BikeRide> getHereAndNowBikeRideCache() {
+        //We could save some ram by simply using root.  This may be faster though.
+        return hereAndNowBikeRideList;
+    }
+
+    @Override
+    public List<BikeRide> getTimeOfDayBikeRideCache() {
+        //We could save some ram by simply using root.  This may be faster though.
+        return timeOfDayBikeRideList;
+    }
+
+    /**
+     * This will be used so that a user can go to the ride page from the here and now page.
+     * @return
+     */
     @Override
     public BikeRide getCurrentBikeRide() {
         if(currentBikeRideId == null) {
             return null;
         }
 
-        log.log(Level.ALL, "BikeRide list size" + bikeRideList.size() + ", " +
+        log.log(Level.ALL, "BikeRide list size" + timeOfDayBikeRideList.size() + ", " +
                            "hunting for "+currentBikeRideId);
-        for(BikeRide bikeRide: bikeRideList) {
+        for(BikeRide bikeRide: timeOfDayBikeRideList) {
             String bikeRideId = bikeRide.getId();
             if(bikeRideId == currentBikeRideId) {
                 return bikeRide;
@@ -58,9 +77,7 @@ public class RamObjectCacheImpl implements RamObjectCache {
         if(newBikeRide==null || newBikeRide.getId()==null) {
             return;
         }
-
         currentBikeRideId = newBikeRide.getId();
-
         updateRide(newBikeRide);
     }
 
@@ -69,15 +86,15 @@ public class RamObjectCacheImpl implements RamObjectCache {
         List<BikeRide> newBikeRideList = new ArrayList<BikeRide>();
         newBikeRideList.add(newBikeRide);
 
-        for(BikeRide bikeRide: bikeRideList) {
+        for(BikeRide bikeRide: timeOfDayBikeRideList) {
             String bikeRideId = bikeRide.getId();
             if(bikeRideId!=bikeRide.getId()) {
                 newBikeRideList.add(bikeRide);
             }
         }
 
-        bikeRideList.clear();
-        bikeRideList.addAll(newBikeRideList);
+        timeOfDayBikeRideList.clear();
+        timeOfDayBikeRideList.addAll(newBikeRideList);
     }
 
     @Override
@@ -88,14 +105,14 @@ public class RamObjectCacheImpl implements RamObjectCache {
 
         List<BikeRide> newBikeRideList = new ArrayList<BikeRide>();
 
-        for(BikeRide bikeRide: bikeRideList) {
+        for(BikeRide bikeRide: timeOfDayBikeRideList) {
             if(rideIdToDelete!=bikeRide.getId()) {
                 newBikeRideList.add(bikeRide);
             }
         }
 
-        bikeRideList.clear();
-        bikeRideList.addAll(newBikeRideList);
+        timeOfDayBikeRideList.clear();
+        timeOfDayBikeRideList.addAll(newBikeRideList);
     }
 
     @Override
