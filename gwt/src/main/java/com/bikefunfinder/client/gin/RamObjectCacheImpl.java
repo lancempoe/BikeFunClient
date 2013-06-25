@@ -84,13 +84,25 @@ public class RamObjectCacheImpl implements RamObjectCache {
     @Override
     public void updateRide(BikeRide newBikeRide) {
         List<BikeRide> newBikeRideList = new ArrayList<BikeRide>();
-        newBikeRideList.add(newBikeRide);
 
+        boolean needToAddRide = true;
         for(BikeRide bikeRide: timeOfDayBikeRideList) {
-            String bikeRideId = bikeRide.getId();
-            if(bikeRideId!=newBikeRide.getId()) {
+
+            //Add the bike ride once the next ride is after the new ride
+            if (bikeRide.getRideStartTime() > newBikeRide.getRideStartTime())   {
+                newBikeRideList.add(newBikeRide);
+                needToAddRide = false;
+            }
+
+            //Add all other rides
+            if(bikeRide.getId() != newBikeRide.getId()) {
                 newBikeRideList.add(bikeRide);
             }
+        }
+
+        //Add to end if the ride hasn't been added yet.
+        if (needToAddRide){
+            newBikeRideList.add(newBikeRide);
         }
 
         timeOfDayBikeRideList.clear();
