@@ -33,6 +33,8 @@ import com.googlecode.mgwt.ui.client.widget.tabbar.TabBarButton;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 public class HomeScreenDisplayGwtImpl extends Composite implements HomeScreenDisplay {
@@ -166,11 +168,10 @@ public class HomeScreenDisplayGwtImpl extends Composite implements HomeScreenDis
     public void display(List<BikeRide> list) {
 
         pp.render(buildList(list));
-
         if(!wasAdjusted) {
             wasAdjusted = adjustPullPanelSize();
-            pp.refresh();
         }
+        pp.refresh();
     }
 
     private void setExpiredRidesButtonText() {
