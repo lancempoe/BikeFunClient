@@ -112,11 +112,12 @@ public class HomeScreenDisplayGwtImpl extends Composite implements HomeScreenDis
         addButton = new TabBarButton(tabBarAddImage);
         searchButton = new TabBarButton(tabBarSearchImage);
         loginButton = new TabBarButton(tabBarContactsImage);
+
+        initWidget(uiBinder.createAndBindUi(this));
+
         addButton.addStyleName("menuButton");
         searchButton.addStyleName("menuButton");
         loginButton.addStyleName("menuButton");
-
-        initWidget(uiBinder.createAndBindUi(this));
 
         hereAndNowButton.addStyleName(style.buttonTreatment());
         hereAndNowButton.addStyleName("icon-globe");

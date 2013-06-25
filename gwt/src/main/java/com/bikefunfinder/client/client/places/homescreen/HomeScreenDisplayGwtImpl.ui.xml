@@ -14,6 +14,7 @@
         .buttonTreatment {text-transform: none;
                           font-size: 13px !important;
                           font-weight: normal !important;}
+        .tightButtons { min-width: 0px; }
     </ui:style>
 
     <mgwt:LayoutPanel>
@@ -25,9 +26,9 @@
             </mgwt:left>
             <mgwt:right>
                 <g:HorizontalPanel>
-                    <mgwt:base.ButtonBase ui:field="addButton"/>
-                    <mgwt:base.ButtonBase ui:field="searchButton"/>
-                    <mgwt:base.ButtonBase ui:field="loginButton"/>
+                    <mgwt:base.ButtonBase ui:field="addButton" styleName="{style.tightButtons}"/>
+                    <mgwt:base.ButtonBase ui:field="searchButton" styleName="{style.tightButtons}"/>
+                    <mgwt:base.ButtonBase ui:field="loginButton" styleName="{style.tightButtons}"/>
                 </g:HorizontalPanel>
             </mgwt:right>
         </mgwt:HeaderPanel>
