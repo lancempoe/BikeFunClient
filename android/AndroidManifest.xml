@@ -20,7 +20,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           android:windowSoftInputMode="adjustPan"
           package="com.bff"
-          android:versionName="Dev 1.03"
+          android:versionName="Dev 1.1"
           android:versionCode="4"
           android:hardwareAccelerated="true">
     <supports-screens
