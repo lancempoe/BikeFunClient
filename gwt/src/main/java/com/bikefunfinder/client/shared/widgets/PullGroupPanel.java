@@ -236,6 +236,7 @@ public class PullGroupPanel<G, T> extends Composite implements HasRefresh {
 
     public void render(List<GroupingCellList.CellGroup<G, T>> list) {
         groupingCellList.render(list);
+        groupingCellList.forceTopHeaderReset();
 
         if(scrollPanel!=null &&scrollPanel.isAttached()) {
             scrollPanel.refresh();

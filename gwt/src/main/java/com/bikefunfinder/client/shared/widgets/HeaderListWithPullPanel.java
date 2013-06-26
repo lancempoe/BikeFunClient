@@ -377,6 +377,28 @@ public class HeaderListWithPullPanel<G, T> extends Composite {
         }
     }
 
+    public void forceTopHeaderReset() {
+        final Map<Integer, Integer> mapping = cellList.getMapping();
+
+        if(mapping!=null) {
+            int modelIndex;
+
+            try {
+                modelIndex = mapping.get(currentPage);
+            } catch (Exception e) {
+                return;
+            }
+
+            final CellGroup<G, T> gtCellGroup = list.get(modelIndex);
+            if(gtCellGroup!=null) {
+                final G group = gtCellGroup.getGroup();
+                if(group!=null) {
+                    movingHeader.setHTML(cellList.renderGroupHeader(group));
+                }
+            }
+        }
+    }
+
     public ScrollPanel getScrollPanel() {
         return scrollPanel;
     }
