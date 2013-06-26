@@ -278,7 +278,6 @@ public class HeaderListWithPullPanel<G, T> extends Composite {
 
         scrollPanel.refresh();
 
-
         if(list.size()<=0) {
 	        movingHeader.setHTML("");
         }
@@ -302,9 +301,12 @@ public class HeaderListWithPullPanel<G, T> extends Composite {
         if (currentPage > pagesY.length() - 1) {
             currentPage = pagesY.length() - 1;
         }
-
     }
 
+    /**
+     * Print the header at the top every time the user moves the screen.
+     * @param y
+     */
     private void updateHeaderPositionAndTitle(int y) {
         if(pagesY==null) return;
         if(cellList==null) return;
@@ -350,11 +352,11 @@ public class HeaderListWithPullPanel<G, T> extends Composite {
 
         }
 
-        if (currentPage + 1 < pagesY.length()) {
-
+        if (currentPage < pagesY.length()) {
             int nextHeader = pagesY.get(currentPage + 1);
 
             if (nextHeader + headerHeight - y > 0) {
+
                 int move = -(nextHeader + headerHeight - y);
                 final Element element = movingHeader.getElement();
                 if(element!=null) {
