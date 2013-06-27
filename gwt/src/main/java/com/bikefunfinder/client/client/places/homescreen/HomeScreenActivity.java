@@ -81,7 +81,7 @@ public class HomeScreenActivity extends MGWTAbstractActivity implements HomeScre
                 }
             }
         }  else {
-            display.display("No Rides");
+            display.display("Add a ride!");
         }
 
         NativeUtilities.trackPage("Home Screen");
