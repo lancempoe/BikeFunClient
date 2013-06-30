@@ -20,5 +20,6 @@ public class Settings {
 
     //PRD:
     public static String HOST = "http://service.bikefunfinder.com/";
+    //public static String HOST = "http://54.218.82.188/";
 
 }

@@ -8,10 +8,12 @@ import com.bikefunfinder.client.shared.constants.ScreenConstants;
 import com.bikefunfinder.client.shared.model.AnonymousUser;
 import com.bikefunfinder.client.shared.model.User;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
 import com.googlecode.mgwt.dom.client.event.tap.TapEvent;
@@ -34,6 +36,9 @@ public class ProfileScreenDisplayGwtImpl extends Composite implements ProfileScr
 
     @UiField
     ScrollPanel scrollPanel;
+
+    @UiField
+    HTML profileName;
 
     Label userName = new Label();
     Label joinedTimeStamp = new Label();
@@ -65,6 +70,13 @@ public class ProfileScreenDisplayGwtImpl extends Composite implements ProfileScr
     @Override
     public void displayFailedToLoadProfileMessage() {
         //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public void display(String profileNameText) {
+        SafeHtmlBuilder safeHtmlBuilder = new SafeHtmlBuilder();
+        safeHtmlBuilder.appendEscaped("Welcome " + profileNameText);
+        profileName.setText(safeHtmlBuilder.toSafeHtml().asString());
     }
 
     @Override

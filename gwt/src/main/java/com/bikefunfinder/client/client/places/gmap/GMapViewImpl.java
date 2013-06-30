@@ -45,7 +45,7 @@ public class GMapViewImpl implements GMapDisplay {
     private static final int RESUME_AUTO_PAN_AND_ZOOM_DELAY_MILLIS = 10000;
     private static final double METERS_IN_A_MILE = 1609.34;
     private static final int HERE_AND_NOW_RADIUS = 3;
-    private static final String START_TRACKING = "Start Tracking";
+    private static final String START_TRACKING = "Share ride location!";
     private static final String STOP_TRACKING = "Stop Tracking";
 
 
