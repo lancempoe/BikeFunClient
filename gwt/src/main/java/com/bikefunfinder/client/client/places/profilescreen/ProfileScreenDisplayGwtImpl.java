@@ -61,10 +61,8 @@ public class ProfileScreenDisplayGwtImpl extends Composite implements ProfileScr
         joinedTimeStamp.setWidth("100%");
         totalHostedBikeRideCount.setWidth("100%");
 
-        widgetList.add(buildFormWidget("User Name:", userName));
         widgetList.add(buildFormWidget("Date Joined BFF:", joinedTimeStamp));
         widgetList.add(buildFormWidget("Ride Created:", totalHostedBikeRideCount));
-
     }
 
     @Override

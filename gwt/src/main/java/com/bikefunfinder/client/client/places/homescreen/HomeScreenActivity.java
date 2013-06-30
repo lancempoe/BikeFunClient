@@ -51,7 +51,7 @@ public class HomeScreenActivity extends MGWTAbstractActivity implements HomeScre
     public HomeScreenActivity(Root root, HomeScreenPlace.UsageEnum usageEnum) {
         this.usageEnum = usageEnum;
         if (root != null) {
-            Logger.getLogger("").log(Level.SEVERE, "THis should never happen. We are not passing root around at this point.");
+            Logger.getLogger("").log(Level.INFO, "Passed a root to the Home page. Happens during Search and Profile");
             setupDisplay(root);
         } else if (ramObjectCache.getTimeOfDayBikeRideCache().size() == 0) {
             Logger.getLogger("").log(Level.SEVERE, "ramObjectCache.getTimeOfDayBikeRideCache().size() == 0");
