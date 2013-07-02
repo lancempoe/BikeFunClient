@@ -20,8 +20,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           android:windowSoftInputMode="adjustPan"
           package="com.bff"
-          android:versionName="Android Bata 1.1"
-          android:versionCode="1"
+          android:versionName="Dev 1.1.4"
+          android:versionCode="6"
           android:hardwareAccelerated="true">
     <supports-screens
             android:largeScreens="true"

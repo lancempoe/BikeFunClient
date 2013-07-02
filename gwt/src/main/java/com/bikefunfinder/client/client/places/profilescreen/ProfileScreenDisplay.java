@@ -16,6 +16,7 @@ public interface ProfileScreenDisplay extends IsWidget {
     public void displayFailedToLoadProfileMessage();
     public void display(User user);
     public void display(AnonymousUser anonymousUser);
+    public void display(String profileNameText);
 
     /**
      * This is the contract for what the activity can provide

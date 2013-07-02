@@ -18,6 +18,7 @@ public interface EventScreenDisplay extends IsWidget {
     public void display(BikeRide bikeRide);
     public void displayTrackings(JsArray<Tracking> trackings);
     public void resetState();
+    public void display(String eventNameText);
     public void displayEdit(boolean display);
 
     /**
@@ -26,7 +27,6 @@ public interface EventScreenDisplay extends IsWidget {
     public void setPresenter(Presenter presenter);
 
     public interface Presenter {
-
         public void backButtonSelected();
         public void eventRideMapButtonSelected();
         public void editRideButtonSelected();

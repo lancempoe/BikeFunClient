@@ -8,6 +8,7 @@ import com.bikefunfinder.client.bootstrap.ClientFactory;
 import com.bikefunfinder.client.client.places.eventscreen.EventScreenPlace;
 import com.bikefunfinder.client.client.places.homescreen.HomeScreenPlace;
 import com.bikefunfinder.client.gin.Injector;
+import com.bikefunfinder.client.gin.RamObjectCache;
 import com.bikefunfinder.client.shared.Tools.DeviceTools;
 import com.bikefunfinder.client.shared.Tools.NativeUtilities;
 import com.bikefunfinder.client.shared.Tools.NonPhoneGapGeoLocCallback;
@@ -32,6 +33,7 @@ public class CreateScreenActivity extends MGWTAbstractActivity implements Create
     private boolean existingEvent = false;
     private final AnonymousUser anonymousUser;
     private final User user;
+    private final RamObjectCache ramObjectCache = Injector.INSTANCE.getRamObjectCache();
 
     public CreateScreenActivity(BikeRide bikeRide, User user, AnonymousUser anonymousUser) {
         this.user = user;
@@ -96,6 +98,7 @@ public class CreateScreenActivity extends MGWTAbstractActivity implements Create
                     @Override
                     public void onResponseReceived(final BikeRide bikeRide) {
                         clientFactory.getPlaceController().goTo(new EventScreenPlace(bikeRide));
+                        ramObjectCache.setCurrentBikeRide(bikeRide);
                     }
                 });
                 request.bikeRide(createFormBikeRideState).latitude(geoLoc).longitude(geoLoc).send();
@@ -118,6 +121,7 @@ public class CreateScreenActivity extends MGWTAbstractActivity implements Create
                     @Override
                     public void onResponseReceived(BikeRide bikeRide) {
                         clientFactory.getPlaceController().goTo(new EventScreenPlace(bikeRide));
+                        ramObjectCache.setCurrentBikeRide(bikeRide);
                     }
                 });
                 updateBikeRideRequest.root(root).latitude(geoLoc).longitude(geoLoc).send();

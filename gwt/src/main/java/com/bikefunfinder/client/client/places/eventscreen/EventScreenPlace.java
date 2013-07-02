@@ -42,7 +42,7 @@ public class EventScreenPlace extends Place {
         @Override
         public EventScreenPlace getPlace(String token) {
 
-            for(BikeRide bikeRide : ramObjectCache.getHereAndNowBikeRideCache()) {
+            for(BikeRide bikeRide : ramObjectCache.getTimeOfDayBikeRideCache()) {
                 if(bikeRide.getId()==token) {
                     return new EventScreenPlace(bikeRide, true);
                 }

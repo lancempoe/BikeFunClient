@@ -4,12 +4,16 @@
              xmlns:mgwt="urn:import:com.googlecode.mgwt.ui.client.widget">
 
     <ui:style>
-        .positioningForName {
-            position:absolute; top:35%;
+        .eventHeader {
             text-transform: none;
             font-size: 15px !important;
             font-weight: bold !important;
             color: white;
+            margin-left: 75px;
+            overflow: hidden;
+            height: 38px;
+            line-height: 40px;
+            text-overflow: ellipsis;
         }
     </ui:style>
 
@@ -19,7 +23,7 @@
                 <mgwt:HeaderButton ui:field="backButton" backButton="true" text="Back" />
             </mgwt:left>
             <mgwt:right>
-                <g:HTML styleName="{style.positioningForName}">Profile</g:HTML>
+                <g:HTML ui:field="profileName" styleName="{style.eventHeader}"/>
             </mgwt:right>
         </mgwt:HeaderPanel>
 

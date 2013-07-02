@@ -7,6 +7,7 @@ import com.bikefunfinder.client.shared.model.BikeRide;
 import com.bikefunfinder.client.shared.model.Tracking;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JsArray;
+import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
@@ -35,6 +36,9 @@ public class EventScreenDisplayGwtImpl extends Composite implements EventScreenD
     @UiField
     ScrollPanel scrollPanel;
 
+    @UiField
+    HTML eventName;
+
     final BikeRideViewWidgets bikeDisplayWidgets = new BikeRideViewWidgetsImpl();
 
     public EventScreenDisplayGwtImpl() {
@@ -51,6 +55,13 @@ public class EventScreenDisplayGwtImpl extends Composite implements EventScreenD
     @Override
     public void display(BikeRide bikeRide) {
         bikeDisplayWidgets.setStateFrom(bikeRide);
+    }
+
+    @Override
+    public void display(String eventNameText) {
+        SafeHtmlBuilder safeHtmlBuilder = new SafeHtmlBuilder();
+        safeHtmlBuilder.appendEscaped(eventNameText);
+        eventName.setText(safeHtmlBuilder.toSafeHtml().asString());
     }
 
     @Override

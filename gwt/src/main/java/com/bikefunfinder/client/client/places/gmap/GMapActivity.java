@@ -32,6 +32,8 @@ import com.googlecode.mgwt.ui.client.dialog.Dialog;
 import com.googlecode.mgwt.ui.client.dialog.Dialogs;
 
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Created with IntelliJ IDEA.
@@ -277,7 +279,6 @@ public class GMapActivity extends NavBaseActivity implements GMapDisplay.Present
             updatedBikeRide(geoLoc);
         }
 
-
         isFirstPostSavePhoneGeoLoc = false;
     }
 
@@ -328,7 +329,7 @@ public class GMapActivity extends NavBaseActivity implements GMapDisplay.Present
             public void onResponseReceived(Root root) {
                 ramObjectCache.setHereAndNowBikeRideCache(Extractor.getBikeRidesFrom(root));
                 if (ramObjectCache.getHereAndNowBikeRideCache().size() == 0) {
-                    display.displayPageName("No Rides");
+                    display.displayPageName("No rides. Add an Event Today!");
                 }
 
                 display.setupMapDisplayForHereAndNow(phoneGeoLoc, ramObjectCache.getHereAndNowBikeRideCache());

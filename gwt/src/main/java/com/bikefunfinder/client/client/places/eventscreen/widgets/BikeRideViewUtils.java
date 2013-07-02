@@ -56,35 +56,32 @@ public class BikeRideViewUtils {
         return formListEntry;
     }
 
-    public static
-        WidgetList buildWidgetListWithLabels(final BikeRideCreateWidgets u) {
+    public static WidgetList buildWidgetListWithLabels(final BikeRideCreateWidgets u) {
         WidgetList newWidgetList = new WidgetList();
 
         newWidgetList.add(buildFormWidget(CreateWidgetLabels.bikeRideNames.labelText, u.getBikeRideName()));
-        newWidgetList.add(buildFormWidget(CreateWidgetLabels.trackingAllowed.labelText, u.getTrackingAllowed()));
-        newWidgetList.add(buildFormWidget(CreateWidgetLabels.targetAudience.labelText, u.getTargetAudience()));
+        newWidgetList.add(buildFormWidget(CreateWidgetLabels.rideDetails.labelText, u.getDetails()));
         newWidgetList.add(buildFormWidget(CreateWidgetLabels.startingAddress.labelText, u.getLocationAddress()));
         newWidgetList.add(buildFormWidget(CreateWidgetLabels.startingCity.labelText, u.getLocationCity()));
         newWidgetList.add(buildFormWidget(CreateWidgetLabels.startingState.labelText, u.getLocationState()));
         newWidgetList.add(buildFormWidget(CreateWidgetLabels.startingDate.labelText, u.getStartDate()));
         newWidgetList.add(buildFormWidget(CreateWidgetLabels.startTime.labelText, u.getStartTime()));
-        newWidgetList.add(buildFormWidget(CreateWidgetLabels.rideDetails.labelText, u.getDetails()));
+        newWidgetList.add(buildFormWidget(CreateWidgetLabels.trackingAllowed.labelText, u.getTrackingAllowed()));
+        newWidgetList.add(buildFormWidget(CreateWidgetLabels.targetAudience.labelText, u.getTargetAudience()));
         return newWidgetList;
     }
 
-    public static
-    WidgetList buildWidgetListWithLabels(final BikeRideViewWidgets viewWidgets) {
+    public static WidgetList buildWidgetListWithLabels(final BikeRideViewWidgets viewWidgets) {
         WidgetList newWidgetList = new WidgetList();
 
-        newWidgetList.add(buildFormWidget(ViewWidgetLabels.bikeRideNames.labelText, viewWidgets.getBikeRideName()));
-        newWidgetList.add(buildFormWidget(ViewWidgetLabels.targetAudience.labelText, viewWidgets.getTargetAudience()));
+        newWidgetList.add(buildFormWidget(ViewWidgetLabels.rideDetails.labelText, viewWidgets.getDetails()));
         newWidgetList.add(buildFormWidget(ViewWidgetLabels.startingAddress1.labelText, viewWidgets.getFormattedAddress()));
         newWidgetList.add(buildFormWidget(ViewWidgetLabels.startDateAndTime.labelText, viewWidgets.getStartDateAndTime()));
         newWidgetList.add(buildFormWidget(ViewWidgetLabels.distanceFromTheStart.labelText, viewWidgets.getDistanceFromClient()));
-        newWidgetList.add(buildFormWidget(ViewWidgetLabels.rideLeaderName.labelText, viewWidgets.getRideLeaderName()));
+        newWidgetList.add(buildFormWidget(ViewWidgetLabels.targetAudience.labelText, viewWidgets.getTargetAudience()));
         newWidgetList.add(buildFormWidget(ViewWidgetLabels.peopleTracking.labelText, viewWidgets.getTotalPeopleTrackingCount()));
         newWidgetList.add(buildFormWidget(ViewWidgetLabels.someoneIsTracking.labelText, viewWidgets.getCurrentlyTracking()));
-        newWidgetList.add(buildFormWidget(ViewWidgetLabels.rideDetails.labelText, viewWidgets.getDetails()));
+        newWidgetList.add(buildFormWidget(ViewWidgetLabels.rideLeaderName.labelText, viewWidgets.getRideLeaderName()));
         return newWidgetList;
     }
 

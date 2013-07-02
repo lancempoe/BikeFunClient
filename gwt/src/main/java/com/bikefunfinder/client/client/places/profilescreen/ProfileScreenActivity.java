@@ -17,6 +17,7 @@ import com.bikefunfinder.client.shared.model.User;
 import com.bikefunfinder.client.shared.request.SearchByTimeOfDayForProfileRequest;
 import com.bikefunfinder.client.shared.request.management.GeoLocCacheStrategy;
 import com.bikefunfinder.client.shared.request.management.WebServiceResponseConsumer;
+import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.web.bindery.event.shared.EventBus;
 import com.googlecode.mgwt.mvp.client.MGWTAbstractActivity;
@@ -46,6 +47,7 @@ public class ProfileScreenActivity extends MGWTAbstractActivity implements Profi
         ProfileScreenDisplay display = this.clientFactory.getDisplay(this);
         setUserDisplayElements(anonymousUser.getId(), anonymousUser.getUserName());
         display.display(anonymousUser);
+        display.display(userName);
 
         NativeUtilities.trackPage("Profile Screen (Anonymous)");
     }

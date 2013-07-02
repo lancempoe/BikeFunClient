@@ -14,20 +14,21 @@
         .buttonTreatment {text-transform: none;
                           font-size: 13px !important;
                           font-weight: normal !important;}
+        .tightButtons { min-width: 0px; }
     </ui:style>
 
     <mgwt:LayoutPanel>
         <mgwt:HeaderPanel ui:field="headerPanel">
             <mgwt:left>
-                <g:FlowPanel width="50%" height="100%">
+                <g:FlowPanel width="60%" height="100%">
                     <g:HTML ui:field="cityName" styleName="{style.positioningForName}"/>
                 </g:FlowPanel>
             </mgwt:left>
             <mgwt:right>
                 <g:HorizontalPanel>
-                    <mgwt:base.ButtonBase ui:field="addButton"/>
-                    <mgwt:base.ButtonBase ui:field="searchButton"/>
-                    <mgwt:base.ButtonBase ui:field="loginButton"/>
+                    <mgwt:base.ButtonBase ui:field="addButton" styleName="{style.tightButtons}"/>
+                    <mgwt:base.ButtonBase ui:field="searchButton" styleName="{style.tightButtons}"/>
+                    <mgwt:base.ButtonBase ui:field="loginButton" styleName="{style.tightButtons}"/>
                 </g:HorizontalPanel>
             </mgwt:right>
         </mgwt:HeaderPanel>
@@ -36,11 +37,14 @@
 
         <g:FlowPanel ui:field="footerFlowPanel">
                 <g:HorizontalPanel ui:field="footerHorizontalPanel" width="100%">
-                    <g:cell horizontalAlignment="ALIGN_LEFT">
-                        <mgwt:Button ui:field="hereAndNowButton" text="Here &amp; Now"/>
+                    <g:cell horizontalAlignment="ALIGN_LEFT" width="20%">
+                        <mgwt:Button ui:field="hereAndNowButton" text=""/>
                     </g:cell>
-                    <g:cell horizontalAlignment="ALIGN_RIGHT">
-                        <mgwt:Button ui:field="timeAndDayButton" text="Time &amp; Day"/>
+                    <g:cell horizontalAlignment="ALIGN_CENTER" width="60%">
+                        <mgwt:Button ui:field="expiredRidesButton" text=""/>
+                    </g:cell>
+                    <g:cell horizontalAlignment="ALIGN_RIGHT" height="20%" >
+                        <mgwt:Button ui:field="timeAndDayButton" text=""/>
                     </g:cell>
                 </g:HorizontalPanel>
         </g:FlowPanel>

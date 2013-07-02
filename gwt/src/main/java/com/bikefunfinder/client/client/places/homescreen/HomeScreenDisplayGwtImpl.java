@@ -1,13 +1,12 @@
 package com.bikefunfinder.client.client.places.homescreen;
 
+import com.bikefunfinder.client.shared.Tools.DateTools;
 import com.bikefunfinder.client.shared.constants.ScreenConstants;
-import com.bikefunfinder.client.shared.css.AppBundle;
 import com.bikefunfinder.client.shared.model.BikeRide;
 import com.bikefunfinder.client.shared.model.printer.JsDateWrapper;
 import com.bikefunfinder.client.shared.widgets.*;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JsDate;
-import com.google.gwt.dom.client.StyleInjector;
 import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.resources.client.CssResource;
@@ -40,6 +39,10 @@ import java.util.logging.Logger;
 
 public class HomeScreenDisplayGwtImpl extends Composite implements HomeScreenDisplay {
 
+    private static boolean hideOldRides = true; //Default to hiding old rides.
+    private static final String SHOW_EXPIRED_RIDES = "Show Earlier Rides";
+    private static final String HIDE_EXPIRED_RIDES = "Hide Earlier Rides";
+    
     interface MyStyle extends CssResource {
         String buttonTreatment();
     }
@@ -74,17 +77,19 @@ public class HomeScreenDisplayGwtImpl extends Composite implements HomeScreenDis
     ButtonBase loginButton;
 
     @UiField
-    Button timeAndDayButton;
+    Button hereAndNowButton;
 
     @UiField
-    Button hereAndNowButton;
+    Button expiredRidesButton;
+
+    @UiField
+    Button timeAndDayButton;
 
     @UiField
     HeaderPanel headerPanel;
 
-
-
     public HomeScreenDisplayGwtImpl() {
+
         ImageResource tabBarAddImage = new ImageResourcePrototype("addIcon", new SafeUri() {
             @Override
             public String asString() {
@@ -104,18 +109,23 @@ public class HomeScreenDisplayGwtImpl extends Composite implements HomeScreenDis
             }
         }, 0, 0, 45, 36, false , false);
 
-
         addButton = new TabBarButton(tabBarAddImage);
         searchButton = new TabBarButton(tabBarSearchImage);
         loginButton = new TabBarButton(tabBarContactsImage);
+
+        initWidget(uiBinder.createAndBindUi(this));
+
         addButton.addStyleName("menuButton");
         searchButton.addStyleName("menuButton");
         loginButton.addStyleName("menuButton");
 
-        initWidget(uiBinder.createAndBindUi(this));
-        
-        timeAndDayButton.addStyleName(style.buttonTreatment());
         hereAndNowButton.addStyleName(style.buttonTreatment());
+        hereAndNowButton.addStyleName("icon-globe");
+        hereAndNowButton.addStyleName("icon-large");
+        expiredRidesButton.addStyleName(style.buttonTreatment());
+        timeAndDayButton.addStyleName(style.buttonTreatment());
+        timeAndDayButton.addStyleName("icon-refresh");
+        timeAndDayButton.addStyleName("icon-large");
 
         MyGroupingCellList<Header, Content> groupingCellList = new MyGroupingCellList<Header, Content>(new ContentCell(), new HeaderCell());
         groupingCellList.addSelectionHandler(new SelectionHandler<Content>() {
@@ -146,7 +156,6 @@ public class HomeScreenDisplayGwtImpl extends Composite implements HomeScreenDis
             }
         });*/
 
-
     }
 
     @Override
@@ -160,10 +169,17 @@ public class HomeScreenDisplayGwtImpl extends Composite implements HomeScreenDis
     public void display(List<BikeRide> list) {
 
         pp.render(buildList(list));
-
         if(!wasAdjusted) {
             wasAdjusted = adjustPullPanelSize();
-            pp.refresh();
+        }
+        pp.refresh();
+    }
+
+    private void setExpiredRidesButtonText() {
+        if (hideOldRides) {
+            this.expiredRidesButton.setText(SHOW_EXPIRED_RIDES);
+        } else {
+            this.expiredRidesButton.setText(HIDE_EXPIRED_RIDES);
         }
     }
 
@@ -185,6 +201,14 @@ public class HomeScreenDisplayGwtImpl extends Composite implements HomeScreenDis
     protected void onHereAndNowButton(TapEvent event) {
         if (presenter != null) {
             presenter.onHereAndNowButton();
+        }
+    }
+
+    @UiHandler("expiredRidesButton")
+    protected void onExpiredRidesButton(TapEvent event) {
+        hideOldRides = !hideOldRides;
+        if (presenter != null) {
+            presenter.onExpiredRidesButton();
         }
     }
 
@@ -215,6 +239,9 @@ public class HomeScreenDisplayGwtImpl extends Composite implements HomeScreenDis
     }
 
     private List<CellGroup<Header, Content>> buildList(List<BikeRide> bikeRides) {
+
+        setExpiredRidesButtonText();
+
         ArrayList<CellGroup<Header, Content>> list = new ArrayList<CellGroup<Header, Content>>();
 
         Header header  = null;
@@ -222,6 +249,11 @@ public class HomeScreenDisplayGwtImpl extends Composite implements HomeScreenDis
         JsDateWrapper priorDate = null;
         String tableQuickLink = ""; //An empty sting will allow the quick link to function without having to see it.
         for (BikeRide bikeRide : bikeRides) {
+
+            //Hide/Show expired rides that are not tracking
+            if (hideOldRides && !bikeRide.isCurrentlyTracking() && DateTools.isOldRide(bikeRide)){
+                continue;
+            }
 
             JsDateWrapper bikeRideDate = bikeRide.createJsDateWrapperRideStartTime();
             if (priorDate == null || !priorDate.isSameDay(bikeRideDate)) {

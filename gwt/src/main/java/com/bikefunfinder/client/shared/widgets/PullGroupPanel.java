@@ -68,9 +68,7 @@ public class PullGroupPanel<G, T> extends Composite implements HasRefresh {
             public void onScrollRefresh(ScrollRefreshEvent event) {
                 if(scrollPanel ==null || event == null) return;
                 if (header != null) {
-
                     headerState = PullState.NORMAL;
-
                 }
 
                 if (footer != null) {
@@ -100,7 +98,6 @@ public class PullGroupPanel<G, T> extends Composite implements HasRefresh {
 
             @Override
             public void onScrollMove(ScrollMoveEvent event) {
-
                 if(scrollPanel ==null || event == null) return;
                 int y = scrollPanel.getY();
 
@@ -121,10 +118,8 @@ public class PullGroupPanel<G, T> extends Composite implements HasRefresh {
                             if (headerPullhandler != null)
                                 headerPullhandler.onPullStateChanged(header, headerState);
                         }
-
                     }
                     header.onScroll(y);
-
                 }
 
                 int y_off = y;
@@ -157,7 +152,6 @@ public class PullGroupPanel<G, T> extends Composite implements HasRefresh {
                             }
                         }
                     }
-
                     footer.onScroll(y_off - scrollPanel.getMaxScrollY());
                 }
 
@@ -187,7 +181,6 @@ public class PullGroupPanel<G, T> extends Composite implements HasRefresh {
                 }
             }
         });
-
     }
 
     public void setHeader(PullPanel.PullWidget header) {
@@ -202,12 +195,9 @@ public class PullGroupPanel<G, T> extends Composite implements HasRefresh {
         } else {
             scrollPanel.setOffSetY(0);
         }
-
-        //scrollPanel.refresh();
     }
 
     public void setFooter(PullPanel.PullWidget footer) {
-
         if (this.footer != null) {
             this.main.remove(this.footer);
         }
@@ -218,13 +208,11 @@ public class PullGroupPanel<G, T> extends Composite implements HasRefresh {
         } else {
             scrollPanel.setOffSetMaxY(0);
         }
-
         scrollPanel.refresh();
     }
 
     public void refresh() {
         scrollPanel.refresh();
-
     }
 
     @Override
@@ -248,9 +236,10 @@ public class PullGroupPanel<G, T> extends Composite implements HasRefresh {
 
     public void render(List<GroupingCellList.CellGroup<G, T>> list) {
         groupingCellList.render(list);
+        groupingCellList.forceTopHeaderReset();
 
-        if(scrollPanel!=null &&scrollPanel.isAttached())
+        if(scrollPanel!=null &&scrollPanel.isAttached()) {
             scrollPanel.refresh();
-
+        }
     }
 }

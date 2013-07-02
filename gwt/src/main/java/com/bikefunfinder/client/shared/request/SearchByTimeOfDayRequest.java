@@ -17,6 +17,8 @@ import com.google.gwt.http.client.RequestCallback;
 import com.google.gwt.http.client.RequestException;
 
 import java.math.BigDecimal;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public final class SearchByTimeOfDayRequest {
 
@@ -101,12 +103,12 @@ public final class SearchByTimeOfDayRequest {
 
     private final RamObjectCache ramObjectCache = Injector.INSTANCE.getRamObjectCache();
     private RequestCallback getRequestCallback(final RepeatableRequestBuilder requestBuilder) {
-
         RequestCallBackHandlerStack<Root> cachedPewpChain = new RequestCallBackHandlerStack<Root>(
             PayloadConverters.ROOT_JSON_OBJECT_CONVERTER, requestBuilder, callback, new CacheStrategy<Root>() {
             @Override
-            public void cacheType(Root type) {
-                ramObjectCache.setSearchByTimeOfDay(type);
+            public void cacheType(Root root) {
+                Logger.getLogger("").log(Level.INFO, "Saved SearchByTimeOfDay root to ramObjectCache");
+                ramObjectCache.setSearchByTimeOfDay(root);
             }
 
             @Override

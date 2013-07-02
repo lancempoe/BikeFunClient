@@ -9,6 +9,7 @@ import com.google.gwt.resources.client.impl.ImageResourcePrototype;
 import com.google.gwt.safehtml.shared.SafeUri;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.DecoratedPopupPanel;
+import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Image;
 
 public class LoadingScreen {
@@ -31,7 +32,8 @@ public class LoadingScreen {
         }
 
         if (!isOpen) {
-            glassPanel.setWidget(new Image(tabBarAddImage));
+            glassPanel.setWidget(new HTML("<i class=\"icon-spinner icon-spin icon-3x loading-stroke\"></i>"));
+            //glassPanel.setWidget(new Image(tabBarAddImage));
             glassPanel.setGlassEnabled(true);
             glassPanel.setPopupPosition((Window.getClientWidth() / 2)-16 ,
                     (Window.getClientHeight() / 2)-16 );

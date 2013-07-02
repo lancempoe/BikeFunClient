@@ -81,6 +81,7 @@ public class ScreenConstants {
     public static final double MinimumTimeBeforeTrackingAllowed = 1800000; //30 minutes
     public static final double MaximumTimeAfterTrackingAllowed = 86400000;  //24 hours
 
-    public static final double TimeUntilItsNotCurrent = JsDateWrapper.getHours(1); // 1 hour
-    public static final double TimeUntilItsOld = JsDateWrapper.getHours(0);
+    public static final double TimeOffsetBeforeItsCurrent = JsDateWrapper.getHours(1);
+    public static final double TimeOffsetBeforeItsLeaving = JsDateWrapper.getHours(0);
+    public static final double TimeOffsetBeforeItsOld = JsDateWrapper.getMinutes(-30);
 }

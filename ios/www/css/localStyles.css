@@ -17,7 +17,10 @@
 
 .oldRide {
     background-color: grey !important;
+}
 
+.leavingRide {
+    background-color: #E3E3C1 !important;
 }
 
 .currentRide, .activeRide {
@@ -92,7 +95,5 @@
     height: 38px;
     line-height: 40px;
     text-overflow: ellipsis;
-
-
 }
 

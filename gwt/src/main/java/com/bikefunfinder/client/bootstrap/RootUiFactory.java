@@ -3,6 +3,7 @@ package com.bikefunfinder.client.bootstrap;
 import com.bikefunfinder.client.bootstrap.phone.PhoneFactory;
 import com.bikefunfinder.client.bootstrap.tablet.TabletFactory;
 import com.bikefunfinder.client.shared.css.AppBundle;
+import com.bikefunfinder.client.shared.css.FontAwesomeStyleBundle;
 import com.google.gwt.dom.client.StyleInjector;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.googlecode.mgwt.ui.client.MGWT;
@@ -19,6 +20,8 @@ import java.util.List;
 public class RootUiFactory {
     public static List<IsWidget> getUserInterfaceRootWidgets() {
         StyleInjector.inject(AppBundle.INSTANCE.css().getText());
+        StyleInjector.inject(FontAwesomeStyleBundle.INSTANCE.css().getText());
+        //FontAwesomeBundle.INSTANCE.font().ensureInjected();
 
         List<IsWidget> elementsToAdd;
         if (MGWT.getOsDetection().isTablet()) {
@@ -26,6 +29,7 @@ public class RootUiFactory {
             // very nasty workaround because GWT does not correctly support
             // @media
             StyleInjector.inject(AppBundle.INSTANCE.css().getText());
+            StyleInjector.inject(FontAwesomeStyleBundle.INSTANCE.css().getText());
 
             elementsToAdd = TabletFactory.createTabletDisplay();
         } else {
