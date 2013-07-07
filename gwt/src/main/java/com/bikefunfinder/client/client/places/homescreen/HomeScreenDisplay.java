@@ -1,6 +1,6 @@
 package com.bikefunfinder.client.client.places.homescreen;
 
-import com.bikefunfinder.client.client.places.fullmenuscreen.FullMenuScreenPresenter;
+import com.bikefunfinder.client.client.places.fullmenubar.FullMenuBarActivity;
 import com.bikefunfinder.client.shared.Tools.DateTools;
 import com.bikefunfinder.client.shared.constants.ScreenConstants;
 import com.bikefunfinder.client.shared.model.BikeRide;
@@ -20,7 +20,7 @@ public interface HomeScreenDisplay extends IsWidget {
     public void setTitle(String cityNameText);
     public void setPresenter(Presenter presenter);
 
-    public interface Presenter extends FullMenuScreenPresenter {
+    public interface Presenter extends FullMenuBarActivity {
         public void onRideClick(BikeRide bikeRide);
 
         public void onHereAndNowButton();

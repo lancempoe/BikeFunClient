@@ -1,6 +1,7 @@
 package com.bikefunfinder.client.client.places.fullmenubar;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.resources.client.impl.ImageResourcePrototype;
 import com.google.gwt.safehtml.shared.SafeUri;
@@ -32,6 +33,11 @@ public class FullMenuBarDisplayGwtImpl extends Composite implements FullMenuBarD
 
     @UiField(provided = true)
     ButtonBase loginButton;
+
+    interface MyStyle extends CssResource {
+        String buttonTreatment();
+    }
+    @UiField MyStyle style;
 
 
     private static FullMenuScreenDisplayGwtImplUiBinder uiBinder = GWT.create(FullMenuScreenDisplayGwtImplUiBinder.class);

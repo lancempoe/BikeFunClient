@@ -7,7 +7,7 @@ package com.bikefunfinder.client.client.places.fullmenubar;
  * Time: 2:53 PM
  * To change this template use File | Settings | File Templates.
  */
-public interface FullMenuBarPresenter {
+public interface FullMenuBarActivity {
     public void onNewButton();
     public void onSearchButton();
     public void onLoginButton();

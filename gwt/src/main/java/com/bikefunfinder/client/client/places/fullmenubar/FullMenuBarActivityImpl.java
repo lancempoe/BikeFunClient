@@ -17,7 +17,7 @@ import com.googlecode.mgwt.mvp.client.MGWTAbstractActivity;
  * Time: 2:47 PM
  * To change this template use File | Settings | File Templates.
  */
-public abstract class FullMenuBarPresenterImpl extends MGWTAbstractActivity implements FullMenuBarPresenter {
+public abstract class FullMenuBarActivityImpl extends MGWTAbstractActivity implements FullMenuBarActivity {
     public abstract ClientFactory getClientFactory();
 
     public void onNewButton() {

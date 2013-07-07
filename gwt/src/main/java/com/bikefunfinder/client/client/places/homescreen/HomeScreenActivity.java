@@ -2,7 +2,7 @@ package com.bikefunfinder.client.client.places.homescreen;
 
 import com.bikefunfinder.client.bootstrap.ClientFactory;
 import com.bikefunfinder.client.client.places.eventscreen.EventScreenPlace;
-import com.bikefunfinder.client.client.places.fullmenuscreen.FullMenuScreenPresenterImpl;
+import com.bikefunfinder.client.client.places.fullmenubar.FullMenuBarActivityImpl;
 import com.bikefunfinder.client.client.places.gmap.GMapPlace;
 import com.bikefunfinder.client.gin.Injector;
 import com.bikefunfinder.client.gin.RamObjectCache;
@@ -28,7 +28,7 @@ import java.util.logging.Logger;
  * @author: tneuwerth
  * @created 4/5/13 3:59 PM
  */
-public class HomeScreenActivity extends FullMenuScreenPresenterImpl implements HomeScreenDisplay.Presenter {
+public class HomeScreenActivity extends FullMenuBarActivityImpl implements HomeScreenDisplay.Presenter {
     private final ClientFactory<HomeScreenDisplay> clientFactory = Injector.INSTANCE.getClientFactory();
     private final HomeScreenDisplay display = clientFactory.getDisplay(this);
     private final HomeScreenPlace.UsageEnum usageEnum;

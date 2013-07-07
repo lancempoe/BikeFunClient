@@ -219,24 +219,6 @@ public class HomeScreenDisplayGwtImpl extends Composite implements HomeScreenDis
         }
     }
 
-    @UiHandler("addButton")
-    protected void onAddButtonButton(TapEvent event) {
-        if (presenter != null) {
-            presenter.onNewButton();
-        }
-    }
-
-    @UiHandler("searchButton")
-    protected void onSearchButton(TapEvent event) {
-        if (presenter != null) {
-            presenter.onSearchButton();
-        }
-    }
-
-    @UiHandler("loginButton")
-    protected void onLoginButton(TapEvent event) {
-        presenter.onLoginButton();
-    }
 
     private List<CellGroup<Header, Content>> buildList(List<BikeRide> bikeRides) {
 
