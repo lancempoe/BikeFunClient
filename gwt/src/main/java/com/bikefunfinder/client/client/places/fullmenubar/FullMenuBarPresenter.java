@@ -1,4 +1,4 @@
-package com.bikefunfinder.client.client.places.fullmenuscreen;
+package com.bikefunfinder.client.client.places.fullmenubar;
 
 /**
  * Created with IntelliJ IDEA.
@@ -7,7 +7,7 @@ package com.bikefunfinder.client.client.places.fullmenuscreen;
  * Time: 2:53 PM
  * To change this template use File | Settings | File Templates.
  */
-public interface FullMenuScreenPresenter {
+public interface FullMenuBarPresenter {
     public void onNewButton();
     public void onSearchButton();
     public void onLoginButton();
