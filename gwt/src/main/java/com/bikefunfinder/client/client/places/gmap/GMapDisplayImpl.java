@@ -39,7 +39,7 @@ import java.util.logging.Logger;
  * Time: 2:46 PM
  * To change this template use File | Settings | File Templates.
  */
-public class GMapViewImpl implements GMapDisplay {
+public class GMapDisplayImpl implements GMapDisplay {
     private static final double HERE_AND_NOW_ZOOM = 12;
     private static final double EVENT_ZOOM = 17;
     private static final int RESUME_AUTO_PAN_AND_ZOOM_DELAY_MILLIS = 10000;
@@ -74,7 +74,7 @@ public class GMapViewImpl implements GMapDisplay {
     private HeaderPanel headerPanel;
     private Button trackingRideButton;
 
-    public GMapViewImpl() {
+    public GMapDisplayImpl() {
         main = new LayoutPanel();
 
         //Build header

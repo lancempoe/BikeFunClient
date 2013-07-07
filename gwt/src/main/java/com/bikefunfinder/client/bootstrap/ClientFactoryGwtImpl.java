@@ -8,7 +8,7 @@ import com.bikefunfinder.client.client.places.eventscreen.EventScreenDisplay;
 import com.bikefunfinder.client.client.places.eventscreen.EventScreenDisplayGwtImpl;
 import com.bikefunfinder.client.client.places.gmap.GMapActivity;
 import com.bikefunfinder.client.client.places.gmap.GMapDisplay;
-import com.bikefunfinder.client.client.places.gmap.GMapViewImpl;
+import com.bikefunfinder.client.client.places.gmap.GMapDisplayImpl;
 import com.bikefunfinder.client.client.places.homescreen.HomeScreenActivity;
 import com.bikefunfinder.client.client.places.homescreen.HomeScreenDisplay;
 import com.bikefunfinder.client.client.places.homescreen.HomeScreenDisplayGwtImpl;
@@ -18,7 +18,6 @@ import com.bikefunfinder.client.client.places.profilescreen.ProfileScreenDisplay
 import com.bikefunfinder.client.client.places.searchscreen.SearchScreenActivity;
 import com.bikefunfinder.client.client.places.searchscreen.SearchScreenDisplay;
 import com.bikefunfinder.client.client.places.searchscreen.SearchScreenDisplayGwtImpl;
-import com.bikefunfinder.client.shared.Tools.DeviceTools;
 import com.google.gwt.place.shared.PlaceController;
 import com.google.web.bindery.event.shared.EventBus;
 import com.google.web.bindery.event.shared.SimpleEventBus;
@@ -154,7 +153,7 @@ public class ClientFactoryGwtImpl implements ClientFactory {
 
     private GMapDisplay getGMapDisplay() {
         if (gMapDisplay == null) {
-            gMapDisplay = new GMapViewImpl();
+            gMapDisplay = new GMapDisplayImpl();
         }
         return gMapDisplay;
     }
