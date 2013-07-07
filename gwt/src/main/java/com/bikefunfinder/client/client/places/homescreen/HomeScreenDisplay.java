@@ -1,5 +1,6 @@
 package com.bikefunfinder.client.client.places.homescreen;
 
+import com.bikefunfinder.client.client.places.fullmenuscreen.FullMenuScreenPresenter;
 import com.bikefunfinder.client.shared.Tools.DateTools;
 import com.bikefunfinder.client.shared.constants.ScreenConstants;
 import com.bikefunfinder.client.shared.model.BikeRide;
@@ -16,13 +17,10 @@ import java.util.logging.Logger;
 public interface HomeScreenDisplay extends IsWidget {
 
     public void display(List<BikeRide> list);
-    public void display(String cityNameText);
+    public void setTitle(String cityNameText);
     public void setPresenter(Presenter presenter);
 
-    public interface Presenter {
-        public void onNewButton();
-        public void onSearchButton();
-        public void onLoginButton();
+    public interface Presenter extends FullMenuScreenPresenter {
         public void onRideClick(BikeRide bikeRide);
 
         public void onHereAndNowButton();

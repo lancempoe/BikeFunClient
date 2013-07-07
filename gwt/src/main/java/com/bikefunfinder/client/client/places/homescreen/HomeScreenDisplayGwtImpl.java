@@ -193,7 +193,7 @@ public class HomeScreenDisplayGwtImpl extends Composite implements HomeScreenDis
     }
 
     @Override
-    public void display(String cityNameText) {
+    public void setTitle(String cityNameText) {
         cityName.setText(cityNameText);
     }
 

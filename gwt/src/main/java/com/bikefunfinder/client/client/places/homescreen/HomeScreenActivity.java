@@ -1,32 +1,25 @@
 package com.bikefunfinder.client.client.places.homescreen;
 
 import com.bikefunfinder.client.bootstrap.ClientFactory;
-import com.bikefunfinder.client.client.places.createscreen.CreateScreenPlace;
 import com.bikefunfinder.client.client.places.eventscreen.EventScreenPlace;
+import com.bikefunfinder.client.client.places.fullmenuscreen.FullMenuScreenPresenterImpl;
 import com.bikefunfinder.client.client.places.gmap.GMapPlace;
-import com.bikefunfinder.client.client.places.profilescreen.ProfileScreenPlace;
-import com.bikefunfinder.client.client.places.searchscreen.SearchScreenPlace;
 import com.bikefunfinder.client.gin.Injector;
 import com.bikefunfinder.client.gin.RamObjectCache;
 import com.bikefunfinder.client.shared.Tools.DeviceTools;
 import com.bikefunfinder.client.shared.Tools.NativeUtilities;
 import com.bikefunfinder.client.shared.Tools.NonPhoneGapGeoLocCallback;
 import com.bikefunfinder.client.shared.constants.ScreenConstants;
-import com.bikefunfinder.client.shared.model.AnonymousUser;
 import com.bikefunfinder.client.shared.model.BikeRide;
 import com.bikefunfinder.client.shared.model.GeoLoc;
 import com.bikefunfinder.client.shared.model.Root;
 import com.bikefunfinder.client.shared.model.helper.Extractor;
-import com.bikefunfinder.client.shared.request.AnonymousRequest;
 import com.bikefunfinder.client.shared.request.SearchByTimeOfDayRequest;
-import com.bikefunfinder.client.shared.request.management.AnnonymousUserCacheStrategy;
-import com.bikefunfinder.client.shared.request.management.GeoLocCacheStrategy;
 import com.bikefunfinder.client.shared.request.management.WebServiceResponseConsumer;
 import com.google.gwt.regexp.shared.MatchResult;
 import com.google.gwt.regexp.shared.RegExp;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.web.bindery.event.shared.EventBus;
-import com.googlecode.mgwt.mvp.client.MGWTAbstractActivity;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -35,7 +28,7 @@ import java.util.logging.Logger;
  * @author: tneuwerth
  * @created 4/5/13 3:59 PM
  */
-public class HomeScreenActivity extends MGWTAbstractActivity implements HomeScreenDisplay.Presenter {
+public class HomeScreenActivity extends FullMenuScreenPresenterImpl implements HomeScreenDisplay.Presenter {
     private final ClientFactory<HomeScreenDisplay> clientFactory = Injector.INSTANCE.getClientFactory();
     private final HomeScreenDisplay display = clientFactory.getDisplay(this);
     private final HomeScreenPlace.UsageEnum usageEnum;
@@ -71,17 +64,17 @@ public class HomeScreenActivity extends MGWTAbstractActivity implements HomeScre
             MatchResult matcher = buildMatcher(root.getClosestLocation().getFormattedAddress());
             boolean matchFound = (matcher != null); // equivalent to regExp.test(inputStr);
             if (matchFound) {
-                display.display(matcher.getGroup(0));
+                display.setTitle(matcher.getGroup(0));
             } else {
                 if (root.getClosestLocation() != null &&
                     root.getClosestLocation().getFormattedAddress() != null) {
-                    display.display("Unknown City");
+                    display.setTitle("Unknown City");
                 } else {
-                    display.display("Search Results");
+                    display.setTitle("Search Results");
                 }
             }
         }  else {
-            display.display("Add an Event!");
+            display.setTitle("Add an Event!");
         }
 
         NativeUtilities.trackPage("Home Screen");
@@ -99,25 +92,8 @@ public class HomeScreenActivity extends MGWTAbstractActivity implements HomeScre
     }
 
     @Override
-    public void onNewButton() {
-        clientFactory.getPlaceController().goTo(new CreateScreenPlace(null, null, AnnonymousUserCacheStrategy.INSTANCE.getCachedType()));
-    }
-
-    @Override
-    public void onSearchButton() {
-        clientFactory.getPlaceController().goTo(new SearchScreenPlace());
-    }
-
-    @Override
-    public void onLoginButton() {
-
-        WebServiceResponseConsumer<AnonymousUser> callback = new WebServiceResponseConsumer<AnonymousUser>() {
-            @Override
-            public void onResponseReceived(AnonymousUser anonymousUser) {
-            clientFactory.getPlaceController().goTo(new ProfileScreenPlace(null, anonymousUser));
-            }
-        };
-        new AnonymousRequest.Builder(callback).send();
+    public ClientFactory getClientFactory() {
+        return clientFactory;
     }
 
     @Override
