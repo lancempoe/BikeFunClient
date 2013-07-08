@@ -75,16 +75,11 @@ public class HomeScreenDisplayGwtImpl extends Composite implements HomeScreenDis
     @UiField
     Button timeAndDayButton;
 
-    @UiField(provided = true)
+    @UiField
     MainMenuHeaderPanel headerPanel;
 
     public HomeScreenDisplayGwtImpl() {
 
-        Logger.getLogger("").log(Level.INFO, "Hello we are in homescreenimple()");
-
-        Logger.getLogger("").log(Level.INFO, "Hello we are in homescreenimple()");
-        headerPanel = new MainMenuHeaderPanel();
-        Logger.getLogger("").log(Level.INFO, "Hello we are back in MainMenuHeaderPanel() homescreenimple()");
         Logger.getLogger("").log(Level.INFO, "hsClose!");
         try{
             initWidget(uiBinder.createAndBindUi(this));
@@ -173,7 +168,7 @@ public class HomeScreenDisplayGwtImpl extends Composite implements HomeScreenDis
 
     @Override
     public void setTitle(String cityNameText) {
-        //boo!
+        headerPanel.setTitle(cityNameText);
     }
 
     @UiHandler("hereAndNowButton")

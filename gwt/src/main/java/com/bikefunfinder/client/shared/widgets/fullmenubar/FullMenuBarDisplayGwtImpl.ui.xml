@@ -14,20 +14,20 @@
         .tightButtons { min-width: 0px; }
     </ui:style>
 
-    <mgwt:LayoutPanel>
-        <mgwt:HeaderPanel ui:field="headerPanel">
-            <mgwt:left>
-                <g:FlowPanel width="60%" height="100%">
-                    <g:HTML ui:field="cityName" styleName="{style.positioningForName}"/>
-                </g:FlowPanel>
-            </mgwt:left>
-            <mgwt:right>
-                <g:HorizontalPanel>
-                    <mgwt:base.ButtonBase ui:field="addButton" styleName="{style.tightButtons}"/>
-                    <mgwt:base.ButtonBase ui:field="searchButton" styleName="{style.tightButtons}"/>
-                    <mgwt:base.ButtonBase ui:field="loginButton" styleName="{style.tightButtons}"/>
-                </g:HorizontalPanel>
-            </mgwt:right>
-        </mgwt:HeaderPanel>
-    </mgwt:LayoutPanel>
+
+    <mgwt:HeaderPanel ui:field="headerPanel">
+        <mgwt:left>
+            <g:FlowPanel width="60%" height="100%">
+                <g:HTML ui:field="cityName" styleName="{style.positioningForName}"/>
+            </g:FlowPanel>
+        </mgwt:left>
+        <mgwt:right>
+            <g:HorizontalPanel>
+                <mgwt:base.ButtonBase ui:field="addButton" styleName="{style.tightButtons}"/>
+                <mgwt:base.ButtonBase ui:field="searchButton" styleName="{style.tightButtons}"/>
+                <mgwt:base.ButtonBase ui:field="loginButton" styleName="{style.tightButtons}"/>
+            </g:HorizontalPanel>
+        </mgwt:right>
+    </mgwt:HeaderPanel>
+
 </ui:UiBinder>
