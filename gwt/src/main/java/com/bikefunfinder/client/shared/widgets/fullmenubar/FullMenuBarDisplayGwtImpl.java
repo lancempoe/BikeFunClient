@@ -1,5 +1,7 @@
-package com.bikefunfinder.client.client.places.fullmenubar;
+package com.bikefunfinder.client.shared.widgets.fullmenubar;
 
+import com.bikefunfinder.client.bootstrap.ClientFactory;
+import com.bikefunfinder.client.client.places.homescreen.HomeScreenDisplay;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.resources.client.ImageResource;
@@ -10,8 +12,14 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Widget;
+import com.googlecode.mgwt.dom.client.event.tap.TapEvent;
+import com.googlecode.mgwt.dom.client.event.tap.TapHandler;
+import com.googlecode.mgwt.ui.client.widget.LayoutPanel;
 import com.googlecode.mgwt.ui.client.widget.base.ButtonBase;
 import com.googlecode.mgwt.ui.client.widget.tabbar.TabBarButton;
+
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Created with IntelliJ IDEA.
@@ -34,19 +42,18 @@ public class FullMenuBarDisplayGwtImpl extends Composite implements FullMenuBarD
     @UiField(provided = true)
     ButtonBase loginButton;
 
-    interface MyStyle extends CssResource {
-        String buttonTreatment();
-    }
-    @UiField MyStyle style;
+    private FullMenuBarDisplay.Presenter presenter;
 
 
-    private static FullMenuScreenDisplayGwtImplUiBinder uiBinder = GWT.create(FullMenuScreenDisplayGwtImplUiBinder.class);
 
-    interface FullMenuScreenDisplayGwtImplUiBinder extends UiBinder<Widget, FullMenuBarDisplayGwtImpl> {
+    private static FullMenuBarDisplayGwtImplUiBinder uiBinder = GWT.create(FullMenuBarDisplayGwtImplUiBinder.class);
+
+    interface FullMenuBarDisplayGwtImplUiBinder extends UiBinder<Widget, FullMenuBarDisplayGwtImpl> {
     }
 
     public FullMenuBarDisplayGwtImpl()
     {
+        Logger.getLogger("").log(Level.INFO, "Ok! we are in!");
         ImageResource tabBarAddImage = new ImageResourcePrototype("addIcon", new SafeUri() {
             @Override
             public String asString() {
@@ -66,15 +73,46 @@ public class FullMenuBarDisplayGwtImpl extends Composite implements FullMenuBarD
             }
         }, 0, 0, 45, 36, false , false);
 
+
         addButton = new TabBarButton(tabBarAddImage);
         searchButton = new TabBarButton(tabBarSearchImage);
         loginButton = new TabBarButton(tabBarContactsImage);
 
-        initWidget(uiBinder.createAndBindUi(this));
+        Logger.getLogger("").log(Level.INFO, "Close!");
+        try{
+            initWidget(uiBinder.createAndBindUi(this));
+        }
+        catch(Exception e) {
+            Logger.getLogger("").log(Level.SEVERE, "Uck! " + e.getMessage() + ":::::::::: " + e.toString() + " :::::::: " + e.getStackTrace());
+        }
+        Logger.getLogger("").log(Level.INFO, "YESYES!!");
 
         addButton.addStyleName("menuButton");
         searchButton.addStyleName("menuButton");
         loginButton.addStyleName("menuButton");
+
+        presenter = new FullMenuBarActivity();
+
+        addButton.addTapHandler(new TapHandler() {
+            @Override
+            public void onTap(TapEvent event) {
+                presenter.onNewButton();
+            }
+        });
+
+        searchButton.addTapHandler(new TapHandler() {
+            @Override
+            public void onTap(TapEvent event) {
+                presenter.onSearchButton();
+            }
+        });
+
+        loginButton.addTapHandler(new TapHandler() {
+            @Override
+            public void onTap(TapEvent event) {
+                presenter.onLoginButton();
+            }
+        });
     }
 
     public void setTitle(String cityNameText) {

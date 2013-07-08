@@ -6,14 +6,11 @@
 
 
 
-    <ui:style type='com.bikefunfinder.client.client.places.fullmenubar.FullMenuBarDisplayGwtImpl.MyStyle'>
+    <ui:style>
         .positioningForName { position:absolute; top:20%;
         font-size: 16pt;
         font-weight: bold;
         color: white; }
-        .buttonTreatment {text-transform: none;
-        font-size: 13px !important;
-        font-weight: normal !important;}
         .tightButtons { min-width: 0px; }
     </ui:style>
 

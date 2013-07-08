@@ -5,6 +5,7 @@ import com.bikefunfinder.client.shared.constants.ScreenConstants;
 import com.bikefunfinder.client.shared.model.BikeRide;
 import com.bikefunfinder.client.shared.model.printer.JsDateWrapper;
 import com.bikefunfinder.client.shared.widgets.*;
+import com.bikefunfinder.client.shared.widgets.base.MainMenuHeaderPanel;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JsDate;
 import com.google.gwt.event.logical.shared.SelectionEvent;
@@ -64,17 +65,6 @@ public class HomeScreenDisplayGwtImpl extends Composite implements HomeScreenDis
     @UiField
     FlowPanel footerFlowPanel;
 
-    @UiField
-    HTML cityName;
-
-    @UiField(provided = true)
-    ButtonBase addButton;
-
-    @UiField(provided = true)
-    ButtonBase searchButton;
-
-    @UiField(provided = true)
-    ButtonBase loginButton;
 
     @UiField
     Button hereAndNowButton;
@@ -85,39 +75,26 @@ public class HomeScreenDisplayGwtImpl extends Composite implements HomeScreenDis
     @UiField
     Button timeAndDayButton;
 
-    @UiField
-    HeaderPanel headerPanel;
+    @UiField(provided = true)
+    MainMenuHeaderPanel headerPanel;
 
     public HomeScreenDisplayGwtImpl() {
 
-        ImageResource tabBarAddImage = new ImageResourcePrototype("addIcon", new SafeUri() {
-            @Override
-            public String asString() {
-                return "icons/addRideIcon.png";  //To change body of implemented methods use File | Settings | File Templates.
-            }
-        }, 0, 0, 45, 36, false , false);
-        ImageResource tabBarSearchImage = new ImageResourcePrototype("searchIcon", new SafeUri() {
-            @Override
-            public String asString() {
-                return "icons/searchRideIcon.png";  //To change body of implemented methods use File | Settings | File Templates.
-            }
-        }, 0, 0, 45, 36, false , false);
-        ImageResource tabBarContactsImage = new ImageResourcePrototype("userProfileIcon", new SafeUri() {
-            @Override
-            public String asString() {
-                return "icons/userProfileIcon.png";  //To change body of implemented methods use File | Settings | File Templates.
-            }
-        }, 0, 0, 45, 36, false , false);
+        Logger.getLogger("").log(Level.INFO, "Hello we are in homescreenimple()");
 
-        addButton = new TabBarButton(tabBarAddImage);
-        searchButton = new TabBarButton(tabBarSearchImage);
-        loginButton = new TabBarButton(tabBarContactsImage);
+        Logger.getLogger("").log(Level.INFO, "Hello we are in homescreenimple()");
+        headerPanel = new MainMenuHeaderPanel();
+        Logger.getLogger("").log(Level.INFO, "Hello we are back in MainMenuHeaderPanel() homescreenimple()");
+        Logger.getLogger("").log(Level.INFO, "hsClose!");
+        try{
+            initWidget(uiBinder.createAndBindUi(this));
+        }
+        catch(Exception e) {
+            Logger.getLogger("").log(Level.SEVERE, "hsUck! " + e.getMessage() + ":::::::::: " + e.toString() + " :::::::: " + e.getStackTrace());
+        }
+        Logger.getLogger("").log(Level.INFO, "hsYESYES!!");
 
-        initWidget(uiBinder.createAndBindUi(this));
-
-        addButton.addStyleName("menuButton");
-        searchButton.addStyleName("menuButton");
-        loginButton.addStyleName("menuButton");
+        Logger.getLogger("").log(Level.INFO, "Hello we are back in homescreenimple() initWidget");
 
         hereAndNowButton.addStyleName(style.buttonTreatment());
         hereAndNowButton.addStyleName("icon-globe");
@@ -139,6 +116,7 @@ public class HomeScreenDisplayGwtImpl extends Composite implements HomeScreenDis
         pp = new PullGroupPanel<Header, Content>(new HeaderListWithPullPanel<Header, Content>(groupingCellList), presenter);
         headerListWidget.add(pp);
 
+
         /*MGWT.addOrientationChangeHandler(new OrientationChangeHandler() {
             @Override
             public void onOrientationChanged(OrientationChangeEvent event) {
@@ -155,6 +133,7 @@ public class HomeScreenDisplayGwtImpl extends Composite implements HomeScreenDis
 
             }
         });*/
+        Logger.getLogger("").log(Level.INFO, "Made it to the end of the constructor.");
 
     }
 
@@ -194,7 +173,7 @@ public class HomeScreenDisplayGwtImpl extends Composite implements HomeScreenDis
 
     @Override
     public void setTitle(String cityNameText) {
-        cityName.setText(cityNameText);
+        //boo!
     }
 
     @UiHandler("hereAndNowButton")
