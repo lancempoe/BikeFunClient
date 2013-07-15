@@ -15,7 +15,11 @@ public class ScreenConstants {
     public static String TargetAudienceLabel = "- Filter By Type -";
     public static enum TargetAudience {
         FAMILY_FRIENDLY("Family Friendly", 0),
+        FAST("Fast & Furious", 6),
+        EASY("Easy Riders", 7),
         ROADIES("Roadies", 1),
+        MEET_UP("Meet Up", 8),
+        BIKE_TALK("Bike Talk", 9),
         EDUCATIONAL("Educational", 2),
         ART("Art",3),
         BOOZY("Boozy", 4),

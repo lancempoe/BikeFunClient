@@ -378,10 +378,10 @@ public class GMapViewImpl implements GMapDisplay {
         circleOptions.setMap(map);
         circleOptions.setCenter(center);
         circleOptions.setRadius(radius);
-        circleOptions.setStrokeColor("#FF0000");
+        circleOptions.setStrokeColor("#4E8D34");
         circleOptions.setStrokeOpacity(0.8);
         circleOptions.setStrokeWeight(2);
-        circleOptions.setFillColor("#FF0000");
+        circleOptions.setFillColor("#4E8D34");
         circleOptions.setFillOpacity(0.35);
         circleOptions.setClickable(false);
 
