@@ -106,8 +106,8 @@ public class BikeRideCreateWidgetsImpl implements BikeRideCreateWidgets {
         WidgetHelper.setSafeValue(startDate, bikeRide.createJsDateWrapperRideStartTime().toString(ScreenConstants.xJSDateOnlyDateFormat));
         WidgetHelper.setSafeValue(startTime, bikeRide.createJsDateWrapperRideStartTime().toString(ScreenConstants.xJSDateOnlyTimeFormat));
         WidgetHelper.setSafeValue(details, bikeRide.getDetails());
+                                  details.setVisibleLines(20);
         WidgetHelper.setSafeText(bikeRideId, bikeRide.getId());
-
     }
 
     @Override
@@ -122,7 +122,7 @@ public class BikeRideCreateWidgetsImpl implements BikeRideCreateWidgets {
         startDate.setText("");
         startTime.setText("");
         details.setValue("");
-        details.setVisibleLines(10);
+        details.setVisibleLines(20);
         bikeRideId.setText("");
     }
 }
