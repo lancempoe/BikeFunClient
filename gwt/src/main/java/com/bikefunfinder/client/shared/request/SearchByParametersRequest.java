@@ -8,6 +8,8 @@ package com.bikefunfinder.client.shared.request;
  * To change this template use File | Settings | File Templates.
  */
 
+import com.bikefunfinder.client.gin.Injector;
+import com.bikefunfinder.client.gin.RamObjectCache;
 import com.bikefunfinder.client.shared.constants.Settings;
 import com.bikefunfinder.client.shared.model.GeoLoc;
 import com.bikefunfinder.client.shared.model.Query;
@@ -114,12 +116,21 @@ public final class SearchByParametersRequest {
         return builder.toString();
     }
 
+    private final RamObjectCache ramObjectCache = Injector.INSTANCE.getRamObjectCache();
     private RequestCallback getRequestCallback(final RepeatableRequestBuilder requestBuilder) {
-
         RequestCallBackHandlerStack<Root> cachedPewpChain = new RequestCallBackHandlerStack<Root>(
-                PayloadConverters.ROOT_JSON_OBJECT_CONVERTER, requestBuilder, callback,
-                NoCacheStrategy.INSTANCE, new RepeatForeverWaitingBetweenRetries<Root>()
-        );
+                PayloadConverters.ROOT_JSON_OBJECT_CONVERTER, requestBuilder, callback,  new CacheStrategy<Root>() {
+            @Override
+            public void cacheType(Root root) {
+                ramObjectCache.setSearchByQuery(root);
+                ramObjectCache.setSearchByTimeOfDay(root); //This is used on the main page.
+            }
+
+            @Override
+            public Root getCachedType() {
+                return ramObjectCache.getSearchByQuery();
+            }
+        }, new RepeatForeverWaitingBetweenRetries<Root>());
 
         return new RequestCallbackSorter<Root>(cachedPewpChain);
     }

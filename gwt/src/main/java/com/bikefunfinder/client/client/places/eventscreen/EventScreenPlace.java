@@ -7,8 +7,11 @@ package com.bikefunfinder.client.client.places.eventscreen;
 import com.bikefunfinder.client.gin.Injector;
 import com.bikefunfinder.client.gin.RamObjectCache;
 import com.bikefunfinder.client.shared.model.BikeRide;
+import com.bikefunfinder.client.shared.model.helper.Extractor;
 import com.google.gwt.place.shared.Place;
 import com.google.gwt.place.shared.PlaceTokenizer;
+
+import java.util.List;
 
 public class EventScreenPlace extends Place {
     final BikeRide bikeRide;
@@ -42,7 +45,8 @@ public class EventScreenPlace extends Place {
         @Override
         public EventScreenPlace getPlace(String token) {
 
-            for(BikeRide bikeRide : ramObjectCache.getTimeOfDayBikeRideCache()) {
+            List<BikeRide> bikeRides = Extractor.getBikeRidesFrom(ramObjectCache.getSearchByTimeOfDay());
+            for(BikeRide bikeRide : bikeRides) {
                 if(bikeRide.getId()==token) {
                     return new EventScreenPlace(bikeRide, true);
                 }

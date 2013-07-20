@@ -25,7 +25,7 @@ public class BikeRideViewWidgetsImpl implements BikeRideViewWidgets {
 
     public BikeRideViewWidgetsImpl() {
         bikeRideName.setWidth("100%");
-        rideLeaderName.setWidth("100%");
+//        rideLeaderName.setWidth("100%");
         targetAudience.setWidth("100%");
         details.setWidth("100%");
         totalPeopleTrackingCount.setWidth("100%");
@@ -52,9 +52,10 @@ public class BikeRideViewWidgetsImpl implements BikeRideViewWidgets {
             WidgetHelper.setSafeText(bikeRideName, bikeRide.getBikeRideName());
         }
 
-        if(bikeRide.getRideLeaderName()!=null) {
-            WidgetHelper.setSafeText(rideLeaderName, bikeRide.getRideLeaderName());
-        }
+        //We will put this back in once we have the ability to log in.  This is just causing confusion.
+//        if(bikeRide.getRideLeaderName()!=null) {
+//            WidgetHelper.setSafeText(rideLeaderName, bikeRide.getRideLeaderName());
+//        }
 
         if(bikeRide.getTargetAudience()!=null) {
             for (ScreenConstants.TargetAudience target : ScreenConstants.TargetAudience.values()) {
