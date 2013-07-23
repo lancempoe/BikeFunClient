@@ -81,7 +81,7 @@ public class BikeRideViewUtils {
         newWidgetList.add(buildFormWidget(ViewWidgetLabels.targetAudience.labelText, viewWidgets.getTargetAudience()));
         newWidgetList.add(buildFormWidget(ViewWidgetLabels.peopleTracking.labelText, viewWidgets.getTotalPeopleTrackingCount()));
         newWidgetList.add(buildFormWidget(ViewWidgetLabels.someoneIsTracking.labelText, viewWidgets.getCurrentlyTracking()));
-        newWidgetList.add(buildFormWidget(ViewWidgetLabels.rideLeaderName.labelText, viewWidgets.getRideLeaderName()));
+        //newWidgetList.add(buildFormWidget(ViewWidgetLabels.rideLeaderName.labelText, viewWidgets.getRideLeaderName()));  TODO PUT BACK ONCE USER CAN LOG IN.
         return newWidgetList;
     }
 

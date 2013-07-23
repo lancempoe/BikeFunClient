@@ -98,6 +98,8 @@ public class HomeScreenDisplayGwtImpl extends Composite implements HomeScreenDis
         timeAndDayButton.addStyleName(style.buttonTreatment());
         timeAndDayButton.addStyleName("icon-refresh");
         timeAndDayButton.addStyleName("icon-large");
+        //TODO find way for this buttons to work with visually impaired people.
+        //right now is stays "unreadable text"
 
         MyGroupingCellList<Header, Content> groupingCellList = new MyGroupingCellList<Header, Content>(new ContentCell(), new HeaderCell());
         groupingCellList.addSelectionHandler(new SelectionHandler<Content>() {
@@ -106,7 +108,6 @@ public class HomeScreenDisplayGwtImpl extends Composite implements HomeScreenDis
             presenter.onRideClick(event.getSelectedItem().getBikeRide());
             }
         });
-
 
         pp = new PullGroupPanel<Header, Content>(new HeaderListWithPullPanel<Header, Content>(groupingCellList), presenter);
         headerListWidget.add(pp);

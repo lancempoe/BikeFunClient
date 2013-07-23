@@ -2,6 +2,7 @@ package com.bikefunfinder.client.client.places.gmap;
 
 import com.bikefunfinder.client.shared.model.BikeRide;
 import com.bikefunfinder.client.shared.model.GeoLoc;
+import com.bikefunfinder.client.shared.model.Root;
 import com.google.gwt.user.client.ui.IsWidget;
 
 import java.util.List;
@@ -32,7 +33,7 @@ public interface GMapDisplay extends IsWidget {
         public String provideTokenHrefFor(BikeRide bikeRide);
     }
 
-    void setupMapDisplayForHereAndNow(GeoLoc phoneGpsLoc, List<BikeRide> list);
+    void setupMapDisplayForHereAndNow(GeoLoc phoneGpsLoc, Root root);
     void setupMapToDisplayBikeRide(GeoLoc phoneGpsLoc, BikeRide bikeRide, boolean reCenterReZoom, boolean isTracking);
 
 }

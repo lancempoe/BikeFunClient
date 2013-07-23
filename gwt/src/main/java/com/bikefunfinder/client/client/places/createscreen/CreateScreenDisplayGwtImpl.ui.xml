@@ -29,12 +29,14 @@
                 <g:HTMLPanel>
 
                     <mgwt:WidgetList ui:field="widgetList" />
-                    <mgwt:Button ui:field="createRideButton" text="Create Ride"/>
-                    <mgwt:Button ui:field="updateRideButton" text="Save Updated Ride"/>
-                    <mgwt:Button ui:field="deleteRideButton" text="Delete Ride"/>
 
                 </g:HTMLPanel>
             </g:FormPanel>
         </mgwt:ScrollPanel>
+
+        <mgwt:Button ui:field="createRideButton" text="Create Ride"/>
+        <mgwt:Button ui:field="updateRideButton" text="Save Updated Ride"/>
+        <mgwt:Button ui:field="deleteRideButton" text="Delete Ride"/>
+
     </mgwt:LayoutPanel>
 </ui:UiBinder>

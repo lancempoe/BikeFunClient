@@ -13,10 +13,11 @@ import java.util.List;
 
 public interface RamObjectCache {
 
-    public List<BikeRide> getHereAndNowBikeRideCache();
-    public List<BikeRide> getTimeOfDayBikeRideCache();
-    public void setHereAndNowBikeRideCache(List<BikeRide> bikeRides);
-    public void setTimeOfDayBikeRideCache(List<BikeRide> bikeRides);
+    public AnonymousUser getAnonymousUser();
+    public void setAnonymousUser(AnonymousUser anonymousUser);
+
+    public GeoLoc getCurrentPhoneGeoLoc();
+    public void setCurrentPhoneGeoLoc(GeoLoc phoneGeoLoc);
 
     public BikeRide getCurrentBikeRide();
     public void setCurrentBikeRide(BikeRide bikeRide);
@@ -25,12 +26,6 @@ public interface RamObjectCache {
     public void deleteRide(String bikeRideId);
 
     ///////
-
-    public AnonymousUser getAnonymousUser();
-    public void setAnonymousUser(AnonymousUser anonymousUser);
-
-    public GeoLoc getCurrentPhoneGeoLoc();
-    public void setCurrentPhoneGeoLoc(GeoLoc phoneGeoLoc);
 
     public Root getSearchByTimeOfDay();
     public void setSearchByTimeOfDay(Root root);
@@ -41,9 +36,9 @@ public interface RamObjectCache {
     public Root getSearchByProximity();
     public void setSearchByProximity(Root root);
 
+    public Root getSearchByQuery();
+    public void setSearchByQuery(Root root);
+
     public BikeRide getEventRequest();
     public void setEventRequest(BikeRide bikeRide);
-
-
-
 }

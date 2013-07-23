@@ -6,6 +6,8 @@ import com.bikefunfinder.client.shared.constants.ScreenConstants.MapScreenType;
 import com.bikefunfinder.client.shared.css.AppBundle;
 import com.bikefunfinder.client.shared.model.BikeRide;
 import com.bikefunfinder.client.shared.model.GeoLoc;
+import com.bikefunfinder.client.shared.model.Root;
+import com.bikefunfinder.client.shared.model.helper.Extractor;
 import com.google.gwt.core.client.JsDate;
 import com.google.gwt.dom.client.StyleInjector;
 import com.google.gwt.safehtml.shared.SafeHtml;
@@ -232,7 +234,7 @@ public class GMapDisplayImpl implements GMapDisplay {
     }
 
     @Override
-    public void setupMapDisplayForHereAndNow(final GeoLoc phoneGpsLoc, List<BikeRide> list) {
+    public void setupMapDisplayForHereAndNow(final GeoLoc phoneGpsLoc, Root root) {
 
         //Build the view of the map
         if (map == null || resetMap) {
@@ -252,6 +254,7 @@ public class GMapDisplayImpl implements GMapDisplay {
         AddAsMarker(phoneGpsLoc, null, ScreenConstants.TargetIcon.CLIENT);
 
         //Event Locations.
+        List<BikeRide> list = Extractor.getBikeRidesFrom(root);
         for(final BikeRide bikeRide: list) {
 
             //If tracking then show the location of the ride leader or first track.
@@ -378,10 +381,10 @@ public class GMapDisplayImpl implements GMapDisplay {
         circleOptions.setMap(map);
         circleOptions.setCenter(center);
         circleOptions.setRadius(radius);
-        circleOptions.setStrokeColor("#FF0000");
+        circleOptions.setStrokeColor("#4E8D34");
         circleOptions.setStrokeOpacity(0.8);
         circleOptions.setStrokeWeight(2);
-        circleOptions.setFillColor("#FF0000");
+        circleOptions.setFillColor("#4E8D34");
         circleOptions.setFillOpacity(0.35);
         circleOptions.setClickable(false);
 

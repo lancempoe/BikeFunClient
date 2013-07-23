@@ -15,12 +15,14 @@ public class Extractor {
 
     public static List<BikeRide> getBikeRidesFrom(Root root) {
         ArrayList<BikeRide> list = new ArrayList<BikeRide>();
-        JsArray<BikeRide> bikeRides = root.getBikeRides();
-        final int numBikeRides = bikeRides.length();
-        for(int index=0; index< numBikeRides; index++) {
-            list.add(bikeRides.get(index));
+        if (root != null) {
+            JsArray<BikeRide> bikeRides = root.getBikeRides();
+            final int numBikeRides = bikeRides.length();
+            for(int index=0; index< numBikeRides; index++) {
+                list.add(bikeRides.get(index));
+            }
         }
-
         return list;
     }
+
 }

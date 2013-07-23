@@ -32,8 +32,6 @@ import com.googlecode.mgwt.ui.client.dialog.Dialog;
 import com.googlecode.mgwt.ui.client.dialog.Dialogs;
 
 import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * Created with IntelliJ IDEA.
@@ -327,12 +325,12 @@ public class GMapActivity extends NavBaseActivity implements GMapDisplay.Present
         WebServiceResponseConsumer<Root> callback = new WebServiceResponseConsumer<Root>() {
             @Override
             public void onResponseReceived(Root root) {
-                ramObjectCache.setHereAndNowBikeRideCache(Extractor.getBikeRidesFrom(root));
-                if (ramObjectCache.getHereAndNowBikeRideCache().size() == 0) {
+                ramObjectCache.setSearchByProximity(root);
+                if (Extractor.getBikeRidesFrom(ramObjectCache.getSearchByProximity()).size() == 0) {
                     display.displayPageName("No rides. Add an Event Today!");
                 }
 
-                display.setupMapDisplayForHereAndNow(phoneGeoLoc, ramObjectCache.getHereAndNowBikeRideCache());
+                display.setupMapDisplayForHereAndNow(phoneGeoLoc, ramObjectCache.getSearchByProximity());
             }
         };
         SearchByProximityRequest.Builder request = new SearchByProximityRequest.Builder(callback);

@@ -1,19 +1,25 @@
 package com.bikefunfinder.client.client.places.homescreen;
 
 import com.bikefunfinder.client.bootstrap.ClientFactory;
+import com.bikefunfinder.client.client.places.createscreen.CreateScreenPlace;
 import com.bikefunfinder.client.client.places.eventscreen.EventScreenPlace;
 import com.bikefunfinder.client.client.places.gmap.GMapPlace;
+import com.bikefunfinder.client.client.places.profilescreen.ProfileScreenPlace;
+import com.bikefunfinder.client.client.places.searchscreen.SearchScreenPlace;
 import com.bikefunfinder.client.gin.Injector;
 import com.bikefunfinder.client.gin.RamObjectCache;
 import com.bikefunfinder.client.shared.Tools.DeviceTools;
 import com.bikefunfinder.client.shared.Tools.NativeUtilities;
 import com.bikefunfinder.client.shared.Tools.NonPhoneGapGeoLocCallback;
 import com.bikefunfinder.client.shared.constants.ScreenConstants;
+import com.bikefunfinder.client.shared.model.AnonymousUser;
 import com.bikefunfinder.client.shared.model.BikeRide;
 import com.bikefunfinder.client.shared.model.GeoLoc;
 import com.bikefunfinder.client.shared.model.Root;
 import com.bikefunfinder.client.shared.model.helper.Extractor;
+import com.bikefunfinder.client.shared.request.AnonymousRequest;
 import com.bikefunfinder.client.shared.request.SearchByTimeOfDayRequest;
+import com.bikefunfinder.client.shared.request.management.AnnonymousUserCacheStrategy;
 import com.bikefunfinder.client.shared.request.management.WebServiceResponseConsumer;
 import com.google.gwt.regexp.shared.MatchResult;
 import com.google.gwt.regexp.shared.RegExp;
@@ -21,6 +27,7 @@ import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.web.bindery.event.shared.EventBus;
 import com.googlecode.mgwt.mvp.client.MGWTAbstractActivity;
 
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -32,7 +39,7 @@ public class HomeScreenActivity extends MGWTAbstractActivity implements HomeScre
     private final ClientFactory<HomeScreenDisplay> clientFactory = Injector.INSTANCE.getClientFactory();
     private final HomeScreenDisplay display = clientFactory.getDisplay(this);
     private final HomeScreenPlace.UsageEnum usageEnum;
-    final RamObjectCache ramObjectCache = Injector.INSTANCE.getRamObjectCache();
+    private final RamObjectCache ramObjectCache = Injector.INSTANCE.getRamObjectCache();
 
     private int geoFailCount = 0;
 
@@ -46,9 +53,12 @@ public class HomeScreenActivity extends MGWTAbstractActivity implements HomeScre
         if (root != null) {
             Logger.getLogger("").log(Level.INFO, "Passed a root to the Home page. Happens during Search and Profile");
             setupDisplay(root);
-        } else if (ramObjectCache.getTimeOfDayBikeRideCache().size() == 0) {
-            Logger.getLogger("").log(Level.SEVERE, "ramObjectCache.getTimeOfDayBikeRideCache().size() == 0");
-            refreshTimeAndDayReq(noOpNotifyTimeAndDayCallback);
+        } else {
+            List<BikeRide> bikeRides = Extractor.getBikeRidesFrom(ramObjectCache.getSearchByTimeOfDay());
+            if (bikeRides != null || bikeRides.size() == 0) {
+                Logger.getLogger("").log(Level.SEVERE, "ramObjectCache.getTimeOfDayBikeRideCache().size() == 0");
+                refreshTimeAndDayReq(noOpNotifyTimeAndDayCallback);
+            }
         }
     }
 
@@ -113,7 +123,7 @@ public class HomeScreenActivity extends MGWTAbstractActivity implements HomeScre
 
     @Override
     public void onExpiredRidesButton() {
-        display.display(ramObjectCache.getTimeOfDayBikeRideCache());
+        display.display(Extractor.getBikeRidesFrom(ramObjectCache.getSearchByTimeOfDay()));
     }
 
     @Override
@@ -144,7 +154,7 @@ public class HomeScreenActivity extends MGWTAbstractActivity implements HomeScre
             @Override
             public void onResponseReceived(Root root) {
                 Logger.getLogger("").log(Level.INFO, "Root retrieved from fireRequestForTimeOfDay");
-                ramObjectCache.setTimeOfDayBikeRideCache(Extractor.getBikeRidesFrom(root));
+                ramObjectCache.setSearchByTimeOfDay(root);
                 setupDisplay(root);
                 notifyTimeAndDayCallback.onResponseReceived();
             }

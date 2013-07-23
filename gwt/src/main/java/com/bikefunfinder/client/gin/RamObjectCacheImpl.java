@@ -8,6 +8,7 @@ import com.bikefunfinder.client.shared.model.AnonymousUser;
 import com.bikefunfinder.client.shared.model.BikeRide;
 import com.bikefunfinder.client.shared.model.GeoLoc;
 import com.bikefunfinder.client.shared.model.Root;
+import com.bikefunfinder.client.shared.model.helper.Extractor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,39 +18,16 @@ import java.util.logging.Logger;
 public class RamObjectCacheImpl implements RamObjectCache {
     private Logger log = Logger.getLogger(getClass().getName());
 
-    private final List<BikeRide> hereAndNowBikeRideList = new ArrayList<BikeRide>();
-    private final List<BikeRide> timeOfDayBikeRideList = new ArrayList<BikeRide>();
-
     private GeoLoc currentPhoneGeoLoc;
     private String currentBikeRideId = null;
+    private AnonymousUser anonymousUser;
 
     private Root lastTimeOfDay = null;
     private Root lastTimeOfDayForProfile = null;
     private Root lastSearchByProximity = null;
+    private Root lastSearchByQuery = null;
 
-    @Override
-    public void setHereAndNowBikeRideCache(List<BikeRide> bikeRides) {
-        hereAndNowBikeRideList.clear();
-        hereAndNowBikeRideList.addAll(bikeRides);
-    }
-
-    @Override
-    public void setTimeOfDayBikeRideCache(List<BikeRide> bikeRides) {
-        timeOfDayBikeRideList.clear();
-        timeOfDayBikeRideList.addAll(bikeRides);
-    }
-
-    @Override
-    public List<BikeRide> getHereAndNowBikeRideCache() {
-        //We could save some ram by simply using root.  This may be faster though.
-        return hereAndNowBikeRideList;
-    }
-
-    @Override
-    public List<BikeRide> getTimeOfDayBikeRideCache() {
-        //We could save some ram by simply using root.  This may be faster though.
-        return timeOfDayBikeRideList;
-    }
+    //
 
     /**
      * This will be used so that a user can go to the ride page from the here and now page.
@@ -61,9 +39,8 @@ public class RamObjectCacheImpl implements RamObjectCache {
             return null;
         }
 
-        log.log(Level.ALL, "BikeRide list size" + timeOfDayBikeRideList.size() + ", " +
-                           "hunting for "+currentBikeRideId);
-        for(BikeRide bikeRide: timeOfDayBikeRideList) {
+        List<BikeRide> bikeRides = Extractor.getBikeRidesFrom(lastTimeOfDay);
+        for(BikeRide bikeRide: bikeRides) {
             String bikeRideId = bikeRide.getId();
             if(bikeRideId == currentBikeRideId) {
                 return bikeRide;
@@ -82,49 +59,17 @@ public class RamObjectCacheImpl implements RamObjectCache {
     }
 
     @Override
-    public void updateRide(BikeRide newBikeRide) {
-        List<BikeRide> newBikeRideList = new ArrayList<BikeRide>();
-
-        boolean needToAddRide = true;
-        for(BikeRide bikeRide: timeOfDayBikeRideList) {
-
-            //Add the bike ride once the next ride is after the new ride
-            if (bikeRide.getRideStartTime() > newBikeRide.getRideStartTime())   {
-                newBikeRideList.add(newBikeRide);
-                needToAddRide = false;
-            }
-
-            //Add all other rides
-            if(bikeRide.getId() != newBikeRide.getId()) {
-                newBikeRideList.add(bikeRide);
-            }
-        }
-
-        //Add to end if the ride hasn't been added yet.
-        if (needToAddRide){
-            newBikeRideList.add(newBikeRide);
-        }
-
-        timeOfDayBikeRideList.clear();
-        timeOfDayBikeRideList.addAll(newBikeRideList);
+    public void updateRide(BikeRide updatedBikeRide) {
+        //You really don't know if the new bike ride should
+        //even be in the main list.  What if you create a different city?
+        //For now I have commented out the code.  I don't believe it is doing what we hoped.
+        //Simply refresh to get the good data just like fb or twitter.
     }
 
     @Override
     public void deleteRide(String rideIdToDelete) {
-        if(rideIdToDelete == null) {
-            return;
-        }
-
-        List<BikeRide> newBikeRideList = new ArrayList<BikeRide>();
-
-        for(BikeRide bikeRide: timeOfDayBikeRideList) {
-            if(rideIdToDelete!=bikeRide.getId()) {
-                newBikeRideList.add(bikeRide);
-            }
-        }
-
-        timeOfDayBikeRideList.clear();
-        timeOfDayBikeRideList.addAll(newBikeRideList);
+        //For now I have commented out the code.  I don't believe it is doing what we hoped.
+        //Simply refresh to get the good data just like fb or twitter.
     }
 
     @Override
@@ -158,6 +103,16 @@ public class RamObjectCacheImpl implements RamObjectCache {
     }
 
     @Override
+    public Root getSearchByQuery() {
+        return lastSearchByQuery;
+    }
+
+    @Override
+    public void setSearchByQuery(Root root) {
+        lastSearchByQuery = root;
+    }
+
+    @Override
     public Root getSearchByProximity() {
         return lastSearchByProximity;
     }
@@ -179,7 +134,6 @@ public class RamObjectCacheImpl implements RamObjectCache {
         this.eventRequest = bikeRide;
     }
 
-    private AnonymousUser anonymousUser;
     @Override
     public AnonymousUser getAnonymousUser() {
         return anonymousUser;

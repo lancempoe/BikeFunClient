@@ -106,7 +106,9 @@ public class HeaderListWithPullPanel<G, T> extends Composite {
             int index = (normalized_y * renderedEntries) / height;
 
             if (index != selectedIndex) {
-                SelectionEvent.fire(this, mapping.get(index));
+                if (mapping.containsKey(index)) {
+                    SelectionEvent.fire(this, mapping.get(index));
+                }
             }
 
             selectedIndex = index;
