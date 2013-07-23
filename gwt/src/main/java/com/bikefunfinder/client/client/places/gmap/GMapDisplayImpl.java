@@ -6,6 +6,8 @@ import com.bikefunfinder.client.shared.constants.ScreenConstants.MapScreenType;
 import com.bikefunfinder.client.shared.css.AppBundle;
 import com.bikefunfinder.client.shared.model.BikeRide;
 import com.bikefunfinder.client.shared.model.GeoLoc;
+import com.bikefunfinder.client.shared.model.Root;
+import com.bikefunfinder.client.shared.model.helper.Extractor;
 import com.google.gwt.core.client.JsDate;
 import com.google.gwt.dom.client.StyleInjector;
 import com.google.gwt.safehtml.shared.SafeHtml;
@@ -39,7 +41,7 @@ import java.util.logging.Logger;
  * Time: 2:46 PM
  * To change this template use File | Settings | File Templates.
  */
-public class GMapViewImpl implements GMapDisplay {
+public class GMapDisplayImpl implements GMapDisplay {
     private static final double HERE_AND_NOW_ZOOM = 12;
     private static final double EVENT_ZOOM = 17;
     private static final int RESUME_AUTO_PAN_AND_ZOOM_DELAY_MILLIS = 10000;
@@ -74,7 +76,7 @@ public class GMapViewImpl implements GMapDisplay {
     private HeaderPanel headerPanel;
     private Button trackingRideButton;
 
-    public GMapViewImpl() {
+    public GMapDisplayImpl() {
         main = new LayoutPanel();
 
         //Build header
@@ -232,7 +234,7 @@ public class GMapViewImpl implements GMapDisplay {
     }
 
     @Override
-    public void setupMapDisplayForHereAndNow(final GeoLoc phoneGpsLoc, List<BikeRide> list) {
+    public void setupMapDisplayForHereAndNow(final GeoLoc phoneGpsLoc, Root root) {
 
         //Build the view of the map
         if (map == null || resetMap) {
@@ -252,6 +254,7 @@ public class GMapViewImpl implements GMapDisplay {
         AddAsMarker(phoneGpsLoc, null, ScreenConstants.TargetIcon.CLIENT);
 
         //Event Locations.
+        List<BikeRide> list = Extractor.getBikeRidesFrom(root);
         for(final BikeRide bikeRide: list) {
 
             //If tracking then show the location of the ride leader or first track.

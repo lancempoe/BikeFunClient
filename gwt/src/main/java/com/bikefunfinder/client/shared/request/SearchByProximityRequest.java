@@ -117,7 +117,6 @@ public final class SearchByProximityRequest {
         return builder.toString();
     }
 
-
     private final RamObjectCache ramObjectCache = Injector.INSTANCE.getRamObjectCache();
     private RequestCallback getRequestCallback(final RepeatableRequestBuilder requestBuilder) {
 

@@ -73,7 +73,6 @@ public class PullGroupPanel<G, T> extends Composite implements HasRefresh {
 
                 if (footer != null) {
                     footerState = PullState.NORMAL;
-
                 }
             }
         });

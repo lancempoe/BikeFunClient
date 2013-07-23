@@ -20,7 +20,6 @@ import com.bikefunfinder.client.shared.model.helper.Extractor;
 import com.bikefunfinder.client.shared.request.AnonymousRequest;
 import com.bikefunfinder.client.shared.request.SearchByTimeOfDayRequest;
 import com.bikefunfinder.client.shared.request.management.AnnonymousUserCacheStrategy;
-import com.bikefunfinder.client.shared.request.management.GeoLocCacheStrategy;
 import com.bikefunfinder.client.shared.request.management.WebServiceResponseConsumer;
 import com.google.gwt.regexp.shared.MatchResult;
 import com.google.gwt.regexp.shared.RegExp;
@@ -28,6 +27,7 @@ import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.web.bindery.event.shared.EventBus;
 import com.googlecode.mgwt.mvp.client.MGWTAbstractActivity;
 
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -39,7 +39,7 @@ public class HomeScreenActivity extends MGWTAbstractActivity implements HomeScre
     private final ClientFactory<HomeScreenDisplay> clientFactory = Injector.INSTANCE.getClientFactory();
     private final HomeScreenDisplay display = clientFactory.getDisplay(this);
     private final HomeScreenPlace.UsageEnum usageEnum;
-    final RamObjectCache ramObjectCache = Injector.INSTANCE.getRamObjectCache();
+    private final RamObjectCache ramObjectCache = Injector.INSTANCE.getRamObjectCache();
 
     private int geoFailCount = 0;
 
@@ -53,9 +53,12 @@ public class HomeScreenActivity extends MGWTAbstractActivity implements HomeScre
         if (root != null) {
             Logger.getLogger("").log(Level.INFO, "Passed a root to the Home page. Happens during Search and Profile");
             setupDisplay(root);
-        } else if (ramObjectCache.getTimeOfDayBikeRideCache().size() == 0) {
-            Logger.getLogger("").log(Level.SEVERE, "ramObjectCache.getTimeOfDayBikeRideCache().size() == 0");
-            refreshTimeAndDayReq(noOpNotifyTimeAndDayCallback);
+        } else {
+            List<BikeRide> bikeRides = Extractor.getBikeRidesFrom(ramObjectCache.getSearchByTimeOfDay());
+            if (bikeRides != null || bikeRides.size() == 0) {
+                Logger.getLogger("").log(Level.SEVERE, "ramObjectCache.getTimeOfDayBikeRideCache().size() == 0");
+                refreshTimeAndDayReq(noOpNotifyTimeAndDayCallback);
+            }
         }
     }
 
@@ -71,17 +74,17 @@ public class HomeScreenActivity extends MGWTAbstractActivity implements HomeScre
             MatchResult matcher = buildMatcher(root.getClosestLocation().getFormattedAddress());
             boolean matchFound = (matcher != null); // equivalent to regExp.test(inputStr);
             if (matchFound) {
-                display.display(matcher.getGroup(0));
+                display.setTitle(matcher.getGroup(0));
             } else {
                 if (root.getClosestLocation() != null &&
                     root.getClosestLocation().getFormattedAddress() != null) {
-                    display.display("Unknown City");
+                    display.setTitle("Unknown City");
                 } else {
-                    display.display("Search Results");
+                    display.setTitle("Search Results");
                 }
             }
         }  else {
-            display.display("Add an Event!");
+            display.setTitle("Add an Event!");
         }
 
         NativeUtilities.trackPage("Home Screen");
@@ -96,28 +99,6 @@ public class HomeScreenActivity extends MGWTAbstractActivity implements HomeScre
     public void start(AcceptsOneWidget panel, EventBus eventBus) {
         display.setPresenter(this);
         panel.setWidget(display);
-    }
-
-    @Override
-    public void onNewButton() {
-        clientFactory.getPlaceController().goTo(new CreateScreenPlace(null, null, AnnonymousUserCacheStrategy.INSTANCE.getCachedType()));
-    }
-
-    @Override
-    public void onSearchButton() {
-        clientFactory.getPlaceController().goTo(new SearchScreenPlace());
-    }
-
-    @Override
-    public void onLoginButton() {
-
-        WebServiceResponseConsumer<AnonymousUser> callback = new WebServiceResponseConsumer<AnonymousUser>() {
-            @Override
-            public void onResponseReceived(AnonymousUser anonymousUser) {
-            clientFactory.getPlaceController().goTo(new ProfileScreenPlace(null, anonymousUser));
-            }
-        };
-        new AnonymousRequest.Builder(callback).send();
     }
 
     @Override
@@ -142,7 +123,7 @@ public class HomeScreenActivity extends MGWTAbstractActivity implements HomeScre
 
     @Override
     public void onExpiredRidesButton() {
-        display.display(ramObjectCache.getTimeOfDayBikeRideCache());
+        display.display(Extractor.getBikeRidesFrom(ramObjectCache.getSearchByTimeOfDay()));
     }
 
     @Override
@@ -173,7 +154,7 @@ public class HomeScreenActivity extends MGWTAbstractActivity implements HomeScre
             @Override
             public void onResponseReceived(Root root) {
                 Logger.getLogger("").log(Level.INFO, "Root retrieved from fireRequestForTimeOfDay");
-                ramObjectCache.setTimeOfDayBikeRideCache(Extractor.getBikeRidesFrom(root));
+                ramObjectCache.setSearchByTimeOfDay(root);
                 setupDisplay(root);
                 notifyTimeAndDayCallback.onResponseReceived();
             }

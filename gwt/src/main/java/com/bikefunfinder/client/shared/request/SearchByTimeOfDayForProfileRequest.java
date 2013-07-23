@@ -118,8 +118,9 @@ public final class SearchByTimeOfDayForProfileRequest {
         RequestCallBackHandlerStack<Root> cachedPewpChain = new RequestCallBackHandlerStack<Root>(
                 PayloadConverters.ROOT_JSON_OBJECT_CONVERTER, requestBuilder, callback, new CacheStrategy<Root>() {
             @Override
-            public void cacheType(Root type) {
-                ramObjectCache.setSearchByTimeOfDayForProfile(type);
+            public void cacheType(Root root) {
+                ramObjectCache.setSearchByTimeOfDayForProfile(root);
+                ramObjectCache.setSearchByTimeOfDay(root); //This is used on the main page.
             }
 
             @Override

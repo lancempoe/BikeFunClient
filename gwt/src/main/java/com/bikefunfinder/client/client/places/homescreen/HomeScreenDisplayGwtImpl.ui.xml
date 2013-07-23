@@ -2,15 +2,10 @@
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
              xmlns:g="urn:import:com.google.gwt.user.client.ui"
              xmlns:mgwt="urn:import:com.googlecode.mgwt.ui.client.widget"
+             xmlns:bff="urn:import:com.bikefunfinder.client.shared.widgets.base"
         >
 
-
-
     <ui:style type='com.bikefunfinder.client.client.places.homescreen.HomeScreenDisplayGwtImpl.MyStyle'>
-        .positioningForName { position:absolute; top:20%;
-                              font-size: 16pt;
-                              font-weight: bold;
-                              color: white; }
         .buttonTreatment {text-transform: none;
                           font-size: 13px !important;
                           font-weight: normal !important;}
@@ -18,20 +13,7 @@
     </ui:style>
 
     <mgwt:LayoutPanel>
-        <mgwt:HeaderPanel ui:field="headerPanel">
-            <mgwt:left>
-                <g:FlowPanel width="60%" height="100%">
-                    <g:HTML ui:field="cityName" styleName="{style.positioningForName}"/>
-                </g:FlowPanel>
-            </mgwt:left>
-            <mgwt:right>
-                <g:HorizontalPanel>
-                    <mgwt:base.ButtonBase ui:field="addButton" styleName="{style.tightButtons}"/>
-                    <mgwt:base.ButtonBase ui:field="searchButton" styleName="{style.tightButtons}"/>
-                    <mgwt:base.ButtonBase ui:field="loginButton" styleName="{style.tightButtons}"/>
-                </g:HorizontalPanel>
-            </mgwt:right>
-        </mgwt:HeaderPanel>
+        <bff:MainMenuHeaderPanel ui:field="headerPanel" />
 
         <mgwt:LayoutPanel ui:field="headerListWidget"/>
 
