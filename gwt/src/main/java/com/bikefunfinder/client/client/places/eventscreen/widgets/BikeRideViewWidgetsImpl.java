@@ -4,6 +4,7 @@ package com.bikefunfinder.client.client.places.eventscreen.widgets;
  * @created 5/8/13 9:55 PM
  */
 
+import com.bikefunfinder.client.shared.Tools.BikeRideHelper;
 import com.bikefunfinder.client.shared.constants.ScreenConstants;
 import com.bikefunfinder.client.shared.model.BikeRide;
 import com.bikefunfinder.client.shared.model.printer.JsDateWrapper;
@@ -65,12 +66,13 @@ public class BikeRideViewWidgetsImpl implements BikeRideViewWidgets {
             }
         }
 
-        if(bikeRide.getLocation()!=null) {
-            WidgetHelper.setSafeText(formattedAddress, bikeRide.getLocation().getFormattedAddress());
-        }
+        WidgetHelper.setSafeText(formattedAddress, BikeRideHelper.getAddressToPrintForBike(bikeRide));
 
         String distanceFromClientString = "";
-        if(bikeRide.getDistanceFromClient()!=null) {
+        if (bikeRide.getDistanceTrackFromClient() != null) {
+            distanceFromClientString = ScreenConstants.DISTANCE_FORMAT.format(
+                    Double.parseDouble(bikeRide.getDistanceTrackFromClient()));
+        } else if(bikeRide.getDistanceFromClient()!=null) {
             distanceFromClientString = ScreenConstants.DISTANCE_FORMAT.format(
                     Double.parseDouble(bikeRide.getDistanceFromClient()));
         }

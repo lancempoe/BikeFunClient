@@ -117,6 +117,14 @@ public class BikeRide extends JavaScriptObject {
         this.distanceFromClient = distanceFromClient;
     }-*/;
 
+    public final native String getDistanceTrackFromClient() /*-{
+        return this.distanceTrackFromClient;
+    }-*/;
+
+    public final native void setDistanceTrackFromClient(String distanceTrackFromClient) /*-{
+        this.distanceTrackFromClient = distanceTrackFromClient;
+    }-*/;
+
     public final native boolean isCurrentlyTracking() /*-{
         return this.currentlyTracking;
     }-*/;
@@ -147,12 +155,13 @@ public class BikeRide extends JavaScriptObject {
 //    public String cityLocationId;
 //    public String imagePath = "Images/BikeRides/defaultBikeRide.jpg"; //In the event that no image is provided.
 //    public boolean trackingAllowed = true; //Default tracking is turned on.
+//    public String rideLeaderName;
 //
 //    //Generated and send back.  not in DB
-//    public String rideLeaderName;
 //    public Double distanceFromClient;
 //    public boolean currentlyTracking = false; //Default value
 //    public long totalPeopleTrackingCount = 0; //Default value
+//    public Double distanceTrackFromClient;
 //
 //    //Generated and sent back to ride page.  Not saved in same collection
 //    public Tracking rideLeaderTracking;

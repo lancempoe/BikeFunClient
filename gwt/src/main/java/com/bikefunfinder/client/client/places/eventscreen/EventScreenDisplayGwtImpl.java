@@ -3,6 +3,7 @@ package com.bikefunfinder.client.client.places.eventscreen;
 import com.bikefunfinder.client.client.places.eventscreen.widgets.BikeRideViewUtils;
 import com.bikefunfinder.client.client.places.eventscreen.widgets.BikeRideViewWidgets;
 import com.bikefunfinder.client.client.places.eventscreen.widgets.BikeRideViewWidgetsImpl;
+import com.bikefunfinder.client.shared.Tools.HtmlTools;
 import com.bikefunfinder.client.shared.model.BikeRide;
 import com.bikefunfinder.client.shared.model.Tracking;
 import com.google.gwt.core.client.GWT;
@@ -60,8 +61,10 @@ public class EventScreenDisplayGwtImpl extends Composite implements EventScreenD
     @Override
     public void display(String eventNameText) {
         SafeHtmlBuilder safeHtmlBuilder = new SafeHtmlBuilder();
+        safeHtmlBuilder.appendHtmlConstant(HtmlTools.P_EVENT_HEADER);
         safeHtmlBuilder.appendEscaped(eventNameText);
-        eventName.setText(safeHtmlBuilder.toSafeHtml().asString());
+        safeHtmlBuilder.appendHtmlConstant(HtmlTools.P_CLOSE_TAG);
+        eventName.setHTML(safeHtmlBuilder.toSafeHtml());
     }
 
     @Override

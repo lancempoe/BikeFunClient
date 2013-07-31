@@ -1,28 +1,23 @@
 package com.bikefunfinder.client.client.places.gmap;
 
-import com.bikefunfinder.client.client.places.homescreen.HomeScreenDisplay;
+import com.bikefunfinder.client.shared.Tools.BikeRideHelper;
+import com.bikefunfinder.client.shared.Tools.HtmlTools;
 import com.bikefunfinder.client.shared.constants.ScreenConstants;
 import com.bikefunfinder.client.shared.constants.ScreenConstants.MapScreenType;
-import com.bikefunfinder.client.shared.css.AppBundle;
 import com.bikefunfinder.client.shared.model.BikeRide;
 import com.bikefunfinder.client.shared.model.GeoLoc;
 import com.bikefunfinder.client.shared.model.Root;
 import com.bikefunfinder.client.shared.model.helper.Extractor;
 import com.google.gwt.core.client.JsDate;
-import com.google.gwt.dom.client.StyleInjector;
 import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.user.client.Element;
-import com.google.gwt.user.client.Timer;
-import com.google.gwt.user.client.ui.*;
+import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.Widget;
 import com.google.maps.gwt.client.*;
-import com.google.maps.gwt.client.GoogleMap.CenterChangedHandler;
-import com.google.maps.gwt.client.GoogleMap.DragEndHandler;
-import com.google.maps.gwt.client.GoogleMap.DragStartHandler;
-import com.google.maps.gwt.client.GoogleMap.ZoomChangedHandler;
 import com.googlecode.mgwt.dom.client.event.tap.TapEvent;
 import com.googlecode.mgwt.dom.client.event.tap.TapHandler;
-import com.googlecode.mgwt.ui.client.MGWT;
 import com.googlecode.mgwt.ui.client.MGWTStyle;
 import com.googlecode.mgwt.ui.client.widget.Button;
 import com.googlecode.mgwt.ui.client.widget.HeaderButton;
@@ -149,9 +144,9 @@ public class GMapDisplayImpl implements GMapDisplay {
     @Override
     public void displayPageName(String pageName) {
         SafeHtmlBuilder safeHtmlBuilder = new SafeHtmlBuilder();
-        safeHtmlBuilder.appendHtmlConstant("<p class=\"eventHeader\">");
+        safeHtmlBuilder.appendHtmlConstant(HtmlTools.P_EVENT_HEADER);
         safeHtmlBuilder.appendEscaped(pageName);
-        safeHtmlBuilder.appendHtmlConstant("</p>");
+        safeHtmlBuilder.appendHtmlConstant(HtmlTools.P_CLOSE_TAG);
         this.headerPanel.setRightWidget(new HTML(safeHtmlBuilder.toSafeHtml().asString()));
     }
 
@@ -236,12 +231,40 @@ public class GMapDisplayImpl implements GMapDisplay {
     @Override
     public void setupMapDisplayForHereAndNow(final GeoLoc phoneGpsLoc, Root root) {
 
-        //Build the view of the map
-        if (map == null || resetMap) {
-            buildMap();
-        }
+        buildMapView(false);
+        drawRideShed();
+        pinBlueBike(phoneGpsLoc, null);
+        pinCurrentLocationOfEvents(root);
 
-        //Draw the search radius circle
+        //Reset the check
+        refreshMap();
+        resetMap = false;
+    }
+
+    private void pinCurrentLocationOfEvents(Root root) {
+        //Event Locations.
+        List<BikeRide> list = Extractor.getBikeRidesFrom(root);
+        for(final BikeRide bikeRide: list) {
+            //If tracking then show the location of the ride leader or first track.
+            BikeRideHelper.Content content = new BikeRideHelper.Content(bikeRide);
+            if (bikeRide.isCurrentlyTracking()) {
+                if (bikeRide.getRideLeaderTracking() != null && bikeRide.getRideLeaderTracking().getGeoLoc() != null) {
+                    AddAsMarker(bikeRide.getRideLeaderTracking().getGeoLoc(), bikeRide, ScreenConstants.TargetIcon.LEADER, content.getShortDescriptionForBike());
+                } else {
+                    AddAsMarker(bikeRide.getCurrentTrackings().get(0).getGeoLoc(), bikeRide, ScreenConstants.TargetIcon.LEADER, content.getShortDescriptionForBike());
+                }
+
+            //If not tracking then show the start of the ride.
+            } else {
+                AddAsMarker(bikeRide.getLocation().getGeoLoc(), bikeRide, ScreenConstants.TargetIcon.EVENT, content.getShortDescriptionForStart());
+            }
+        }
+    }
+
+    /**
+     * Draw the search radius circle
+     */
+    private void drawRideShed() {
         if (circle == null || resetMap) {
             final CircleOptions circleOptions = createCircleOptions(map, center, METERS_IN_A_MILE * HERE_AND_NOW_RADIUS);
             circle = Circle.create(circleOptions);
@@ -249,53 +272,29 @@ public class GMapDisplayImpl implements GMapDisplay {
             circle.setCenter(center);
             circle.setRadius(METERS_IN_A_MILE * HERE_AND_NOW_RADIUS);
         }
+    }
 
-        //Phone Location
-        AddAsMarker(phoneGpsLoc, null, ScreenConstants.TargetIcon.CLIENT);
+    @Override
+    public void setupMapToDisplayBikeRide(GeoLoc phoneGpsLoc, BikeRide bikeRide, boolean reCenterReZoom, boolean isTracking) {
 
-        //Event Locations.
-        List<BikeRide> list = Extractor.getBikeRidesFrom(root);
-        for(final BikeRide bikeRide: list) {
-
-            //If tracking then show the location of the ride leader or first track.
-            if (bikeRide.isCurrentlyTracking()) {
-                if (bikeRide.getRideLeaderTracking() != null &&
-                    bikeRide.getRideLeaderTracking().getGeoLoc() != null) {
-                    AddAsMarker(bikeRide.getRideLeaderTracking().getGeoLoc(), bikeRide, ScreenConstants.TargetIcon.EVENT);
-                } else {
-                    AddAsMarker(bikeRide.getCurrentTrackings().get(0).getGeoLoc(), bikeRide, ScreenConstants.TargetIcon.EVENT);
-                }
-
-            //If not tracking then show the start of the ride.
-            } else {
-                AddAsMarker(bikeRide.getLocation().getGeoLoc(), bikeRide, ScreenConstants.TargetIcon.EVENT);
-            }
-        }
+        resetMap(bikeRide);
+        priorBikeRide = bikeRide;
+        buildMapView(reCenterReZoom);
+        drawTrackingRoute(phoneGpsLoc, isTracking);
+        placeAllPins(phoneGpsLoc, bikeRide);
 
         //Reset the check
         refreshMap();
         resetMap = false;
     }
 
-    @Override
-    public void setupMapToDisplayBikeRide(GeoLoc phoneGpsLoc, BikeRide bikeRide, boolean reCenterReZoom, boolean isTracking) {
-
-        //Reset map if new view.
-        if (!isEqualBikeRide(bikeRide, priorBikeRide)) {
-            resetMap = true;
-        }
-        priorBikeRide = bikeRide;
-
-        //Build the view of the map
-        if (map == null || resetMap) {
-            buildMap();
-        } else if (reCenterReZoom) {
-            map.panTo(center);
-            map.setZoom(zoom);
-        }
-
+    /**
+     * Draw on the users screen.
+     * @param phoneGpsLoc
+     * @param isTracking
+     */
+    private void drawTrackingRoute(GeoLoc phoneGpsLoc, boolean isTracking) {
         if (isTracking) {
-            //Draw on the users screen.
             LatLng printLineLatLng = LatLng.create(phoneGpsLoc.getLatitude(), phoneGpsLoc.getLongitude());
             if (polyline == null) {
                 final PolylineOptions polylineOptions = createPolylineOptions(map, printLineLatLng);
@@ -304,33 +303,96 @@ public class GMapDisplayImpl implements GMapDisplay {
                 polyline.getPath().push(printLineLatLng);
             }
         }
+    }
 
+    private void placeAllPins(GeoLoc phoneGpsLoc, BikeRide bikeRide) {
+        BikeRideHelper.Content content = new BikeRideHelper.Content(bikeRide);
+        pinStartingLocation(bikeRide, content);
+        boolean leaderSet = pinGoldenBike(phoneGpsLoc, bikeRide, content);
+        pinBlueBike(phoneGpsLoc, bikeRide);
+        pinTrackers(bikeRide, content, leaderSet);
+    }
 
-        //Starting location
-        AddAsMarker(bikeRide.getLocation().getGeoLoc(), bikeRide, ScreenConstants.TargetIcon.EVENT);
-
-        //Ride leader
-        if (this.userId.equals(bikeRide.getRideLeaderId())) {
-            AddAsMarker(phoneGpsLoc, null, ScreenConstants.TargetIcon.LEADER);
-        } else if (bikeRide.getRideLeaderTracking() != null && bikeRide.getRideLeaderTracking().getId() != null) {
-            AddAsMarker(bikeRide.getRideLeaderTracking().getGeoLoc(), null, ScreenConstants.TargetIcon.LEADER);
-        }
-
-        //Phone Location (only print if not the ride leader)
-        if (!this.userId.equals(bikeRide.getRideLeaderId())) {
-            AddAsMarker(phoneGpsLoc, null, ScreenConstants.TargetIcon.CLIENT);
-        }
-
-        //Every other tracker
+    private void pinTrackers(BikeRide bikeRide, BikeRideHelper.Content content, boolean leaderSet) {
+        SafeHtml safeHtml;
         if (bikeRide.getCurrentTrackings() != null && bikeRide.getCurrentTrackings().length() > 0) {
             for (int i = 0; i < bikeRide.getCurrentTrackings().length(); i++) {
-                AddAsMarker(bikeRide.getCurrentTrackings().get(i).getGeoLoc(), null, ScreenConstants.TargetIcon.TRACKER);
+                if (leaderSet) {
+                    AddAsMarker(bikeRide.getCurrentTrackings().get(i).getGeoLoc(), null, ScreenConstants.TargetIcon.TRACKER, null);
+                } else { //Set the first person tracking as the leader if a leader is not yet set.
+                    safeHtml = content.getShortDescriptionForBike();
+                    AddAsMarker(bikeRide.getCurrentTrackings().get(i).getGeoLoc(), null, ScreenConstants.TargetIcon.LEADER, safeHtml);
+                    leaderSet = true;
+                }
             }
         }
+    }
 
-        //Reset the check
-        refreshMap();
-        resetMap = false;
+    /**
+     * Phone Location (only print if not the ride leader)
+     * @param phoneGpsLoc
+     * @param bikeRide
+     */
+    private void pinBlueBike(GeoLoc phoneGpsLoc, BikeRide bikeRide) {
+        SafeHtmlBuilder safeHtmlBuilder;SafeHtml safeHtml;
+        if (bikeRide == null || !this.userId.equals(bikeRide.getRideLeaderId())) {
+            safeHtmlBuilder = new SafeHtmlBuilder();
+            safeHtmlBuilder.appendHtmlConstant(HtmlTools.H1_RIDENAME);
+            safeHtmlBuilder.appendHtmlConstant(ScreenConstants.YOU);
+            safeHtmlBuilder.appendHtmlConstant(HtmlTools.H1_CLOSE_TAG);
+            AddAsMarker(phoneGpsLoc, null, ScreenConstants.TargetIcon.CLIENT, safeHtmlBuilder.toSafeHtml());
+        }
+    }
+
+    private boolean pinGoldenBike(GeoLoc phoneGpsLoc, BikeRide bikeRide, BikeRideHelper.Content content) {
+        boolean leaderSet = false;
+        SafeHtmlBuilder safeHtmlBuilder;SafeHtml safeHtml;
+        if (this.userId.equals(bikeRide.getRideLeaderId())) {
+            safeHtmlBuilder = new SafeHtmlBuilder();
+            safeHtmlBuilder.appendHtmlConstant(HtmlTools.H1_RIDENAME);
+            if (bikeRide.getRideLeaderTracking() != null) {
+                safeHtmlBuilder.appendHtmlConstant(ScreenConstants.YOU_LEADING);
+            } else {
+                safeHtmlBuilder.appendHtmlConstant(ScreenConstants.YOU_LEADER);
+            }
+            safeHtmlBuilder.appendHtmlConstant(HtmlTools.H1_CLOSE_TAG);
+            safeHtml = safeHtmlBuilder.toSafeHtml();
+            AddAsMarker(phoneGpsLoc, null, ScreenConstants.TargetIcon.LEADER, safeHtml);
+            leaderSet = true;
+        } else if (bikeRide.getRideLeaderTracking() != null && bikeRide.getRideLeaderTracking().getId() != null) {
+            safeHtml = content.getShortDescriptionForBike();
+            AddAsMarker(bikeRide.getRideLeaderTracking().getGeoLoc(), null, ScreenConstants.TargetIcon.LEADER, safeHtml);
+            leaderSet = true;
+        }
+        return leaderSet;
+    }
+
+    private void pinStartingLocation(BikeRide bikeRide, BikeRideHelper.Content content) {
+        SafeHtml safeHtml = content.getShortDescriptionForStart();
+        AddAsMarker(bikeRide.getLocation().getGeoLoc(), bikeRide, ScreenConstants.TargetIcon.EVENT, safeHtml);
+    }
+
+    /**
+     * Build the view of the map
+     * @param reCenterReZoom
+     */
+    private void buildMapView(boolean reCenterReZoom) {
+        if (map == null || resetMap) {
+            buildMap();
+        } else if (reCenterReZoom) {
+            map.panTo(center);
+            map.setZoom(zoom);
+        }
+    }
+
+    /**
+     * Reset the map if they are not equal
+     * @param bikeRide
+     */
+    private void resetMap(BikeRide bikeRide) {
+        if (!isEqualBikeRide(bikeRide, priorBikeRide)) {
+            resetMap = true;
+        }
     }
 
     private void buildMap() {
@@ -342,7 +404,7 @@ public class GMapDisplayImpl implements GMapDisplay {
 
     }
 
-    private void AddAsMarker(GeoLoc geoLoc, final BikeRide bikeRide, ScreenConstants.TargetIcon icon) {
+    private void AddAsMarker(GeoLoc geoLoc, final BikeRide bikeRide, ScreenConstants.TargetIcon icon, final SafeHtml safeHtml) {
         final Double convertedLat = geoLoc.getLatitude();
         final Double convertedLong = geoLoc.getLongitude();
 
@@ -352,14 +414,14 @@ public class GMapDisplayImpl implements GMapDisplay {
 
         markers.add(bikeRideMarker);
 
-        if(ScreenConstants.TargetIcon.EVENT.equals(icon)) {
+        if(safeHtml != null) {
             bikeRideMarker.addClickListener(new Marker.ClickHandler() {
                 @Override
                 public void handle(MouseEvent event) {
                     for (InfoWindow infoWindow : inforWindows) {
                         infoWindow.close();
                     }
-                    drawInfoWindow(bikeRideMarker, bikeRide, event);
+                    drawInfoWindow(bikeRideMarker, bikeRide, event, safeHtml);
                 }
             });
         }
@@ -376,6 +438,7 @@ public class GMapDisplayImpl implements GMapDisplay {
         return mapOptions;
     }
 
+    //30 minute rideshed
     private static CircleOptions createCircleOptions(final GoogleMap map, final LatLng center, final double radius) {
         final CircleOptions circleOptions = CircleOptions.create();
         circleOptions.setMap(map);
@@ -416,12 +479,13 @@ public class GMapDisplayImpl implements GMapDisplay {
         return polylineOptions;
     }
 
-    protected void drawInfoWindow(final Marker marker, final BikeRide bikeRide, MouseEvent mouseEvent) {
-        if (marker == null || bikeRide == null) {
+    protected void drawInfoWindow(final Marker marker, final BikeRide bikeRide, MouseEvent mouseEvent, SafeHtml safeHtml) {
+        if (marker == null) {
             return;
         }
+
         drawInfoWindow(marker,
-                buildBikeRideHTMLWidgetFor(bikeRide),
+                buildBikeRideHTMLWidgetFor(bikeRide, safeHtml),
                 mouseEvent);
     }
 
@@ -439,22 +503,22 @@ public class GMapDisplayImpl implements GMapDisplay {
     }
 
 
-    private Element buildBikeRideHTMLWidgetFor(final BikeRide bikeRide) {
+    private Element buildBikeRideHTMLWidgetFor(final BikeRide bikeRide, SafeHtml safeHtml) {
         FlowPanel fp = new FlowPanel();
 
-        HomeScreenDisplay.Content stuff = new HomeScreenDisplay.Content(bikeRide);
-        final SafeHtml safeHtml = stuff.getShortDescription();
+        if (bikeRide != null) {
+            //        //TODO This will be implemented in version 2
+            //        //Only available in iphone
+            //        if (MGWT.getOsDetection().isIPhone()) {
+            //            Anchor link = new Anchor("(more information)", presenter.provideTokenHrefFor(bikeRide));
+            //            link.getElement().getStyle().setColor("black");
+            //            fp.add(link);
+            //        }
+        }
+
         final HTML htmlWidget = new HTML(safeHtml);
         htmlWidget.getElement().getStyle().setColor("black");
         fp.add(htmlWidget);
-
-//        //TODO This will be implemented in version 2
-//        //Only available in iphone
-//        if (MGWT.getOsDetection().isIPhone()) {
-//            Anchor link = new Anchor("(more information)", presenter.provideTokenHrefFor(bikeRide));
-//            link.getElement().getStyle().setColor("black");
-//            fp.add(link);
-//        }
 
         return fp.getElement();
     }

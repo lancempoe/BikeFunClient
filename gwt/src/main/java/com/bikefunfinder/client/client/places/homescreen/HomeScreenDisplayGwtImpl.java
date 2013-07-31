@@ -1,5 +1,6 @@
 package com.bikefunfinder.client.client.places.homescreen;
 
+import com.bikefunfinder.client.shared.Tools.BikeRideHelper;
 import com.bikefunfinder.client.shared.Tools.DateTools;
 import com.bikefunfinder.client.shared.constants.ScreenConstants;
 import com.bikefunfinder.client.shared.model.BikeRide;
@@ -101,15 +102,15 @@ public class HomeScreenDisplayGwtImpl extends Composite implements HomeScreenDis
         //TODO find way for this buttons to work with visually impaired people.
         //right now is stays "unreadable text"
 
-        MyGroupingCellList<Header, Content> groupingCellList = new MyGroupingCellList<Header, Content>(new ContentCell(), new HeaderCell());
-        groupingCellList.addSelectionHandler(new SelectionHandler<Content>() {
+        MyGroupingCellList<Header, BikeRideHelper.Content> groupingCellList = new MyGroupingCellList<Header, BikeRideHelper.Content>(new ContentCell(), new HeaderCell());
+        groupingCellList.addSelectionHandler(new SelectionHandler<BikeRideHelper.Content>() {
             @Override
-            public void onSelection(SelectionEvent<Content> event) {
+            public void onSelection(SelectionEvent<BikeRideHelper.Content> event) {
             presenter.onRideClick(event.getSelectedItem().getBikeRide());
             }
         });
 
-        pp = new PullGroupPanel<Header, Content>(new HeaderListWithPullPanel<Header, Content>(groupingCellList), presenter);
+        pp = new PullGroupPanel<Header, BikeRideHelper.Content>(new HeaderListWithPullPanel<Header, BikeRideHelper.Content>(groupingCellList), presenter);
         headerListWidget.add(pp);
 
 
@@ -195,14 +196,14 @@ public class HomeScreenDisplayGwtImpl extends Composite implements HomeScreenDis
     }
 
 
-    private List<CellGroup<Header, Content>> buildList(List<BikeRide> bikeRides) {
+    private List<CellGroup<Header, BikeRideHelper.Content>> buildList(List<BikeRide> bikeRides) {
 
         setExpiredRidesButtonText();
 
-        ArrayList<CellGroup<Header, Content>> list = new ArrayList<CellGroup<Header, Content>>();
+        ArrayList<CellGroup<Header, BikeRideHelper.Content>> list = new ArrayList<CellGroup<Header, BikeRideHelper.Content>>();
 
         Header header  = null;
-        ArrayList<Content> contentList = new ArrayList<Content>();
+        ArrayList<BikeRideHelper.Content> contentList = new ArrayList<BikeRideHelper.Content>();
         JsDateWrapper priorDate = null;
         String tableQuickLink = ""; //An empty sting will allow the quick link to function without having to see it.
         for (BikeRide bikeRide : bikeRides) {
@@ -216,44 +217,44 @@ public class HomeScreenDisplayGwtImpl extends Composite implements HomeScreenDis
             if (priorDate == null || !priorDate.isSameDay(bikeRideDate)) {
                 if (header != null && contentList.size() > 0) {
                     //tableQuickLink is the value in the right quick link bar.  To place the header value simply place "header.getName()"
-                    CellGroup<Header, Content> cellGroup = new GroupingCellList.StandardCellGroup<Header, Content>(tableQuickLink, header, contentList);
+                    CellGroup<Header, BikeRideHelper.Content> cellGroup = new GroupingCellList.StandardCellGroup<Header, BikeRideHelper.Content>(tableQuickLink, header, contentList);
                     list.add(cellGroup);
                 }
                 priorDate = bikeRideDate;
                 header = new Header(bikeRideDate.toString(ScreenConstants.DateFormatPrintPretty));
-                contentList = new ArrayList<Content>();
+                contentList = new ArrayList<BikeRideHelper.Content>();
             }
 
             //Build content of 1 ride
             if(bikeRide!= null) {
-                contentList.add(new Content(bikeRide));
+                contentList.add(new BikeRideHelper.Content(bikeRide));
             }
         }
 
         //add the final item
         if (header != null && contentList.size() > 0) {
             //tableQuickLink is the value in the right quick link bar.  To place the header value simply place "header.getName()"
-            CellGroup<Header, Content> cellGroup = new GroupingCellList.StandardCellGroup<Header, Content>(tableQuickLink, header, contentList);
+            CellGroup<Header, BikeRideHelper.Content> cellGroup = new GroupingCellList.StandardCellGroup<Header, BikeRideHelper.Content>(tableQuickLink, header, contentList);
             list.add(cellGroup);
         }
 
         return list;
     }
 
-    private static class ContentCell implements ColoredCell<Content> {
+    private static class ContentCell implements ColoredCell<BikeRideHelper.Content> {
 
         @Override
-        public void render(SafeHtmlBuilder safeHtmlBuilder, Content model) {
+        public void render(SafeHtmlBuilder safeHtmlBuilder, BikeRideHelper.Content model) {
             safeHtmlBuilder.append(model.getShortDescription());
         }
 
         @Override
-        public boolean canBeSelected(Content model) {
+        public boolean canBeSelected(BikeRideHelper.Content model) {
             return true;
         }
 
         @Override
-        public String getColorCss(Content model) {
+        public String getColorCss(BikeRideHelper.Content model) {
             //todo: We may want to create css in GWT. External uses !important
             return model.getBikeRideListItemCssClass();
         }

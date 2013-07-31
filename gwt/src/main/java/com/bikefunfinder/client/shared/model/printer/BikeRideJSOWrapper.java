@@ -15,6 +15,7 @@ class BikeRideJSOWrapper implements DescribeableAsString<BikeRide> {
                     "CityLocationId"+jsoObject.getCityLocationId()+"," +
                     "Details"+jsoObject.getDetails()+"," +
                     "DistanceFromClient"+jsoObject.getDistanceFromClient()+"," +
+                    "DistanceTrackFromClient"+jsoObject.getDistanceTrackFromClient()+"," +
                     //"ImagePath"+jsoObject.getImagePath()+"," +
                     "RideLeaderId"+jsoObject.getRideLeaderId()+"," +
                     "RideLeaderName"+jsoObject.getRideLeaderName()+"," +

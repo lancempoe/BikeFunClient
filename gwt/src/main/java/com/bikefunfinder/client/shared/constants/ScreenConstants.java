@@ -15,15 +15,17 @@ public class ScreenConstants {
     public static String TargetAudienceLabel = "- Filter By Type -";
     public static enum TargetAudience {
         FAMILY_FRIENDLY("Family Friendly", 0),
-        BIKE_TALK("Bike Talk", 9),
-        BOOZY("Boozy", 4),
-        EASY("Easy Riders", 7),
-        EDUCATIONAL("Educational", 2),
+        BIKE_TALK("Bike Talk", 1),
+        BOOZY("Boozy", 2),
+        COSTUMES("Costumes", 3),
+        EASY("Easy Riders", 4),
+        EDUCATIONAL("Educational", 5),
         FAST("Fast & Furious", 6),
+        FOODIE("Foodie", 7),
         MEET_UP("Meet Up", 8),
-        NAKED("Naked", 5),
+        NAKED("Naked", 9),
         OPEN_HOUSE("Open House", 10),
-        ROADIES("Roadies", 1);
+        ROADIES("Roadies", 11);
 
         private final String displayName;
         private final int orderCount;
@@ -88,4 +90,10 @@ public class ScreenConstants {
     public static final double TimeOffsetBeforeItsCurrent = JsDateWrapper.getHours(1);
     public static final double TimeOffsetBeforeItsLeaving = JsDateWrapper.getHours(0);
     public static final double TimeOffsetBeforeItsOld = JsDateWrapper.getMinutes(-30);
+
+    public static final String YOU = "This is you.";
+    public static final String YOU_LEADING = YOU + " Your leading the ride!";
+    public static final String YOU_LEADER = YOU + " Start sharing ride location!";
+    public static final String STARTING_POINT_EVENT_MOVED = "See golden bike on map for current location.";
+    public static final String LIVE_TRACK = "Actively Tracking!";
 }
