@@ -10,14 +10,13 @@ import com.bikefunfinder.client.client.places.homescreen.HomeScreenPlace;
 import com.bikefunfinder.client.gin.Injector;
 import com.bikefunfinder.client.gin.RamObjectCache;
 import com.bikefunfinder.client.shared.Tools.DeviceTools;
-import com.bikefunfinder.client.shared.Tools.NativeUtilities;
+import com.bikefunfinder.client.shared.Tools.NavigationHelper;
 import com.bikefunfinder.client.shared.Tools.NonPhoneGapGeoLocCallback;
 import com.bikefunfinder.client.shared.model.*;
 import com.bikefunfinder.client.shared.request.DeleteEventRequest;
 import com.bikefunfinder.client.shared.request.NewEventRequest;
 import com.bikefunfinder.client.shared.request.UpdateEventRequest;
 import com.bikefunfinder.client.shared.request.converters.NoOpResponseObject;
-import com.bikefunfinder.client.shared.request.management.GeoLocCacheStrategy;
 import com.bikefunfinder.client.shared.request.management.WebServiceResponseConsumer;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JsArray;
@@ -50,11 +49,6 @@ public class CreateScreenActivity extends MGWTAbstractActivity implements Create
         }
 
         display.setVisibilityOfButtons(existingEvent);
-        if (existingEvent) {
-            NativeUtilities.trackPage("Update Screen");
-        } else {
-            NativeUtilities.trackPage("Create Screen");
-        }
     }
 
     private String getUserName() {
@@ -172,7 +166,7 @@ public class CreateScreenActivity extends MGWTAbstractActivity implements Create
 
     @Override
     public void backButtonSelected() {
-        clientFactory.getPlaceController().goTo(new HomeScreenPlace());
+        NavigationHelper.goToPriorScreen(clientFactory.getPlaceController());
     }
 
     @Override

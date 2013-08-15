@@ -12,32 +12,24 @@ import com.google.gwt.core.client.JsDate;
 import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.resources.client.CssResource;
-import com.google.gwt.resources.client.ImageResource;
-import com.google.gwt.resources.client.impl.ImageResourcePrototype;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
-import com.google.gwt.safehtml.shared.SafeUri;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Widget;
 import com.googlecode.mgwt.dom.client.event.tap.TapEvent;
 import com.googlecode.mgwt.ui.client.widget.Button;
 import com.googlecode.mgwt.ui.client.widget.GroupingCellList;
 import com.googlecode.mgwt.ui.client.widget.GroupingCellList.CellGroup;
-import com.googlecode.mgwt.ui.client.widget.HeaderPanel;
 import com.googlecode.mgwt.ui.client.widget.LayoutPanel;
-import com.googlecode.mgwt.ui.client.widget.base.ButtonBase;
 import com.googlecode.mgwt.ui.client.widget.base.PullPanel;
-import com.googlecode.mgwt.ui.client.widget.tabbar.TabBarButton;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 
 public class HomeScreenDisplayGwtImpl extends Composite implements HomeScreenDisplay {
 
@@ -48,7 +40,7 @@ public class HomeScreenDisplayGwtImpl extends Composite implements HomeScreenDis
     interface MyStyle extends CssResource {
         String buttonTreatment();
     }
-	@UiField MyStyle style;
+	@UiField public static MyStyle style;
 
 
     private static OverviewDisplayGwtImplUiBinder uiBinder = GWT.create(OverviewDisplayGwtImplUiBinder.class);
@@ -135,6 +127,11 @@ public class HomeScreenDisplayGwtImpl extends Composite implements HomeScreenDis
     }
 
     @Override
+    public int getMainSize() {
+        return headerListWidget.getOffsetHeight();
+    }
+
+    @Override
     public void setPresenter(Presenter presenter) {
         this.presenter = presenter;
         //bikeEntriesHeaderList.setPresenter(presenter);
@@ -146,7 +143,7 @@ public class HomeScreenDisplayGwtImpl extends Composite implements HomeScreenDis
 
         pp.render(buildList(list));
         if(!wasAdjusted) {
-            wasAdjusted = adjustPullPanelSize();
+            adjustPullPanelSize();
         }
         pp.refresh();
     }
@@ -290,9 +287,9 @@ public class HomeScreenDisplayGwtImpl extends Composite implements HomeScreenDis
         pullArrowHeader.asWidget().setVisible(false); // is managed by the pull process .. this mess could be nicer.. but needs love
     }
 
-    private boolean adjustPullPanelSize() {
+    private void adjustPullPanelSize() {
         if(headerListWidget==null || !headerListWidget.isAttached()) {
-            return false;
+            return;
         }
 
         int adjustedHeight = headerListWidget.getOffsetHeight();
@@ -300,9 +297,9 @@ public class HomeScreenDisplayGwtImpl extends Composite implements HomeScreenDis
         adjustedHeight -= headerPanel.getOffsetHeight();
 
         if(adjustedHeight<=0) {
-            return false;
+            return;
         }
         headerListWidget.setHeight(adjustedHeight + "px");
-        return true;
+        wasAdjusted = true;
     }
 }

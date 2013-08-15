@@ -53,12 +53,10 @@ public class PullGroupPanel<G, T> extends Composite implements HasRefresh {
 
         scrollPanel = groupingCellList.getScrollPanel();
         if(scrollPanel==null) {
-            //Window.alert("Oh noes it's null:setupScrollPanel");
             return;
         }
 
         if(!scrollPanel.isAttached()) {
-            //Window.alert("Oh noes it's not attached:setupScrollPanel");
             return;
         }
 

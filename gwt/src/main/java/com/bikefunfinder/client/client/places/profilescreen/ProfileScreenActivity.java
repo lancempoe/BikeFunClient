@@ -9,6 +9,7 @@ import com.bikefunfinder.client.client.places.homescreen.HomeScreenPlace;
 import com.bikefunfinder.client.gin.Injector;
 import com.bikefunfinder.client.shared.Tools.DeviceTools;
 import com.bikefunfinder.client.shared.Tools.NativeUtilities;
+import com.bikefunfinder.client.shared.Tools.NavigationHelper;
 import com.bikefunfinder.client.shared.Tools.NonPhoneGapGeoLocCallback;
 import com.bikefunfinder.client.shared.model.AnonymousUser;
 import com.bikefunfinder.client.shared.model.GeoLoc;
@@ -30,8 +31,6 @@ public class ProfileScreenActivity extends MGWTAbstractActivity implements Profi
         ProfileScreenDisplay display = this.clientFactory.getDisplay(this);
         setUserDisplayElements(user.getId(), user.getUserName());
         display.display(user);
-
-        NativeUtilities.trackPage("Profile Screen (User)");
     }
 
     @Override
@@ -46,8 +45,6 @@ public class ProfileScreenActivity extends MGWTAbstractActivity implements Profi
         setUserDisplayElements(anonymousUser.getId(), anonymousUser.getUserName());
         display.display(anonymousUser);
         display.display(userName);
-
-        NativeUtilities.trackPage("Profile Screen (Anonymous)");
     }
 
     private void setUserDisplayElements(String id, String name) {
@@ -57,7 +54,7 @@ public class ProfileScreenActivity extends MGWTAbstractActivity implements Profi
 
     @Override
     public void backButtonSelected() {
-        clientFactory.getPlaceController().goTo(new HomeScreenPlace());
+        NavigationHelper.goToPriorScreen(clientFactory.getPlaceController());
     }
 
     @Override

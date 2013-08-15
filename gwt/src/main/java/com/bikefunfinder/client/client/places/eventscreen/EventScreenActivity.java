@@ -9,7 +9,7 @@ import com.bikefunfinder.client.client.places.createscreen.CreateScreenPlace;
 import com.bikefunfinder.client.client.places.gmap.GMapPlace;
 import com.bikefunfinder.client.client.places.homescreen.HomeScreenPlace;
 import com.bikefunfinder.client.gin.Injector;
-import com.bikefunfinder.client.shared.Tools.NativeUtilities;
+import com.bikefunfinder.client.shared.Tools.NavigationHelper;
 import com.bikefunfinder.client.shared.model.AnonymousUser;
 import com.bikefunfinder.client.shared.model.BikeRide;
 import com.bikefunfinder.client.shared.model.Tracking;
@@ -25,15 +25,13 @@ public class EventScreenActivity extends MGWTAbstractActivity implements EventSc
 private final ClientFactory<EventScreenDisplay> clientFactory = Injector.INSTANCE.getClientFactory();
     private final AnonymousUser anonymousUser;
     private final User user;
-    private final boolean cameFromGmap;
 
     private BikeRide bikeRide;
 
     private String userName = "";
     private String userId = "";
 
-    public EventScreenActivity(BikeRide bikeRide, boolean cameFromGmap, User user, AnonymousUser anonymousUser) {
-        this.cameFromGmap = cameFromGmap;
+    public EventScreenActivity(BikeRide bikeRide, User user, AnonymousUser anonymousUser) {
         this.bikeRide = bikeRide;
         this.user = user;
         this.anonymousUser = anonymousUser;
@@ -93,18 +91,11 @@ private final ClientFactory<EventScreenDisplay> clientFactory = Injector.INSTANC
             }
         }
         display.displayTrackings(trackings);
-
-        NativeUtilities.trackPage("Event Screen");
     }
 
     @Override
     public void backButtonSelected() {
-        if(cameFromGmap) {
-            clientFactory.getPlaceController().goTo(new GMapPlace("Here & Now"));
-            return;
-        }
-
-        clientFactory.getPlaceController().goTo(new HomeScreenPlace());
+        NavigationHelper.goToPriorScreen(clientFactory.getPlaceController());
     }
 
     @Override

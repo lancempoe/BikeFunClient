@@ -108,12 +108,12 @@ public final class SearchByTimeOfDayRequest {
             @Override
             public void cacheType(Root root) {
                 Logger.getLogger("").log(Level.INFO, "Saved SearchByTimeOfDay root to ramObjectCache");
-                ramObjectCache.setSearchByTimeOfDay(root);
+                ramObjectCache.setRoot(root);
             }
 
             @Override
             public Root getCachedType() {
-                return ramObjectCache.getSearchByTimeOfDay();
+                return ramObjectCache.getRoot();
             }
         }, new RepeatForeverWaitingBetweenRetries<Root>());
 

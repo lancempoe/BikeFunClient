@@ -9,8 +9,6 @@ import com.bikefunfinder.client.shared.model.BikeRide;
 import com.bikefunfinder.client.shared.model.GeoLoc;
 import com.bikefunfinder.client.shared.model.Root;
 
-import java.util.List;
-
 public interface RamObjectCache {
 
     public AnonymousUser getAnonymousUser();
@@ -19,26 +17,16 @@ public interface RamObjectCache {
     public GeoLoc getCurrentPhoneGeoLoc();
     public void setCurrentPhoneGeoLoc(GeoLoc phoneGeoLoc);
 
-    public BikeRide getCurrentBikeRide();
-    public void setCurrentBikeRide(BikeRide bikeRide);
+    public Root getRoot();
+    public void setRoot(Root root);
 
-    public void updateRide(BikeRide bikeRide);
-    public void deleteRide(String bikeRideId);
-
-    ///////
-
-    public Root getSearchByTimeOfDay();
-    public void setSearchByTimeOfDay(Root root);
-
-    public Root getSearchByTimeOfDayForProfile();
-    public void setSearchByTimeOfDayForProfile(Root root);
-
-    public Root getSearchByProximity();
-    public void setSearchByProximity(Root root);
-
-    public Root getSearchByQuery();
-    public void setSearchByQuery(Root root);
+    public int getMainScreenSize();
+    public void setMainScreenSize(int size);
 
     public BikeRide getEventRequest();
     public void setEventRequest(BikeRide bikeRide);
+
+    public BikeRide getCurrentBikeRide();
+    public void setCurrentBikeRide(BikeRide bikeRide);
+
 }

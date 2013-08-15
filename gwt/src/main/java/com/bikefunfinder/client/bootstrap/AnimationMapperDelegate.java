@@ -7,6 +7,7 @@ package com.bikefunfinder.client.bootstrap;
 import com.bikefunfinder.client.client.places.createscreen.CreateScreenPlace;
 import com.bikefunfinder.client.client.places.eventscreen.EventScreenPlace;
 import com.bikefunfinder.client.client.places.gmap.GMapPlace;
+import com.bikefunfinder.client.client.places.gmaphomescreen.GMapHomePlace;
 import com.bikefunfinder.client.client.places.homescreen.HomeScreenPlace;
 import com.bikefunfinder.client.client.places.profilescreen.ProfileScreenPlace;
 import com.bikefunfinder.client.client.places.searchscreen.SearchScreenPlace;
@@ -23,21 +24,28 @@ public class AnimationMapperDelegate implements AnimationMapper {
             return Animation.FADE;
         }
 
-        //Create new events
+        //Create new events (and edit and event)
         if (oldPlace instanceof HomeScreenPlace && newPlace instanceof CreateScreenPlace) {
+            return Animation.POP;
+        } else if (oldPlace instanceof GMapHomePlace && newPlace instanceof CreateScreenPlace) {
             return Animation.POP;
         } else if (oldPlace instanceof EventScreenPlace && newPlace instanceof CreateScreenPlace) {
             return Animation.POP;
         } else if (oldPlace instanceof CreateScreenPlace && newPlace instanceof HomeScreenPlace) {
             return Animation.POP_REVERSE;
+        } else if (oldPlace instanceof CreateScreenPlace && newPlace instanceof GMapHomePlace) {
+            return Animation.POP_REVERSE;
         } else if (oldPlace instanceof CreateScreenPlace && newPlace instanceof EventScreenPlace) {
             return Animation.FADE;
-        }  else if (oldPlace instanceof EventScreenPlace && newPlace instanceof GMapPlace) {
-            return Animation.SLIDE;
         }
 
         //Search Page
         if (oldPlace instanceof HomeScreenPlace && newPlace instanceof SearchScreenPlace) {
+            if(MGWT.getOsDetection().isAndroid()) {
+                return Animation.SWAP;
+            }
+            return Animation.FLIP;
+        } else if (oldPlace instanceof GMapHomePlace && newPlace instanceof SearchScreenPlace) {
             if(MGWT.getOsDetection().isAndroid()) {
                 return Animation.SWAP;
             }
@@ -52,7 +60,12 @@ public class AnimationMapperDelegate implements AnimationMapper {
                 return Animation.SWAP_REVERSE;
             }
             return Animation.FLIP_REVERSE;
-        }  else if (oldPlace instanceof SearchScreenPlace && newPlace instanceof EventScreenPlace) {
+        } else if (oldPlace instanceof SearchScreenPlace && newPlace instanceof GMapHomePlace) {
+            if(MGWT.getOsDetection().isAndroid()) {
+                return Animation.SWAP_REVERSE;
+            }
+            return Animation.FLIP_REVERSE;
+        } else if (oldPlace instanceof SearchScreenPlace && newPlace instanceof EventScreenPlace) {
             if(MGWT.getOsDetection().isAndroid()) {
                 return Animation.SWAP_REVERSE;
             }
@@ -61,6 +74,11 @@ public class AnimationMapperDelegate implements AnimationMapper {
 
         //Profile Page.
         if (oldPlace instanceof HomeScreenPlace && newPlace instanceof ProfileScreenPlace) {
+            if(MGWT.getOsDetection().isAndroid()) {
+                return Animation.SLIDE_UP;
+            }
+            return Animation.FLIP;
+        } else if (oldPlace instanceof GMapHomePlace && newPlace instanceof ProfileScreenPlace) {
             if(MGWT.getOsDetection().isAndroid()) {
                 return Animation.SLIDE_UP;
             }
@@ -75,7 +93,12 @@ public class AnimationMapperDelegate implements AnimationMapper {
                 return Animation.SLIDE_UP_REVERSE;
             }
             return Animation.FLIP_REVERSE;
-        }  else if (oldPlace instanceof ProfileScreenPlace && newPlace instanceof EventScreenPlace) {
+        } else if (oldPlace instanceof ProfileScreenPlace && newPlace instanceof GMapHomePlace) {
+            if(MGWT.getOsDetection().isAndroid()) {
+                return Animation.SLIDE_UP_REVERSE;
+            }
+            return Animation.FLIP_REVERSE;
+        } else if (oldPlace instanceof ProfileScreenPlace && newPlace instanceof EventScreenPlace) {
             if(MGWT.getOsDetection().isAndroid()) {
                 return Animation.SLIDE_UP_REVERSE;
             }
@@ -85,17 +108,23 @@ public class AnimationMapperDelegate implements AnimationMapper {
         //Event Page
         if (oldPlace instanceof HomeScreenPlace && newPlace instanceof EventScreenPlace) {
             return Animation.SLIDE;
+        } else if (oldPlace instanceof GMapHomePlace && newPlace instanceof EventScreenPlace) {
+            return Animation.SLIDE;
+        } else if (oldPlace instanceof EventScreenPlace && newPlace instanceof GMapPlace) {
+            return Animation.SLIDE;
+        } else if (oldPlace instanceof GMapPlace && newPlace instanceof EventScreenPlace) {
+            return Animation.SLIDE_REVERSE;
         } else if (oldPlace instanceof EventScreenPlace && newPlace instanceof HomeScreenPlace) {
+            return Animation.SLIDE_REVERSE;
+        } else if (oldPlace instanceof EventScreenPlace && newPlace instanceof GMapHomePlace) {
             return Animation.SLIDE_REVERSE;
         }
 
-        //Here and now page
-        if (oldPlace instanceof HomeScreenPlace && newPlace instanceof GMapPlace) {
-            return Animation.SLIDE;
-        } else if (oldPlace instanceof GMapPlace && newPlace instanceof HomeScreenPlace) {
-            return Animation.SLIDE_REVERSE;
-        } else if (oldPlace instanceof GMapPlace && newPlace instanceof EventScreenPlace) {
-            return Animation.SLIDE_REVERSE;
+        //Home Pages
+        if (oldPlace instanceof HomeScreenPlace && newPlace instanceof GMapHomePlace) {
+            return Animation.FADE;
+        } else if (oldPlace instanceof GMapHomePlace && newPlace instanceof HomeScreenPlace) {
+            return Animation.FADE;
         }
 
         return Animation.SLIDE;

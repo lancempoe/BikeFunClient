@@ -9,6 +9,9 @@ import com.bikefunfinder.client.client.places.eventscreen.EventScreenDisplayGwtI
 import com.bikefunfinder.client.client.places.gmap.GMapActivity;
 import com.bikefunfinder.client.client.places.gmap.GMapDisplay;
 import com.bikefunfinder.client.client.places.gmap.GMapDisplayImpl;
+import com.bikefunfinder.client.client.places.gmaphomescreen.GMapHomeActivity;
+import com.bikefunfinder.client.client.places.gmaphomescreen.GMapHomeDisplay;
+import com.bikefunfinder.client.client.places.gmaphomescreen.GMapHomeDisplayGwtImpl;
 import com.bikefunfinder.client.client.places.homescreen.HomeScreenActivity;
 import com.bikefunfinder.client.client.places.homescreen.HomeScreenDisplay;
 import com.bikefunfinder.client.client.places.homescreen.HomeScreenDisplayGwtImpl;
@@ -37,6 +40,7 @@ public class ClientFactoryGwtImpl implements ClientFactory {
     private SearchScreenDisplay searchScreenDisplay;
     private EventScreenDisplay eventScreenDisplay;
     private GMapDisplay gMapDisplay;
+    private GMapHomeDisplay gMapHomeDisplay;
     private AppPlaceHistoryMapper historyHandler;
     private AccountDetailsProvider accountDetailsProvider;
     private boolean isDiviceOnline = true;
@@ -111,6 +115,8 @@ public class ClientFactoryGwtImpl implements ClientFactory {
             return getSearchScreenDisplay();
         } else if(activity instanceof GMapActivity) {
             return getGMapDisplay();
+        } else if(activity instanceof GMapHomeActivity) {
+            return getGMapHomeDisplay();
         }
 
         throw new RuntimeException("No fair! We need a real activity");
@@ -156,5 +162,12 @@ public class ClientFactoryGwtImpl implements ClientFactory {
             gMapDisplay = new GMapDisplayImpl();
         }
         return gMapDisplay;
+    }
+
+    private GMapHomeDisplay getGMapHomeDisplay() {
+        if (gMapHomeDisplay == null) {
+            gMapHomeDisplay = new GMapHomeDisplayGwtImpl();
+        }
+        return gMapHomeDisplay;
     }
 }

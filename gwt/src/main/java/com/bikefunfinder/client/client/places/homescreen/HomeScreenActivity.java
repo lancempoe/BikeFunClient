@@ -1,25 +1,18 @@
 package com.bikefunfinder.client.client.places.homescreen;
 
 import com.bikefunfinder.client.bootstrap.ClientFactory;
-import com.bikefunfinder.client.client.places.createscreen.CreateScreenPlace;
 import com.bikefunfinder.client.client.places.eventscreen.EventScreenPlace;
-import com.bikefunfinder.client.client.places.gmap.GMapPlace;
-import com.bikefunfinder.client.client.places.profilescreen.ProfileScreenPlace;
-import com.bikefunfinder.client.client.places.searchscreen.SearchScreenPlace;
 import com.bikefunfinder.client.gin.Injector;
 import com.bikefunfinder.client.gin.RamObjectCache;
 import com.bikefunfinder.client.shared.Tools.DeviceTools;
-import com.bikefunfinder.client.shared.Tools.NativeUtilities;
+import com.bikefunfinder.client.shared.Tools.NavigationHelper;
 import com.bikefunfinder.client.shared.Tools.NonPhoneGapGeoLocCallback;
 import com.bikefunfinder.client.shared.constants.ScreenConstants;
-import com.bikefunfinder.client.shared.model.AnonymousUser;
 import com.bikefunfinder.client.shared.model.BikeRide;
 import com.bikefunfinder.client.shared.model.GeoLoc;
 import com.bikefunfinder.client.shared.model.Root;
 import com.bikefunfinder.client.shared.model.helper.Extractor;
-import com.bikefunfinder.client.shared.request.AnonymousRequest;
 import com.bikefunfinder.client.shared.request.SearchByTimeOfDayRequest;
-import com.bikefunfinder.client.shared.request.management.AnnonymousUserCacheStrategy;
 import com.bikefunfinder.client.shared.request.management.WebServiceResponseConsumer;
 import com.google.gwt.regexp.shared.MatchResult;
 import com.google.gwt.regexp.shared.RegExp;
@@ -54,7 +47,7 @@ public class HomeScreenActivity extends MGWTAbstractActivity implements HomeScre
             Logger.getLogger("").log(Level.INFO, "Passed a root to the Home page. Happens during Search and Profile");
             setupDisplay(root);
         } else {
-            List<BikeRide> bikeRides = Extractor.getBikeRidesFrom(ramObjectCache.getSearchByTimeOfDay());
+            List<BikeRide> bikeRides = Extractor.getBikeRidesFrom(ramObjectCache.getRoot());
             if (bikeRides != null || bikeRides.size() == 0) {
                 Logger.getLogger("").log(Level.SEVERE, "ramObjectCache.getTimeOfDayBikeRideCache().size() == 0");
                 refreshTimeAndDayReq(noOpNotifyTimeAndDayCallback);
@@ -86,8 +79,7 @@ public class HomeScreenActivity extends MGWTAbstractActivity implements HomeScre
         }  else {
             display.setTitle("Add an Event!");
         }
-
-        NativeUtilities.trackPage("Home Screen");
+        ramObjectCache.setMainScreenSize(display.getMainSize());
     }
 
     private MatchResult buildMatcher(String formattedAddress) {
@@ -118,12 +110,12 @@ public class HomeScreenActivity extends MGWTAbstractActivity implements HomeScre
 
     @Override
     public void onHereAndNowButton() {
-        clientFactory.getPlaceController().goTo(new GMapPlace("Here & Now"));
+        clientFactory.getPlaceController().goTo(NavigationHelper.getGMapHomePlace());
     }
 
     @Override
     public void onExpiredRidesButton() {
-        display.display(Extractor.getBikeRidesFrom(ramObjectCache.getSearchByTimeOfDay()));
+        display.display(Extractor.getBikeRidesFrom(ramObjectCache.getRoot()));
     }
 
     @Override
@@ -154,7 +146,7 @@ public class HomeScreenActivity extends MGWTAbstractActivity implements HomeScre
             @Override
             public void onResponseReceived(Root root) {
                 Logger.getLogger("").log(Level.INFO, "Root retrieved from fireRequestForTimeOfDay");
-                ramObjectCache.setSearchByTimeOfDay(root);
+                ramObjectCache.setRoot(root);
                 setupDisplay(root);
                 notifyTimeAndDayCallback.onResponseReceived();
             }

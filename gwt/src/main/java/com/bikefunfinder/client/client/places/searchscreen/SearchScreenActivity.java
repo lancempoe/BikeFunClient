@@ -8,7 +8,7 @@ import com.bikefunfinder.client.bootstrap.ClientFactory;
 import com.bikefunfinder.client.client.places.homescreen.HomeScreenPlace;
 import com.bikefunfinder.client.gin.Injector;
 import com.bikefunfinder.client.shared.Tools.DeviceTools;
-import com.bikefunfinder.client.shared.Tools.NativeUtilities;
+import com.bikefunfinder.client.shared.Tools.NavigationHelper;
 import com.bikefunfinder.client.shared.Tools.NonPhoneGapGeoLocCallback;
 import com.bikefunfinder.client.shared.constants.ScreenConstants;
 import com.bikefunfinder.client.shared.model.BikeRide;
@@ -16,7 +16,6 @@ import com.bikefunfinder.client.shared.model.GeoLoc;
 import com.bikefunfinder.client.shared.model.Query;
 import com.bikefunfinder.client.shared.model.Root;
 import com.bikefunfinder.client.shared.request.SearchByParametersRequest;
-import com.bikefunfinder.client.shared.request.management.GeoLocCacheStrategy;
 import com.bikefunfinder.client.shared.request.management.WebServiceResponseConsumer;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.web.bindery.event.shared.EventBus;
@@ -45,13 +44,11 @@ public class SearchScreenActivity extends MGWTAbstractActivity implements Search
         final SearchScreenDisplay display = clientFactory.getDisplay(this);
         display.setPresenter(this);
         panel.setWidget(display);
-
-        NativeUtilities.trackPage("Search Screen");
     }
 
     @Override
     public void backButtonSelected() {
-        clientFactory.getPlaceController().goTo(new HomeScreenPlace());
+        NavigationHelper.goToPriorScreen(clientFactory.getPlaceController());
     }
 
     @Override

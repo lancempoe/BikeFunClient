@@ -15,27 +15,17 @@ import java.util.List;
 
 public class EventScreenPlace extends Place {
     final BikeRide bikeRide;
-    final boolean wasConstructedById;
 
     public EventScreenPlace(BikeRide bikeRide) {
-        this(bikeRide, false);
-    }
-
-    private EventScreenPlace(BikeRide bikeRide, boolean wasConstructedById) {
-        this.wasConstructedById = wasConstructedById;
         this.bikeRide = bikeRide;
     }
 
     public EventScreenPlace() {
-        this(null, false);
+        this(null);
     }
 
     public BikeRide getBikeRide() {
         return bikeRide;
-    }
-
-    public boolean getWasConstructedById() {
-        return wasConstructedById;
     }
 
     public static class Tokenizer implements PlaceTokenizer<EventScreenPlace> {
@@ -45,10 +35,10 @@ public class EventScreenPlace extends Place {
         @Override
         public EventScreenPlace getPlace(String token) {
 
-            List<BikeRide> bikeRides = Extractor.getBikeRidesFrom(ramObjectCache.getSearchByTimeOfDay());
+            List<BikeRide> bikeRides = Extractor.getBikeRidesFrom(ramObjectCache.getRoot());
             for(BikeRide bikeRide : bikeRides) {
                 if(bikeRide.getId()==token) {
-                    return new EventScreenPlace(bikeRide, true);
+                    return new EventScreenPlace(bikeRide);
                 }
             }
 

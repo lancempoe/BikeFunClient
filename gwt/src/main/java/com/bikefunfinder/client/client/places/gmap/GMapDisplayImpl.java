@@ -44,7 +44,7 @@ public class GMapDisplayImpl implements GMapDisplay {
     private static final int HERE_AND_NOW_RADIUS = 3;
     private static final String START_TRACKING = "Share ride location!";
     private static final String STOP_TRACKING = "Stop Tracking";
-
+    private static final String TRACK_HEX_COLOR = "#FF0000";
 
     private final LayoutPanel main;
     private final HeaderButton  backButton;
@@ -472,7 +472,7 @@ public class GMapDisplayImpl implements GMapDisplay {
         final PolylineOptions polylineOptions = PolylineOptions.create();
         polylineOptions.setMap(map);
         polylineOptions.setPath(path);
-        polylineOptions.setStrokeColor("#FF0000");
+        polylineOptions.setStrokeColor(TRACK_HEX_COLOR);
         polylineOptions.setStrokeOpacity(0.8);
         polylineOptions.setStrokeWeight(2);
 

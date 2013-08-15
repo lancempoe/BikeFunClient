@@ -119,13 +119,12 @@ public final class SearchByTimeOfDayForProfileRequest {
                 PayloadConverters.ROOT_JSON_OBJECT_CONVERTER, requestBuilder, callback, new CacheStrategy<Root>() {
             @Override
             public void cacheType(Root root) {
-                ramObjectCache.setSearchByTimeOfDayForProfile(root);
-                ramObjectCache.setSearchByTimeOfDay(root); //This is used on the main page.
+                ramObjectCache.setRoot(root); //This is used on the main page.
             }
 
             @Override
             public Root getCachedType() {
-                return ramObjectCache.getSearchByTimeOfDayForProfile();
+                return null; //TODO DECIDED IF THIS IS THE BEST OPTION
             }
         }, new RepeatForeverWaitingBetweenRetries<Root>()
         );

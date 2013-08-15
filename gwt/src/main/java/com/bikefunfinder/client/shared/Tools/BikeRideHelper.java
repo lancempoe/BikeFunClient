@@ -1,9 +1,9 @@
 package com.bikefunfinder.client.shared.Tools;
 
+import com.bikefunfinder.client.client.places.gmaphomescreen.GMapHomeDisplayGwtImpl;
 import com.bikefunfinder.client.shared.constants.ScreenConstants;
 import com.bikefunfinder.client.shared.model.BikeRide;
 import com.bikefunfinder.client.shared.model.printer.JsDateWrapper;
-import com.google.gwt.core.client.JsDate;
 import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 
@@ -18,6 +18,12 @@ import java.util.logging.Logger;
  * To change this template use File | Settings | File Templates.
  */
 public class BikeRideHelper {
+
+    private static String OLD_RIDE = "oldRide";
+    private static String LEAVING_RIDE = "leavingRide";
+    private static String ACTIVE_RIDE = "activeRide";
+    private static String CURRENT_RIDE = "currentRide";
+    private static String FUTURE_RIDE = "futureRide";
 
     public static String getAddressToPrintForStart(BikeRide bikeRide) {
         return getAddressToPrint(bikeRide, false);
@@ -151,26 +157,37 @@ public class BikeRideHelper {
             // - Green: StartTime is between 1 hours before now
             // - White: Everything in the Future past 1 hour
             //-------------
+            return stageOfBikeRide(this.bikeRide);
+        }
+    }
 
-            if(bikeRide.isCurrentlyTracking()) {
-                return "activeRide";
+    public static boolean isHereAndNow(BikeRide bikeRide) {
+        boolean isHereAndNow = false;
+        String stageOfRide = stageOfBikeRide(bikeRide);
+        if (!stageOfRide.equals(OLD_RIDE) && !stageOfRide.equals(FUTURE_RIDE)) {
+            if ((bikeRide.isCurrentlyTracking() && Double.parseDouble(bikeRide.getDistanceTrackFromClient()) <= GMapHomeDisplayGwtImpl.HERE_AND_NOW_RADIUS) ||
+                    (!bikeRide.isCurrentlyTracking() && Double.parseDouble(bikeRide.getDistanceFromClient()) <= GMapHomeDisplayGwtImpl.HERE_AND_NOW_RADIUS)) {
+                isHereAndNow = true;
             }
-            JsDate currentTime = JsDate.create();
+        }
+        return isHereAndNow;
+    }
 
-            JsDate rideTime = JsDate.create(bikeRide.getRideStartTime());
 
-            if (DateTools.isOldRide(this.bikeRide)) {
-                return "oldRide";
-            } else if (DateTools.isLeavingRide(this.bikeRide)) {
-                return "leavingRide";
-            } else if (DateTools.isCurrentRide(this.bikeRide) ) {
-                return "currentRide";
-            } else if (DateTools.isFutureRide(this.bikeRide)) {
-                return "futureRide";
-            } else {
-                Logger.getLogger("").log(Level.SEVERE, "Invalid bike ride start time!");
-                return "oldRide";
-            }
+    private static String stageOfBikeRide(BikeRide bikeRide) {
+        if(bikeRide.isCurrentlyTracking()) {
+            return ACTIVE_RIDE;
+        } else if (DateTools.isOldRide(bikeRide)) {
+            return OLD_RIDE;
+        } else if (DateTools.isLeavingRide(bikeRide)) {
+            return LEAVING_RIDE;
+        } else if (DateTools.isCurrentRide(bikeRide) ) {
+            return CURRENT_RIDE;
+        } else if (DateTools.isFutureRide(bikeRide)) {
+            return FUTURE_RIDE;
+        } else {
+            Logger.getLogger("").log(Level.SEVERE, "Invalid bike ride start time!");
+            return OLD_RIDE;
         }
     }
 

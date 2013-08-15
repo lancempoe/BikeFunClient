@@ -122,13 +122,12 @@ public final class SearchByParametersRequest {
                 PayloadConverters.ROOT_JSON_OBJECT_CONVERTER, requestBuilder, callback,  new CacheStrategy<Root>() {
             @Override
             public void cacheType(Root root) {
-                ramObjectCache.setSearchByQuery(root);
-                ramObjectCache.setSearchByTimeOfDay(root); //This is used on the main page.
+                ramObjectCache.setRoot(root); //This is used on the main page.
             }
 
             @Override
             public Root getCachedType() {
-                return ramObjectCache.getSearchByQuery();
+                return null; //todo deceid if this is the best response.
             }
         }, new RepeatForeverWaitingBetweenRetries<Root>());
 

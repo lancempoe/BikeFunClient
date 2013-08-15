@@ -10,24 +10,18 @@ import com.bikefunfinder.client.shared.model.GeoLoc;
 import com.bikefunfinder.client.shared.model.Root;
 import com.bikefunfinder.client.shared.model.helper.Extractor;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class RamObjectCacheImpl implements RamObjectCache {
     private Logger log = Logger.getLogger(getClass().getName());
 
+    private AnonymousUser anonymousUser;
     private GeoLoc currentPhoneGeoLoc;
     private String currentBikeRideId = null;
-    private AnonymousUser anonymousUser;
-
-    private Root lastTimeOfDay = null;
-    private Root lastTimeOfDayForProfile = null;
-    private Root lastSearchByProximity = null;
-    private Root lastSearchByQuery = null;
-
-    //
+    private BikeRide eventRequest;
+    private Root root = null;
+    private int mainScreenSize = 0;
 
     /**
      * This will be used so that a user can go to the ride page from the here and now page.
@@ -39,7 +33,7 @@ public class RamObjectCacheImpl implements RamObjectCache {
             return null;
         }
 
-        List<BikeRide> bikeRides = Extractor.getBikeRidesFrom(lastTimeOfDay);
+        List<BikeRide> bikeRides = Extractor.getBikeRidesFrom(root);
         for(BikeRide bikeRide: bikeRides) {
             String bikeRideId = bikeRide.getId();
             if(bikeRideId == currentBikeRideId) {
@@ -55,21 +49,6 @@ public class RamObjectCacheImpl implements RamObjectCache {
             return;
         }
         currentBikeRideId = newBikeRide.getId();
-        updateRide(newBikeRide);
-    }
-
-    @Override
-    public void updateRide(BikeRide updatedBikeRide) {
-        //You really don't know if the new bike ride should
-        //even be in the main list.  What if you create a different city?
-        //For now I have commented out the code.  I don't believe it is doing what we hoped.
-        //Simply refresh to get the good data just like fb or twitter.
-    }
-
-    @Override
-    public void deleteRide(String rideIdToDelete) {
-        //For now I have commented out the code.  I don't believe it is doing what we hoped.
-        //Simply refresh to get the good data just like fb or twitter.
     }
 
     @Override
@@ -83,47 +62,25 @@ public class RamObjectCacheImpl implements RamObjectCache {
     }
 
     @Override
-    public Root getSearchByTimeOfDay() {
-        return lastTimeOfDay;
+    public Root getRoot() {
+        return root;
     }
 
     @Override
-    public void setSearchByTimeOfDay(Root root) {
-        lastTimeOfDay = root;
+    public void setRoot(Root root) {
+        this.root = root;
     }
 
     @Override
-    public Root getSearchByTimeOfDayForProfile() {
-        return lastTimeOfDayForProfile;
+    public int getMainScreenSize() {
+        return mainScreenSize;
     }
 
     @Override
-    public void setSearchByTimeOfDayForProfile(Root root) {
-        lastTimeOfDayForProfile = root;
+    public void setMainScreenSize(int mainScreenSize) {
+        this.mainScreenSize = mainScreenSize;
     }
 
-    @Override
-    public Root getSearchByQuery() {
-        return lastSearchByQuery;
-    }
-
-    @Override
-    public void setSearchByQuery(Root root) {
-        lastSearchByQuery = root;
-    }
-
-    @Override
-    public Root getSearchByProximity() {
-        return lastSearchByProximity;
-    }
-
-    @Override
-    public void setSearchByProximity(Root root) {
-        lastSearchByProximity = root;
-    }
-
-
-    private BikeRide eventRequest;
     @Override
     public BikeRide getEventRequest() {
         return eventRequest;

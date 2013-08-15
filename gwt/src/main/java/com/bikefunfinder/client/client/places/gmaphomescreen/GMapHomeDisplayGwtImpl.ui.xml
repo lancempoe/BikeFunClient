@@ -1,0 +1,35 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+             xmlns:g="urn:import:com.google.gwt.user.client.ui"
+             xmlns:mgwt="urn:import:com.googlecode.mgwt.ui.client.widget"
+             xmlns:bff="urn:import:com.bikefunfinder.client.shared.widgets.base"
+        >
+
+    <ui:style type='com.bikefunfinder.client.client.places.gmaphomescreen.GMapHomeDisplayGwtImpl.MyStyle'>
+        .buttonTreatment {text-transform: none;
+                          font-size: 13px !important;
+                          font-weight: normal !important;}
+        .tightButtons { min-width: 0px; }
+    </ui:style>
+
+    <mgwt:LayoutPanel>
+        <bff:MainMenuHeaderPanel ui:field="headerPanel" />
+
+        <mgwt:LayoutPanel ui:field="main"/>
+
+        <g:FlowPanel ui:field="footerFlowPanel">
+                <g:HorizontalPanel ui:field="footerHorizontalPanel" width="100%">
+                    <g:cell horizontalAlignment="ALIGN_LEFT" width="20%">
+                        <mgwt:Button ui:field="mainScreenToggleButton" text=""/>
+                    </g:cell>
+                    <g:cell horizontalAlignment="ALIGN_CENTER" width="60%">
+                        <mgwt:Button ui:field="showHideToggleButton" text=""/>
+                    </g:cell>
+                    <g:cell horizontalAlignment="ALIGN_RIGHT" height="20%" >
+                        <mgwt:Button ui:field="refreshButton" text=""/>
+                    </g:cell>
+                </g:HorizontalPanel>
+        </g:FlowPanel>
+
+    </mgwt:LayoutPanel>
+</ui:UiBinder>

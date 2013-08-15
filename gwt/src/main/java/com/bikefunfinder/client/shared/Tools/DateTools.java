@@ -36,13 +36,13 @@ public class DateTools {
 
     public static boolean isCurrentRide(BikeRide bikeRide) {
         JsDate currentTime = JsDate.create();
-        boolean isLeavingRide= false;
+        boolean isCurrentRide= false;
         if(!isLeavingRide(bikeRide) &&
                 ((currentTime.getTime() + ScreenConstants.TimeOffsetBeforeItsCurrent) > bikeRide.getRideStartTime())) {
             //Current Ride
-            isLeavingRide = true;
+            isCurrentRide = true;
         }
-        return isLeavingRide;
+        return isCurrentRide;
     }
 
     public static boolean isFutureRide(BikeRide bikeRide) {

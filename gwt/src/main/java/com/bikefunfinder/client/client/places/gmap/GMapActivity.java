@@ -2,26 +2,19 @@ package com.bikefunfinder.client.client.places.gmap;
 
 import com.bikefunfinder.client.bootstrap.ClientFactory;
 import com.bikefunfinder.client.client.places.eventscreen.EventScreenPlace;
-import com.bikefunfinder.client.client.places.homescreen.HomeScreenPlace;
 import com.bikefunfinder.client.gin.Injector;
 import com.bikefunfinder.client.gin.RamObjectCache;
-import com.bikefunfinder.client.shared.Tools.DeviceTools;
-import com.bikefunfinder.client.shared.Tools.MustGetGoodGeo;
-import com.bikefunfinder.client.shared.Tools.NativeUtilities;
-import com.bikefunfinder.client.shared.Tools.NonPhoneGapGeoLocCallback;
+import com.bikefunfinder.client.shared.Tools.*;
 import com.bikefunfinder.client.shared.constants.ScreenConstants;
 import com.bikefunfinder.client.shared.constants.ScreenConstants.MapScreenType;
 import com.bikefunfinder.client.shared.model.*;
-import com.bikefunfinder.client.shared.model.helper.Extractor;
 import com.bikefunfinder.client.shared.request.EventRequest;
 import com.bikefunfinder.client.shared.request.NewTrackRequest;
-import com.bikefunfinder.client.shared.request.SearchByProximityRequest;
 import com.bikefunfinder.client.shared.request.management.GeoLocCacheStrategy;
 import com.bikefunfinder.client.shared.request.management.WebServiceResponseConsumer;
 import com.bikefunfinder.client.shared.widgets.NavBaseActivity;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.http.client.UrlBuilder;
-import com.google.gwt.place.shared.Place;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
@@ -142,12 +135,7 @@ public class GMapActivity extends NavBaseActivity implements GMapDisplay.Present
 
     private void chooseWhichViewToGoWith() {
         if (MapScreenType.HERE_AND_NOW.equals(screenType)) {
-            DeviceTools.requestPhoneGeoLoc(new NonPhoneGapGeoLocCallback(new NonPhoneGapGeoLocCallback.GeolocationHandler() {
-                @Override
-                public void onSuccess(GeoLoc geoLoc) {
-                    setHereAndNowView(geoLoc); //Here & now Map
-                }
-            }));
+
         } else {
 
             screenRefreshTimer.scheduleRepeating(ScreenConstants.SCREEN_REFRESH_RATE_IN_MILLISECONDS);
@@ -308,34 +296,6 @@ public class GMapActivity extends NavBaseActivity implements GMapDisplay.Present
         display.resetForEvent(eventGeoLoc);
         display.display(bikeRide);
         display.setupMapToDisplayBikeRide(phoneGeoLoc, bikeRide, isFirstPostSavePhoneGeoLoc, false);
-
-        NativeUtilities.trackPage("Event Map Screen");
-    }
-
-    private void setHereAndNowView(final GeoLoc phoneGeoLoc) {
-        display.resetForHereAndNow(phoneGeoLoc);
-        fireRequestForHereAndNow(display, phoneGeoLoc);
-
-        NativeUtilities.trackPage("Here & Now Screen");
-    }
-
-
-    private void fireRequestForHereAndNow(final GMapDisplay display, final GeoLoc phoneGeoLoc) {
-
-        WebServiceResponseConsumer<Root> callback = new WebServiceResponseConsumer<Root>() {
-            @Override
-            public void onResponseReceived(Root root) {
-                ramObjectCache.setSearchByProximity(root);
-                if (Extractor.getBikeRidesFrom(ramObjectCache.getSearchByProximity()).size() == 0) {
-                    display.displayPageName("No rides. Add an Event Today!");
-                }
-
-                display.setupMapDisplayForHereAndNow(phoneGeoLoc, ramObjectCache.getSearchByProximity());
-            }
-        };
-        SearchByProximityRequest.Builder request = new SearchByProximityRequest.Builder(callback);
-
-        request.latitude(phoneGeoLoc).longitude(phoneGeoLoc).send();
     }
 
     private void updatedBikeRide(final GeoLoc phoneGeoLoc) {
@@ -403,15 +363,7 @@ public class GMapActivity extends NavBaseActivity implements GMapDisplay.Present
     @Override
     public void backButtonSelected() {
         cancelTimersAndAnyOutstandingActivities();
-
-        final Place whereWereGoing;
-        if(bikeRide!=null) {
-            whereWereGoing = new EventScreenPlace(bikeRide);
-        } else {
-            whereWereGoing = new HomeScreenPlace();
-        }
-
-        clientFactory.getPlaceController().goTo(whereWereGoing);
+        NavigationHelper.goToPriorScreen(clientFactory.getPlaceController());
     }
 
     public static void cancelGeoLocationWatcherIfRegistered() {

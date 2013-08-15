@@ -10,6 +10,7 @@ public interface HomeScreenDisplay extends IsWidget {
     public void display(List<BikeRide> list);
     public void setTitle(String cityNameText);
     public void setPresenter(Presenter presenter);
+    public int getMainSize();
 
     public interface Presenter {
         public void onRideClick(BikeRide bikeRide);

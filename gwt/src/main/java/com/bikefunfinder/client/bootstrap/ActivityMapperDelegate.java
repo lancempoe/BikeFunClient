@@ -10,13 +10,17 @@ import com.bikefunfinder.client.client.places.eventscreen.EventScreenActivity;
 import com.bikefunfinder.client.client.places.eventscreen.EventScreenPlace;
 import com.bikefunfinder.client.client.places.gmap.GMapActivity;
 import com.bikefunfinder.client.client.places.gmap.GMapPlace;
+import com.bikefunfinder.client.client.places.gmaphomescreen.GMapHomeActivity;
+import com.bikefunfinder.client.client.places.gmaphomescreen.GMapHomePlace;
 import com.bikefunfinder.client.client.places.homescreen.HomeScreenActivity;
 import com.bikefunfinder.client.client.places.homescreen.HomeScreenPlace;
 import com.bikefunfinder.client.client.places.profilescreen.ProfileScreenActivity;
 import com.bikefunfinder.client.client.places.profilescreen.ProfileScreenPlace;
 import com.bikefunfinder.client.client.places.searchscreen.SearchScreenActivity;
 import com.bikefunfinder.client.client.places.searchscreen.SearchScreenPlace;
-import com.bikefunfinder.client.gin.Injector;
+import com.bikefunfinder.client.shared.Tools.NativeUtilities;
+import com.bikefunfinder.client.shared.Tools.NavigationHelper;
+import com.bikefunfinder.client.shared.model.BikeRide;
 import com.bikefunfinder.client.shared.request.management.AnnonymousUserCacheStrategy;
 import com.google.gwt.activity.shared.Activity;
 import com.google.gwt.activity.shared.ActivityMapper;
@@ -24,12 +28,13 @@ import com.google.gwt.place.shared.Place;
 
 public class ActivityMapperDelegate implements ActivityMapper {
 
-    private static Place lastSeen;
+    private static Place currentPlace;
     private static Activity lastActivity;
 
     @Override
     public Activity getActivity(Place place) {
-        if(lastSeen!=null && (lastSeen.getClass().equals(place.getClass()))) {
+
+        if(currentPlace !=null && (currentPlace.getClass().equals(place.getClass()))) {
             return lastActivity;
         }
 
@@ -38,40 +43,68 @@ public class ActivityMapperDelegate implements ActivityMapper {
         //refresh activities do not hang around. That would be disastrous!
         GMapActivity.cancelTimersAndAnyOutstandingActivities();
 
-        lastSeen = place;
+        currentPlace = place;
 
         if(place instanceof CreateScreenPlace) {
             final CreateScreenPlace createScreenPlace = (CreateScreenPlace) place;
-            lastActivity = new CreateScreenActivity(createScreenPlace.getBikeRide(), createScreenPlace.getUser(), createScreenPlace.getAnonymousUser());
+            BikeRide bikeRide = createScreenPlace.getBikeRide();
+            lastActivity = new CreateScreenActivity(bikeRide, createScreenPlace.getUser(), createScreenPlace.getAnonymousUser());
+            if (bikeRide == null) {
+                NativeUtilities.trackPage("Create Screen");
+            } else {
+                NativeUtilities.trackPage("Update Screen");
+            }
 
         } else if(place instanceof EventScreenPlace) {
             final EventScreenPlace eventScreenPlace = (EventScreenPlace) place;
-            lastActivity = new EventScreenActivity(eventScreenPlace.getBikeRide(),
-                                                   eventScreenPlace.getWasConstructedById(), null, AnnonymousUserCacheStrategy.INSTANCE.getCachedType());
+            lastActivity = new EventScreenActivity(eventScreenPlace.getBikeRide(), null, AnnonymousUserCacheStrategy.INSTANCE.getCachedType());
+            NativeUtilities.trackPage("Event Screen");
 
         } else if(place instanceof HomeScreenPlace) {
             final HomeScreenPlace homeScreenPlace = (HomeScreenPlace) place;
             lastActivity =  new HomeScreenActivity(homeScreenPlace.getRoot(), homeScreenPlace.getUsage());
+            resetNavigationStack();
+            NavigationHelper.setHomeScreenPlace(homeScreenPlace);
+            NativeUtilities.trackPage("Home Screen");
 
         } else if(place instanceof ProfileScreenPlace) {
             final ProfileScreenPlace profileScreenPlace = (ProfileScreenPlace) place;
             if (profileScreenPlace.getUser() != null) {
                 lastActivity =  new ProfileScreenActivity(profileScreenPlace.getUser());
+                NativeUtilities.trackPage("Profile Screen (User)");
             } else  {
                 lastActivity =  new ProfileScreenActivity(profileScreenPlace.getAnonymousUser());
+                NativeUtilities.trackPage("Profile Screen (Anonymous)");
             }
 
         } else if(place instanceof SearchScreenPlace) {
             final SearchScreenPlace searchScreenPlace = (SearchScreenPlace) place;
             lastActivity =  new SearchScreenActivity(searchScreenPlace.getQuery());
+            NativeUtilities.trackPage("Search Screen");
 
         } else if(place instanceof GMapPlace) {
             final GMapPlace gMapPlace = (GMapPlace) place;
             lastActivity =  new GMapActivity(gMapPlace.getPageName(),
                                              gMapPlace.getBikeRide(), null, AnnonymousUserCacheStrategy.INSTANCE.getCachedType());
+            NativeUtilities.trackPage("Event Map Screen");
+
+        } else if(place instanceof GMapHomePlace) {
+            final GMapHomePlace gMapHomePlace = (GMapHomePlace) place;
+            lastActivity =  new GMapHomeActivity();
+            resetNavigationStack();
+            NavigationHelper.setGMapHomePlace(gMapHomePlace);
+            NativeUtilities.trackPage("Here & Now Screen");
 
         }
+        NavigationHelper.pushCurrentPlace(place);
 
         return lastActivity;
+    }
+
+    private void resetNavigationStack() {
+        //clear out just in case
+        if (!NavigationHelper.isNavigationStackEmpty()) {
+            NavigationHelper.clearNavigationStack();
+        }
     }
 }
