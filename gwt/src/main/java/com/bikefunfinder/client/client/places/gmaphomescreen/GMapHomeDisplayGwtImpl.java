@@ -42,7 +42,7 @@ public class GMapHomeDisplayGwtImpl extends Composite implements GMapHomeDisplay
     public static final int HERE_AND_NOW_RADIUS = 3;
     private static final String CIRCLE_HEX_COLOR = "#4E8D34";
 
-    private static boolean showHereAndNowOnly = true; //Default to showing all rides.
+    private static boolean showHereAndNowOnly = false; //Default to showing all rides.
     private static final String SHOW_All_RIDES = "Show All Rides";
     private static final String SHOW_HERE_AND_NOW_RIDES = "Show Current Rides";
     boolean wasAdjusted = false;
@@ -203,8 +203,9 @@ public class GMapHomeDisplayGwtImpl extends Composite implements GMapHomeDisplay
             //EXCLUDE IF NEEDED
             if (showHereAndNowOnly && !BikeRideHelper.isHereAndNow(bikeRide)) {
                 continue;
+            } else if (!showHereAndNowOnly && BikeRideHelper.isOldRide(bikeRide)) {
+                continue;
             }
-
 
             //If tracking then show the location of the ride leader or first track.
             BikeRideHelper.Content content = new BikeRideHelper.Content(bikeRide);

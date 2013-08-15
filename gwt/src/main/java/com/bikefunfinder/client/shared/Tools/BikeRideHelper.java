@@ -173,6 +173,15 @@ public class BikeRideHelper {
         return isHereAndNow;
     }
 
+    public static boolean isOldRide(BikeRide bikeRide) {
+        boolean isOldRide = false;
+        String stageOfRide = stageOfBikeRide(bikeRide);
+        if (stageOfRide.equals(OLD_RIDE)) {
+            isOldRide = true;
+        }
+        return isOldRide;
+    }
+
 
     private static String stageOfBikeRide(BikeRide bikeRide) {
         if(bikeRide.isCurrentlyTracking()) {
