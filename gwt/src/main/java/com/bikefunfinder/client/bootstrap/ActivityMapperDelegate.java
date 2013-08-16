@@ -62,7 +62,7 @@ public class ActivityMapperDelegate implements ActivityMapper {
 
         } else if(place instanceof HomeScreenPlace) {
             final HomeScreenPlace homeScreenPlace = (HomeScreenPlace) place;
-            lastActivity =  new HomeScreenActivity(homeScreenPlace.getRoot(), homeScreenPlace.getUsage());
+            lastActivity =  new HomeScreenActivity();
             resetNavigationStack();
             NavigationHelper.setHomeScreenPlace(homeScreenPlace);
             NativeUtilities.trackPage("Home Screen");

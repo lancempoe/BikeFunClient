@@ -4,7 +4,10 @@ import com.bikefunfinder.client.bootstrap.ClientFactory;
 import com.bikefunfinder.client.client.places.eventscreen.EventScreenPlace;
 import com.bikefunfinder.client.gin.Injector;
 import com.bikefunfinder.client.gin.RamObjectCache;
-import com.bikefunfinder.client.shared.Tools.*;
+import com.bikefunfinder.client.shared.Tools.DeviceTools;
+import com.bikefunfinder.client.shared.Tools.HomeHelper;
+import com.bikefunfinder.client.shared.Tools.NavigationHelper;
+import com.bikefunfinder.client.shared.Tools.NonPhoneGapGeoLocCallback;
 import com.bikefunfinder.client.shared.model.BikeRide;
 import com.bikefunfinder.client.shared.model.GeoLoc;
 import com.bikefunfinder.client.shared.model.Root;
@@ -18,6 +21,8 @@ import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.web.bindery.event.shared.EventBus;
 
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Created with IntelliJ IDEA.
@@ -42,7 +47,7 @@ public class GMapHomeActivity extends NavBaseActivity implements GMapHomeDisplay
         if (geoLoc == null) {
             onRefreshButton();
         } else if (root == null) {
-            fireRequest(display, geoLoc, noOpNotifyTimeAndDayCallback);
+            fireRequest(geoLoc, noOpNotifyTimeAndDayCallback);
         } else {
             setupDisplay(geoLoc, Extractor.getBikeRidesFrom(root), HomeHelper.getHomeTitle(root));
         }
@@ -68,12 +73,12 @@ public class GMapHomeActivity extends NavBaseActivity implements GMapHomeDisplay
 
     @Override
     public void onRefreshButton() {
+        ramObjectCache.setMainScreenPullDownLocked(false); //unlock the pulldown
         DeviceTools.requestPhoneGeoLoc(new NonPhoneGapGeoLocCallback(new NonPhoneGapGeoLocCallback.GeolocationHandler() {
             @Override
             public void onSuccess(GeoLoc geoLoc) {
                 ramObjectCache.setCurrentPhoneGeoLoc(geoLoc);
-                fireRequest(display, geoLoc, noOpNotifyTimeAndDayCallback); //Here & now Map
-                noOpNotifyTimeAndDayCallback.onResponseReceived();
+                fireRequest(geoLoc, noOpNotifyTimeAndDayCallback);
             }
         }));
     }
@@ -89,13 +94,13 @@ public class GMapHomeActivity extends NavBaseActivity implements GMapHomeDisplay
         return urlBuilder.buildString();
     }
 
-    private void fireRequest(final GMapHomeDisplay display,
-                             final GeoLoc geoLoc,
+    private void fireRequest(final GeoLoc geoLoc,
                              final NotifyTimeAndDayCallback notifyTimeAndDayCallback) {
 
         WebServiceResponseConsumer<Root> callback = new WebServiceResponseConsumer<Root>() {
             @Override
             public void onResponseReceived(Root root) {
+                Logger.getLogger("").log(Level.INFO, "Root retrieved from fireRequest");
                 ramObjectCache.setRoot(root);
                 setupDisplay(geoLoc, Extractor.getBikeRidesFrom(root), HomeHelper.getHomeTitle(root));
                 notifyTimeAndDayCallback.onResponseReceived();

@@ -7,6 +7,7 @@ package com.bikefunfinder.client.client.places.searchscreen;
 import com.bikefunfinder.client.bootstrap.ClientFactory;
 import com.bikefunfinder.client.client.places.homescreen.HomeScreenPlace;
 import com.bikefunfinder.client.gin.Injector;
+import com.bikefunfinder.client.gin.RamObjectCache;
 import com.bikefunfinder.client.shared.Tools.DeviceTools;
 import com.bikefunfinder.client.shared.Tools.NavigationHelper;
 import com.bikefunfinder.client.shared.Tools.NonPhoneGapGeoLocCallback;
@@ -25,6 +26,7 @@ import java.util.List;
 
 public class SearchScreenActivity extends MGWTAbstractActivity implements SearchScreenDisplay.Presenter {
     private final ClientFactory<SearchScreenDisplay> clientFactory = Injector.INSTANCE.getClientFactory();
+    private final RamObjectCache ramObjectCache = Injector.INSTANCE.getRamObjectCache();
     private final Query query;
 
     private List<BikeRide> currentList;
@@ -62,7 +64,9 @@ public class SearchScreenActivity extends MGWTAbstractActivity implements Search
 
             @Override
             public void onResponseReceived(Root root) {
-                clientFactory.getPlaceController().goTo(new HomeScreenPlace(root, HomeScreenPlace.UsageEnum.FilterRides));
+                ramObjectCache.setRoot(root);
+                ramObjectCache.setMainScreenPullDownLocked(true);
+                NavigationHelper.goToPriorScreen(clientFactory.getPlaceController()); //can only come from one of the home pages
             }
         });
 

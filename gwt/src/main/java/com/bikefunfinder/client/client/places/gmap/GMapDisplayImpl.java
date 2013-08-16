@@ -58,7 +58,7 @@ public class GMapDisplayImpl implements GMapDisplay {
     private MapScreenType priorMapScreenType;
     private boolean resetMap = true;
 
-    private List<InfoWindow> inforWindows = new ArrayList<InfoWindow>();
+    private List<InfoWindow> infoWindows = new ArrayList<InfoWindow>();
     private List<Marker> markers = new ArrayList<Marker>();
     private static Polyline polyline;
 
@@ -248,15 +248,17 @@ public class GMapDisplayImpl implements GMapDisplay {
             //If tracking then show the location of the ride leader or first track.
             BikeRideHelper.Content content = new BikeRideHelper.Content(bikeRide);
             if (bikeRide.isCurrentlyTracking()) {
+                final SafeHtml safeHtml = content.getShortDescriptionForBike();
                 if (bikeRide.getRideLeaderTracking() != null && bikeRide.getRideLeaderTracking().getGeoLoc() != null) {
-                    AddAsMarker(bikeRide.getRideLeaderTracking().getGeoLoc(), bikeRide, ScreenConstants.TargetIcon.LEADER, content.getShortDescriptionForBike());
+                    AddAsMarker(bikeRide.getRideLeaderTracking().getGeoLoc(), bikeRide, ScreenConstants.TargetIcon.LEADER, safeHtml);
                 } else {
-                    AddAsMarker(bikeRide.getCurrentTrackings().get(0).getGeoLoc(), bikeRide, ScreenConstants.TargetIcon.LEADER, content.getShortDescriptionForBike());
+                    AddAsMarker(bikeRide.getCurrentTrackings().get(0).getGeoLoc(), bikeRide, ScreenConstants.TargetIcon.LEADER, safeHtml);
                 }
 
             //If not tracking then show the start of the ride.
             } else {
-                AddAsMarker(bikeRide.getLocation().getGeoLoc(), bikeRide, ScreenConstants.TargetIcon.EVENT, content.getShortDescriptionForStart());
+                final SafeHtml safeHtml = content.getShortDescriptionForStart();
+                AddAsMarker(bikeRide.getLocation().getGeoLoc(), bikeRide, ScreenConstants.TargetIcon.EVENT, safeHtml);
             }
         }
     }
@@ -334,19 +336,20 @@ public class GMapDisplayImpl implements GMapDisplay {
      * @param bikeRide
      */
     private void pinBlueBike(GeoLoc phoneGpsLoc, BikeRide bikeRide) {
-        SafeHtmlBuilder safeHtmlBuilder;SafeHtml safeHtml;
+        SafeHtmlBuilder safeHtmlBuilder;
         if (bikeRide == null || !this.userId.equals(bikeRide.getRideLeaderId())) {
             safeHtmlBuilder = new SafeHtmlBuilder();
             safeHtmlBuilder.appendHtmlConstant(HtmlTools.H1_RIDENAME);
             safeHtmlBuilder.appendHtmlConstant(ScreenConstants.YOU);
             safeHtmlBuilder.appendHtmlConstant(HtmlTools.H1_CLOSE_TAG);
-            AddAsMarker(phoneGpsLoc, null, ScreenConstants.TargetIcon.CLIENT, safeHtmlBuilder.toSafeHtml());
+            final SafeHtml safeHtml = safeHtmlBuilder.toSafeHtml();
+            AddAsMarker(phoneGpsLoc, null, ScreenConstants.TargetIcon.CLIENT, safeHtml);
         }
     }
 
     private boolean pinGoldenBike(GeoLoc phoneGpsLoc, BikeRide bikeRide, BikeRideHelper.Content content) {
         boolean leaderSet = false;
-        SafeHtmlBuilder safeHtmlBuilder;SafeHtml safeHtml;
+        SafeHtmlBuilder safeHtmlBuilder;
         if (this.userId.equals(bikeRide.getRideLeaderId())) {
             safeHtmlBuilder = new SafeHtmlBuilder();
             safeHtmlBuilder.appendHtmlConstant(HtmlTools.H1_RIDENAME);
@@ -356,11 +359,11 @@ public class GMapDisplayImpl implements GMapDisplay {
                 safeHtmlBuilder.appendHtmlConstant(ScreenConstants.YOU_LEADER);
             }
             safeHtmlBuilder.appendHtmlConstant(HtmlTools.H1_CLOSE_TAG);
-            safeHtml = safeHtmlBuilder.toSafeHtml();
+            final SafeHtml safeHtml = safeHtmlBuilder.toSafeHtml();
             AddAsMarker(phoneGpsLoc, null, ScreenConstants.TargetIcon.LEADER, safeHtml);
             leaderSet = true;
         } else if (bikeRide.getRideLeaderTracking() != null && bikeRide.getRideLeaderTracking().getId() != null) {
-            safeHtml = content.getShortDescriptionForBike();
+            final SafeHtml safeHtml = content.getShortDescriptionForBike();
             AddAsMarker(bikeRide.getRideLeaderTracking().getGeoLoc(), null, ScreenConstants.TargetIcon.LEADER, safeHtml);
             leaderSet = true;
         }
@@ -368,7 +371,7 @@ public class GMapDisplayImpl implements GMapDisplay {
     }
 
     private void pinStartingLocation(BikeRide bikeRide, BikeRideHelper.Content content) {
-        SafeHtml safeHtml = content.getShortDescriptionForStart();
+        final SafeHtml safeHtml = content.getShortDescriptionForStart();
         AddAsMarker(bikeRide.getLocation().getGeoLoc(), bikeRide, ScreenConstants.TargetIcon.EVENT, safeHtml);
     }
 
@@ -418,7 +421,7 @@ public class GMapDisplayImpl implements GMapDisplay {
             bikeRideMarker.addClickListener(new Marker.ClickHandler() {
                 @Override
                 public void handle(MouseEvent event) {
-                    for (InfoWindow infoWindow : inforWindows) {
+                    for (InfoWindow infoWindow : infoWindows) {
                         infoWindow.close();
                     }
                     drawInfoWindow(bikeRideMarker, bikeRide, event, safeHtml);
@@ -479,7 +482,7 @@ public class GMapDisplayImpl implements GMapDisplay {
         return polylineOptions;
     }
 
-    protected void drawInfoWindow(final Marker marker, final BikeRide bikeRide, MouseEvent mouseEvent, SafeHtml safeHtml) {
+    protected void drawInfoWindow(final Marker marker, final BikeRide bikeRide, MouseEvent mouseEvent, final SafeHtml safeHtml) {
         if (marker == null) {
             return;
         }
@@ -497,13 +500,14 @@ public class GMapDisplayImpl implements GMapDisplay {
 
         InfoWindowOptions options = InfoWindowOptions.create();
         options.setContent(content);
+        final Size size = Size.create(0,12);
+        options.setPixelOffset(size);
         InfoWindow iw = InfoWindow.create(options);
-        inforWindows.add(iw);
+        infoWindows.add(iw);
         iw.open(map, marker);
     }
 
-
-    private Element buildBikeRideHTMLWidgetFor(final BikeRide bikeRide, SafeHtml safeHtml) {
+    private Element buildBikeRideHTMLWidgetFor(final BikeRide bikeRide, final SafeHtml safeHtml) {
         FlowPanel fp = new FlowPanel();
 
         if (bikeRide != null) {

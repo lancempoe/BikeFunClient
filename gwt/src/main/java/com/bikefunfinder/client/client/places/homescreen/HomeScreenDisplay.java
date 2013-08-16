@@ -15,9 +15,9 @@ public interface HomeScreenDisplay extends IsWidget {
     public interface Presenter {
         public void onRideClick(BikeRide bikeRide);
 
-        public void onHereAndNowButton();
-        public void onExpiredRidesButton();
-        public void onTimeAndDayButton();
+        public void onMainScreenToggleButton();
+        public void onShowHideToggleButton();
+        public void onRefreshButton();
 
         public void refreshTimeAndDayReq(NotifyTimeAndDayCallback callback);
         public interface NotifyTimeAndDayCallback {

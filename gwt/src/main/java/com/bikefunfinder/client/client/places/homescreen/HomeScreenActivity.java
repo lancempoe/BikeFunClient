@@ -5,6 +5,7 @@ import com.bikefunfinder.client.client.places.eventscreen.EventScreenPlace;
 import com.bikefunfinder.client.gin.Injector;
 import com.bikefunfinder.client.gin.RamObjectCache;
 import com.bikefunfinder.client.shared.Tools.DeviceTools;
+import com.bikefunfinder.client.shared.Tools.HomeHelper;
 import com.bikefunfinder.client.shared.Tools.NavigationHelper;
 import com.bikefunfinder.client.shared.Tools.NonPhoneGapGeoLocCallback;
 import com.bikefunfinder.client.shared.constants.ScreenConstants;
@@ -25,13 +26,12 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * @author: tneuwerth
- * @created 4/5/13 3:59 PM
+ * @author: tneuwerth / Major update by Lance Poehler
+ * @created 4/5/13 3:59 PM / updated on 8/15/13
  */
 public class HomeScreenActivity extends MGWTAbstractActivity implements HomeScreenDisplay.Presenter {
     private final ClientFactory<HomeScreenDisplay> clientFactory = Injector.INSTANCE.getClientFactory();
     private final HomeScreenDisplay display = clientFactory.getDisplay(this);
-    private final HomeScreenPlace.UsageEnum usageEnum;
     private final RamObjectCache ramObjectCache = Injector.INSTANCE.getRamObjectCache();
 
     private int geoFailCount = 0;
@@ -41,50 +41,27 @@ public class HomeScreenActivity extends MGWTAbstractActivity implements HomeScre
         @Override public void onResponseReceived() { } // noOp
     };
 
-    public HomeScreenActivity(Root root, HomeScreenPlace.UsageEnum usageEnum) {
-        this.usageEnum = usageEnum;
-        if (root != null) {
-            Logger.getLogger("").log(Level.INFO, "Passed a root to the Home page. Happens during Search and Profile");
-            setupDisplay(root);
+    public HomeScreenActivity() {
+        Root root = ramObjectCache.getRoot();
+        GeoLoc geoLoc = ramObjectCache.getCurrentPhoneGeoLoc();
+        if (geoLoc == null) {
+            onRefreshButton();
+        } else if (root == null) {
+            fireRequest(geoLoc, noOpNotifyTimeAndDayCallback);
         } else {
-            List<BikeRide> bikeRides = Extractor.getBikeRidesFrom(ramObjectCache.getRoot());
-            if (bikeRides != null || bikeRides.size() == 0) {
-                Logger.getLogger("").log(Level.SEVERE, "ramObjectCache.getTimeOfDayBikeRideCache().size() == 0");
-                refreshTimeAndDayReq(noOpNotifyTimeAndDayCallback);
-            }
+            setupDisplay(Extractor.getBikeRidesFrom(root), HomeHelper.getHomeTitle(root));
         }
     }
 
-    private void setupDisplay(Root root) {
-        //root will never be null
-
-        display.display(Extractor.getBikeRidesFrom(root));
-
-        //Get City
-        if (root.getBikeRides() != null &&
-            root.getBikeRides().length() > 0 &&
-            root.getClosestLocation() != null)  {
-            MatchResult matcher = buildMatcher(root.getClosestLocation().getFormattedAddress());
-            boolean matchFound = (matcher != null); // equivalent to regExp.test(inputStr);
-            if (matchFound) {
-                display.setTitle(matcher.getGroup(0));
-            } else {
-                if (root.getClosestLocation() != null &&
-                    root.getClosestLocation().getFormattedAddress() != null) {
-                    display.setTitle("Unknown City");
-                } else {
-                    display.setTitle("Search Results");
-                }
-            }
-        }  else {
-            display.setTitle("Add an Event!");
-        }
+    /**
+     * Root will never be null
+     * @param bikeRides
+     * @param title
+     */
+    private void setupDisplay(List<BikeRide> bikeRides, String title) {
+        display.display(bikeRides);
+        display.setTitle(title);
         ramObjectCache.setMainScreenSize(display.getMainSize());
-    }
-
-    private MatchResult buildMatcher(String formattedAddress) {
-        RegExp regExp = RegExp.compile(ScreenConstants.RegularExpression_City);
-        return regExp.exec(formattedAddress);
     }
 
     @Override
@@ -99,30 +76,31 @@ public class HomeScreenActivity extends MGWTAbstractActivity implements HomeScre
     }
 
     @Override
-    public void onTimeAndDayButton() {
+    public void onRefreshButton() {
+        ramObjectCache.setMainScreenPullDownLocked(false); //unlock the pulldown
         DeviceTools.requestPhoneGeoLoc(new NonPhoneGapGeoLocCallback(new NonPhoneGapGeoLocCallback.GeolocationHandler() {
             @Override
             public void onSuccess(GeoLoc geoLoc) {
-                fireRequestForTimeOfDay(display, geoLoc, noOpNotifyTimeAndDayCallback);
+                ramObjectCache.setCurrentPhoneGeoLoc(geoLoc);
+                fireRequest(geoLoc, noOpNotifyTimeAndDayCallback);
             }
         }));
     }
 
     @Override
-    public void onHereAndNowButton() {
+    public void onMainScreenToggleButton() {
         clientFactory.getPlaceController().goTo(NavigationHelper.getGMapHomePlace());
     }
 
     @Override
-    public void onExpiredRidesButton() {
+    public void onShowHideToggleButton() {
         display.display(Extractor.getBikeRidesFrom(ramObjectCache.getRoot()));
     }
 
     @Override
     public void refreshTimeAndDayReq(final NotifyTimeAndDayCallback callback) {
-        if(HomeScreenPlace.UsageEnum.ShowMyRides == usageEnum ||
-           HomeScreenPlace.UsageEnum.FilterRides == usageEnum) {
-            // we dont do stuff in this way
+        if (ramObjectCache.getMainScreenPullDownLocked()) {
+            //We are disabling the pulldown when viewing the profile or the search data.
             callback.onResponseReceived(); // tell the caller everything is happy
             return;
         }
@@ -130,31 +108,25 @@ public class HomeScreenActivity extends MGWTAbstractActivity implements HomeScre
         DeviceTools.requestPhoneGeoLoc(new NonPhoneGapGeoLocCallback(new NonPhoneGapGeoLocCallback.GeolocationHandler() {
             @Override
             public void onSuccess(GeoLoc geoLoc) {
-                fireRequestForTimeOfDay(display, geoLoc, callback);
-                callback.onResponseReceived();
+                ramObjectCache.setCurrentPhoneGeoLoc(geoLoc);
+                fireRequest(geoLoc, callback);
             }
         }));
-
     }
 
-    private void fireRequestForTimeOfDay(
-            final HomeScreenDisplay display,
-            final GeoLoc geoLoc,
-            final NotifyTimeAndDayCallback notifyTimeAndDayCallback) {
+    private void fireRequest(final GeoLoc geoLoc,
+                             final NotifyTimeAndDayCallback notifyTimeAndDayCallback) {
 
         WebServiceResponseConsumer<Root> callback = new WebServiceResponseConsumer<Root>() {
             @Override
             public void onResponseReceived(Root root) {
-                Logger.getLogger("").log(Level.INFO, "Root retrieved from fireRequestForTimeOfDay");
+                Logger.getLogger("").log(Level.INFO, "Root retrieved from fireRequest");
                 ramObjectCache.setRoot(root);
-                setupDisplay(root);
+                setupDisplay(Extractor.getBikeRidesFrom(root), HomeHelper.getHomeTitle(root));
                 notifyTimeAndDayCallback.onResponseReceived();
             }
-
         };
         SearchByTimeOfDayRequest.Builder request = new SearchByTimeOfDayRequest.Builder(callback);
         request.latitude(geoLoc).longitude(geoLoc).send();
     }
-
-
 }

@@ -246,12 +246,13 @@ public class GMapHomeDisplayGwtImpl extends Composite implements GMapHomeDisplay
      * @param phoneGpsLoc
      */
     private void pinBlueBike(GeoLoc phoneGpsLoc) {
-        SafeHtmlBuilder safeHtmlBuilder;SafeHtml safeHtml;
+        SafeHtmlBuilder safeHtmlBuilder;
         safeHtmlBuilder = new SafeHtmlBuilder();
         safeHtmlBuilder.appendHtmlConstant(HtmlTools.H1_RIDENAME);
         safeHtmlBuilder.appendHtmlConstant(ScreenConstants.YOU);
         safeHtmlBuilder.appendHtmlConstant(HtmlTools.H1_CLOSE_TAG);
-        AddAsMarker(phoneGpsLoc, null, ScreenConstants.TargetIcon.CLIENT, safeHtmlBuilder.toSafeHtml());
+        final SafeHtml safeHtml = safeHtmlBuilder.toSafeHtml();
+        AddAsMarker(phoneGpsLoc, null, ScreenConstants.TargetIcon.CLIENT, safeHtml);
     }
 
     /**
@@ -325,7 +326,7 @@ public class GMapHomeDisplayGwtImpl extends Composite implements GMapHomeDisplay
         return markerOptions;
     }
 
-    protected void drawInfoWindow(final Marker marker, final BikeRide bikeRide, MouseEvent mouseEvent, SafeHtml safeHtml) {
+    protected void drawInfoWindow(final Marker marker, final BikeRide bikeRide, MouseEvent mouseEvent, final SafeHtml safeHtml) {
         if (marker == null) {
             return;
         }
@@ -343,12 +344,14 @@ public class GMapHomeDisplayGwtImpl extends Composite implements GMapHomeDisplay
 
         InfoWindowOptions options = InfoWindowOptions.create();
         options.setContent(content);
+        final Size size = Size.create(0,12);
+        options.setPixelOffset(size);
         InfoWindow iw = InfoWindow.create(options);
         infoWindows.add(iw);
         iw.open(map, marker);
     }
 
-    private Element buildBikeRideHTMLWidgetFor(final BikeRide bikeRide, SafeHtml safeHtml) {
+    private Element buildBikeRideHTMLWidgetFor(final BikeRide bikeRide, final SafeHtml safeHtml) {
         FlowPanel fp = new FlowPanel();
 
         if (bikeRide != null) {

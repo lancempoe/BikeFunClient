@@ -25,7 +25,7 @@
                     <g:cell horizontalAlignment="ALIGN_CENTER" width="60%">
                         <mgwt:Button ui:field="showHideToggleButton" text=""/>
                     </g:cell>
-                    <g:cell horizontalAlignment="ALIGN_RIGHT" height="20%" >
+                    <g:cell horizontalAlignment="ALIGN_RIGHT" width="20%" >
                         <mgwt:Button ui:field="refreshButton" text=""/>
                     </g:cell>
                 </g:HorizontalPanel>

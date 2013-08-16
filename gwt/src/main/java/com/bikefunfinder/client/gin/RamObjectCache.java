@@ -23,6 +23,9 @@ public interface RamObjectCache {
     public int getMainScreenSize();
     public void setMainScreenSize(int size);
 
+    public boolean getMainScreenPullDownLocked();
+    public void setMainScreenPullDownLocked(boolean mainScreenPullDownLocked);
+
     public BikeRide getEventRequest();
     public void setEventRequest(BikeRide bikeRide);
 

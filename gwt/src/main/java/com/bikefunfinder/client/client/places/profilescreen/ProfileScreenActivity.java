@@ -7,6 +7,7 @@ package com.bikefunfinder.client.client.places.profilescreen;
 import com.bikefunfinder.client.bootstrap.ClientFactory;
 import com.bikefunfinder.client.client.places.homescreen.HomeScreenPlace;
 import com.bikefunfinder.client.gin.Injector;
+import com.bikefunfinder.client.gin.RamObjectCache;
 import com.bikefunfinder.client.shared.Tools.DeviceTools;
 import com.bikefunfinder.client.shared.Tools.NativeUtilities;
 import com.bikefunfinder.client.shared.Tools.NavigationHelper;
@@ -24,6 +25,7 @@ import com.googlecode.mgwt.mvp.client.MGWTAbstractActivity;
 public class ProfileScreenActivity extends MGWTAbstractActivity implements ProfileScreenDisplay.Presenter {
 
     private final ClientFactory<ProfileScreenDisplay> clientFactory = Injector.INSTANCE.getClientFactory();
+    private final RamObjectCache ramObjectCache = Injector.INSTANCE.getRamObjectCache();
     private String userName = "";
     private String userId = "";
 
@@ -72,7 +74,9 @@ public class ProfileScreenActivity extends MGWTAbstractActivity implements Profi
         WebServiceResponseConsumer<Root> callback = new WebServiceResponseConsumer<Root>() {
             @Override
             public void onResponseReceived(Root root) {
-                clientFactory.getPlaceController().goTo(new HomeScreenPlace(root, HomeScreenPlace.UsageEnum.ShowMyRides));
+                ramObjectCache.setRoot(root);
+                ramObjectCache.setMainScreenPullDownLocked(true);
+                NavigationHelper.goToPriorScreen(clientFactory.getPlaceController()); //can only come from one of the home pages
             }
 
 //            @Override

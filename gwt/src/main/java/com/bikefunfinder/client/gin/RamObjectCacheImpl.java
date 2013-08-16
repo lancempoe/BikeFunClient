@@ -22,6 +22,7 @@ public class RamObjectCacheImpl implements RamObjectCache {
     private BikeRide eventRequest;
     private Root root = null;
     private int mainScreenSize = 0;
+    private boolean mainScreenPullDownLocked = false;
 
     /**
      * This will be used so that a user can go to the ride page from the here and now page.
@@ -79,6 +80,16 @@ public class RamObjectCacheImpl implements RamObjectCache {
     @Override
     public void setMainScreenSize(int mainScreenSize) {
         this.mainScreenSize = mainScreenSize;
+    }
+
+    @Override
+    public boolean getMainScreenPullDownLocked() {
+        return mainScreenPullDownLocked;
+    }
+
+    @Override
+    public void setMainScreenPullDownLocked(boolean mainScreenPullDownLocked) {
+        this.mainScreenPullDownLocked = mainScreenPullDownLocked;
     }
 
     @Override

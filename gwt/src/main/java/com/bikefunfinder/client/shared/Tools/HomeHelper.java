@@ -15,7 +15,7 @@ import com.google.gwt.regexp.shared.RegExp;
 public class HomeHelper {
 
     public static String getHomeTitle(Root root) {
-        String title;
+        String title = "Add an Event!";
         if (root.getBikeRides() != null &&
                 root.getBikeRides().length() > 0 &&
                 root.getClosestLocation() != null)  {
@@ -31,8 +31,6 @@ public class HomeHelper {
                     title = "Search Results";
                 }
             }
-        }  else {
-            title = "Add an Event!";
         }
         return title;
     }

@@ -75,7 +75,7 @@ public class NavigationHelper {
         }
     }
 
-    public static Place getPriorPlace(boolean removeCurrentPlace) {
+    private static Place getPriorPlace(boolean removeCurrentPlace) {
         //Remove the current page from the stack
         if (removeCurrentPlace && !priorPlace.empty()) {
             priorPlace.pop();

@@ -60,13 +60,13 @@ public class HomeScreenDisplayGwtImpl extends Composite implements HomeScreenDis
 
 
     @UiField
-    Button hereAndNowButton;
+    Button mainScreenToggleButton;
 
     @UiField
-    Button expiredRidesButton;
+    Button showHideToggleButton;
 
     @UiField
-    Button timeAndDayButton;
+    Button refreshButton;
 
     @UiField
     MainMenuHeaderPanel headerPanel;
@@ -84,13 +84,13 @@ public class HomeScreenDisplayGwtImpl extends Composite implements HomeScreenDis
 
         Logger.getLogger("").log(Level.INFO, "Hello we are back in homescreenimple() initWidget");
 
-        hereAndNowButton.addStyleName(style.buttonTreatment());
-        hereAndNowButton.addStyleName("icon-globe");
-        hereAndNowButton.addStyleName("icon-large");
-        expiredRidesButton.addStyleName(style.buttonTreatment());
-        timeAndDayButton.addStyleName(style.buttonTreatment());
-        timeAndDayButton.addStyleName("icon-refresh");
-        timeAndDayButton.addStyleName("icon-large");
+        mainScreenToggleButton.addStyleName(style.buttonTreatment());
+        mainScreenToggleButton.addStyleName("icon-globe");
+        mainScreenToggleButton.addStyleName("icon-large");
+        showHideToggleButton.addStyleName(style.buttonTreatment());
+        refreshButton.addStyleName(style.buttonTreatment());
+        refreshButton.addStyleName("icon-refresh");
+        refreshButton.addStyleName("icon-large");
         //TODO find way for this buttons to work with visually impaired people.
         //right now is stays "unreadable text"
 
@@ -134,7 +134,6 @@ public class HomeScreenDisplayGwtImpl extends Composite implements HomeScreenDis
     @Override
     public void setPresenter(Presenter presenter) {
         this.presenter = presenter;
-        //bikeEntriesHeaderList.setPresenter(presenter);
     }
 
     boolean wasAdjusted = false;
@@ -148,11 +147,11 @@ public class HomeScreenDisplayGwtImpl extends Composite implements HomeScreenDis
         pp.refresh();
     }
 
-    private void setExpiredRidesButtonText() {
+    private void setShowHideToggleButtonText() {
         if (hideOldRides) {
-            this.expiredRidesButton.setText(SHOW_EXPIRED_RIDES);
+            this.showHideToggleButton.setText(SHOW_EXPIRED_RIDES);
         } else {
-            this.expiredRidesButton.setText(HIDE_EXPIRED_RIDES);
+            this.showHideToggleButton.setText(HIDE_EXPIRED_RIDES);
         }
     }
 
@@ -170,32 +169,32 @@ public class HomeScreenDisplayGwtImpl extends Composite implements HomeScreenDis
         headerPanel.setTitle(cityNameText);
     }
 
-    @UiHandler("hereAndNowButton")
-    protected void onHereAndNowButton(TapEvent event) {
+    @UiHandler("mainScreenToggleButton")
+    protected void onMainScreenToggleButton(TapEvent event) {
         if (presenter != null) {
-            presenter.onHereAndNowButton();
+            presenter.onMainScreenToggleButton();
         }
     }
 
-    @UiHandler("expiredRidesButton")
-    protected void onExpiredRidesButton(TapEvent event) {
+    @UiHandler("showHideToggleButton")
+    protected void onShowHideToggleButton(TapEvent event) {
         hideOldRides = !hideOldRides;
         if (presenter != null) {
-            presenter.onExpiredRidesButton();
+            presenter.onShowHideToggleButton();
         }
     }
 
-    @UiHandler("timeAndDayButton")
-    protected void onTimeAndDayButton(TapEvent event) {
+    @UiHandler("refreshButton")
+    protected void onRefreshButton(TapEvent event) {
         if (presenter != null) {
-            presenter.onTimeAndDayButton();
+            presenter.onRefreshButton();
         }
     }
 
 
     private List<CellGroup<Header, BikeRideHelper.Content>> buildList(List<BikeRide> bikeRides) {
 
-        setExpiredRidesButtonText();
+        setShowHideToggleButtonText();
 
         ArrayList<CellGroup<Header, BikeRideHelper.Content>> list = new ArrayList<CellGroup<Header, BikeRideHelper.Content>>();
 

@@ -111,9 +111,7 @@ public class BikeRideHelper {
         }
 
         private SafeHtml getShortDescription(boolean forBike) {
-            SafeHtmlBuilder escapedData;
             SafeHtmlBuilder safeHtmlBuilder = new SafeHtmlBuilder();
-            StringBuilder htmlAsBuilder = new StringBuilder();
 
             //Build the left hand side of the bubble
             safeHtmlBuilder.appendHtmlConstant(HtmlTools.DIV_RIDETIME);
@@ -128,7 +126,7 @@ public class BikeRideHelper {
             } else {
                 safeHtmlBuilder.appendEscaped(this.getDistance());
             }
-            safeHtmlBuilder.appendHtmlConstant(" mi. away");
+            safeHtmlBuilder.appendHtmlConstant(" mi. away"); //TODO NATE: we use to wrap this in a span tag but right now it is falling out of the box so.
             safeHtmlBuilder.appendHtmlConstant(HtmlTools.P_CLOSE_TAG);
             safeHtmlBuilder.appendHtmlConstant(HtmlTools.DIV_CLOSE_TAG);
 

@@ -20,13 +20,13 @@
         <g:FlowPanel ui:field="footerFlowPanel">
                 <g:HorizontalPanel ui:field="footerHorizontalPanel" width="100%">
                     <g:cell horizontalAlignment="ALIGN_LEFT" width="20%">
-                        <mgwt:Button ui:field="hereAndNowButton" text=""/>
+                        <mgwt:Button ui:field="mainScreenToggleButton" text=""/>
                     </g:cell>
                     <g:cell horizontalAlignment="ALIGN_CENTER" width="60%">
-                        <mgwt:Button ui:field="expiredRidesButton" text=""/>
+                        <mgwt:Button ui:field="showHideToggleButton" text=""/>
                     </g:cell>
-                    <g:cell horizontalAlignment="ALIGN_RIGHT" height="20%" >
-                        <mgwt:Button ui:field="timeAndDayButton" text=""/>
+                    <g:cell horizontalAlignment="ALIGN_RIGHT" width="20%" >
+                        <mgwt:Button ui:field="refreshButton" text=""/>
                     </g:cell>
                 </g:HorizontalPanel>
         </g:FlowPanel>
