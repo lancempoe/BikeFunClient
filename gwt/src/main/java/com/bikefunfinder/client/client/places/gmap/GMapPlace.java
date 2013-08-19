@@ -18,21 +18,17 @@ public class GMapPlace  extends Place {
     public static final class Tokenizer implements PlaceTokenizer<GMapPlace> {
         @Override
         public GMapPlace getPlace(final String token) {
-            final String[] strings = token.split(",");
-            return new GMapPlace(strings[0]);
+            //THIS SHOULD NEVER HAPPEN.  talk to tim as to why.
+            return null;
         }
 
         @Override
         public String getToken(final GMapPlace place) {
+            //THIS IS CALLED WHEN GOING INTO THE EVENT PAGE.  NOT THE MAP.  ??
             final StringBuilder builder = new StringBuilder();
             builder.append(place.getPageName());
             return builder.toString();
         }
-    }
-
-    public GMapPlace(final String pageName) {
-        this.pageName = pageName;
-        this.bikeRide = null;
     }
 
     public GMapPlace(final String pageName, BikeRide bikeRide) {

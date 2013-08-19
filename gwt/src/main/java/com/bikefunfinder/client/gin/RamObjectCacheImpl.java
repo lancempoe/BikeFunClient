@@ -79,7 +79,9 @@ public class RamObjectCacheImpl implements RamObjectCache {
 
     @Override
     public void setMainScreenSize(int mainScreenSize) {
-        this.mainScreenSize = mainScreenSize;
+        if (mainScreenSize > 0) {
+            this.mainScreenSize = mainScreenSize;
+        }
     }
 
     @Override

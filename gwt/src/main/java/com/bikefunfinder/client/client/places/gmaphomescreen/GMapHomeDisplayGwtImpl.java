@@ -191,7 +191,7 @@ public class GMapHomeDisplayGwtImpl extends Composite implements GMapHomeDisplay
 
     @Override
     public void setMainSize(int mainSize) {
-        if(!wasAdjusted) {
+        if(!wasAdjusted && mainSize > 0) {
             adjustMainPanelSize(mainSize);
         }
     }

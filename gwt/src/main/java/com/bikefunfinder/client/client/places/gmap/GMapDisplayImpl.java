@@ -3,7 +3,6 @@ package com.bikefunfinder.client.client.places.gmap;
 import com.bikefunfinder.client.shared.Tools.BikeRideHelper;
 import com.bikefunfinder.client.shared.Tools.HtmlTools;
 import com.bikefunfinder.client.shared.constants.ScreenConstants;
-import com.bikefunfinder.client.shared.constants.ScreenConstants.MapScreenType;
 import com.bikefunfinder.client.shared.model.BikeRide;
 import com.bikefunfinder.client.shared.model.GeoLoc;
 import com.bikefunfinder.client.shared.model.Root;
@@ -37,11 +36,7 @@ import java.util.logging.Logger;
  * To change this template use File | Settings | File Templates.
  */
 public class GMapDisplayImpl implements GMapDisplay {
-    private static final double HERE_AND_NOW_ZOOM = 12;
     private static final double EVENT_ZOOM = 17;
-    private static final int RESUME_AUTO_PAN_AND_ZOOM_DELAY_MILLIS = 10000;
-    private static final double METERS_IN_A_MILE = 1609.34;
-    private static final int HERE_AND_NOW_RADIUS = 3;
     private static final String START_TRACKING = "Share ride location!";
     private static final String STOP_TRACKING = "Stop Tracking";
     private static final String TRACK_HEX_COLOR = "#FF0000";
@@ -51,11 +46,9 @@ public class GMapDisplayImpl implements GMapDisplay {
     private final FlowPanel mapPanel;
 
     private GoogleMap map;
-    private Circle circle;
     private LatLng center;
     private double zoom;
 
-    private MapScreenType priorMapScreenType;
     private boolean resetMap = true;
 
     private List<InfoWindow> infoWindows = new ArrayList<InfoWindow>();
@@ -151,29 +144,7 @@ public class GMapDisplayImpl implements GMapDisplay {
     }
 
     @Override
-    public void resetForHereAndNow(final GeoLoc centerGeoLoc) {
-        if (!MapScreenType.HERE_AND_NOW.equals(priorMapScreenType)) {
-            resetMap = true;
-            priorMapScreenType = MapScreenType.HERE_AND_NOW;
-        }
-
-        //Clear out the markers
-        for (Marker marker : markers) {
-            marker.setMap((GoogleMap)null);
-        }
-
-        trackingRideButton.setVisible(false);
-        center = LatLng.create(centerGeoLoc.getLatitude(), centerGeoLoc.getLongitude());
-        zoom = HERE_AND_NOW_ZOOM;
-        if (circle != null) {
-            circle.setVisible(true);
-        }
-    }
-
-    @Override
-    public void resetForEvent(final GeoLoc centerGeoLoc) {
-        priorMapScreenType = MapScreenType.EVENT;
-
+    public void reset(final GeoLoc centerGeoLoc) {
         //Clear out the markers
         for (Marker marker : markers) {
             marker.setMap((GoogleMap)null);
@@ -182,9 +153,6 @@ public class GMapDisplayImpl implements GMapDisplay {
         trackingRideButton.setVisible(true);
         center = LatLng.create(centerGeoLoc.getLatitude(), centerGeoLoc.getLongitude());
         zoom = EVENT_ZOOM;
-        if (circle != null) {
-            circle.setVisible(false);
-        }
     }
 
     //We can move this to a common area if we want to use outside of this class
@@ -194,19 +162,6 @@ public class GMapDisplayImpl implements GMapDisplay {
             return true;
         }
         return false;
-    }
-
-    private void refreshMap() {
-        if (map != null) {
-            map.triggerResize();
-        }
-    }
-
-    @Override
-    public void truffleShuffle() {
-        if(mapPanel!=null && mapPanel.isAttached()) {
-            refreshMap(); // maybe? lance says it's only after the map is built.. so.. did it get better? if not nuke
-        }
     }
 
     @Override
@@ -226,19 +181,6 @@ public class GMapDisplayImpl implements GMapDisplay {
             Logger.getLogger("").log(Level.INFO, "StartTracking button text");
             this.trackingRideButton.setText(START_TRACKING);
         }
-    }
-
-    @Override
-    public void setupMapDisplayForHereAndNow(final GeoLoc phoneGpsLoc, Root root) {
-
-        buildMapView(false);
-        drawRideShed();
-        pinBlueBike(phoneGpsLoc, null);
-        pinCurrentLocationOfEvents(root);
-
-        //Reset the check
-        refreshMap();
-        resetMap = false;
     }
 
     private void pinCurrentLocationOfEvents(Root root) {
@@ -263,19 +205,6 @@ public class GMapDisplayImpl implements GMapDisplay {
         }
     }
 
-    /**
-     * Draw the search radius circle
-     */
-    private void drawRideShed() {
-        if (circle == null || resetMap) {
-            final CircleOptions circleOptions = createCircleOptions(map, center, METERS_IN_A_MILE * HERE_AND_NOW_RADIUS);
-            circle = Circle.create(circleOptions);
-        } else {
-            circle.setCenter(center);
-            circle.setRadius(METERS_IN_A_MILE * HERE_AND_NOW_RADIUS);
-        }
-    }
-
     @Override
     public void setupMapToDisplayBikeRide(GeoLoc phoneGpsLoc, BikeRide bikeRide, boolean reCenterReZoom, boolean isTracking) {
 
@@ -286,7 +215,6 @@ public class GMapDisplayImpl implements GMapDisplay {
         placeAllPins(phoneGpsLoc, bikeRide);
 
         //Reset the check
-        refreshMap();
         resetMap = false;
     }
 
@@ -380,9 +308,9 @@ public class GMapDisplayImpl implements GMapDisplay {
      * @param reCenterReZoom
      */
     private void buildMapView(boolean reCenterReZoom) {
-        if (map == null || resetMap) {
+        if (map == null) { //TODO IF THE BROWSER SIZE IS ADJUSTED WE ALSO NEED TO BUILD MAP.
             buildMap();
-        } else if (reCenterReZoom) {
+        } else if (reCenterReZoom || resetMap) {
             map.panTo(center);
             map.setZoom(zoom);
         }
@@ -424,7 +352,7 @@ public class GMapDisplayImpl implements GMapDisplay {
                     for (InfoWindow infoWindow : infoWindows) {
                         infoWindow.close();
                     }
-                    drawInfoWindow(bikeRideMarker, bikeRide, event, safeHtml);
+                    drawInfoWindow(bikeRideMarker, safeHtml);
                 }
             });
         }
@@ -439,22 +367,6 @@ public class GMapDisplayImpl implements GMapDisplay {
         mapOptions.setStreetViewControl(false);
 
         return mapOptions;
-    }
-
-    //30 minute rideshed
-    private static CircleOptions createCircleOptions(final GoogleMap map, final LatLng center, final double radius) {
-        final CircleOptions circleOptions = CircleOptions.create();
-        circleOptions.setMap(map);
-        circleOptions.setCenter(center);
-        circleOptions.setRadius(radius);
-        circleOptions.setStrokeColor("#4E8D34");
-        circleOptions.setStrokeOpacity(0.8);
-        circleOptions.setStrokeWeight(2);
-        circleOptions.setFillColor("#4E8D34");
-        circleOptions.setFillOpacity(0.35);
-        circleOptions.setClickable(false);
-
-        return circleOptions;
     }
 
     private static MarkerOptions createMarkerOptions(final GoogleMap map, final LatLng center, ScreenConstants.TargetIcon icon)
@@ -482,17 +394,16 @@ public class GMapDisplayImpl implements GMapDisplay {
         return polylineOptions;
     }
 
-    protected void drawInfoWindow(final Marker marker, final BikeRide bikeRide, MouseEvent mouseEvent, final SafeHtml safeHtml) {
+    protected void drawInfoWindow(final Marker marker, final SafeHtml safeHtml) {
         if (marker == null) {
             return;
         }
 
         drawInfoWindow(marker,
-                buildBikeRideHTMLWidgetFor(bikeRide, safeHtml),
-                mouseEvent);
+                buildBikeRideHTMLWidgetFor(safeHtml));
     }
 
-    protected void drawInfoWindow(final Marker marker, Element content, MouseEvent mouseEvent) {
+    protected void drawInfoWindow(final Marker marker, Element content) {
 
         if (content == null) {
             return;
@@ -507,18 +418,8 @@ public class GMapDisplayImpl implements GMapDisplay {
         iw.open(map, marker);
     }
 
-    private Element buildBikeRideHTMLWidgetFor(final BikeRide bikeRide, final SafeHtml safeHtml) {
+    private Element buildBikeRideHTMLWidgetFor(final SafeHtml safeHtml) {
         FlowPanel fp = new FlowPanel();
-
-        if (bikeRide != null) {
-            //        //TODO This will be implemented in version 2
-            //        //Only available in iphone
-            //        if (MGWT.getOsDetection().isIPhone()) {
-            //            Anchor link = new Anchor("(more information)", presenter.provideTokenHrefFor(bikeRide));
-            //            link.getElement().getStyle().setColor("black");
-            //            fp.add(link);
-            //        }
-        }
 
         final HTML htmlWidget = new HTML(safeHtml);
         htmlWidget.getElement().getStyle().setColor("black");

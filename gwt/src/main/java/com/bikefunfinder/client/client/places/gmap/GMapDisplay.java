@@ -21,19 +21,16 @@ public interface GMapDisplay extends IsWidget {
     public void display(BikeRide bikeRide);
     public void setUserId(String userId);
     public void displayPageName(String pageName);
-    public void resetForHereAndNow(GeoLoc centerGeoLoc);
-    public void resetForEvent(GeoLoc centerGeoLoc);
+    public void reset(GeoLoc centerGeoLoc);
     public void resetPolyLine();
-    public void truffleShuffle();
     public void setTrackingButtonText(boolean isTracking);
 
     public interface Presenter {
         public void backButtonSelected();
         public void trackingRideButtonSelected();
-        public String provideTokenHrefFor(BikeRide bikeRide);
+//        public String provideTokenHrefFor(BikeRide bikeRide);
     }
 
-    void setupMapDisplayForHereAndNow(GeoLoc phoneGpsLoc, Root root);
     void setupMapToDisplayBikeRide(GeoLoc phoneGpsLoc, BikeRide bikeRide, boolean reCenterReZoom, boolean isTracking);
 
 }

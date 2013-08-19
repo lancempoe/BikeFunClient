@@ -20,10 +20,6 @@ public class EventScreenPlace extends Place {
         this.bikeRide = bikeRide;
     }
 
-    public EventScreenPlace() {
-        this(null);
-    }
-
     public BikeRide getBikeRide() {
         return bikeRide;
     }
@@ -34,7 +30,6 @@ public class EventScreenPlace extends Place {
 
         @Override
         public EventScreenPlace getPlace(String token) {
-
             List<BikeRide> bikeRides = Extractor.getBikeRidesFrom(ramObjectCache.getRoot());
             for(BikeRide bikeRide : bikeRides) {
                 if(bikeRide.getId()==token) {

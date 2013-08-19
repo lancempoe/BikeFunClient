@@ -60,11 +60,6 @@ public class ScreenConstants {
         }
     }
 
-    public static enum MapScreenType {
-        HERE_AND_NOW,
-        EVENT;
-    }
-
     private static final String DateFormat = "MM/dd/yyyy";
     private static final String TimeFormat = "hh:mm a";
     public static final String gwtDateAndTimeCombined = ScreenConstants.DateFormat + " " + ScreenConstants.TimeFormat;
@@ -77,7 +72,7 @@ public class ScreenConstants {
 
     public static final double PORTLAND_LATITUDE = 45.52345275878906;
     public static final double PORTLAND_LONGITUDE = -122.6762084960938;
-    public static final int SCREEN_REFRESH_RATE_IN_MILLISECONDS = 20000;
+    public static final int SCREEN_REFRESH_RATE_IN_MILLISECONDS = 30000;
     public static final int TIME_TO_WARN_USER_OF_TRACKING_DISABLING_IN_MILLIS = 60*60*1000; //1 hour
     public static final int MAX_TRACKING_WITHOUT_CONFORMATION_IN_MILLISECONDS = TIME_TO_WARN_USER_OF_TRACKING_DISABLING_IN_MILLIS *2; //2 hours
 
