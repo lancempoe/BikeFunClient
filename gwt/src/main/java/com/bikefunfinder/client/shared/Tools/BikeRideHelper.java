@@ -163,8 +163,8 @@ public class BikeRideHelper {
         boolean isHereAndNow = false;
         String stageOfRide = stageOfBikeRide(bikeRide);
         if (!stageOfRide.equals(OLD_RIDE) && !stageOfRide.equals(FUTURE_RIDE)) {
-            if ((bikeRide.isCurrentlyTracking() && Double.parseDouble(bikeRide.getDistanceTrackFromClient()) <= GMapHomeDisplayGwtImpl.HERE_AND_NOW_RADIUS) ||
-                    (!bikeRide.isCurrentlyTracking() && Double.parseDouble(bikeRide.getDistanceFromClient()) <= GMapHomeDisplayGwtImpl.HERE_AND_NOW_RADIUS)) {
+            if ((bikeRide.isCurrentlyTracking() && Double.parseDouble(bikeRide.getDistanceTrackFromClient()) <= GMapHomeDisplayGwtImpl.MAP_HOME_RADIUS) ||
+                    (!bikeRide.isCurrentlyTracking() && Double.parseDouble(bikeRide.getDistanceFromClient()) <= GMapHomeDisplayGwtImpl.MAP_HOME_RADIUS)) {
                 isHereAndNow = true;
             }
         }

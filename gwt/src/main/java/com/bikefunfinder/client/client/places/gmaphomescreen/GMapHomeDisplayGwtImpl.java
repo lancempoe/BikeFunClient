@@ -37,13 +37,13 @@ import java.util.logging.Logger;
  * To change this template use File | Settings | File Templates.
  */
 public class GMapHomeDisplayGwtImpl extends Composite implements GMapHomeDisplay {
-    private static final double HERE_AND_NOW_ZOOM = 12;
+    private static final double MAP_HOME_ZOOM = 12;
     private static final double METERS_IN_A_MILE = 1609.34;
-    public static final int HERE_AND_NOW_RADIUS = 3;
+    public static final int MAP_HOME_RADIUS = 3;
     private static final String CIRCLE_HEX_COLOR = "#4E8D34";
 
     private static boolean showHereAndNowOnly = false; //Default to showing all rides.
-    private static final String SHOW_All_RIDES = "Show All Rides";
+    private static final String SHOW_All_RIDES = "Show All Upcoming Rides";
     private static final String SHOW_HERE_AND_NOW_RIDES = "Show Current Rides";
     boolean wasAdjusted = false;
 
@@ -78,9 +78,8 @@ public class GMapHomeDisplayGwtImpl extends Composite implements GMapHomeDisplay
     MainMenuHeaderPanel headerPanel;
 
     private GoogleMap map;
-    private Circle circle;
-    private LatLng center;
-    private double zoom;
+    private Circle rideShedCircle;
+    private LatLng phoneLatLng;
 
     private List<InfoWindow> infoWindows = new ArrayList<InfoWindow>();
     private List<Marker> markers = new ArrayList<Marker>();
@@ -130,8 +129,8 @@ public class GMapHomeDisplayGwtImpl extends Composite implements GMapHomeDisplay
     }
 
     private void centerZoom() {
-        map.panTo(center);
-        map.setZoom(zoom);
+        map.panTo(phoneLatLng);
+        map.setZoom(MAP_HOME_ZOOM);
     }
 
     @Override
@@ -143,13 +142,8 @@ public class GMapHomeDisplayGwtImpl extends Composite implements GMapHomeDisplay
     public void display(GeoLoc geoLoc, List<BikeRide> bikeRides) {
 
         clearMarkers();
+        phoneLatLng = LatLng.create(geoLoc.getLatitude(), geoLoc.getLongitude());
         if (map == null) {
-            center = LatLng.create(geoLoc.getLatitude(), geoLoc.getLongitude());
-            zoom = HERE_AND_NOW_ZOOM;
-            if (circle != null) {
-                circle.setVisible(true);
-            }
-
             buildMapView();
             drawRideShed();
         }
@@ -224,16 +218,11 @@ public class GMapHomeDisplayGwtImpl extends Composite implements GMapHomeDisplay
     }
 
     /**
-     * Draw the search radius circle
+     * Draw the search radius rideShedCircle
      */
     private void drawRideShed() {
-        if (circle == null) {
-            final CircleOptions circleOptions = createCircleOptions(map, center, METERS_IN_A_MILE * HERE_AND_NOW_RADIUS);
-            circle = Circle.create(circleOptions);
-        } else {
-            circle.setCenter(center);
-            circle.setRadius(METERS_IN_A_MILE * HERE_AND_NOW_RADIUS);
-        }
+        final CircleOptions circleOptions = createRideShedOptions(map, phoneLatLng, METERS_IN_A_MILE * MAP_HOME_RADIUS);
+        rideShedCircle = Circle.create(circleOptions);
     }
 
     private void placeAllPins(GeoLoc phoneGpsLoc, List<BikeRide> bikeRides) {
@@ -253,13 +242,14 @@ public class GMapHomeDisplayGwtImpl extends Composite implements GMapHomeDisplay
         safeHtmlBuilder.appendHtmlConstant(HtmlTools.H1_CLOSE_TAG);
         final SafeHtml safeHtml = safeHtmlBuilder.toSafeHtml();
         AddAsMarker(phoneGpsLoc, null, ScreenConstants.TargetIcon.CLIENT, safeHtml);
+        rideShedCircle.setCenter(LatLng.create(phoneGpsLoc.getLatitude(), phoneGpsLoc.getLongitude()));
     }
 
     /**
      * Build the view of the map
      */
     private void buildMapView() {
-        final MapOptions mapOptions = createMapOptions(center, zoom);
+        final MapOptions mapOptions = createMapOptions(phoneLatLng, MAP_HOME_ZOOM);
         map = GoogleMap.create(mapPanel.getElement(), mapOptions);
 
         BicyclingLayer bicyclingLayer = BicyclingLayer.create();
@@ -300,8 +290,7 @@ public class GMapHomeDisplayGwtImpl extends Composite implements GMapHomeDisplay
         return mapOptions;
     }
 
-    //30 minute rideshed
-    private static CircleOptions createCircleOptions(final GoogleMap map, final LatLng center, final double radius) {
+    private static CircleOptions createRideShedOptions(final GoogleMap map, final LatLng center, final double radius) {
         final CircleOptions circleOptions = CircleOptions.create();
         circleOptions.setMap(map);
         circleOptions.setCenter(center);
@@ -312,6 +301,7 @@ public class GMapHomeDisplayGwtImpl extends Composite implements GMapHomeDisplay
         circleOptions.setFillColor(CIRCLE_HEX_COLOR);
         circleOptions.setFillOpacity(0.35);
         circleOptions.setClickable(false);
+        circleOptions.setVisible(true);
 
         return circleOptions;
     }
