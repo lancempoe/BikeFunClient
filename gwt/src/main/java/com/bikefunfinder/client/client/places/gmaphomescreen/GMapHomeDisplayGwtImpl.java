@@ -103,6 +103,8 @@ public class GMapHomeDisplayGwtImpl extends Composite implements GMapHomeDisplay
         mapPanel = new FlowPanel();
         mapPanel.addStyleName(MGWTStyle.getTheme().getMGWTClientBundle().getLayoutCss().fillPanelExpandChild());
         main.add(mapPanel);
+
+        refreshMap();
     }
 
     @UiHandler("mainScreenToggleButton")
@@ -149,6 +151,12 @@ public class GMapHomeDisplayGwtImpl extends Composite implements GMapHomeDisplay
         }
         placeAllPins(geoLoc, bikeRides);
         setMainScreenToggleButtonText();
+    }
+
+    private void refreshMap() {
+        if (map != null) {
+            map.triggerResize();
+        }
     }
 
     private void setMainScreenToggleButtonText() {

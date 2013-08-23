@@ -40,6 +40,7 @@
         </mgwt:ScrollPanel>
 
         <mgwt:Button ui:field="editRideButton" text="Edit Ride"/>
+        <mgwt:Button ui:field="copyRideButton" text="Copy Ride"/>
 
     </mgwt:LayoutPanel>
 </ui:UiBinder>

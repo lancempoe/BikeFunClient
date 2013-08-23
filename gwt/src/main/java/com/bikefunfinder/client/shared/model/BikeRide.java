@@ -66,6 +66,10 @@ public class BikeRide extends JavaScriptObject {
        setRideStartTime(time.toString());
     }
 
+    public final native void copyRideStartTime(BikeRide bikeRide) /*-{
+        this.rideStartTime = bikeRide.rideStartTime;
+    }-*/;
+
     public final native void setRideStartTime(String time) /*-{
         this.rideStartTime = time;
     }-*/;

@@ -183,28 +183,6 @@ public class GMapDisplayImpl implements GMapDisplay {
         }
     }
 
-    private void pinCurrentLocationOfEvents(Root root) {
-        //Event Locations.
-        List<BikeRide> list = Extractor.getBikeRidesFrom(root);
-        for(final BikeRide bikeRide: list) {
-            //If tracking then show the location of the ride leader or first track.
-            BikeRideHelper.Content content = new BikeRideHelper.Content(bikeRide);
-            if (bikeRide.isCurrentlyTracking()) {
-                final SafeHtml safeHtml = content.getShortDescriptionForBike();
-                if (bikeRide.getRideLeaderTracking() != null && bikeRide.getRideLeaderTracking().getGeoLoc() != null) {
-                    AddAsMarker(bikeRide.getRideLeaderTracking().getGeoLoc(), bikeRide, ScreenConstants.TargetIcon.LEADER, safeHtml);
-                } else {
-                    AddAsMarker(bikeRide.getCurrentTrackings().get(0).getGeoLoc(), bikeRide, ScreenConstants.TargetIcon.LEADER, safeHtml);
-                }
-
-            //If not tracking then show the start of the ride.
-            } else {
-                final SafeHtml safeHtml = content.getShortDescriptionForStart();
-                AddAsMarker(bikeRide.getLocation().getGeoLoc(), bikeRide, ScreenConstants.TargetIcon.EVENT, safeHtml);
-            }
-        }
-    }
-
     @Override
     public void setupMapToDisplayBikeRide(GeoLoc phoneGpsLoc, BikeRide bikeRide, boolean reCenterReZoom, boolean isTracking) {
 
@@ -215,7 +193,14 @@ public class GMapDisplayImpl implements GMapDisplay {
         placeAllPins(phoneGpsLoc, bikeRide);
 
         //Reset the check
+        refreshMap();
         resetMap = false;
+    }
+
+    private void refreshMap() {
+        if (map != null) {
+            map.triggerResize();
+        }
     }
 
     /**

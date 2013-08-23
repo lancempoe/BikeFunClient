@@ -48,8 +48,9 @@ public class ActivityMapperDelegate implements ActivityMapper {
         if(place instanceof CreateScreenPlace) {
             final CreateScreenPlace createScreenPlace = (CreateScreenPlace) place;
             BikeRide bikeRide = createScreenPlace.getBikeRide();
-            lastActivity = new CreateScreenActivity(bikeRide, createScreenPlace.getUser(), createScreenPlace.getAnonymousUser());
-            if (bikeRide == null) {
+            boolean isCopied = createScreenPlace.getIsCopied();
+            lastActivity = new CreateScreenActivity(bikeRide, isCopied, createScreenPlace.getUser(), createScreenPlace.getAnonymousUser());
+            if (isCopied || bikeRide == null) {
                 NativeUtilities.trackPage("Create Screen");
             } else {
                 NativeUtilities.trackPage("Update Screen");

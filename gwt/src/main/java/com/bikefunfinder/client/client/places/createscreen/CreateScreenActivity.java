@@ -30,22 +30,27 @@ public class CreateScreenActivity extends MGWTAbstractActivity implements Create
 
     private final ClientFactory<CreateScreenDisplay> clientFactory = Injector.INSTANCE.getClientFactory();
     private boolean existingEvent = false;
+    private boolean isCopied = false;
     private final AnonymousUser anonymousUser;
     private final User user;
     private final RamObjectCache ramObjectCache = Injector.INSTANCE.getRamObjectCache();
 
-    public CreateScreenActivity(BikeRide bikeRide, User user, AnonymousUser anonymousUser) {
+    public CreateScreenActivity(BikeRide bikeRide, boolean isCopied, User user, AnonymousUser anonymousUser) {
         this.user = user;
         this.anonymousUser = anonymousUser;
+        this.isCopied = isCopied;
 
         final CreateScreenDisplay display = clientFactory.getDisplay(this);
 
-        if (bikeRide != null) {
+        if (bikeRide == null || isCopied) {
+            display.setUserNameOnDisplay("Creating Ride with: " + getUserName());
+            if (bikeRide != null) {
+                display.populateWithExistingBikeRideDetails(bikeRide);
+            }
+        } else {
             display.setUserNameOnDisplay("Updating Ride with: " + getUserName());
             existingEvent = true; //typeIsUpdate
             display.populateWithExistingBikeRideDetails(bikeRide);
-        } else {
-            display.setUserNameOnDisplay("Creating Ride with: " + getUserName());
         }
 
         display.setVisibilityOfButtons(existingEvent);
@@ -75,7 +80,7 @@ public class CreateScreenActivity extends MGWTAbstractActivity implements Create
     public void start(AcceptsOneWidget panel, EventBus eventBus) {
         final CreateScreenDisplay display = clientFactory.getDisplay(this);
         display.setPresenter(this);
-        if (!existingEvent) { display.resetState(); }
+        if (!existingEvent && !isCopied) { display.resetState(); }
         panel.setWidget(display);
     }
 

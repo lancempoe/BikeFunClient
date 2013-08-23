@@ -35,6 +35,9 @@ public class EventScreenDisplayGwtImpl extends Composite implements EventScreenD
     Button editRideButton;
 
     @UiField
+    Button copyRideButton;
+
+    @UiField
     ScrollPanel scrollPanel;
 
     @UiField
@@ -101,6 +104,13 @@ public class EventScreenDisplayGwtImpl extends Composite implements EventScreenD
     protected void onEditRideButtonPressed(TapEvent event) {
         if (presenter != null) {
             presenter.editRideButtonSelected();
+        }
+    }
+
+    @UiHandler("copyRideButton")
+    protected void onCopyRideButtonPressed(TapEvent event) {
+        if (presenter != null) {
+            presenter.copyRideButtonSelected();
         }
     }
 

@@ -15,6 +15,7 @@ import com.bikefunfinder.client.shared.model.BikeRide;
 import com.bikefunfinder.client.shared.model.Tracking;
 import com.bikefunfinder.client.shared.model.User;
 import com.bikefunfinder.client.shared.request.management.AnnonymousUserCacheStrategy;
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JsArray;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.web.bindery.event.shared.EventBus;
@@ -106,5 +107,18 @@ private final ClientFactory<EventScreenDisplay> clientFactory = Injector.INSTANC
     @Override
     public void editRideButtonSelected() {
         clientFactory.getPlaceController().goTo(new CreateScreenPlace(this.bikeRide, null, AnnonymousUserCacheStrategy.INSTANCE.getCachedType()));
+    }
+
+    @Override
+    public void copyRideButtonSelected() {
+        BikeRide copiedBikeRide = GWT.create(BikeRide.class);
+        copiedBikeRide.setBikeRideName(this.bikeRide.getBikeRideName());
+        copiedBikeRide.setDetails(this.bikeRide.getDetails());
+        copiedBikeRide.setLocation(this.bikeRide.getLocation());
+        copiedBikeRide.setCityLocationId(this.bikeRide.getCityLocationId());
+        copiedBikeRide.copyRideStartTime(this.bikeRide);
+        copiedBikeRide.setTrackingAllowed(this.bikeRide.isTrackingAllowed());
+        copiedBikeRide.setTargetAudience(this.bikeRide.getTargetAudience());
+        clientFactory.getPlaceController().goTo(new CreateScreenPlace(copiedBikeRide, true, null, AnnonymousUserCacheStrategy.INSTANCE.getCachedType()));
     }
 }

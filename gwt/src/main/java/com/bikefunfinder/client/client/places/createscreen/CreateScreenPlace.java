@@ -16,11 +16,20 @@ public class CreateScreenPlace extends Place {
     private final BikeRide bikeRide;
     private final AnonymousUser anonymousUser;
     private final User user;
+    private final boolean isCopied;
+
+    public CreateScreenPlace(BikeRide bikeRide, Boolean isCopied, User user, AnonymousUser anonymousUser) {
+        this.user = user;
+        this.anonymousUser = anonymousUser;
+        this.bikeRide = bikeRide;
+        this.isCopied = isCopied;
+    }
 
     public CreateScreenPlace(BikeRide bikeRide, User user, AnonymousUser anonymousUser) {
         this.user = user;
         this.anonymousUser = anonymousUser;
         this.bikeRide = bikeRide;
+        this.isCopied = false;
     }
 
     public AnonymousUser getAnonymousUser() {
@@ -33,6 +42,10 @@ public class CreateScreenPlace extends Place {
 
     public BikeRide getBikeRide() {
         return bikeRide;
+    }
+
+    public boolean getIsCopied() {
+        return isCopied;
     }
 
     public static class Tokenizer implements PlaceTokenizer<CreateScreenPlace> {

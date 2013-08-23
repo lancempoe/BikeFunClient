@@ -30,5 +30,6 @@ public interface EventScreenDisplay extends IsWidget {
         public void backButtonSelected();
         public void eventRideMapButtonSelected();
         public void editRideButtonSelected();
+        public void copyRideButtonSelected();
     }
 }
