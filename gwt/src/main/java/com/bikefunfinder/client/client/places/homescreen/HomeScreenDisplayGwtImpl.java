@@ -241,7 +241,7 @@ public class HomeScreenDisplayGwtImpl extends Composite implements HomeScreenDis
 
         @Override
         public void render(SafeHtmlBuilder safeHtmlBuilder, BikeRideHelper.Content model) {
-            safeHtmlBuilder.append(model.getShortDescription());
+            safeHtmlBuilder.append(model.getShortDescription(false));
         }
 
         @Override

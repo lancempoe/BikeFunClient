@@ -90,7 +90,7 @@ public class GMapHomeDisplayGwtImpl extends Composite implements GMapHomeDisplay
         initWidget(uiBinder.createAndBindUi(this));
 
         mainScreenToggleButton.addStyleName(style.buttonTreatment());
-        mainScreenToggleButton.addStyleName("icon-globe");
+        mainScreenToggleButton.addStyleName("icon-list");
         mainScreenToggleButton.addStyleName("icon-large");
         showHideToggleButton.addStyleName(style.buttonTreatment());
         refreshButton.addStyleName(style.buttonTreatment());
@@ -213,14 +213,14 @@ public class GMapHomeDisplayGwtImpl extends Composite implements GMapHomeDisplay
             BikeRideHelper.Content content = new BikeRideHelper.Content(bikeRide);
             if (bikeRide.isCurrentlyTracking()) {
                 if (bikeRide.getRideLeaderTracking() != null && bikeRide.getRideLeaderTracking().getGeoLoc() != null) {
-                    AddAsMarker(bikeRide.getRideLeaderTracking().getGeoLoc(), bikeRide, ScreenConstants.TargetIcon.LEADER, content.getShortDescriptionForBike());
+                    AddAsMarker(bikeRide.getRideLeaderTracking().getGeoLoc(), bikeRide, ScreenConstants.TargetIcon.LEADER, content.getShortDescriptionForBike(true));
                 } else {
-                    AddAsMarker(bikeRide.getCurrentTrackings().get(0).getGeoLoc(), bikeRide, ScreenConstants.TargetIcon.LEADER, content.getShortDescriptionForBike());
+                    AddAsMarker(bikeRide.getCurrentTrackings().get(0).getGeoLoc(), bikeRide, ScreenConstants.TargetIcon.LEADER, content.getShortDescriptionForBike(true));
                 }
 
             //If not tracking then show the start of the ride.
             } else {
-                AddAsMarker(bikeRide.getLocation().getGeoLoc(), bikeRide, ScreenConstants.TargetIcon.EVENT, content.getShortDescriptionForStart());
+                AddAsMarker(bikeRide.getLocation().getGeoLoc(), bikeRide, ScreenConstants.TargetIcon.EVENT, content.getShortDescriptionForStart(true));
             }
         }
     }

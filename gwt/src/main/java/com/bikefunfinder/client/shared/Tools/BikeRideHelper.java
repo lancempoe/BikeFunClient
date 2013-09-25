@@ -52,6 +52,7 @@ public class BikeRideHelper {
     public static class Content {
         private final BikeRide bikeRide;
         private final String timeDisplay;
+        private final String dateTimeDisplay;
         private final String distance;
         private final String distanceTrack;
 
@@ -74,10 +75,15 @@ public class BikeRideHelper {
 
             JsDateWrapper bikeRideDate = bikeRide.createJsDateWrapperRideStartTime();
             this.timeDisplay = bikeRideDate.toString(ScreenConstants.TimeFormatPrintPretty);
+            this.dateTimeDisplay = bikeRideDate.toString(ScreenConstants.DateFormatForGmapsWidget);
         }
 
         public String getTimeDisplay() {
             return timeDisplay;
+        }
+
+        public String getDateTimeDisplay() {
+            return dateTimeDisplay;
         }
 
         public String getDistance() {
@@ -92,42 +98,54 @@ public class BikeRideHelper {
             return bikeRide;
         }
 
-        public SafeHtml getShortDescriptionForStart() {
-            return getShortDescription(false);
+        public SafeHtml getShortDescriptionForStart(boolean forMap) {
+            return getShortDescription(false, forMap);
         }
 
-        public SafeHtml getShortDescriptionForBike() {
-            return getShortDescription(true);
+        public SafeHtml getShortDescriptionForBike(boolean forMap) {
+            return getShortDescription(true, forMap);
         }
 
-        public SafeHtml getShortDescription() {
+        public SafeHtml getShortDescription(boolean forMap) {
             SafeHtml safeHtml;
             if (distanceTrack != "") {
-                safeHtml = getShortDescriptionForBike();
+                safeHtml = getShortDescriptionForBike(forMap);
             } else {
-                safeHtml = getShortDescriptionForStart();
+                safeHtml = getShortDescriptionForStart(forMap);
             }
             return safeHtml;
         }
 
-        private SafeHtml getShortDescription(boolean forBike) {
+        private boolean hasTime() {
+            return this.getTimeDisplay()!=null && !this.getTimeDisplay().isEmpty()
+                    && this.getDateTimeDisplay()!=null && !this.getDateTimeDisplay().isEmpty();
+        }
+
+        private SafeHtml getShortDescription(boolean forBike, boolean forMap) {
             SafeHtmlBuilder safeHtmlBuilder = new SafeHtmlBuilder();
 
             //Build the left hand side of the bubble
             safeHtmlBuilder.appendHtmlConstant(HtmlTools.DIV_RIDETIME);
-            if(this.getTimeDisplay()!=null && !this.getTimeDisplay().isEmpty()) {
+            if(this.hasTime()) {
                 safeHtmlBuilder.appendHtmlConstant(HtmlTools.P_TIME);
-                safeHtmlBuilder.appendEscaped(this.getTimeDisplay());
+                if(forMap) {
+                    safeHtmlBuilder.appendEscaped(getDateTimeDisplay());
+                }
+                else {
+                    safeHtmlBuilder.appendEscaped(getTimeDisplay());
+                }
                 safeHtmlBuilder.appendHtmlConstant(HtmlTools.P_CLOSE_TAG);
             }
-            safeHtmlBuilder.appendHtmlConstant(HtmlTools.P_DISTANCE);
-            if (forBike) {
-                safeHtmlBuilder.appendEscaped(this.getDistanceTrack());
-            } else {
-                safeHtmlBuilder.appendEscaped(this.getDistance());
+            if(!forMap) {
+                safeHtmlBuilder.appendHtmlConstant(HtmlTools.P_DISTANCE);
+                if (forBike) {
+                    safeHtmlBuilder.appendEscaped(this.getDistanceTrack());
+                } else {
+                    safeHtmlBuilder.appendEscaped(this.getDistance());
+                }
+                safeHtmlBuilder.appendHtmlConstant(" mi. away"); //TODO NATE: we use to wrap this in a span tag but right now it is falling out of the box so.
+                safeHtmlBuilder.appendHtmlConstant(HtmlTools.P_CLOSE_TAG);
             }
-            safeHtmlBuilder.appendHtmlConstant(" mi. away"); //TODO NATE: we use to wrap this in a span tag but right now it is falling out of the box so.
-            safeHtmlBuilder.appendHtmlConstant(HtmlTools.P_CLOSE_TAG);
             safeHtmlBuilder.appendHtmlConstant(HtmlTools.DIV_CLOSE_TAG);
 
             //Build right side of bubble (top: Event Name) & (bottom: Current Event Address)

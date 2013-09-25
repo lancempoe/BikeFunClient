@@ -68,6 +68,7 @@ public class ScreenConstants {
     public static final String xJSDateOnlyDateFormat = "MM/dd/yyyy";
 
     public static final String DateFormatPrintPretty = "dddd, MMMM dd, yyyy";
+    public static final String DateFormatForGmapsWidget = "h:mmtt MM/dd";
     public static final String TimeFormatPrintPretty = "h:mmtt";
 
     public static final double PORTLAND_LATITUDE = 45.52345275878906;

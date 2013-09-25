@@ -235,7 +235,7 @@ public class GMapDisplayImpl implements GMapDisplay {
                 if (leaderSet) {
                     AddAsMarker(bikeRide.getCurrentTrackings().get(i).getGeoLoc(), null, ScreenConstants.TargetIcon.TRACKER, null);
                 } else { //Set the first person tracking as the leader if a leader is not yet set.
-                    safeHtml = content.getShortDescriptionForBike();
+                    safeHtml = content.getShortDescriptionForBike(true);
                     AddAsMarker(bikeRide.getCurrentTrackings().get(i).getGeoLoc(), null, ScreenConstants.TargetIcon.LEADER, safeHtml);
                     leaderSet = true;
                 }
@@ -276,7 +276,7 @@ public class GMapDisplayImpl implements GMapDisplay {
             AddAsMarker(phoneGpsLoc, null, ScreenConstants.TargetIcon.LEADER, safeHtml);
             leaderSet = true;
         } else if (bikeRide.getRideLeaderTracking() != null && bikeRide.getRideLeaderTracking().getId() != null) {
-            final SafeHtml safeHtml = content.getShortDescriptionForBike();
+            final SafeHtml safeHtml = content.getShortDescriptionForBike(true);
             AddAsMarker(bikeRide.getRideLeaderTracking().getGeoLoc(), null, ScreenConstants.TargetIcon.LEADER, safeHtml);
             leaderSet = true;
         }
@@ -284,7 +284,7 @@ public class GMapDisplayImpl implements GMapDisplay {
     }
 
     private void pinStartingLocation(BikeRide bikeRide, BikeRideHelper.Content content) {
-        final SafeHtml safeHtml = content.getShortDescriptionForStart();
+        final SafeHtml safeHtml = content.getShortDescriptionForStart(true);
         AddAsMarker(bikeRide.getLocation().getGeoLoc(), bikeRide, ScreenConstants.TargetIcon.EVENT, safeHtml);
     }
 
