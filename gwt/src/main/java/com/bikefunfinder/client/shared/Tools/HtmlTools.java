@@ -27,4 +27,7 @@ public class HtmlTools {
     public static final String H1_RIDENAME = "<h1 class=\"rideName\">";
     public static final String H1_CLOSE_TAG = "</h1>";
 
+    public static final String H2_DATE = "<h2 class=\"date\">";
+    public static final String H2_CLOSE_TAG = "</h2>";
+
 }

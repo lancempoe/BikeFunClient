@@ -128,24 +128,17 @@ public class BikeRideHelper {
             safeHtmlBuilder.appendHtmlConstant(HtmlTools.DIV_RIDETIME);
             if(this.hasTime()) {
                 safeHtmlBuilder.appendHtmlConstant(HtmlTools.P_TIME);
-                if(forMap) {
-                    safeHtmlBuilder.appendEscaped(getDateTimeDisplay());
-                }
-                else {
-                    safeHtmlBuilder.appendEscaped(getTimeDisplay());
-                }
+                safeHtmlBuilder.appendEscaped(getTimeDisplay());
                 safeHtmlBuilder.appendHtmlConstant(HtmlTools.P_CLOSE_TAG);
             }
-            if(!forMap) {
-                safeHtmlBuilder.appendHtmlConstant(HtmlTools.P_DISTANCE);
-                if (forBike) {
-                    safeHtmlBuilder.appendEscaped(this.getDistanceTrack());
-                } else {
-                    safeHtmlBuilder.appendEscaped(this.getDistance());
-                }
-                safeHtmlBuilder.appendHtmlConstant(" mi. away"); //TODO NATE: we use to wrap this in a span tag but right now it is falling out of the box so.
-                safeHtmlBuilder.appendHtmlConstant(HtmlTools.P_CLOSE_TAG);
+            safeHtmlBuilder.appendHtmlConstant(HtmlTools.P_DISTANCE);
+            if (forBike) {
+                safeHtmlBuilder.appendEscaped(this.getDistanceTrack());
+            } else {
+                safeHtmlBuilder.appendEscaped(this.getDistance());
             }
+            safeHtmlBuilder.appendHtmlConstant(" mi. away"); //TODO NATE: we use to wrap this in a span tag but right now it is falling out of the box so.
+            safeHtmlBuilder.appendHtmlConstant(HtmlTools.P_CLOSE_TAG);
             safeHtmlBuilder.appendHtmlConstant(HtmlTools.DIV_CLOSE_TAG);
 
             //Build right side of bubble (top: Event Name) & (bottom: Current Event Address)
@@ -154,6 +147,9 @@ public class BikeRideHelper {
             safeHtmlBuilder.appendEscaped(this.bikeRide.getBikeRideName());
             safeHtmlBuilder.appendHtmlConstant(HtmlTools.H1_CLOSE_TAG);
             safeHtmlBuilder.appendHtmlConstant(HtmlTools.P_ADDRESS);
+            if(forMap) {
+                safeHtmlBuilder.appendEscapedLines(this.getDateTimeDisplay() + "\n");
+            }
             if (forBike) {
                 safeHtmlBuilder.appendEscaped(BikeRideHelper.getAddressToPrintForBike(this.bikeRide));
             } else {
