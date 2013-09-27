@@ -23,6 +23,7 @@ public interface GMapDisplay extends IsWidget {
     public void displayPageName(String pageName);
     public void reset(GeoLoc centerGeoLoc);
     public void resetPolyLine();
+    public void truffleShuffle();
     public void setTrackingButtonText(boolean isTracking);
 
     public interface Presenter {

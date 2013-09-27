@@ -111,6 +111,7 @@ public class GMapActivity extends NavBaseActivity implements GMapDisplay.Present
 
         display.setUserId(userId);
         display.resetPolyLine();
+        display.truffleShuffle();
         display.setTrackingButtonText(isTracking);
 
         if(warningDialog!=null) {

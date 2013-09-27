@@ -173,6 +173,13 @@ public class GMapDisplayImpl implements GMapDisplay {
     }
 
     @Override
+    public void truffleShuffle() {
+        if(mapPanel!=null && mapPanel.isAttached()) {
+            refreshMap();
+        }
+    }
+
+    @Override
     public void setTrackingButtonText(boolean isTracking) {
         if (isTracking) {
             Logger.getLogger("").log(Level.INFO, "StopTracking button text");
