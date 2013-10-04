@@ -40,6 +40,7 @@
 		30A0434814DC770100060A13 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 30A0434314DC770100060A13 /* Localizable.strings */; };
 		30A0434914DC770100060A13 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 30A0434614DC770100060A13 /* Localizable.strings */; };
 		30E5649213A7FCAF007403D8 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 30E5649113A7FCAF007403D8 /* CoreMedia.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		3D565A9E17FE6C080092AE88 /* topBarFill.js in Sources */ = {isa = PBXBuildFile; fileRef = 3D565A9D17FE6C080092AE88 /* topBarFill.js */; };
 		3D5B83B6176E3A870039D1F5 /* icon-72@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D5B83B5176E3A860039D1F5 /* icon-72@2x.png */; };
 		3D5D9E221758875500383628 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3D8D0A52175864D400D87B7F /* CoreData.framework */; };
 		3D5D9E3317599C5B00383628 /* libGoogleAnalytics.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3D5D9E3217599C5B00383628 /* libGoogleAnalytics.a */; };
@@ -106,6 +107,7 @@
 		30A0434714DC770100060A13 /* se */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = se; path = Localizable.strings; sourceTree = "<group>"; };
 		30E5649113A7FCAF007403D8 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
 		32CA4F630368D1EE00C91783 /* Bike Fun-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Bike Fun-Prefix.pch"; sourceTree = "<group>"; };
+		3D565A9D17FE6C080092AE88 /* topBarFill.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = topBarFill.js; path = www/scripts/topBarFill.js; sourceTree = "<group>"; };
 		3D5B83B5176E3A860039D1F5 /* icon-72@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-72@2x.png"; sourceTree = "<group>"; };
 		3D5D9E2D17599C5B00383628 /* GAI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GAI.h; path = BikeFun/Plugins/GoogleAnalytics/GAI.h; sourceTree = SOURCE_ROOT; };
 		3D5D9E2E17599C5B00383628 /* GAITrackedViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GAITrackedViewController.h; path = BikeFun/Plugins/GoogleAnalytics/GAITrackedViewController.h; sourceTree = SOURCE_ROOT; };
@@ -193,6 +195,7 @@
 		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
+				3D565A9D17FE6C080092AE88 /* topBarFill.js */,
 				F840E1F0165FE0F500CFE078 /* config.xml */,
 				301BF56E109A69640062928A /* www */,
 				301BF52D109A57CC0062928A /* CordovaLib.xcodeproj */,
@@ -462,6 +465,7 @@
 				302D95F114D2391D003F00A1 /* MainViewController.m in Sources */,
 				3D5D9E361759A4F100383628 /* GAPlugin.m in Sources */,
 				3DAF5AFC1765694C00557F20 /* PowerManagement.m in Sources */,
+				3D565A9E17FE6C080092AE88 /* topBarFill.js in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
