@@ -9,24 +9,8 @@
         <option name="RES_FOLDER_RELATIVE_PATH" value="/../Android/res" />
         <option name="ASSETS_FOLDER_RELATIVE_PATH" value="/../Android/assets" />
         <option name="LIBS_FOLDER_RELATIVE_PATH" value="/../Android/libs" />
-        <option name="USE_CUSTOM_APK_RESOURCE_FOLDER" value="false" />
-        <option name="CUSTOM_APK_RESOURCE_FOLDER" value="" />
-        <option name="USE_CUSTOM_COMPILER_MANIFEST" value="false" />
-        <option name="CUSTOM_COMPILER_MANIFEST" value="" />
         <option name="APK_PATH" value="/../Android/target/gwtphonegap-showcase-gwt.apk" />
-        <option name="LIBRARY_PROJECT" value="false" />
         <option name="RUN_PROCESS_RESOURCES_MAVEN_TASK" value="false" />
-        <option name="GENERATE_UNSIGNED_APK" value="false" />
-        <option name="CUSTOM_DEBUG_KEYSTORE_PATH" value="" />
-        <option name="PACK_TEST_CODE" value="false" />
-        <option name="RUN_PROGUARD" value="false" />
-        <option name="PROGUARD_CFG_PATH" value="/proguard-project.txt" />
-        <resOverlayFolders>
-          <path>/res-overlay</path>
-        </resOverlayFolders>
-        <includeSystemProguardFile>true</includeSystemProguardFile>
-        <includeAssetsFromLibraries>false</includeAssetsFromLibraries>
-        <additionalNativeLibs />
       </configuration>
     </facet>
   </component>
@@ -34,7 +18,7 @@
     <output url="file://$MODULE_DIR$/target/classes" />
     <output-test url="file://$MODULE_DIR$/target/test-classes" />
     <content url="file://$MODULE_DIR$/../android/target/generated-sources/r">
-      <sourceFolder url="file://$MODULE_DIR$/../android/target/generated-sources/r" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../android/target/generated-sources/r" isTestSource="false" generated="true" />
       <sourceFolder url="file://$MODULE_DIR$/../android/target/generated-sources/r/gen" isTestSource="false" />
     </content>
     <content url="file://$MODULE_DIR$">
@@ -42,12 +26,7 @@
       <sourceFolder url="file://$MODULE_DIR$/target/generated-sources/r" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/target/generated-sources/annotations" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/main/java" isTestSource="false" />
-      <excludeFolder url="file://$MODULE_DIR$/target/.generated" />
-      <excludeFolder url="file://$MODULE_DIR$/target/archive-tmp" />
       <excludeFolder url="file://$MODULE_DIR$/target/classes" />
-      <excludeFolder url="file://$MODULE_DIR$/target/gwt-unitCache" />
-      <excludeFolder url="file://$MODULE_DIR$/target/gwtphonegap-bikefunfinder-gwt-0.0.0.1-SNAPSHOT" />
-      <excludeFolder url="file://$MODULE_DIR$/target/maven-archiver" />
       <excludeFolder url="file://$MODULE_DIR$/target/surefire" />
     </content>
     <orderEntry type="inheritedJdk" />
