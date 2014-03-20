@@ -25,13 +25,16 @@
         </mgwt:HeaderPanel>
 
 
-            <g:FormPanel width="100%">
-                <g:HTMLPanel >
+        <mgwt:ScrollPanel ui:field="scrollPanel" >
+            <g:FormPanel ui:field="form" width="100%">
+                <g:HTMLPanel>
 
                     <mgwt:WidgetList ui:field="widgetList" />
                     <mgwt:Button ui:field="searchRide" text="Search"/>
 
                 </g:HTMLPanel>
             </g:FormPanel>
+        </mgwt:ScrollPanel>
+
     </mgwt:LayoutPanel>
 </ui:UiBinder>

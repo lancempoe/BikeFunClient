@@ -7,6 +7,7 @@ package com.bikefunfinder.client.client.places.createscreen;
 import com.bikefunfinder.client.client.places.createscreen.widgets.BikeRideCreateUtils;
 import com.bikefunfinder.client.client.places.createscreen.widgets.BikeRideCreateWidgets;
 import com.bikefunfinder.client.client.places.createscreen.widgets.BikeRideCreateWidgetsImpl;
+import com.bikefunfinder.client.client.places.displays.BaseComposite;
 import com.bikefunfinder.client.client.places.eventscreen.widgets.BikeRideViewUtils;
 import com.bikefunfinder.client.shared.model.BikeRide;
 import com.bikefunfinder.client.shared.model.Root;
@@ -25,7 +26,7 @@ import com.googlecode.mgwt.ui.client.widget.ScrollPanel;
 import com.googlecode.mgwt.ui.client.widget.WidgetList;
 
 
-public class CreateScreenDisplayGwtImpl  extends Composite implements CreateScreenDisplay {
+public class CreateScreenDisplayGwtImpl  extends BaseComposite implements CreateScreenDisplay {
     private static OverviewDisplayGwtImplUiBinder uiBinder = GWT.create(OverviewDisplayGwtImplUiBinder.class);
     public interface OverviewDisplayGwtImplUiBinder extends UiBinder<Widget, CreateScreenDisplayGwtImpl> {}
 
@@ -35,6 +36,7 @@ public class CreateScreenDisplayGwtImpl  extends Composite implements CreateScre
         widgetList = BikeRideViewUtils.buildBikeViewWidgitList(bikeDisplayWidgets);
         initWidget(uiBinder.createAndBindUi(this));
         scrollPanel.setUsePos(MGWT.getOsDetection().isAndroid());
+        setScrollableWidget(scrollPanel);
     }
 
     @UiField

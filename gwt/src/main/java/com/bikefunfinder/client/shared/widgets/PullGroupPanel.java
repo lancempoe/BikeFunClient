@@ -239,4 +239,8 @@ public class PullGroupPanel<G, T> extends Composite implements HasRefresh {
             scrollPanel.refresh();
         }
     }
+
+    public ScrollPanel getScrollPanel() {
+        return groupingCellList.getScrollPanel();
+    }
 }
