@@ -32,7 +32,7 @@
 
 @implementation AppDelegate
 
-@synthesize window, viewController;
+@synthesize window, viewController, background;
 
 - (id)init
 {
@@ -77,6 +77,13 @@
     self.window.rootViewController = self.viewController;
     [self.window makeKeyAndVisible];
 
+    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) {
+        self.window.clipsToBounds =YES;
+        self.window.frame =  CGRectMake(0,20,self.window.frame.size.width,self.window.frame.size.height-20);
+        background = [[UIWindow alloc] initWithFrame: CGRectMake(0, 0, self.window.frame.size.width, 20)];
+        background.backgroundColor =[UIColor colorWithRed:0.690 green:0.732 blue:0.804 alpha:1];
+        [background setHidden:NO];
+    }
     return YES;
 }
 
