@@ -16,10 +16,11 @@ public class Settings {
     //public static String HOST = "http://10.0.0.4:8080/"
 
     //Test:
-    //public static String HOST = "http://24.21.204.4/";
+//    public static String HOST = "http://24.21.204.4/";
+    public static String HOST = "http://appworks.timneuwerth.com/";
 
     //PRD:
-    public static String HOST = "http://service.bikefunfinder.com/";
+//    public static String HOST = "http://service.bikefunfinder.com/";
     //public static String HOST = "http://54.218.82.188/";
 
 }
