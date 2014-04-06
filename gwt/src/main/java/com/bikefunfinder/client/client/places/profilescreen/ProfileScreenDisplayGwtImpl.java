@@ -6,6 +6,7 @@ package com.bikefunfinder.client.client.places.profilescreen;
 
 import com.bikefunfinder.client.shared.constants.ScreenConstants;
 import com.bikefunfinder.client.shared.model.AnonymousUser;
+import com.bikefunfinder.client.shared.model.ServiceVersion;
 import com.bikefunfinder.client.shared.model.User;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
@@ -43,6 +44,8 @@ public class ProfileScreenDisplayGwtImpl extends Composite implements ProfileScr
     Label userName = new Label();
     Label joinedTimeStamp = new Label();
     Label totalHostedBikeRideCount = new Label();
+    Label serviceVersionLabel = new Label();
+    Label clientVersionLabel = new Label();
 
     private static Widget buildFormWidget(String title, Widget widget) {
         FormListEntry formListEntry = new FormListEntry();
@@ -58,11 +61,15 @@ public class ProfileScreenDisplayGwtImpl extends Composite implements ProfileScr
         scrollPanel.setUsePos(MGWT.getOsDetection().isAndroid());
 
         userName.setWidth("100%");
+        clientVersionLabel.setWidth("100%");
+        serviceVersionLabel.setWidth("100%");
         joinedTimeStamp.setWidth("100%");
         totalHostedBikeRideCount.setWidth("100%");
 
+        widgetList.add(buildFormWidget("Client Version:", clientVersionLabel));
+        widgetList.add(buildFormWidget("Service Version:", serviceVersionLabel));
         widgetList.add(buildFormWidget("Date Joined BFF:", joinedTimeStamp));
-        widgetList.add(buildFormWidget("Ride Created:", totalHostedBikeRideCount));
+        widgetList.add(buildFormWidget("Rides Created:", totalHostedBikeRideCount));
     }
 
     @Override
@@ -78,13 +85,33 @@ public class ProfileScreenDisplayGwtImpl extends Composite implements ProfileScr
     }
 
     @Override
+    public void displayServiceVersion(ServiceVersion serviceVersion) {
+        SafeHtmlBuilder safeHtmlBuilder = new SafeHtmlBuilder();
+        safeHtmlBuilder.appendEscaped(serviceVersion.getVersion());
+        serviceVersionLabel.setText(safeHtmlBuilder.toSafeHtml().asString());
+    }
+
+    @Override
+    public void displayClientVersion(String clientVersion) {
+        SafeHtmlBuilder safeHtmlBuilder = new SafeHtmlBuilder();
+        safeHtmlBuilder.appendEscaped(clientVersion);
+        clientVersionLabel.setText(safeHtmlBuilder.toSafeHtml().asString());
+    }
+
+    @Override
     public void display(AnonymousUser anonymousUser) {
         if(anonymousUser==null) return; // failSafe but ugly;
 
         //setSafeText(rideImage, bikeRide.getImagePath());
         userName.setText(anonymousUser.getUserName());
-        totalHostedBikeRideCount.setText(String.valueOf(anonymousUser.getTotalHostedBikeRideCount()));
-        joinedTimeStamp.setText(buildJoinedDate(anonymousUser));
+
+        SafeHtmlBuilder safeHtmlBuilder = new SafeHtmlBuilder();
+        safeHtmlBuilder.appendEscaped(String.valueOf(anonymousUser.getTotalHostedBikeRideCount()));
+        totalHostedBikeRideCount.setText(safeHtmlBuilder.toSafeHtml().asString());
+
+        safeHtmlBuilder = new SafeHtmlBuilder();
+        safeHtmlBuilder.appendEscaped(buildJoinedDate(anonymousUser));
+        joinedTimeStamp.setText(safeHtmlBuilder.toSafeHtml().asString());
     }
 
     private String buildJoinedDate(AnonymousUser anonymousUser) {

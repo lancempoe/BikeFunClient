@@ -22,6 +22,13 @@ public class PayloadConverters {
         };
     };
 
+    public static final JsonObjectConverter<ServiceVersion> ServiceVersion_JSON_OBJECT_CONVERTER = new JsonObjectConverter<ServiceVersion>(){
+        @Override
+        public ServiceVersion convert(String jsonTxt) {
+            return Utils.castJsonTxtToJSOObject(jsonTxt);
+        };
+    };
+
     public static final JsonObjectConverter<User> User_JSON_OBJECT_CONVERTER = new JsonObjectConverter<User>(){
         @Override
         public User convert(String jsonTxt) {
@@ -51,7 +58,4 @@ public class PayloadConverters {
             return NoOpResponseObject.NO_OP_RESPONSE_OBJECT;
         };
     };
-
-
-
 }

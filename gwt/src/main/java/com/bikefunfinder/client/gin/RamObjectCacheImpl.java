@@ -4,10 +4,7 @@ package com.bikefunfinder.client.gin;
  * @created 5/15/13 6:14 PM
  */
 
-import com.bikefunfinder.client.shared.model.AnonymousUser;
-import com.bikefunfinder.client.shared.model.BikeRide;
-import com.bikefunfinder.client.shared.model.GeoLoc;
-import com.bikefunfinder.client.shared.model.Root;
+import com.bikefunfinder.client.shared.model.*;
 import com.bikefunfinder.client.shared.model.helper.Extractor;
 
 import java.util.List;
@@ -21,6 +18,7 @@ public class RamObjectCacheImpl implements RamObjectCache {
     private String currentBikeRideId = null;
     private BikeRide eventRequest;
     private Root root = null;
+    private ServiceVersion serviceVersion = null;
     private int mainScreenSize = 0;
     private boolean mainScreenPullDownLocked = false;
 
@@ -112,5 +110,13 @@ public class RamObjectCacheImpl implements RamObjectCache {
     @Override
     public void setAnonymousUser(AnonymousUser anonymousUser) {
         this.anonymousUser = anonymousUser;
+    }
+
+    @Override
+    public ServiceVersion getServiceVersion() { return serviceVersion; }
+
+    @Override
+    public void setServiceVersion(ServiceVersion serviceVersion) {
+        this.serviceVersion = serviceVersion;
     }
 }

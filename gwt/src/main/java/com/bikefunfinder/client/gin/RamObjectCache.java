@@ -4,10 +4,7 @@ package com.bikefunfinder.client.gin;
  * @created 5/15/13 6:08 PM
  */
 
-import com.bikefunfinder.client.shared.model.AnonymousUser;
-import com.bikefunfinder.client.shared.model.BikeRide;
-import com.bikefunfinder.client.shared.model.GeoLoc;
-import com.bikefunfinder.client.shared.model.Root;
+import com.bikefunfinder.client.shared.model.*;
 
 public interface RamObjectCache {
 
@@ -31,5 +28,8 @@ public interface RamObjectCache {
 
     public BikeRide getCurrentBikeRide();
     public void setCurrentBikeRide(BikeRide bikeRide);
+
+    public ServiceVersion getServiceVersion();
+    public void setServiceVersion(ServiceVersion serviceVersion);
 
 }

@@ -12,11 +12,9 @@ import com.bikefunfinder.client.shared.Tools.DeviceTools;
 import com.bikefunfinder.client.shared.Tools.NativeUtilities;
 import com.bikefunfinder.client.shared.Tools.NavigationHelper;
 import com.bikefunfinder.client.shared.Tools.NonPhoneGapGeoLocCallback;
-import com.bikefunfinder.client.shared.model.AnonymousUser;
-import com.bikefunfinder.client.shared.model.GeoLoc;
-import com.bikefunfinder.client.shared.model.Root;
-import com.bikefunfinder.client.shared.model.User;
+import com.bikefunfinder.client.shared.model.*;
 import com.bikefunfinder.client.shared.request.SearchByTimeOfDayForProfileRequest;
+import com.bikefunfinder.client.shared.request.VersionRequest;
 import com.bikefunfinder.client.shared.request.management.WebServiceResponseConsumer;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.web.bindery.event.shared.EventBus;
@@ -27,12 +25,16 @@ public class ProfileScreenActivity extends MGWTAbstractActivity implements Profi
     private final ClientFactory<ProfileScreenDisplay> clientFactory = Injector.INSTANCE.getClientFactory();
     private final RamObjectCache ramObjectCache = Injector.INSTANCE.getRamObjectCache();
     private String userName = "";
+    private String clientVersion = "1.2.1";
+    private ServiceVersion serviceVersion;
     private String userId = "";
 
     public ProfileScreenActivity(User user) {
         ProfileScreenDisplay display = this.clientFactory.getDisplay(this);
         setUserDisplayElements(user.getId(), user.getUserName());
         display.display(user);
+        display.displayServiceVersion(serviceVersion);
+        display.displayClientVersion(clientVersion);
     }
 
     @Override
@@ -47,11 +49,17 @@ public class ProfileScreenActivity extends MGWTAbstractActivity implements Profi
         setUserDisplayElements(anonymousUser.getId(), anonymousUser.getUserName());
         display.display(anonymousUser);
         display.display(userName);
+        display.displayServiceVersion(serviceVersion);
+        display.displayClientVersion(clientVersion);
     }
 
     private void setUserDisplayElements(String id, String name) {
         this.userId = id;
         this.userName = name;
+        if (ramObjectCache.getServiceVersion() == null) {
+            fireRequestForServiceVersion();
+        }
+        this.serviceVersion = ramObjectCache.getServiceVersion();
     }
 
     @Override
@@ -90,6 +98,17 @@ public class ProfileScreenActivity extends MGWTAbstractActivity implements Profi
         };
         SearchByTimeOfDayForProfileRequest.Builder request = new SearchByTimeOfDayForProfileRequest.Builder(callback);
         request.latitude(geoLoc).longitude(geoLoc).rideLeaderId(userId).send();
+    }
+
+    private void fireRequestForServiceVersion() {
+        WebServiceResponseConsumer<ServiceVersion> callback = new WebServiceResponseConsumer<ServiceVersion>() {
+            @Override
+            public void onResponseReceived(ServiceVersion type) {
+                ramObjectCache.setServiceVersion(type);
+            }
+        };
+        VersionRequest.Builder version = new VersionRequest.Builder(callback);
+        version.send();
     }
 
     @Override

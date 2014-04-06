@@ -26,7 +26,6 @@ public class ProfileScreenPlace extends Place {
         return anonymousUser;
     }
 
-
     public static class Tokenizer implements PlaceTokenizer<ProfileScreenPlace> {
 
         @Override

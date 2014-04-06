@@ -5,6 +5,7 @@ package com.bikefunfinder.client.client.places.profilescreen;
  */
 
 import com.bikefunfinder.client.shared.model.AnonymousUser;
+import com.bikefunfinder.client.shared.model.ServiceVersion;
 import com.bikefunfinder.client.shared.model.User;
 import com.google.gwt.user.client.ui.IsWidget;
 
@@ -17,6 +18,8 @@ public interface ProfileScreenDisplay extends IsWidget {
     public void display(User user);
     public void display(AnonymousUser anonymousUser);
     public void display(String profileNameText);
+    public void displayServiceVersion(ServiceVersion serviceVersion);
+    public void displayClientVersion(String clientVersion);
 
     /**
      * This is the contract for what the activity can provide
