@@ -1,5 +1,6 @@
 package com.bikefunfinder.client.client.places.homescreen;
 
+import com.bikefunfinder.client.client.places.displays.BaseComposite;
 import com.bikefunfinder.client.shared.Tools.BikeRideHelper;
 import com.bikefunfinder.client.shared.Tools.DateTools;
 import com.bikefunfinder.client.shared.constants.ScreenConstants;
@@ -20,6 +21,7 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.googlecode.mgwt.dom.client.event.tap.TapEvent;
+import com.googlecode.mgwt.ui.client.MGWT;
 import com.googlecode.mgwt.ui.client.widget.Button;
 import com.googlecode.mgwt.ui.client.widget.GroupingCellList;
 import com.googlecode.mgwt.ui.client.widget.GroupingCellList.CellGroup;
@@ -31,7 +33,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class HomeScreenDisplayGwtImpl extends Composite implements HomeScreenDisplay {
+public class HomeScreenDisplayGwtImpl extends BaseComposite implements HomeScreenDisplay {
 
     private static boolean hideOldRides = true; //Default to hiding old rides.
     private static final String SHOW_EXPIRED_RIDES = "Show Earlier Rides";
@@ -104,6 +106,7 @@ public class HomeScreenDisplayGwtImpl extends Composite implements HomeScreenDis
 
         pp = new PullGroupPanel<Header, BikeRideHelper.Content>(new HeaderListWithPullPanel<Header, BikeRideHelper.Content>(groupingCellList), presenter);
         headerListWidget.add(pp);
+        setScrollableWidget(pp.getScrollPanel());
 
 
         /*MGWT.addOrientationChangeHandler(new OrientationChangeHandler() {

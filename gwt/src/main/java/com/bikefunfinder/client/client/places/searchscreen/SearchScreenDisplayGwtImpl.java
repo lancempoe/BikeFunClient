@@ -4,6 +4,7 @@ package com.bikefunfinder.client.client.places.searchscreen;
  * @created 4/10/13 11:31 AM
  */
 
+import com.bikefunfinder.client.client.places.displays.BaseComposite;
 import com.bikefunfinder.client.client.places.searchscreen.styles.Resources;
 import com.bikefunfinder.client.shared.constants.ScreenConstants;
 import com.bikefunfinder.client.shared.model.Query;
@@ -14,12 +15,10 @@ import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
 import com.googlecode.mgwt.dom.client.event.tap.TapEvent;
-import com.googlecode.mgwt.ui.client.widget.FormListEntry;
-import com.googlecode.mgwt.ui.client.widget.MListBox;
-import com.googlecode.mgwt.ui.client.widget.MTextBox;
-import com.googlecode.mgwt.ui.client.widget.WidgetList;
+import com.googlecode.mgwt.ui.client.MGWT;
+import com.googlecode.mgwt.ui.client.widget.*;
 
-public class SearchScreenDisplayGwtImpl extends Composite implements SearchScreenDisplay {
+public class SearchScreenDisplayGwtImpl extends BaseComposite implements SearchScreenDisplay {
     static {
         Resources.INSTANCE.css().ensureInjected();
     }
@@ -30,6 +29,9 @@ public class SearchScreenDisplayGwtImpl extends Composite implements SearchScree
     }
 
     private Presenter presenter;
+
+    @UiField
+    ScrollPanel scrollPanel;
 
     @UiField(provided = true)
     WidgetList widgetList;
@@ -82,6 +84,9 @@ public class SearchScreenDisplayGwtImpl extends Composite implements SearchScree
         widgetList.add(formListEntry);
 
         initWidget(uiBinder.createAndBindUi(this));
+
+        scrollPanel.setUsePos(MGWT.getOsDetection().isAndroid());
+        setScrollableWidget(scrollPanel);
     }
 
     @Override

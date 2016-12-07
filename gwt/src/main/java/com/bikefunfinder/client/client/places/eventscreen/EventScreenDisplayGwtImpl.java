@@ -1,5 +1,6 @@
 package com.bikefunfinder.client.client.places.eventscreen;
 
+import com.bikefunfinder.client.client.places.displays.BaseComposite;
 import com.bikefunfinder.client.client.places.eventscreen.widgets.BikeRideViewUtils;
 import com.bikefunfinder.client.client.places.eventscreen.widgets.BikeRideViewWidgets;
 import com.bikefunfinder.client.client.places.eventscreen.widgets.BikeRideViewWidgetsImpl;
@@ -21,7 +22,7 @@ import com.googlecode.mgwt.ui.client.widget.Button;
 import com.googlecode.mgwt.ui.client.widget.ScrollPanel;
 import com.googlecode.mgwt.ui.client.widget.WidgetList;
 
-public class EventScreenDisplayGwtImpl extends Composite implements EventScreenDisplay {
+public class EventScreenDisplayGwtImpl extends BaseComposite implements EventScreenDisplay {
 
     private static OverviewDisplayGwtImplUiBinder uiBinder = GWT.create(OverviewDisplayGwtImplUiBinder.class);
     interface OverviewDisplayGwtImplUiBinder extends UiBinder<Widget, EventScreenDisplayGwtImpl> {}
@@ -45,10 +46,12 @@ public class EventScreenDisplayGwtImpl extends Composite implements EventScreenD
 
     final BikeRideViewWidgets bikeDisplayWidgets = new BikeRideViewWidgetsImpl();
 
+
     public EventScreenDisplayGwtImpl() {
         widgetList = BikeRideViewUtils.buildBikeViewWidgitList(bikeDisplayWidgets);
         initWidget(uiBinder.createAndBindUi(this));
         scrollPanel.setUsePos(MGWT.getOsDetection().isAndroid());
+        setScrollableWidget(scrollPanel);
     }
 
     @Override

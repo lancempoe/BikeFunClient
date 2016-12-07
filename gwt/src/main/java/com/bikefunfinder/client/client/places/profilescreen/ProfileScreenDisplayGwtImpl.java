@@ -4,6 +4,7 @@ package com.bikefunfinder.client.client.places.profilescreen;
  * @created 4/5/13 4:22 PM
  */
 
+import com.bikefunfinder.client.client.places.displays.BaseComposite;
 import com.bikefunfinder.client.shared.constants.ScreenConstants;
 import com.bikefunfinder.client.shared.model.AnonymousUser;
 import com.bikefunfinder.client.shared.model.ServiceVersion;
@@ -23,7 +24,7 @@ import com.googlecode.mgwt.ui.client.widget.FormListEntry;
 import com.googlecode.mgwt.ui.client.widget.ScrollPanel;
 import com.googlecode.mgwt.ui.client.widget.WidgetList;
 
-public class ProfileScreenDisplayGwtImpl extends Composite implements ProfileScreenDisplay {
+public class ProfileScreenDisplayGwtImpl extends BaseComposite implements ProfileScreenDisplay {
 
     private static OverviewDisplayGwtImplUiBinder uiBinder = GWT.create(OverviewDisplayGwtImplUiBinder.class);
 
@@ -59,6 +60,7 @@ public class ProfileScreenDisplayGwtImpl extends Composite implements ProfileScr
         initWidget(uiBinder.createAndBindUi(this));
 
         scrollPanel.setUsePos(MGWT.getOsDetection().isAndroid());
+        setScrollableWidget(scrollPanel);
 
         userName.setWidth("100%");
         clientVersionLabel.setWidth("100%");
